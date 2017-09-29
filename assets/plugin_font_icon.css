@@ -1,0 +1,150 @@
+@font-face {
+  font-family: 'mks_icon';
+  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/plugin_icon/mks_icon.eot?d1rxm2');
+  src:  url('chrome-extension://__MSG_@@extension_id__/fonts/plugin_icon/mks_icon.eot?d1rxm2#iefix') format('embedded-opentype'),
+    url('chrome-extension://__MSG_@@extension_id__/fonts/plugin_icon/mks_icon.ttf?d1rxm2') format('truetype'),
+    url('chrome-extension://__MSG_@@extension_id__/fonts/plugin_icon/mks_icon.woff?d1rxm2') format('woff'),
+    url('chrome-extension://__MSG_@@extension_id__/fonts/plugin_icon/mks_icon.svg?d1rxm2#mks_icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[data-icon]:before {
+    font-family: 'mks_icon';
+    content: attr(data-icon);
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="mksicon-"], [class*=" mksicon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'mks_icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="icon-"] {
+*/
+.mksicon-User1, .mksicon-Menu, .icon-salesforce, .icon-mksbot2, .icon-menu, .icon-tags, .icon-buttonarrow, .icon-chevron-left, .icon-chevron-right, .icon-briefcase, .icon-arrow-left, .icon-asterisk, .icon-calendar, .icon-arrow-right, .icon-shopping-cart, .icon-cogs, .icon-comments, .icon-bar-chart, .icon-mks, .icon-comments-alt, .icon-desktop, .icon-laptop, .icon-tablet, .icon-mobile, .icon-tag, .icon-microphone-off, .icon-office, .icon-image, .icon-support, .icon-cart, .icon-location, .icon-screen, .icon-laptop-2, .icon-mobile-2, .icon-mobile-3, .icon-tablet-2, .icon-bubbles, .icon-user, .icon-stats, .icon-power-cord, .icon-earth, .icon-envelope, .icon-mouse, .icon-pointer, .icon-earth-2, .icon-monitor, .icon-mobile-4, .icon-database, .icon-microphone, .icon-bullhorn, .icon-key, .icon-check-alt, .icon-bullhorn-2, .icon-dropbox, .icon-dribbble, .icon-skype, .icon-megaphone, .icon-picture, .icon-Robot, .icon-bag, .icon-calendar-2, .icon-connect, .icon-display, .icon-dis-play, .icon-laptop-3, .icon-envelope-alt, .icon-play, .icon-connection, .icon-phone, .icon-twitter, .icon-facebook, .icon-linkedin, .icon-google-plus, .icon-pinterest, .icon-tumblr, .icon-map-marker, .icon-chevron-up, .icon-chevron-down, .icon-youtube, .icon-xing, .icon-location-2, .icon-calendar31, .icon-facebook-2, .icon-google, .icon-iPhone-3G, .icon-linkedin-2, .icon-mail, .icon-mks_demo, .icon-pin_location, .icon-pin_location-2, .icon-pin_location-3, .icon-pinterest-2, .icon-tel, .icon-twitter-2, .icon-youtube-2, .icon-google-plus-2, .icon-feed, .icon-facebook-3, .icon-vimeo, .icon-wordpress, .icon-paypal, .icon-html5, .icon-css3, .icon-chrome, .icon-firefox, .icon-IE, .icon-opera, .icon-safari, .icon-analytics-2, .icon-analytics, .icon-grow, .icon-mks_play, .icon-connection-2 {
+  font-family: 'mks_icon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+.mksicon-User1:before {
+  content: "\e900";
+}
+.mksicon-Silhouette:before {
+  content: "\e901";
+}
+.mksicon-SendEmail:before {
+  content: "\e902";
+}
+.mksicon-Search:before {
+  content: "\e903";
+}
+.mksicon-Save2:before {
+  content: "\e904";
+}
+.mksicon-Save:before {
+  content: "\e905";
+}
+.mksicon-Pie:before {
+  content: "\e906";
+}
+.mksicon-OpenMail:before {
+  content: "\e907";
+}
+.mksicon-Notepad:before {
+  content: "\e908";
+}
+.mksicon-More:before {
+  content: "\e909";
+}
+.mksicon-Menu:before {
+  content: "\e90a";
+}
+.mksicon-ManageLists:before {
+  content: "\e90b";
+}
+.mksicon-MakesbridgeBot3:before {
+  content: "\e90c";
+}
+.mksicon-MakesbridgeBot2:before {
+  content: "\e90d";
+}
+.mksicon-MakesbridgeBot:before {
+  content: "\e90e";
+}
+.mksicon-Makesbridge:before {
+  content: "\e90f";
+}
+.mksicon-Mail:before {
+  content: "\e910";
+}
+.mksicon-Gear:before {
+  content: "\e911";
+}
+.mksicon-Funnel:before {
+  content: "\e912";
+}
+.mksicon-Eye:before {
+  content: "\e913";
+}
+.mksicon-Edit:before {
+  content: "\e914";
+}
+.mksicon-Close:before {
+  content: "\e915";
+}
+.mksicon-Clock:before {
+  content: "\e916";
+}
+.mksicon-Check:before {
+  content: "\e917";
+}
+.mksicon-Calendar2:before {
+  content: "\e918";
+}
+.mksicon-AwardRibbon:before {
+  content: "\e919";
+}
+.mksicon-ArrowNext:before {
+  content: "\e91a";
+}
+.mksicon-ArrowBack:before {
+  content: "\e91b";
+}
+.mksicon-Addlist:before {
+  content: "\e91c";
+}
+.mksicon-Add:before {
+  content: "\e91d";
+}
+.mksicon-ActSent:before {
+  content: "\e91e";
+}

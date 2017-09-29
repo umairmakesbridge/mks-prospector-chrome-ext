@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Gmail Prospector",
+  "description": "Makesbridge.Inc",
+  "version": "0.0.0.1",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "Makesbridge Gmail Prospector"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
+      "css": ["makesbridge_plugin.css","plugin_font_icon.css"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    "jquery.min.js",
+    "gmail.js",
+    "main.js",
+    "img/*",
+    "fonts/plugin_icon/*"
+  ]
+}
