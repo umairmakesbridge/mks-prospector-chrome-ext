@@ -40,6 +40,7 @@ class App extends Component {
     this.onEmailSelect = this.onEmailSelect.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
     this.hideTopMenu = this.hideTopMenu.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   componentWillMount() {
@@ -86,6 +87,11 @@ class App extends Component {
    jQuery("#lists_option").hide();
    event.stopPropagation()
  }
+ goBack (){
+   this.setState(() => {
+      return { selectedEmail : null, showContacts: false,gmailEmails: true };
+  });
+ }
 
   render() {
     return (
@@ -121,6 +127,14 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
+                        <ToggleDisplay show={this.state.selectedEmail==null?false:true}>
+                          <div
+                            className="mksph_back ripple"
+                            onClick={this.goBack}
+                            >
+                          <a href="#"><span className="mksph_icon_back" aria-hidden="true" data-icon="&#xe91b;"></span></a>
+                          </div>
+                        </ToggleDisplay>
                         <div className="clr"></div>
                     </div>
                 </div>

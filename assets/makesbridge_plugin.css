@@ -113,9 +113,14 @@ html, body{ height:100%;}
 }
 .mksph_logo{
    float: left;
-   width: 70%;
+   width: 55%;
 }
 .mksph_close{
+   float: right;
+   width: 15%;
+   height: 50px;
+}
+.mksph_back{
    float: right;
    width: 15%;
    height: 50px;
@@ -143,7 +148,7 @@ html, body{ height:100%;}
  display: block;
 }
 
-.mksph_icon_close{
+.mksph_icon_close, .mksph_icon_back{
  font-size: 15px;
  color: #566e78;
  text-decoration: none;
@@ -157,6 +162,7 @@ html, body{ height:100%;}
 
 .mksph_icon_menu:hover{color: #fff;}
 .mksph_icon_close:hover{color: #fff;}
+.mksph_icon_back:hover{color: #fff;}
 
 .mksph_row a{text-decoration: none;}
 
