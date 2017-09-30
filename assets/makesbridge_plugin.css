@@ -448,8 +448,9 @@ outline: none;
 border: none;
 }
 input:disabled,button:disabled{
- background-color:#ccc;
+ background-color:#ccc !important;
 }
+
 /*===========================================
 Login form CSS
 ============================================*/
@@ -839,6 +840,13 @@ Slider Ends
 /*===========================================
 START Edit Selected Contact Found
 ============================================*/
+.mksph_cardbox p.not-found {
+   color: #e1e5e8;
+   font-weight: 100;
+   font-size: 12px;
+   font-style: italic;
+   padding-top: 13px;
+}
 .s_contact_found_edit{
    background: #fff;
    padding: 0px 20px 20px 20px;
@@ -986,6 +994,10 @@ a:hover, a:focus {
 .scfe_c_ach:hover > .scfe_close_t{
  background: #a2a9b0;
 }
+
+.disable_true .scfe_save_t,.disable_true .scfe_save_i_md{
+  background: #bac2ca;
+}
 /*End Edit Contact*/
 
 
@@ -1004,12 +1016,13 @@ span.mksph_contact_title {
 span.mksph_contact_value {
    color: #016EFD;
 }
-.tags-contents {
+.tags-contents,.csfields-contents {
  min-height: 70px;
- max-height: 100px;
+ max-height: 165px;
  overflow-y: scroll;
  padding: 15px 0 0px;
 }
+
 .addTag{
    position: relative;
    float: right;

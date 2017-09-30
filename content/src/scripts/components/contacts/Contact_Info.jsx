@@ -32,7 +32,8 @@ class ContactInfo extends Component{
                     contactActive : 'active',
                     activityActive: '',
                     changeInTagsView    : false,
-                    changeInContactBasic: false
+                    changeInContactBasic: false,
+                    contactnotFound  : false
                    }
   }
 
@@ -77,11 +78,16 @@ class ContactInfo extends Component{
                                   subNum   : jsonResponse.subscriberList[0].subscriber1[0].subNum,
                                   checkSum : jsonResponse.subscriberList[0].subscriber1[0].checkSum,
                                   email    : jsonResponse.subscriberList[0].subscriber1[0].email,
-                                  diffEmail: false
+                                  diffEmail: false,
                                 });
                     this.getSubscriberDetails();
                     //this.forceUpdate()
 
+                }else{
+                  this.setState({
+                    contactnotFound : true,
+                    diffEmail: false
+                  })
                 }
               }
             });
@@ -142,7 +148,7 @@ class ContactInfo extends Component{
                               <div className="scf_tab">
                                   <div className="tab">
                                     <button className={`tablinks ripple ${this.state.contactActive}`} onClick={switchTab => { this.setState({showContacts:true,showActivity:false,activityActive:'',contactActive:'active'})} }>Contact</button>
-                                    <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen" style={{display:"none"}}>Activity</button>
+                                    <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
                                   </div>
 
                                   <div className="tab_content_wrap">
@@ -152,6 +158,7 @@ class ContactInfo extends Component{
                                           users_details={this.users_details}
                                           baseUrl={this.baseUrl}
                                           changeInTagsView={this.changeTagView.bind(this)}
+                                          contactnotFound={this.state.contactnotFound}
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>

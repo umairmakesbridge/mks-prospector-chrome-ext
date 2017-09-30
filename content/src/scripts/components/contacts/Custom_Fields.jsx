@@ -1,7 +1,9 @@
 import React from 'react';
 
 const CustomFields = (props) => {
-
+  if(!props.custom_fields){
+    return <span></span>;
+  }
   const Fields = props.custom_fields;
   let   customFieldsArray = [];
   jQuery.each(Fields[0],(key,value)=>{
@@ -13,7 +15,7 @@ const CustomFields = (props) => {
                 )
 
                return (
-                 <ul>{CustomField}</ul>
+                 <div class="csfields-contents"><ul>{CustomField}</ul></div>
                );
 }
 

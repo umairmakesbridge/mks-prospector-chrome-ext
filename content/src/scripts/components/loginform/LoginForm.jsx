@@ -6,6 +6,8 @@ import request
 class LoginForm extends Component {
   constructor(props){
       super(props);
+      this.createNewList   = props.createNewList;
+      this.checkSubscriberList   = props.checkSubscriberList;
       this.users_details   = props.users_details;
       this.toggleShowLogin = props.toggleShowLogin;
       this.baseUrl         = props.baseUrl;
@@ -54,6 +56,16 @@ class LoginForm extends Component {
                     disabled:''
                 })
                 _this.toggleShowLogin();
+                let userDetails= res.body;
+
+
+                _this.checkSubscriberList()
+                return false;
+                //io/list/getListData/?BMS_REQ_TK=2gdvB8OodJGEKIcqnMDVPEh6l8b6uV&offset=0&searchText=abdullah&type=batches&orderBy=name&order=asc
+
+              
+
+
                 //console.log(_this.users_details);
               }else{
                 _this.setState({
