@@ -20,12 +20,20 @@ class ContactDetailInfo extends Component{
     this.state = {
       showAddBox : false,
       tagName    : '',
-      tagCode    : ''
+      tagCode    : '',
+      disabled: false
     }
   };
 
   addNewTag(){
     console.log('Add New Tag hit');
+
+    if(!this.state.tagName || this.state.disabled){
+      return;
+    }
+    this.setState({
+      disabled:true
+    })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
@@ -45,7 +53,8 @@ class ContactDetailInfo extends Component{
           if(jsonResponse.success){
             this.setState({
                 tagName:'',
-                showAddBox:false
+                showAddBox:false,
+                disabled:false
             })
             this.props.changeInTagsView();
 
@@ -87,8 +96,21 @@ class ContactDetailInfo extends Component{
 
 
   render(){
-    if(!this.props.contact){
-      return <div>Loading....</div>;
+    if(!this.props.contact && !this.props.contactnotFound){
+      return (<div className="contacts-wrap">
+      <div id="NoContact" className="tabcontent mksph_cardbox">
+            <h3>Contact</h3>
+              <p className="not-found">Loading...</p>
+          </div>
+              </div>);
+    }
+    if(this.props.contactnotFound){
+      return (<div className="contacts-wrap">
+      <div id="NoContact" className="tabcontent mksph_cardbox">
+            <h3>Contact</h3>
+              <p className="not-found">No Contact Found</p>
+          </div>
+              </div>);
     }
     return (
       <div className="contacts-wrap">
@@ -117,6 +139,7 @@ class ContactDetailInfo extends Component{
                         value={this.state.tagName}
                         onChange={event => this.setState({tagName : event.target.value}) }
                         onKeyPress={this.handleOnTagInput.bind(this)}
+                        disabled={this.state.disabled}
                       />
 
 
@@ -131,7 +154,7 @@ class ContactDetailInfo extends Component{
                                   </div>
                               </a>
                           </div>
-                          <div className="scfe_save_wrap" onClick={ this.addNewTag.bind(this) }>
+                          <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={ this.addNewTag.bind(this) } >
                               <a className="scfe_ach" href="#">
                                   <div className="scfe_save_t">
                                       <span>Save</span>

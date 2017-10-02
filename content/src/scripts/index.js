@@ -6,6 +6,8 @@ import {Provider}
        from 'react-redux';
 import {Store}
        from 'react-chrome-redux';
+import request
+       from 'superagent';
 import ToggleDisplay
        from 'react-toggle-display';
 
@@ -35,12 +37,14 @@ class App extends Component {
       appPanel         : false,
       selectedEmail    : null,
       chromeExObj      : null,
-      baseUrl          : 'https://test.bridgemailsystem.com/pms'
+      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
     this.onEmailSelect = this.onEmailSelect.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
     this.hideTopMenu = this.hideTopMenu.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.createNewList = this.createNewList.bind(this);
+    this.checkSubscriberList = this.checkSubscriberList.bind(this);
   }
 
   componentWillMount() {
@@ -77,7 +81,65 @@ class App extends Component {
                 });
   }
 
+  createNewList(){
+    let userDetails = this.state.users_details[0];
+    let userName    =    userDetails.userId.split('@')[0];
 
+    request.post(this.state.baseUrl+'/io/list/saveListData/')
+       .set('Content-Type', 'application/x-www-form-urlencoded')
+       .send({
+
+                 BMS_REQ_TK: userDetails.bmsToken
+                ,type:'create'
+                ,listName: 'PROS_'+userName+'_GMAIL'
+                ,ukey:userDetails.userKey
+                ,isMobileLogin:'Y'
+                ,userId:userDetails.userId
+              })
+       .then((res) => {
+          console.log(res.status);
+
+          var jsonResponse =  JSON.parse(res.text);
+          console.log(jsonResponse);
+          if(res.status==200){
+            this.state.users_details[0]['listObj']={listNum:jsonResponse[1],listChecksum:jsonResponse[2]}
+            console.log(this.state.users_details);
+          }
+        });
+  }
+
+  checkSubscriberList(){
+    let userDetails = this.state.users_details[0];
+    let userName    =    userDetails.userId.split('@')[0];
+    var searchUrl   = this.state.baseUrl
+                      +'/io/list/getListData/?BMS_REQ_TK='
+                      +userDetails.bmsToken
+                      +'&searchText=PROS_'+userName+'_GMAIL&type=batches&orderBy=name&order=asc&ukey='
+                      +userDetails.userKey
+                      +'&isMobileLogin=Y&userId='+userDetails.userId
+
+                    request.get(searchUrl)
+                             .set('Content-Type', 'application/x-www-form-urlencoded')
+                             .then((res) => {
+                                  if(res.status==200){
+                                    let jsonResponse = JSON.parse(res.text);
+                                      if(parseInt(jsonResponse.totalCount)==0){
+
+                                        this.createNewList();
+
+                                    }else{
+
+                                        console.log(jsonResponse.totalCount)
+                                        this.state.users_details[0]['listObj']={
+                                                                            listNum:jsonResponse.lists[0].list1[0]['listNumber.encode']
+                                                                            ,listChecksum:jsonResponse.lists[0].list1[0]['listNumber.checksum']
+                                                                          }
+                                        console.log(this.state.users_details);
+                                    }
+                                  }
+                              });
+    console.log('First to check list by get');
+  }
   toggleTopMenu (event){
     jQuery("#lists_option").animate({width: 'toggle'})
     event.stopPropagation()
@@ -148,6 +210,8 @@ class App extends Component {
                                     showLogin:!this.state.showLogin,
                                     gmailEmails:!this.state.gmailEmails
                                   })}
+                createNewList={this.createNewList}
+                checkSubscriberList={this.checkSubscriberList}
         />
         </ToggleDisplay>
         <ToggleDisplay show={this.state.gmailEmails}>
