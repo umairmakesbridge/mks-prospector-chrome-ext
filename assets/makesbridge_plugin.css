@@ -650,10 +650,221 @@ Slider Start
  height: 42px;
  position: relative;
 }
-.scf_option:hover .slide-btns,.s_contact_found:hover .slide-btns{
-   visibility: visible;
-   opacity:1;
+.scf_option:hover > .scf_option_control{
+    visibility: initial;
+    opacity: 1;
 }
+.scf_option_control{
+    opacity: 0;
+    visibility: hidden;
+    width: 37px;
+    height: 71px;
+    overflow: hidden;
+    margin: 0 0 0 40px;
+    padding: 0 0 0 17px;
+    position: absolute;
+    border-radius: 2px;
+    right: 18px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+
+.s_contact_found_wraper{
+    padding: 18px 18px 0px 18px;
+}
+
+.s_contact_found{
+  background: #fff;
+  padding: 18px;
+  border-radius: 2px;
+}
+
+.scf_option_control:hover{
+  width: 157px;
+}
+.scf_option_control.one:hover{
+  width: 98px;
+}
+.scf_option_panel{margin: 0 0 0 17px; position: absolute;background: #006eff;height: 71px;width: 140px;/* right: 20px; */border-radius: 2px;box-shadow: -2px 0px 6px 0 rgba(0, 111, 255, 0.48);}
+.scf_option_panel ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.scf_option_panel ul li{
+    float: left;
+}
+.scf_option_panel ul li a{
+    text-decoration: none;
+}
+.scf_option_icon{
+
+}
+
+.scf_o_icon{
+  color: #ffffff;
+  line-height: 24px;
+  -webkit-transition: all 0.3s cubic-bezier(1, 0.04, 0.01, 1.01);
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+}
+
+
+.scf_o_edit{
+    font-size: 20px;
+    margin: auto auto;
+    width: 100%;
+    text-align: center;
+}
+.scf_o_mail{
+    font-size: 22px;
+    margin: auto auto;
+    width: 100%;
+    text-align: center;
+}
+
+.scf_o_gear{
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 100%;
+  padding: 2px 0 0 0;
+}
+.scf_o_gear_w{
+    width: 24px;
+    height: 24px;
+    background: #58a0ff;
+    display: table;
+    text-align: center;
+    border-radius: 24px;
+    box-shadow: -2px 0px 6px 0 rgba(0, 111, 255, 0.48);
+}
+.scf_o_gear_md{
+    height: 22px;
+    width: 22px;
+    text-align: center;
+    display: table;
+    background: #58a0ff;
+    border-radius: 22px;
+}
+.scf_o_gear_w a{
+  text-decoration: none;
+  display: table-cell;
+  vertical-align: middle;
+  -webkit-animation:spin 4s linear infinite;
+  -moz-animation:spin 4s linear infinite;
+  animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(180deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(180deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(180deg); transform:rotate(180deg); } }
+
+.scf_o_left{
+    float: left;
+    margin: 22px 8px 0 -12px;
+}
+.scf_o_right{}
+.scf_o_txt{
+    text-align: center;
+    color: #fff;
+    line-height: 17px;
+    font-size: 13px;
+    visibility: hidden;
+    margin: -17px 0 0 0;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+.wrap_scf_o_i{
+    height: 71px;
+    width: 60px;
+    background: #0064e8;
+    display: table;
+}
+.wrap_scf_o_i_md{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 6px 0 0 0;
+}
+
+.wrap_scf_o_m{
+    height: 71px;
+    width: 60px;
+    background: #005fdc;
+    display: table;
+    border-radius: 2px 2px 2px 2px;
+}
+.wrap_scf_o_m_md{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 6px 0 0 0;
+}
+
+.wrap_scf_o_i_md:hover > .scf_o_txt, .wrap_scf_o_m_md:hover > .scf_o_txt {opacity: 1; margin: 0;visibility: initial;-webkit-transition: all 0.3s ease-in-out;-moz-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out;}
+
+
+.scf_silhouette{
+    width: 50px;
+    float: left;
+}
+
+.scf_silhouette_text{
+    height: 35px;
+    width: 35px;
+    text-align: center;
+    display: table;
+    background: #abe4c3;
+    border-radius: 35px;
+}
+.scf_silhouette_text p{
+    display: table-cell;
+    vertical-align: middle;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 7px;
+}
+
+.scf_silhouette_img{
+    float: left;
+}
+.scf_silhouette_img img{
+  width: 35px;
+}
+
+.cf_silhouette_img_bg{
+  background : url("chrome-extension://__MSG_@@extension_id__/img/scf_silhouette.png");
+  height: 25px;
+  width: 25px;
+  background-size: cover;
+}
+
+.scf_email_wrap{
+    width: 100%;
+    padding-left: 50px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.scf_email{
+  height: 35px;
+  display: table;
+}
+
+.scf_email p{
+    margin: 0;
+    font-size: 16px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
+/*--remove below--*/
 
 .slide-btns {
    background:  #3aadfe;
