@@ -2,7 +2,7 @@ import React from 'react';
 
 const CustomFields = (props) => {
   if(!props.custom_fields){
-    return <span></span>;
+    return (<div><p className="not-found">No custom fields available.</p></div>)
   }
   const Fields = props.custom_fields;
   let   customFieldsArray = [];

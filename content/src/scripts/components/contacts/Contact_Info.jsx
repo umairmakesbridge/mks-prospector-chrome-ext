@@ -45,6 +45,7 @@ class ContactInfo extends Component{
       this.state['firstName']=null;
       this.state['lastName']=null;
       this.state['contactnotFound']=false;
+      this.state['email'] ='';
       return;
     }
 
@@ -121,10 +122,13 @@ class ContactInfo extends Component{
                                   changeInTagsView : false,
                                   changeInContactBasic : false,
                                   firstName     : jsonResponse.firstName,
-                                  lastName      : jsonResponse.lastName
+                                  lastName      : jsonResponse.lastName,
+                                  contactnotFound : false
                                 })
                                 console.log(jsonResponse);
 
+                              }else{
+                                alert(jsonResponse[1])
                               }
                             });
   }

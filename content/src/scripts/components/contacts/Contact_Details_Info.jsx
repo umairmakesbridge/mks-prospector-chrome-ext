@@ -27,7 +27,7 @@ class ContactDetailInfo extends Component{
       loadingMessage : ''
     }
   };
-
+  
   addNewTag(){
     console.log('Add New Tag hit');
 

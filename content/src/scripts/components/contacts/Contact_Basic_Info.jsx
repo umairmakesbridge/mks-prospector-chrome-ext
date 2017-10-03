@@ -51,6 +51,10 @@ class ContactBasicInfo extends Component{
        .send({
                  email:this.props.contactInfo.email
                 ,ukey:this.users_details[0].userKey
+                ,firstName:this.state.firstName
+                ,lastName : this.state.lastName
+                ,company  : this.state.company
+                ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
               })
@@ -66,6 +70,9 @@ class ContactBasicInfo extends Component{
               disabled    : false,
               statusMessage : 'Contact created successfully.'
             })
+            this.props.contactInfo['subNum'] = jsonResponse[1];
+            this.props.contactInfo['checkSum'] = jsonResponse[2];
+
             let _this = this;
             setTimeout(function(){
                 _this.state['showStatus']= false;
@@ -80,6 +87,7 @@ class ContactBasicInfo extends Component{
           }
         });
   }
+
   updateContactRequest(){
 
     this.setState({
@@ -94,6 +102,7 @@ class ContactBasicInfo extends Component{
                 ,lastName: this.state.lastName
                 ,company: this.state.company
                 ,ukey:this.users_details[0].userKey
+                ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
               })
@@ -122,6 +131,9 @@ class ContactBasicInfo extends Component{
         <div>
       <ToggleDisplay show={this.state.showContact}>
         <div className="scf_option">
+          <p className={`status-messages show_${this.state.showStatus}`}>
+               {this.state.statusMessage}
+         </p>
             <div className="scf_option_control one">
                 <div className="scf_option_panel">
                     <div className="scf_o_left">
