@@ -16,7 +16,8 @@ class ContactBasicInfo extends Component{
          showContact : true,
          editContact : false,
          acronym : '',
-         disabled: false
+         disabled: false,
+         showStatus:false
     }
 
 
@@ -32,12 +33,19 @@ class ContactBasicInfo extends Component{
 
   }
   createContactRequest(){
-    if(!this.state.firstName || !this.state.lastName){
-        return;
+
+    if(this.state.firstName || !this.state.lastName){
+      this.setState({
+        showContact : true,
+        editContact : false,
+        showStatus  : true,
+        statusMessage : 'Creating contact using email'
+      })
+    }else{
+      this.setState({
+        disabled:true
+      });
     }
-    this.setState({
-      disabled:true
-    })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=addSubscriber')
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
@@ -51,15 +59,24 @@ class ContactBasicInfo extends Component{
 
           var jsonResponse =  JSON.parse(res.text);
           console.log(jsonResponse);
-          if(jsonResponse.success){
-            debugger;
+          if(jsonResponse[0]=="success"){
             this.setState({
               showContact : true,
               editContact : false,
-              disabled    : true
+              disabled    : false,
+              statusMessage : 'Contact created successfully.'
             })
+            let _this = this;
+            setTimeout(function(){
+                _this.state['showStatus']= false;
+
+            },1000)
             this.props.updateContactHappened();
 
+          }else{
+            this.setStatus({
+              statusMessage : 'Something went wrong.Please try again later.'
+            });
           }
         });
   }
@@ -105,6 +122,9 @@ class ContactBasicInfo extends Component{
         <div>
       <ToggleDisplay show={this.state.showContact}>
         <div className="s_contact_found s_contact_height">
+          <p className={`status-messages show_${this.state.showStatus}`}>
+                {this.state.statusMessage}
+          </p>
         <div className="slide-btns one s-clr2">
                             <strong>
                               <div className="scf_o_gear icon setting" aria-hidden="true" data-icon="&#xe911;"></div>
@@ -134,6 +154,7 @@ class ContactBasicInfo extends Component{
         </ToggleDisplay>
         <ToggleDisplay show={this.state.editContact}>
           <div className="scf_option">
+
                            <div className="s_contact_found">
                                <div className="scf_silhouette">
                                    <div className="scf_silhouette_text">
@@ -186,7 +207,7 @@ class ContactBasicInfo extends Component{
       );
     }
 
-    if(this.props.contact && this.props.contact.firstName){
+    if(this.props.contact){
     return (
       <div>
       <ToggleDisplay show={this.state.showContact}>

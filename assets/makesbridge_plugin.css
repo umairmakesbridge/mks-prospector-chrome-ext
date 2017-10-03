@@ -533,6 +533,7 @@ Search Bar Styling
 /*===========================================
 START contact found page
 ============================================*/
+
 .total-count-head{
  color: #748592;
  font-size: 13px;
@@ -846,6 +847,37 @@ Slider Ends
 /*===========================================
 START Edit Selected Contact Found
 ============================================*/
+.status-messages {
+  color: rgb(36, 206, 140);
+    font-weight: 100;
+    font-size: 12px;
+    font-style: italic;
+    padding-top: 0px;
+    position: absolute;
+    top: 60px;
+}
+.show_false{
+  display: none;
+}
+.show_true{
+  display: block;
+}
+.score{
+  background: #fff;
+    color: #80c000;
+    display: inline-block;
+    line-height: 27px;
+    padding: 5px 10px 2px 5px;
+}
+.icon.score{
+  background : url("chrome-extension://__MSG_@@extension_id__/img/score.png") no-repeat scroll center center rgba(0,0,0,0);
+  height: 24px;
+    padding: 1px;
+    width: 24px;
+    display: inline-block;
+    float: left;
+
+}
 .mksph_cardbox p.not-found {
    color: #e1e5e8;
    font-weight: 100;

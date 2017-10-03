@@ -15,7 +15,7 @@ const CustomFields = (props) => {
                 )
 
                return (
-                 <div class="csfields-contents"><ul>{CustomField}</ul></div>
+                 <div className="csfields-contents"><ul>{CustomField}</ul></div>
                );
 }
 

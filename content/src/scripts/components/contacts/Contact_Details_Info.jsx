@@ -96,6 +96,7 @@ class ContactDetailInfo extends Component{
 
 
   render(){
+    console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">

@@ -2,6 +2,9 @@ import React from 'react';
 
 const ContactTags = (props) => {
   console.log(props.tags);
+  if(!props.tags){
+    return (<div><p className="not-found">No tags available.</p></div>)
+  }
   const deleteTag = props.deleteTag;
   const tags = props.tags.split(',');
   const tagItems = tags.map((tag) =>
