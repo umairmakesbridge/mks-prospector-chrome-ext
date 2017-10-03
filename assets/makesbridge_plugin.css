@@ -239,7 +239,7 @@ html, body{ height:100%;}
 
 .scf_email{
    float: right;
-   width: 84%;
+   width: 100%;
    height: 35px;
    display: table;
 }
@@ -1270,6 +1270,7 @@ span.mksph_contact_value {
  max-height: 165px;
  overflow-y: scroll;
  padding: 15px 0 0px;
+ position: relative;
 }
 
 .addTag{
@@ -1324,3 +1325,64 @@ div#custom-fields ul li {
    padding-left: 2px;
 }
 /*Ends*/
+
+/*==========================
+  Spinner CSS
+===========================*/
+.loader-mask{
+  position: absolute;
+    width: 100%;
+    background-color: rgba(255, 255, 255,0.6);
+    height: 100%;
+    display: block;
+    z-index: 1;
+}
+.loader-mask p{
+    text-align: center;
+    text-transform: lowercase;
+    color: #006ffd;
+    font-size: 12px;
+    line-height: 30px;
+}
+.spinner {
+  margin: 0px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #006ffd;;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+/*Ends of spinner*/

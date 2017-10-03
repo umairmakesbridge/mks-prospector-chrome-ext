@@ -8,6 +8,8 @@ import ContactTags
        from './Tags';
 import CustomFields
        from './Custom_Fields';
+import LoadingMask
+       from '../common/Loading_Mask';
 
 
 
@@ -21,7 +23,8 @@ class ContactDetailInfo extends Component{
       showAddBox : false,
       tagName    : '',
       tagCode    : '',
-      disabled: false
+      disabled: false,
+      loadingMessage : ''
     }
   };
 
@@ -62,6 +65,9 @@ class ContactDetailInfo extends Component{
         });
   }
   deleteTagName(tagName){
+    this.setState({
+      loadingMessage : 'Deleting '+tagName+' Tag'
+    })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
@@ -82,8 +88,18 @@ class ContactDetailInfo extends Component{
                 tagName:'',
                 showAddBox:false
             })
+            let _this = this;
+            setTimeout(function(){
+              _this.setState({loadingMessage: ''});
+            },1000);
             this.props.changeInTagsView();
 
+          }else{
+            this.setState({
+              tagName:'',
+              showAddBox:false,
+              loadingMessage: ''
+            })
           }
         });
   }
@@ -171,6 +187,7 @@ class ContactDetailInfo extends Component{
                     </div>
                   </ToggleDisplay>
                   <div className="tags-contents">
+                    <LoadingMask message={this.state.loadingMessage}/>
                     <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
                   </div>
                 </div>
