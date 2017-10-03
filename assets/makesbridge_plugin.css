@@ -650,7 +650,7 @@ Slider Start
  height: 42px;
  position: relative;
 }
-.scf_option:hover > .scf_option_control{
+.scf_option .scf_option_control{
     visibility: initial;
     opacity: 1;
 }
@@ -1079,6 +1079,7 @@ START Edit Selected Contact Found
     display: inline-block;
     line-height: 27px;
     padding: 5px 10px 2px 5px;
+    float: right;
 }
 .icon.score{
   background : url("chrome-extension://__MSG_@@extension_id__/img/score.png") no-repeat scroll center center rgba(0,0,0,0);

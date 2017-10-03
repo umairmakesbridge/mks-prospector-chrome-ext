@@ -1,7 +1,9 @@
 import React from 'react';
+import {encodeHTML,decodeHTML} from '../common/Encode_Method';
 
 const ContactTags = (props) => {
   console.log(props.tags);
+  console.log(encodeHTML());
   if(!props.tags){
     return (<div><p className="not-found">No tags available.</p></div>)
   }
@@ -10,7 +12,7 @@ const ContactTags = (props) => {
   const tagItems = tags.map((tag) =>
       <li key={tag}>
         <a className="tag">
-          <span>{tag}</span>
+          <span>{decodeHTML(tag)}</span>
           <i className="icon cross" onClick={() => deleteTag(tag) }></i>
         </a>
 

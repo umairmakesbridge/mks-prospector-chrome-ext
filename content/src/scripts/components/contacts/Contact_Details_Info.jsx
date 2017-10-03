@@ -10,6 +10,8 @@ import CustomFields
        from './Custom_Fields';
 import LoadingMask
        from '../common/Loading_Mask';
+import {encodeHTML,decodeHTML}
+       from '../common/Encode_Method';
 
 
 
@@ -27,7 +29,7 @@ class ContactDetailInfo extends Component{
       loadingMessage : ''
     }
   };
-  
+
   addNewTag(){
     console.log('Add New Tag hit');
 
@@ -43,7 +45,7 @@ class ContactDetailInfo extends Component{
                  type: 'addTag'
                 ,tags:''
                 ,subNum: this.props.contact.subNum
-                ,tag: this.state.tagName
+                ,tag: encodeHTML(this.state.tagName)
                 ,ukey:this.users_details[0].userKey
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId

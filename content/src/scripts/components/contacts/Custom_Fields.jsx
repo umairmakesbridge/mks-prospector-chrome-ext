@@ -1,4 +1,6 @@
 import React from 'react';
+import {encodeHTML,decodeHTML} from '../common/Encode_Method';
+
 
 const CustomFields = (props) => {
   if(!props.custom_fields){
@@ -11,7 +13,7 @@ const CustomFields = (props) => {
                       })
     const CustomField = customFieldsArray.map((field,key)=>
 
-                  <li key={Object.keys(field)[0]} ><span className="mksph_contact_title">{Object.keys(field)[0]} :</span>  <span className="mksph_contact_value">{field[Object.keys(field)[0]]}</span></li>
+                  <li key={Object.keys(field)[0]} ><span className="mksph_contact_title">{Object.keys(field)[0]} :</span>  <span className="mksph_contact_value">{decodeHTML(field[Object.keys(field)[0]])}</span></li>
                 )
 
                return (
