@@ -10,6 +10,7 @@
   "dependencies": {
     "gmail-js": "^0.6.11",
     "jquery": "^3.2.1",
+    "moment": "^2.18.1",
     "react": "^15.5.0",
     "react-chrome-redux": "0.0.7",
     "react-dom": "^15.5.0",

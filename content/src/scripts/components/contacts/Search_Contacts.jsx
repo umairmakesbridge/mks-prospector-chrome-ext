@@ -62,6 +62,7 @@ class SearchContacts extends Component{
                     })
                   }
                 }else{
+                  alert(res[1]);
                   this.setState({
                     searchstat: 'err'
                   })
