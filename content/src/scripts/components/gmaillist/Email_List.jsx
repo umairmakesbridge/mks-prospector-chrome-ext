@@ -28,6 +28,7 @@ const GmailEmailList = (props) => {
                 <div className="list_contact_found_wraper list_contact_found_height">{EmailItems}</div>
               </div>
       <SearchContacts
+        baseUrl = {props.baseUrl}
         onEmailSelect={props.onEmailSelect}
         users_details={props.users_details}
       />

@@ -220,6 +220,7 @@ class App extends Component {
           gmail_email_list={this.state.gmail_email_list}
           users_details={this.state.users_details}
           chromeExObj = {this.state.chromeExObj}
+          baseUrl = {this.state.baseUrl}
           />
 
         </ToggleDisplay>

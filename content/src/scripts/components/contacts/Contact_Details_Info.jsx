@@ -8,6 +8,10 @@ import ContactTags
        from './Tags';
 import CustomFields
        from './Custom_Fields';
+import LoadingMask
+       from '../common/Loading_Mask';
+import {encodeHTML,decodeHTML}
+       from '../common/Encode_Method';
 
 
 
@@ -21,7 +25,8 @@ class ContactDetailInfo extends Component{
       showAddBox : false,
       tagName    : '',
       tagCode    : '',
-      disabled: false
+      disabled: false,
+      loadingMessage : ''
     }
   };
 
@@ -40,7 +45,7 @@ class ContactDetailInfo extends Component{
                  type: 'addTag'
                 ,tags:''
                 ,subNum: this.props.contact.subNum
-                ,tag: this.state.tagName
+                ,tag: encodeHTML(this.state.tagName)
                 ,ukey:this.users_details[0].userKey
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
@@ -62,6 +67,9 @@ class ContactDetailInfo extends Component{
         });
   }
   deleteTagName(tagName){
+    this.setState({
+      loadingMessage : 'Deleting '+tagName+' Tag'
+    })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
@@ -82,8 +90,18 @@ class ContactDetailInfo extends Component{
                 tagName:'',
                 showAddBox:false
             })
+            let _this = this;
+            setTimeout(function(){
+              _this.setState({loadingMessage: ''});
+            },1000);
             this.props.changeInTagsView();
 
+          }else{
+            this.setState({
+              tagName:'',
+              showAddBox:false,
+              loadingMessage: ''
+            })
           }
         });
   }
@@ -96,6 +114,7 @@ class ContactDetailInfo extends Component{
 
 
   render(){
+    console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
@@ -170,6 +189,7 @@ class ContactDetailInfo extends Component{
                     </div>
                   </ToggleDisplay>
                   <div className="tags-contents">
+                    <LoadingMask message={this.state.loadingMessage}/>
                     <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
                   </div>
                 </div>

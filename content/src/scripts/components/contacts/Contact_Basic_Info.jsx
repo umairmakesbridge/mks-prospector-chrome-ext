@@ -16,7 +16,8 @@ class ContactBasicInfo extends Component{
          showContact : true,
          editContact : false,
          acronym : '',
-         disabled: false
+         disabled: false,
+         showStatus:false
     }
 
 
@@ -32,17 +33,28 @@ class ContactBasicInfo extends Component{
 
   }
   createContactRequest(){
-    if(!this.state.firstName || !this.state.lastName){
-        return;
+
+    if(this.state.firstName || !this.state.lastName){
+      this.setState({
+        showContact : true,
+        editContact : false,
+        showStatus  : true,
+        statusMessage : 'Creating contact using email'
+      })
+    }else{
+      this.setState({
+        disabled:true
+      });
     }
-    this.setState({
-      disabled:true
-    })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=addSubscriber')
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
                  email:this.props.contactInfo.email
                 ,ukey:this.users_details[0].userKey
+                ,firstName:this.state.firstName
+                ,lastName : this.state.lastName
+                ,company  : this.state.company
+                ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
               })
@@ -51,18 +63,31 @@ class ContactBasicInfo extends Component{
 
           var jsonResponse =  JSON.parse(res.text);
           console.log(jsonResponse);
-          if(jsonResponse.success){
-            debugger;
+          if(jsonResponse[0]=="success"){
             this.setState({
               showContact : true,
               editContact : false,
-              disabled    : true
+              disabled    : false,
+              statusMessage : 'Contact created successfully.'
             })
+            this.props.contactInfo['subNum'] = jsonResponse[1];
+            this.props.contactInfo['checkSum'] = jsonResponse[2];
+
+            let _this = this;
+            setTimeout(function(){
+                _this.state['showStatus']= false;
+
+            },1000)
             this.props.updateContactHappened();
 
+          }else{
+            this.setStatus({
+              statusMessage : 'Something went wrong.Please try again later.'
+            });
           }
         });
   }
+
   updateContactRequest(){
 
     this.setState({
@@ -77,6 +102,7 @@ class ContactBasicInfo extends Component{
                 ,lastName: this.state.lastName
                 ,company: this.state.company
                 ,ukey:this.users_details[0].userKey
+                ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
               })
@@ -104,36 +130,56 @@ class ContactBasicInfo extends Component{
       return (
         <div>
       <ToggleDisplay show={this.state.showContact}>
-        <div className="s_contact_found s_contact_height">
-        <div className="slide-btns one s-clr2">
-                            <strong>
-                              <div className="scf_o_gear icon setting" aria-hidden="true" data-icon="&#xe911;"></div>
-                            </strong>
-                            <div>
-                                  <a className="icon edit-camp edit clr1" onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } }><span>Create</span></a>
-
-
-                             </div>
-                      </div>
-            <div className="scf_silhouette">
-                <div className="scf_silhouette_text">
-                    <p>{this.state.acronym}</p>
-                </div>
-                <div className="scf_silhouette_img hide">
-                    <img src="img/scf_silhouette.png" />
+        <div className="scf_option">
+          <p className={`status-messages show_${this.state.showStatus}`}>
+               {this.state.statusMessage}
+         </p>
+            <div className="scf_option_control one">
+                <div className="scf_option_panel">
+                    <div className="scf_o_left">
+                        <div className="scf_o_gear_w ripple">
+                            <a href="#"><div className="scf_o_gear" aria-hidden="true" data-icon="&#xe911;"></div></a>
+                        </div>
+                    </div>
+                    <div className="scf_o_right">
+                        <ul>
+                            <li onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
+                                <div className="scf_option_icon ripple">
+                                    <a href="#">
+                                        <div className="wrap_scf_o_i">
+                                            <div className="wrap_scf_o_i_md"  >
+                                                <div className="scf_o_icon scf_o_edit" aria-hidden="true" data-icon="&#xe914;"></div>
+                                                <p className="scf_o_txt">Create</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div className="scf_email">
-                <span>{this.props.contactInfo.firstName} </span>
-                <span> {this.props.contactInfo.lastName}</span>
+            <div className="s_contact_found">
+                <div className="scf_silhouette">
+                    <div className="scf_silhouette_text">
+                        <p>{this.state.acronym}</p>
+                    </div>
+                </div>
+                <div className="scf_email_wrap">
+                    <div className="scf_email">
+                      <span>{this.props.contactInfo.firstName} </span>
+                      <span> {this.props.contactInfo.lastName}</span>
+                      <div className="clr"></div>
+                      <span>{this.props.contactInfo.email}</span>
+                    </div>
+                </div>
                 <div className="clr"></div>
-                <span>{this.props.contactInfo.email}</span>
             </div>
-            <div className="clr"></div>
-          </div>
+        </div>
         </ToggleDisplay>
         <ToggleDisplay show={this.state.editContact}>
           <div className="scf_option">
+
                            <div className="s_contact_found">
                                <div className="scf_silhouette">
                                    <div className="scf_silhouette_text">
@@ -186,37 +232,53 @@ class ContactBasicInfo extends Component{
       );
     }
 
-    if(this.props.contact && this.props.contact.firstName){
+    if(this.props.contact){
     return (
       <div>
       <ToggleDisplay show={this.state.showContact}>
-      <div className="s_contact_found s_contact_height">
-        <div className="slide-btns one s-clr2">
-                            <strong>
-                              <div className="scf_o_gear icon setting" aria-hidden="true" data-icon="&#xe911;"></div>
-                            </strong>
-                            <div>
-                                  <a className="icon edit-camp edit clr1" onClick={switchContact=> { this.setState({ showContact : false,editContact : true,firstName: this.props.contact.firstName,lastName: this.props.contact.lastName,title: this.props.contact.title,company: this.props.contact.company}) } }><span>Edit</span></a>
-
-
-                             </div>
-                      </div>
-            <div className="scf_silhouette">
-                <div className="scf_silhouette_text">
-                    <p>{this.state.acronym}</p>
-                </div>
-                <div className="scf_silhouette_img hide">
-                    <img src="img/scf_silhouette.png" />
+        <div className="scf_option">
+            <div className="scf_option_control one">
+                <div className="scf_option_panel">
+                    <div className="scf_o_left">
+                        <div className="scf_o_gear_w ripple">
+                            <a href="#"><div className="scf_o_gear" aria-hidden="true" data-icon="&#xe911;"></div></a>
+                        </div>
+                    </div>
+                    <div className="scf_o_right">
+                        <ul>
+                            <li onClick={switchContact=> { this.setState({ showContact : false,editContact : true,firstName: this.props.contact.firstName,lastName: this.props.contact.lastName,title: this.props.contact.title,company: this.props.contact.company}) } }>
+                                <div className="scf_option_icon ripple">
+                                    <a href="#">
+                                        <div className="wrap_scf_o_i">
+                                            <div className="wrap_scf_o_i_md"  >
+                                                <div className="scf_o_icon scf_o_edit" aria-hidden="true" data-icon="&#xe914;"></div>
+                                                <p className="scf_o_txt">Edit</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div className="scf_email">
-                <span>{this.props.contactInfo.firstName} </span>
-                <span> {this.props.contactInfo.lastName}</span>
+            <div className="s_contact_found">
+                <div className="scf_silhouette">
+                    <div className="scf_silhouette_text">
+                        <p>{this.state.acronym}</p>
+                    </div>
+                </div>
+                <div className="scf_email_wrap">
+                    <div className="scf_email">
+                      <span>{this.props.contactInfo.firstName} </span>
+                      <span> {this.props.contactInfo.lastName}</span>
+                      <div className="clr"></div>
+                      <span>{this.props.contactInfo.email}</span>
+                    </div>
+                </div>
                 <div className="clr"></div>
-                <span>{this.props.contactInfo.email}</span>
             </div>
-            <div className="clr"></div>
-          </div>
+        </div>
      </ToggleDisplay>
 
      <ToggleDisplay show={this.state.editContact}>
