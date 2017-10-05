@@ -17,7 +17,7 @@ export const encodeHTML=(str)=>{
           return str;
 }
 
-export const decodeHTML= (str)=>{
+export const decodeHTML= (str,lineFeed)=>{
   //decoding HTML entites to show in textfield and text area
          if (typeof (str) !== "undefined") {
              str = str.replace(/&amp;/g, "&");
@@ -33,9 +33,9 @@ export const decodeHTML= (str)=>{
              str = str.replace(/&quot;/g, "\"");
              str = str.replace(/&#8216;/g, "‘");
              str = str.replace(/&#61;/g, "=");
-             /*if (lineFeed) {
+             if (lineFeed) {
                  str = str.replace(/&line;/g, "\n");   // NEED TO DISCUSS THIS WITH UMAIR
-             }*/
+             }
          }
          else {
              str = "";

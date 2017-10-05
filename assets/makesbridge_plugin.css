@@ -1452,7 +1452,7 @@ position:relative; z-index:9;
 .new_activities .act_row > .icon {
   color: #fff;
   text-align: center;
-  line-height: 31px;
+  line-height: 29px;
 	position:absolute;
   left: 20px;
   width: 25px;
@@ -1553,8 +1553,26 @@ position:relative; z-index:9;
     height: 20px;
 }
 .act_row_wrapper {
-  max-height: 390px;
-    overflow-y: scroll;
+  max-height: 457px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.LoadMore-wrapper{
+  position: relative;
+   border-top: 1px solid #f8f8fb;
+   height: 40px;
+   line-height: 29px;
+   background: #fff;
+}
+.LoadMore {
+    z-index: 9;
+    background: #fff;
+    position: absolute;
+    width: 100%;
+    padding-left: 60px;
+    color: #B8C2CB;
+    line-height: 40px;
+    cursor: pointer;
 }
 /*=================activity icons================*/
 .new_activities .act_row.red > .icon {

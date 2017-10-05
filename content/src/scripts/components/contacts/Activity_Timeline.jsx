@@ -12,7 +12,8 @@ class ActivityTimeline extends Component{
     this.baseUrl = this.props.baseUrl;
     this.contact = this.props.contact;
     this.state   = {
-                      activitytimeline : ''
+                      activitytimeline : '',
+                      nextOffset       : 0
                    }
   };
 
@@ -29,17 +30,33 @@ class ActivityTimeline extends Component{
 
   }
 
-  getTimelineRequest(){
+  getTimelineRequest(loadMore){
     GetTimeline({
                  users_details:this.users_details,
                  baseUrl      :this.baseUrl,
                  contact      :this.contact,
-                 callback     :this.setActivityObj.bind(this)
+                 callback     :this.setActivityObj.bind(this),
+                 offset       :this.state.nextOffset,
+                 loadMore     :loadMore
                });
   }
-  setActivityObj(activity){
-    console.log('activity object : ',activity)
-    this.setState({activitytimeline : activity});
+  setActivityObj(activity,loadMore){
+    console.log(loadMore);
+    if(!this.state.activitytimeline){
+      this.setState({
+                    activitytimeline : activity,
+                    nextOffset       : activity.nextOffset
+                    });
+    }else if(loadMore){
+      var _this = this;
+      jQuery.each(activity.activities,function(key,value){
+          _this.state.activitytimeline.activities.push(value);
+      });
+      this.setState({
+                    nextOffset       : activity.nextOffset
+                    });
+    }
+
   }
 
   render(){
@@ -93,6 +110,8 @@ class ActivityTimeline extends Component{
                         users_details={this.users_details}
                         baseUrl={this.baseUrl}
                         activityBatch = {this.state.activitytimeline}
+                        requestTimeLine = {this.getTimelineRequest.bind(this)}
+                        nextOffset  = {this.state.nextOffset}
                       />
 
                 </div>
