@@ -62,7 +62,7 @@ class SearchContacts extends Component{
                     })
                   }
                 }else{
-                  alert(res[1]);
+                  alert(jsonResponse[1]);
                   this.setState({
                     searchstat: 'err'
                   })

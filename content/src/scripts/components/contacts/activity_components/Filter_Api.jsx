@@ -8,13 +8,8 @@ import request
        from 'superagent';
 
 
-//https://test.bridgemailsystem.com/pms/
-//io/subscriber/getData/
-//?BMS_REQ_TK=uKKh88ZRA9xt5ycsy5fvwp78SG4gTv&
-//type=timeline&isFuture=N&offset=0&subNum=xhDfZt33St26Eo17El20Ek21Vs30Zt33Mn26xqwE
-//
+
 export const GetTimeline = (props)=>{
-  debugger;
   var searchUrl = props.baseUrl
                   + '/io/subscriber/getData/?BMS_REQ_TK='
                   + props.users_details[0].bmsToken +'&type=timeline&isFuture=N&offset='+props.offset+'&subNum='
@@ -47,4 +42,9 @@ export const GetTimeline = (props)=>{
             alert(res[1])
           }
         });
+}
+
+
+export const GetServerDate = (props) => {
+  //https://mks.bridgemailsystem.com/pms/io/getMetaData/?type=time&BMS_REQ_TK=KKEWHpBa8iJHgRHfyzuaJbOQTIgkaW
 }

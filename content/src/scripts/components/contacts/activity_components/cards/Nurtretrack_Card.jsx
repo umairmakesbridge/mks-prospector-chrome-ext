@@ -5,12 +5,12 @@ import {encodeHTML,decodeHTML} from '../../../common/Encode_Method';
 
 const NurturetrackCard = (props) => {
       console.log('mapping : ',props.mapping);
-      let displayicon = (props.mapping.icon) ? props.mapping.icon : '';
+      let displayicon = (props.mapping.icon) ? props.mapping.icon : 'mksicon-Mail';
       let _date = Moment(decodeHTML(props.activity.logTime), 'M/D/YYYY h:m a');
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       return (
         <div className={`act_row ${props.mapping.color}`}>
-          <div aria-hidden="true" className="icon" data-icon={displayicon}></div>
+          <span className={`icon ${displayicon}`}></span>
            <h5><a>{decodeHTML(props.activity.trackName)}</a></h5>
            <div className="info-p">
                 <div className="infotxt">

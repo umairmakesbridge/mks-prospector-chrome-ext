@@ -98,7 +98,7 @@ class ActivityTimeline extends Component{
                   </div>
                   <div className="clr"></div>
               </div>
-              <div className="act_filter">
+              <div className="act_filter hide">
                   <p><a href="#">show all</a>  |  <a href="#">advance filter</a></p>
               </div>
               <div className="clr"></div>

@@ -9,7 +9,7 @@ input:focus {
    outline: none;
 }
 .clr{clear: both;}
-.hide{display: none;}
+.hide{display: none !important;}
 .makesbridge_plugin {
  right: 0;
    z-index: 999;
@@ -305,7 +305,7 @@ div.tab button.active {
    padding: 7px 10px;
 }
 .total_act{
-   width: 135px;
+   width: 150px;
    float: left;
 }
 .act_filter{
@@ -318,7 +318,6 @@ div.tab button.active {
    color: #6494af;
    margin: 0;
    font-size: 14px;
-   font-family: 'proxima_nova_regular';
    display: table-cell;
    vertical-align: middle;
    text-align: right;
@@ -341,7 +340,6 @@ div.tab button.active {
    vertical-align: middle;
    text-align: center;
    color: #6494af;
-   font-family: 'proxima_nova_semibold';
    font-size: 14px;
    line-height: 13px;
    margin: 0;
@@ -357,7 +355,6 @@ div.tab button.active {
    color: #6494af;
    margin: 0;
    font-size: 14px;
-   font-family: 'proxima_nova_semibold';
    display: table-cell;
    vertical-align: middle;
 }
@@ -1553,7 +1550,7 @@ position:relative; z-index:9;
     height: 20px;
 }
 .act_row_wrapper {
-  max-height: 457px;
+  max-height: 475px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -1569,10 +1566,15 @@ position:relative; z-index:9;
     background: #fff;
     position: absolute;
     width: 100%;
-    padding-left: 60px;
+    padding-left: 23px;
     color: #B8C2CB;
     line-height: 40px;
     cursor: pointer;
+}
+.LoadMore .mksicon-Add{
+  padding-right: 20px;
+    position: relative;
+    top: 2px;
 }
 /*=================activity icons================*/
 .new_activities .act_row.red > .icon {

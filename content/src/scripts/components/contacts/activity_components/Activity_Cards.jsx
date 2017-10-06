@@ -17,12 +17,12 @@ const ActivityCard = (props)=>{
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
                     , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score"}
-                    , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red"}
+                    , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red",'icon' : 'mksicon-act_alert'}
                     , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait"}
-                    , "CS": {"name": "Sent", "action": "Campaign", "cssClass": "sent","color":"green",'icon':''} // &#xe91e;
-                    , "OP": {"name": "Opened", "action": "Campaign", "cssClass": "open","color":"blue",'icon':''} //&#xe907;
-                    , "CK": {"name": "Clicked", "action": "Campaign", "cssClass": "click","color":"blue"}
-                    , "WV": {"name": "Page Viewed", "action": "Web", "cssClass": "pageview","color":"green",'icon':''}
+                    , "CS": {"name": "Sent", "action": "Campaign", "cssClass": "sent","color":"green",'icon':'mksicon-ActSent'}
+                    , "OP": {"name": "Opened", "action": "Campaign", "cssClass": "open","color":"blue",'icon':'mksicon-OpenMail'}
+                    , "CK": {"name": "Clicked", "action": "Campaign", "cssClass": "click","color":"blue",'icon' : 'mksicon-act_click'}
+                    , "WV": {"name": "Page Viewed", "action": "Web", "cssClass": "pageview","color":"blue",'icon':'mksicon-act_pageview'}
                     , "CT": {"name": "Converted", "action": "Campaign", "cssClass": "conversion"}
                     , "TF": {"name": "Tell a friend", "action": "Campaign", "cssClass": "tellfriend"}
                     , "UN": {"name": "Unsubscribed", "action": "Campaign", "cssClass": "unsubscribe","color":"red"}
@@ -67,7 +67,8 @@ const ActivityCard = (props)=>{
       <div className="timestop now"><span>03:17 AM, 04 Oct 2017</span> </div>
       {activityCard}
       <div className={`LoadMore-wrapper ${showLoadingButton}` }>
-        <div  className="LoadMore" onClick={ ()=>props.requestTimeLine(true) }>Show more activities</div>
+        <div  className="LoadMore" onClick={ ()=>props.requestTimeLine(true) }> <span className="mksicon-Add"></span> Show more activities</div>
+
       </div>
     </div>
   )
