@@ -120,15 +120,29 @@ html, body{ height:100%;}
    width: 15%;
    height: 50px;
 }
+.back-container{
+  width:15%;
+  float: left;
+  height: 50px;
+}
 .mksph_back{
-   float: right;
-   width: 15%;
-   height: 50px;
+   width: 100%;
+   height: 50px;   
 }
 
 .logo{
  height: 30px;
  margin: 10px 0 3px;
+}
+
+.mks_logo{
+ background : url("chrome-extension://__MSG_@@extension_id__/img/icon48.png");
+ background-repeat: no-repeat;
+ background-position: center;
+ height: 48px;
+ width: 48px;
+ display:block;
+ margin:auto;
 }
 
 .mks_logo_img{
@@ -138,6 +152,7 @@ html, body{ height:100%;}
  width: 120px;
  display:block;
 }
+
 .mksph_icon_menu{
  color: #566e78;
  font-size: 20px;
