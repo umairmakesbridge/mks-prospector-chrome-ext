@@ -11,7 +11,7 @@ input:focus {
 .clr{clear: both;}
 .hide{display: none !important;}
 .loading_false{display:none;}
-.loading_true{display:block;padding-left: 30px;}
+.loading_true{display:block;}
 .makesbridge_plugin {
  right: 0;
    z-index: 999;

@@ -6,7 +6,8 @@
         // All calls with Future N
 import request
        from 'superagent';
-
+import Moment from 'moment';
+import {encodeHTML,decodeHTML} from '../../common/Encode_Method';
 
 
 export const GetTimeline = (props)=>{
@@ -47,4 +48,22 @@ export const GetTimeline = (props)=>{
 
 export const GetServerDate = (props) => {
   //https://mks.bridgemailsystem.com/pms/io/getMetaData/?type=time&BMS_REQ_TK=KKEWHpBa8iJHgRHfyzuaJbOQTIgkaW
+  var searchUrl = props.baseUrl
+                  + '/io/getMetaData/?BMS_REQ_TK='
+                  + props.users_details[0].bmsToken +'&type=time&ukey='+props.users_details[0].userKey
+                  + '&isMobileLogin=Y&userId='+props.users_details[0].userId
+      request
+        .get(searchUrl)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .then((res) => {
+          if(res.status==200){
+            let _json =  JSON.parse(res.text);
+            var _date = Moment(decodeHTML(_json[0]),'YYYY-M-D H:m');
+            var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
+            props.callback(format);
+            return false;
+          }else{
+            alert(res[1])
+          }
+        });
 }

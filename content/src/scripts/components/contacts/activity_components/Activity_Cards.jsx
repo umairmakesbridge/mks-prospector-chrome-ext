@@ -11,9 +11,7 @@ import AlertCard
        from './cards/Alert_Card';
 
 
-
 const ActivityCard = (props)=>{
-  console.log(props.showLoadingMsg);
   let showLoadingButton = '';
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
@@ -65,10 +63,11 @@ const ActivityCard = (props)=>{
   });
   return (
     <div className="act_row_wrapper">
-      <div className="timestop now"><span>03:17 AM, 04 Oct 2017</span> </div>
+      <div className="timestop now"><span>{props.serverDate.date} ,{props.serverDate.time}  </span> </div>
       {activityCard}
 
       <div className={`LoadMore-wrapper loading_${props.showLoadingMsg}`}>
+
             <div  className={`LoadMore loading_${props.showLoadingMsg}`} >Loading more activies...</div>
       </div>
       <div className={`LoadMore-wrapper ${showLoadingButton}` }>

@@ -1,6 +1,6 @@
 import React, {Component}
        from 'react';
-import {GetTimeline}
+import {GetTimeline,GetServerDate}
        from './activity_components/Filter_Api'
 import ActivityCard
        from './activity_components/Activity_Cards'
@@ -14,7 +14,8 @@ class ActivityTimeline extends Component{
     this.state   = {
                       activitytimeline : '',
                       nextOffset       : 0,
-                      showLoadingMsg   : false
+                      showLoadingMsg   : false,
+                      serverDate       : null
                    }
   };
 
@@ -25,12 +26,16 @@ class ActivityTimeline extends Component{
     console.log('Component will Recieve Props',nextProps);
     this.contact = nextProps.contact;
     this.getTimelineRequest();
-
+    // Getting Server time
+    GetServerDate({
+                   users_details:this.users_details,
+                   baseUrl      :this.baseUrl,
+                   callback     :this.setServerDate.bind(this)
+                  });
 
 
 
   }
-
   getTimelineRequest(loadMore){
     if(loadMore){
       this.setState({
@@ -45,6 +50,11 @@ class ActivityTimeline extends Component{
                  offset       :this.state.nextOffset,
                  loadMore     :loadMore
                });
+  }
+  setServerDate(responseDate){
+      this.setState({
+        serverDate : responseDate
+      })
   }
   setActivityObj(activity,loadMore){
     console.log(loadMore);
@@ -120,6 +130,7 @@ class ActivityTimeline extends Component{
                         requestTimeLine = {this.getTimelineRequest.bind(this)}
                         nextOffset  = {this.state.nextOffset}
                         showLoadingMsg = {this.state.showLoadingMsg}
+                        serverDate  = {this.state.serverDate}
                       />
 
                 </div>
