@@ -13,7 +13,8 @@ class ActivityTimeline extends Component{
     this.contact = this.props.contact;
     this.state   = {
                       activitytimeline : '',
-                      nextOffset       : 0
+                      nextOffset       : 0,
+                      showLoadingMsg   : false
                    }
   };
 
@@ -31,6 +32,11 @@ class ActivityTimeline extends Component{
   }
 
   getTimelineRequest(loadMore){
+    if(loadMore){
+      this.setState({
+        showLoadingMsg : true
+      })
+    }
     GetTimeline({
                  users_details:this.users_details,
                  baseUrl      :this.baseUrl,
@@ -53,7 +59,8 @@ class ActivityTimeline extends Component{
           _this.state.activitytimeline.activities.push(value);
       });
       this.setState({
-                    nextOffset       : activity.nextOffset
+                    nextOffset     : activity.nextOffset,
+                    showLoadingMsg : false
                     });
     }
 
@@ -112,6 +119,7 @@ class ActivityTimeline extends Component{
                         activityBatch = {this.state.activitytimeline}
                         requestTimeLine = {this.getTimelineRequest.bind(this)}
                         nextOffset  = {this.state.nextOffset}
+                        showLoadingMsg = {this.state.showLoadingMsg}
                       />
 
                 </div>

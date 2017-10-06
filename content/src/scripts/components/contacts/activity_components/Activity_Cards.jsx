@@ -13,6 +13,7 @@ import AlertCard
 
 
 const ActivityCard = (props)=>{
+  console.log(props.showLoadingMsg);
   let showLoadingButton = '';
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
@@ -39,7 +40,7 @@ const ActivityCard = (props)=>{
                 }
 
                 console.log('activity activityBatch : ',props.activityBatch);
-  if(props.nextOffset == -1){
+  if(props.nextOffset == -1 || props.showLoadingMsg){
       showLoadingButton = 'hide';
   }
   const activityCard= props.activityBatch.activities.map((activity) => {
@@ -66,6 +67,10 @@ const ActivityCard = (props)=>{
     <div className="act_row_wrapper">
       <div className="timestop now"><span>03:17 AM, 04 Oct 2017</span> </div>
       {activityCard}
+
+      <div className={`LoadMore-wrapper loading_${props.showLoadingMsg}`}>
+            <div  className={`LoadMore loading_${props.showLoadingMsg}`} >Loading more activies...</div>
+      </div>
       <div className={`LoadMore-wrapper ${showLoadingButton}` }>
         <div  className="LoadMore" onClick={ ()=>props.requestTimeLine(true) }> <span className="mksicon-Add"></span> Show more activities</div>
 

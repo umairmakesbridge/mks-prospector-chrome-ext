@@ -10,6 +10,8 @@ input:focus {
 }
 .clr{clear: both;}
 .hide{display: none !important;}
+.loading_false{display:none;}
+.loading_true{display:block;padding-left: 30px;}
 .makesbridge_plugin {
  right: 0;
    z-index: 999;
@@ -127,7 +129,7 @@ html, body{ height:100%;}
 }
 .mksph_back{
    width: 100%;
-   height: 50px;   
+   height: 50px;
 }
 
 .logo{

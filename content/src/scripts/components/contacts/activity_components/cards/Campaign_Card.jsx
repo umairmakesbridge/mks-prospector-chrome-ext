@@ -11,7 +11,7 @@ const CampaignCard = (props) => {
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
-           <h5><a>{props.activity.campaignName}</a></h5>
+           <h5><a>{decodeHTML(props.activity.campaignName)}</a></h5>
            <div className="info-p">
                 <div className="infotxt">
                     <strong>Subject</strong>
