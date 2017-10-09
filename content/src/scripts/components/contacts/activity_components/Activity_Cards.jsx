@@ -9,10 +9,17 @@ import WorkflowCard
        from './cards/Workflow_Card';
 import AlertCard
        from './cards/Alert_Card';
-
+import Moment
+       from 'moment';
+import {encodeHTML,decodeHTML} from '../../common/Encode_Method';
 
 const ActivityCard = (props)=>{
   let showLoadingButton = '';
+  let showSignup        = 'hide';
+  let signupDate =  props.contact.creationDate;
+  var _date = Moment(decodeHTML(signupDate),'YYYY-M-D H:m');
+  console.log(_date);
+  var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
                     , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score"}
@@ -38,7 +45,10 @@ const ActivityCard = (props)=>{
                 }
 
                 console.log('activity activityBatch : ',props.activityBatch);
-  if(props.nextOffset == -1 || props.showLoadingMsg){
+  if(props.nextOffset == -1){
+      showLoadingButton = 'hide';
+      showSignup = 'show';
+  }else if(props.showLoadingMsg){
       showLoadingButton = 'hide';
   }
   const activityCard= props.activityBatch.activities.map((activity) => {
@@ -68,11 +78,16 @@ const ActivityCard = (props)=>{
 
       <div className={`LoadMore-wrapper loading_${props.showLoadingMsg}`}>
 
-            <div  className={`LoadMore loading_${props.showLoadingMsg}`} >Loading more activies...</div>
+            <div  className={`LoadMore loading_${props.showLoadingMsg}`} >Loading more...</div>
       </div>
       <div className={`LoadMore-wrapper ${showLoadingButton}` }>
         <div  className="LoadMore" onClick={ ()=>props.requestTimeLine(true) }> <span className="mksicon-Add"></span> Show more activities</div>
 
+      </div>
+
+      <div className={`act_row magenda show_signup ${showSignup}`}>
+          <span className="icon mksicon-startflag"></span>
+          {format.date}, {format.time}
       </div>
     </div>
   )

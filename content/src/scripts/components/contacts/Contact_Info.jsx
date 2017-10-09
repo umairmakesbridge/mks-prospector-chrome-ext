@@ -80,6 +80,15 @@ class ContactInfo extends Component{
            .then((res) => {
               if(res.status==200){
                 let jsonResponse =  JSON.parse(res.text);
+
+                if (jsonResponse[0] == "err"){
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      alert(jsonResponse[1]);
+                      jQuery('.mksph_logout').trigger('click');
+                    }
+                  return false;
+                }
+
                 if(parseInt(jsonResponse.totalCount) > 0){
 
                     this.setState({
@@ -97,7 +106,6 @@ class ContactInfo extends Component{
                     contactnotFound : true,
                     diffEmail: false
                   });
-                  alert(res[1]);
                 }
               }
             });

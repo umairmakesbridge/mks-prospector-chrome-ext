@@ -63,8 +63,10 @@ class SearchContacts extends Component{
                   }
                 }else{
                   alert(jsonResponse[1]);
+                  jQuery('.mksph_logout').trigger('click');
                   this.setState({
-                    searchstat: 'err'
+                    searchstat: 'err',
+                    subscriber : ''
                   })
                 }
 

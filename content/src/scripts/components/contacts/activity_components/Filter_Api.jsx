@@ -22,7 +22,15 @@ export const GetTimeline = (props)=>{
         .then((res) => {
           if(res.status==200){
             let jsonResponse =  JSON.parse(res.text);
-            if(JSON.parse(res.text).activities){
+            if(jsonResponse[0] == "err"){
+              if(jsonResponse[1]=="SESSION_EXPIRED"){
+                  alert(jsonResponse[1]);
+                  jQuery('.mksph_logout').trigger('click');
+              }
+
+              return false;
+            }
+            if(parseInt(jsonResponse.totalCount) > 0){
                     console.log(jsonResponse);
                     let jsonActivityArray ={
                                     batchCount : jsonResponse.batchCount,
@@ -35,7 +43,7 @@ export const GetTimeline = (props)=>{
                     })
                     props.callback(jsonActivityArray,props.loadMore)
             }else{
-              alert('No data available');
+                    props.callback(parseInt(jsonResponse.totalCount));
             }
 
             return false;

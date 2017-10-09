@@ -198,6 +198,7 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
+                        <div className="mksph_logout" onClick={ showLogin => this.setState({showLogin:true,gmailEmails:false,showContacts:false}) }>logout</div>
 
                         <div className="clr"></div>
                     </div>

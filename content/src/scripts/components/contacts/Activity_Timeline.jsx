@@ -15,7 +15,8 @@ class ActivityTimeline extends Component{
                       activitytimeline : '',
                       nextOffset       : 0,
                       showLoadingMsg   : false,
-                      serverDate       : null
+                      serverDate       : null,
+                      noActivity       : false
                    }
   };
 
@@ -58,7 +59,12 @@ class ActivityTimeline extends Component{
   }
   setActivityObj(activity,loadMore){
     console.log(loadMore);
-    if(!this.state.activitytimeline){
+    if(activity == 0){
+        this.setState({
+          noActivity : true
+        })
+    }
+    else if(!this.state.activitytimeline){
       this.setState({
                     activitytimeline : activity,
                     nextOffset       : activity.nextOffset
@@ -77,7 +83,7 @@ class ActivityTimeline extends Component{
   }
 
   render(){
-    if(!this.props.contact && !this.props.contactnotFound){
+    if(!this.props.contact && !this.state.noActivity){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Total Activities</h3>
@@ -85,7 +91,7 @@ class ActivityTimeline extends Component{
           </div>
               </div>);
     }
-    if(this.props.contactnotFound){
+    if(this.state.noActivity){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Total Activities</h3>

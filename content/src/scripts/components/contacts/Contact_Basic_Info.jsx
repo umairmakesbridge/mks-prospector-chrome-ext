@@ -117,6 +117,7 @@ class ContactBasicInfo extends Component{
               editContact : false,
               disabled    : false
             })
+            this.props.contact['company'] = this.state.company;
             this.props.updateContactHappened();
 
           }
