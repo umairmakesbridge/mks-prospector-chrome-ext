@@ -7,7 +7,10 @@ const EmailItem = (props) =>{
   if(props.item[0] && !pattern.test(props.item[0])){
     let str     = props.item[0];
     let matches = str.split(" ");
-    acronym = matches[0].charAt(0) + (matches[1].charAt(0) ? matches[1].charAt(0) : "");
+    acronym = matches[0].charAt(0) ;
+    if(matches[1]){
+      acronym += matches[1].charAt(0) ? matches[1].charAt(0) : ""
+    }
   }else{
     acronym =props.item[1].charAt(0);
   }
