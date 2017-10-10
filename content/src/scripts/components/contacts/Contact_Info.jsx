@@ -80,7 +80,15 @@ class ContactInfo extends Component{
            .then((res) => {
               if(res.status==200){
                 let jsonResponse =  JSON.parse(res.text);
-                console.log(jsonResponse);
+
+                if (jsonResponse[0] == "err"){
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      alert(jsonResponse[1]);
+                      jQuery('.mksph_logout').trigger('click');
+                    }
+                  return false;
+                }
+
                 if(parseInt(jsonResponse.totalCount) > 0){
 
                     this.setState({
@@ -97,7 +105,7 @@ class ContactInfo extends Component{
                   this.setState({
                     contactnotFound : true,
                     diffEmail: false
-                  })
+                  });
                 }
               }
             });
@@ -161,7 +169,7 @@ class ContactInfo extends Component{
                               <div className="scf_tab">
                                   <div className="tab">
                                     <button className={`tablinks ripple ${this.state.contactActive}`} onClick={switchTab => { this.setState({showContacts:true,showActivity:false,activityActive:'',contactActive:'active'})} }>Contact</button>
-                                    <button className={`tablinks ripple hide ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
+                                    <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
                                     <div className="score">
                                       <i className="icon score"></i>
                                       <span className="score-value">{this.state.score}</span>
@@ -179,7 +187,11 @@ class ContactInfo extends Component{
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>
-                                      <ActivityTimeline />
+                                      <ActivityTimeline
+                                        contact={this.state.subscriber}
+                                        users_details={this.users_details}
+                                        baseUrl={this.baseUrl}
+                                      />
                                     </ToggleDisplay>
                                   </div>
                               </div>

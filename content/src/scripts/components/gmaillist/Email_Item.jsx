@@ -3,10 +3,11 @@ import React from 'react';
 const EmailItem = (props) =>{
   const onEmailSelect = props.onEmailSelect;
   let acronym = '';
-  if(props.item[0]){
+  var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if(props.item[0] && !pattern.test(props.item[0])){
     let str     = props.item[0];
-    let matches = str.match(/\b(\w)/g);
-    acronym = matches.join('');
+    let matches = str.split(" ");
+    acronym = matches[0].charAt(0) + (matches[1].charAt(0) ? matches[1].charAt(0) : "");
   }else{
     acronym =props.item[1].charAt(0);
   }

@@ -43,7 +43,8 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.mksicon-User1, .mksicon-Menu, .icon-salesforce, .icon-mksbot2, .icon-menu, .icon-tags, .icon-buttonarrow, .icon-chevron-left, .icon-chevron-right, .icon-briefcase, .icon-arrow-left, .icon-asterisk, .icon-calendar, .icon-arrow-right, .icon-shopping-cart, .icon-cogs, .icon-comments, .icon-bar-chart, .icon-mks, .icon-comments-alt, .icon-desktop, .icon-laptop, .icon-tablet, .icon-mobile, .icon-tag, .icon-microphone-off, .icon-office, .icon-image, .icon-support, .icon-cart, .icon-location, .icon-screen, .icon-laptop-2, .icon-mobile-2, .icon-mobile-3, .icon-tablet-2, .icon-bubbles, .icon-user, .icon-stats, .icon-power-cord, .icon-earth, .icon-envelope, .icon-mouse, .icon-pointer, .icon-earth-2, .icon-monitor, .icon-mobile-4, .icon-database, .icon-microphone, .icon-bullhorn, .icon-key, .icon-check-alt, .icon-bullhorn-2, .icon-dropbox, .icon-dribbble, .icon-skype, .icon-megaphone, .icon-picture, .icon-Robot, .icon-bag, .icon-calendar-2, .icon-connect, .icon-display, .icon-dis-play, .icon-laptop-3, .icon-envelope-alt, .icon-play, .icon-connection, .icon-phone, .icon-twitter, .icon-facebook, .icon-linkedin, .icon-google-plus, .icon-pinterest, .icon-tumblr, .icon-map-marker, .icon-chevron-up, .icon-chevron-down, .icon-youtube, .icon-xing, .icon-location-2, .icon-calendar31, .icon-facebook-2, .icon-google, .icon-iPhone-3G, .icon-linkedin-2, .icon-mail, .icon-mks_demo, .icon-pin_location, .icon-pin_location-2, .icon-pin_location-3, .icon-pinterest-2, .icon-tel, .icon-twitter-2, .icon-youtube-2, .icon-google-plus-2, .icon-feed, .icon-facebook-3, .icon-vimeo, .icon-wordpress, .icon-paypal, .icon-html5, .icon-css3, .icon-chrome, .icon-firefox, .icon-IE, .icon-opera, .icon-safari, .icon-analytics-2, .icon-analytics, .icon-grow, .icon-mks_play, .icon-connection-2 {
+
+.mksicon-startflag, .mksicon-act_alert, .mksicon-act_bounce, .mksicon-act_click, .mksicon-act_conversion, .mksicon-act_form, .mksicon-act_linkicon, .mksicon-act_pageview, .mksicon-act_score, .mksicon-act_suppress, .mksicon-act_tellfriend, .mksicon-act_unsubscribe, .mksicon-act_wait, .mksicon-act_workflow, .mksicon-act_wtmail, .mksicon-User1, .mksicon-Silhouette, .mksicon-SendEmail, .mksicon-Search, .mksicon-Save2, .mksicon-Save, .mksicon-Pie, .mksicon-OpenMail, .mksicon-Notepad, .mksicon-More, .mksicon-Menu, .mksicon-ManageLists, .mksicon-MakesbridgeBot3, .mksicon-MakesbridgeBot2, .mksicon-MakesbridgeBot, .mksicon-Makesbridge, .mksicon-Mail, .mksicon-Gear, .mksicon-Funnel, .mksicon-Eye, .mksicon-Edit, .mksicon-Close, .mksicon-Clock, .mksicon-Check, .mksicon-Calendar2, .mksicon-AwardRibbon, .mksicon-ArrowNext, .mksicon-ArrowBack, .mksicon-Addlist, .mksicon-Add, .mksicon-ActSent {
   font-family: 'mks_icon';
   speak: none;
   font-style: normal;
@@ -55,6 +56,60 @@ you can use the generic selector below, but it's slower:
 }
 
 
+.mksicon-startflag:before {
+  content: "\e92f";
+}
+.mksicon-act_alert:before {
+  content: "\e91f";
+}
+.mksicon-act_bounce:before {
+  content: "\e920";
+}
+.mksicon-act_click:before {
+  content: "\e921";
+}
+.mksicon-act_conversion:before {
+  content: "\e922";
+}
+.mksicon-act_form:before {
+  content: "\e923";
+}
+.mksicon-act_linkicon:before {
+  content: "\e924";
+}
+.mksicon-act_pageview:before {
+  content: "\e925";
+}
+.mksicon-act_score:before {
+  content: "\e926";
+}
+.mksicon-act_suppress:before {
+  content: "\e927";
+}
+.mksicon-act_tellfriend:before {
+  content: "\e928";
+}
+.mksicon-act_unsubscribe:before {
+  content: "\e929";
+}
+.mksicon-act_wait:before {
+  content: "\e92a";
+}
+.mksicon-act_workflow:before {
+  content: "\e92b";
+}
+.mksicon-act_wtmail:before {
+  content: "\e92c";
+}
+.mksicon-act_score_c .path1:before {
+  content: "\e92d";
+  color: rgb(91, 186, 71);
+}
+.mksicon-act_score_c .path2:before {
+  content: "\e92e";
+  margin-left: -1.21875em;
+  color: rgb(241, 102, 103);
+}
 .mksicon-User1:before {
   content: "\e900";
 }

@@ -47,10 +47,11 @@ class LoginForm extends Component {
       var _this = this;
       request.post(this.baseUrl+'/mobile/mobileService/mobileLogin')
          .set('Content-Type', 'application/x-www-form-urlencoded')
-         .send({ userId  : this.state.username, password: encodeURIComponent(this.state.password) })
+         .send({ userId  : this.state.username, password: this.state.password })
          .end((err, res) => {
               if(parseInt(res.body.errorCode) != 2){
-                console.log(res);
+                console.log(res.body);
+                _this.users_details.splice(0,1);
                 _this.users_details.push(res.body);
                 _this.setState({
                     disabled:''
@@ -63,7 +64,7 @@ class LoginForm extends Component {
                 return false;
                 //io/list/getListData/?BMS_REQ_TK=2gdvB8OodJGEKIcqnMDVPEh6l8b6uV&offset=0&searchText=abdullah&type=batches&orderBy=name&order=asc
 
-              
+
 
 
                 //console.log(_this.users_details);

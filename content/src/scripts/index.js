@@ -160,7 +160,7 @@ class App extends Component {
       <div className="appWrapper">
         <div className="mksiconplugin" onClick={showLogin => this.setState({appPanel:true})}>
           <a href="#" className="closepanel">
-            <span className="mksicon-MakesbridgeBot">
+            <span className="mks_logo">
             </span>
             </a>
         </div>
@@ -169,10 +169,19 @@ class App extends Component {
           <div className="mkspanel">
             <div className="mkspanelhead">
                     <div className="mksph_row">
-                        <div className={this.state.showLogin ? "hidden" : "mksph_menu ripple" } onClick={this.toggleTopMenu} >
+                        <div className={this.state.showLogin ? "hidden" : "hidden" } onClick={this.toggleTopMenu} >
                             <a><span className="mksph_icon_menu" aria-hidden="true" data-icon="&#xe90a;"></span></a>
                         </div>
-
+                        <div className="back-container">
+                        <ToggleDisplay show={this.state.selectedEmail==null?false:true}>
+                          <div
+                            className="mksph_back ripple"
+                            onClick={this.goBack}
+                            >
+                          <a href="#"><span className="mksph_icon_back" aria-hidden="true" data-icon="&#xe91b;"></span></a>
+                          </div>
+                        </ToggleDisplay>
+                        </div>
                         <div className="mksph_logo">
                             <div className="logo">
                                 <center>
@@ -189,14 +198,8 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
-                        <ToggleDisplay show={this.state.selectedEmail==null?false:true}>
-                          <div
-                            className="mksph_back ripple"
-                            onClick={this.goBack}
-                            >
-                          <a href="#"><span className="mksph_icon_back" aria-hidden="true" data-icon="&#xe91b;"></span></a>
-                          </div>
-                        </ToggleDisplay>
+                        <div className="mksph_logout" onClick={ showLogin => this.setState({showLogin:true,gmailEmails:false,showContacts:false}) }>logout</div>
+
                         <div className="clr"></div>
                     </div>
                 </div>
