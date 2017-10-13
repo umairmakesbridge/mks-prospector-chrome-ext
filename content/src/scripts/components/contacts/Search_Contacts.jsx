@@ -76,11 +76,11 @@ class SearchContacts extends Component{
         return (
           <div className="s_contact_found_wraper">
               <div className='searchBar'>
-                  <p>Search of contacts will perform from bridgemailsystem</p>
-                  <h2>Search for contact</h2>
+                  <p>Open an email or search for a contact on Makesbridge</p>
+                  <h2>Search</h2>
                   <input
                     type="text"
-                    placeholder = "Search Name or Email"
+                    placeholder = "Enter name or email"
                     value = {this.state.searchContact}
                     onKeyPress = {this.handleOnKeyPress.bind(this)}
                     onChange = {this.handleOnChange.bind(this)}
