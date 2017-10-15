@@ -58,16 +58,15 @@ class App extends Component {
         var email_id = gmail.get.email_id();
         var emailDetails = gmail.get.email_data(email_id);
         console.log(emailDetails.people_involved)
-        _this.state['gmail_email_list'] = emailDetails.people_involved;
+        //_this.state['gmail_email_list'] = emailDetails.people_involved;
 
 
 
         var email = new gmail.dom.email($('div.adn')); // optionally can pass relevant $('div.adn');
         var body = email.body();
         var id = email.id;
-
         _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
-        _this.setEmailsUniquely();
+        _this.setEmailsUniquely(emailDetails.people_involved);
         //console.log(jQuery.unique(  ));
         //return false;
 
@@ -80,16 +79,23 @@ class App extends Component {
         console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
         var emailDetails = gmail.get.email_data(id);
         console.log(emailDetails);
-        _this.state['gmail_email_list'] = emailDetails.people_involved;
+        //_this.state['gmail_email_list'] = emailDetails.people_involved;
 
         var email = new gmail.dom.email($('div.adn')); // optionally can pass relevant $('div.adn');
+
         var body = email.body();
         var id = email.id;
-        
+        if(body){
+            console.log('Body of email is recieved');
+          }else{
+            console.log('Body is empty');
+          }
+        _this.state.gmail_emails_body = [];
         _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
-        _this.setEmailsUniquely();
+        _this.setEmailsUniquely(emailDetails.people_involved);
 
       });
+
     });
 
   }
@@ -97,18 +103,23 @@ class App extends Component {
   extractEmailsFromBody(text){
       return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
   }
-  setEmailsUniquely(){
+  setEmailsUniquely(gmailApiEmails){
         let gmail_email_list_array = [];
+        let uniqueEmails;
         var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-        jQuery.each(this.state.gmail_email_list,function(key,value){
+        jQuery.each(gmailApiEmails,function(key,value){
             if(pattern.test(value[0]))
               gmail_email_list_array.push(value[0]);
             else
               gmail_email_list_array.push(value[1]);
         });
+        if(this.state.gmail_emails_body[0]){
+          uniqueEmails = jQuery.unique(jQuery.merge(gmail_email_list_array,this.state.gmail_emails_body[0]));
+        }else{
+          uniqueEmails = gmail_email_list_array;
+        }
 
-        let uniqueEmails = jQuery.unique(jQuery.merge(gmail_email_list_array,this.state.gmail_emails_body[0]));
         console.log(uniqueEmails);
         this.setState({
           gmail_email_list : uniqueEmails

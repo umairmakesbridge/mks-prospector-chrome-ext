@@ -9,7 +9,7 @@ const EmailItem = (props) =>{
 
 
   return (
-    <div className="contact_found ripple" onClick={() =>  onEmailSelect(props.item[1])}>
+    <div className="contact_found ripple" onClick={() =>  onEmailSelect(props.item)}>
                         <div className="cf_silhouette">
                             <div className="cf_silhouette_text c_txt_s">
                                 <p>{acronym}</p>
