@@ -35,7 +35,7 @@ class ContactInfo extends Component{
                     changeInTagsView    : false,
                     changeInContactBasic: false,
                     contactnotFound  : false
-                   }
+                  }
   }
 
   componentDidUpdate(){
@@ -51,6 +51,7 @@ class ContactInfo extends Component{
 
 
     if(this.state.diffEmail){
+      console.log("----- different email---------")
       this.searchEmailInMks(this.props.contact_email);
 
     }else if(this.state.changeInTagsView || this.state.changeInContactBasic){
@@ -62,7 +63,7 @@ class ContactInfo extends Component{
   componentWillReceiveProps(nextProps){
     //this.loadSubscriptionData(nextProps.subscriptionId);
     if(nextProps.contact_email && this.state.email != nextProps.contact_email){
-        this.setState({diffEmail : true,email : nextProps.contact_email})
+        this.setState({diffEmail : true,score:0, email : nextProps.contact_email})
     }else{
         this.setState({diffEmail : false})
     }
@@ -113,6 +114,7 @@ class ContactInfo extends Component{
 
 
   getSubscriberDetails(){
+
     var searchUrl = this.baseUrl
                     +'/io/subscriber/getData/?BMS_REQ_TK='
                     + this.users_details[0].bmsToken +'&type=getSubscriber&subNum='
@@ -169,11 +171,14 @@ class ContactInfo extends Component{
                               <div className="scf_tab">
                                   <div className="tab">
                                     <button className={`tablinks ripple ${this.state.contactActive}`} onClick={switchTab => { this.setState({showContacts:true,showActivity:false,activityActive:'',contactActive:'active'})} }>Contact</button>
-                                    <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
-                                    <div className="score">
-                                      <i className="icon score"></i>
-                                      <span className="score-value">{this.state.score}</span>
-                                    </div>
+                                    <ToggleDisplay show={!this.state.contactnotFound && this.state.subscriber}>
+                                        <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
+
+                                        <div className="score">
+                                          <i className="icon score"></i>
+                                          <span className="score-value">{this.state.score}</span>
+                                        </div>
+                                      </ToggleDisplay>
                                   </div>
 
                                   <div className="tab_content_wrap">
