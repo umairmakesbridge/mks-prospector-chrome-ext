@@ -12,7 +12,7 @@ const GmailEmailList = (props) => {
       EmailItems = props.gmail_email_list.map((item) => {
        return (<EmailItem
                     item = {item}
-                    key={item[1]}
+                    key={item}
                     onEmailSelect = {props.onEmailSelect}
               />);
       });
