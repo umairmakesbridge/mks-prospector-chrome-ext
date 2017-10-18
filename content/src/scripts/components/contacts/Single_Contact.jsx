@@ -33,7 +33,10 @@ const SingleContact = (props) => {
     );
 
     return (
-        <div>{contactSubItems}</div>
+        <div>
+          <h2 className="total-count-head"><strong className="badge total-count">{props.contact.length}</strong><span className="total-text">{props.type}</span></h2>
+          {contactSubItems}
+        </div>
     );
 }
 

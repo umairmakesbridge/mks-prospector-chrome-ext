@@ -18,7 +18,8 @@ input:focus {
  right: 0;
    z-index: 999;
    position: fixed;
-   overflow-y: scroll;
+   overflow-y: auto;
+   overflow-x: hidden;
    height: 100%;
    width: 380px;
    background: #f8f8fb;
@@ -82,7 +83,8 @@ html, body{ height:100%;}
    right: 0;
    z-index: 99;
    position: fixed;
-   overflow-y: scroll;
+   overflow-y: auto;
+   overflow-x: hidden;
    height: 100%;
    width: 380px;
    background: #f8f8fb;
@@ -534,6 +536,7 @@ Search Bar Styling
    font-weight: 100;
    font-size: 18px;
    line-height: 28px;
+   display: inline-block;
 }
 .searchBar input{
  width: 320px;
@@ -580,7 +583,8 @@ START contact found page
 .list_contact_found_height{
  min-height: 270px;
  max-height: 270px;
- overflow-y: scroll;
+ overflow-y: auto;
+ overflow-x: hidden;
 }
 .contact_found{
  background: #fff;
@@ -1286,7 +1290,8 @@ span.mksph_contact_value {
 .tags-contents,.csfields-contents {
  min-height: 70px;
  max-height: 165px;
- overflow-y: scroll;
+ overflow-y: auto;
+ overflow-x: hidden;
  padding: 15px 0 0px;
  position: relative;
 }
@@ -1646,4 +1651,203 @@ position:relative; z-index:9;
 }
 .new_activities .act_row .camp {
     background: url("chrome-extension://__MSG_@@extension_id__/img/act-campaign.png") no-repeat scroll 0 4px rgba(0, 0, 0, 0);
+}
+
+
+/*================================================
+        Color Pallete
+=================================================*/
+.pclr1 {
+ background-color:#e7e7e7!important;
+ color:#464646!important
+}
+.pclr2 {
+ background-color:#b6cff5!important;
+ color:#0d3472!important
+}
+.pclr3 {
+ background-color:#98d7e4!important;
+ color:#0d3b44!important
+}
+.pclr4 {
+ background-color:#e3d7ff!important;
+ color:#3d188e!important
+}
+.pclr5 {
+ background-color:#fbd3e0!important;
+ color:#711a36!important
+}
+.pclr6 {
+ background-color:#f2b2a8!important;
+ color:#8a1c0a!important
+}
+.pclr7 {
+ background-color:#c2c2c2!important;
+ color:#fff!important
+}
+.pclr8 {
+ background-color:#4986e7!important;
+ color:#fff!important
+}
+.pclr9 {
+ background-color:#2da2bb!important;
+ color:#fff!important
+}
+.pclr10 {
+ background-color:#b99aff!important;
+ color:#fff!important
+}
+.pclr11 {
+ background-color:#f691b2!important;
+ color:#994a64!important
+}
+.pclr12 {
+ background-color:#fb4c2f!important;
+ color:#fff!important
+}
+.pclr13 {
+ background-color:#ffc8af!important;
+ color:#7a2e0b!important
+}
+.pclr14 {
+ background-color:#ffdeb5!important;
+ color:#7a4706!important
+}
+.pclr15 {
+ background-color:#fbe983!important;
+ color:#594c05!important
+}
+.pclr16 {
+ background-color:#fdedc1!important;
+ color:#684e07!important
+}
+.pclr17 {
+ background-color:#b3efd3!important;
+ color:#0b4f30!important
+}
+.pclr18 {
+ background-color:#a2dcc1!important;
+ color:#04502e!important
+}
+.pclr19 {
+ background-color:#ff7537!important;
+ color:#fff!important
+}
+.pclr20 {
+ background-color:#ffad46!important;
+ color:#fff!important
+}
+.pclr21 {
+ background-color:#ebdbde!important;
+ color:#662e37!important
+}
+.pclr22 {
+ background-color:#cca6ac!important;
+ color:#fff!important
+}
+.pclr23 {
+ background-color:#42d692!important;
+ color:#fff!important
+}
+.pclr24 {
+ background-color:#16a765!important;
+ color:#fff!important
+}
+.pclr25 {
+ background-color:#f9e9a3!important;
+ color:#bb8207!important
+}
+/*================================================
+    Clickers,Visitors,Contacts Switch Styling
+=================================================*/
+.top-header.contact_found {
+    color: rgb(185, 194, 201);
+    font-weight: 100;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+.top-header.contact_found .click-label{
+  margin-right: 5px;
+}
+.top-header.contact_found ul {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+.top-header.contact_found ul li {
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.top-header.contact_found ul li .badge{
+  font-size: 11px;
+  font-weight: normal;
+  padding: 1px 5px;
+  margin-right: 2px;
+  text-shadow: none;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+}
+.top-header.contact_found:hover{
+  background: #fff;
+  cursor: default;
+}
+.contacts-switch{
+    display: inline;
+    position: relative;
+    float: right;
+    top: -8px;
+}
+.contacts-switch .status_tgl {
+    background: none repeat scroll 0 0 #91bed6;
+    border-radius: 20px;
+    float: right;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 16px;
+    margin: 9px 10px 0;
+    opacity: 1;
+    padding: 2px;
+}
+.contacts-switch .status_tgl a {
+    float: left;
+    color: #fff;
+    display: block;
+    padding: 4px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.contacts-switch .status_tgl a.published.active {
+    background: #fff;
+    border-radius: 20px;
+    color: #41ce20;
+    padding-left: 35px;
+    position: relative;
+}
+.contacts-switch .status_tgl a.published.active .togglecontact-icon {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/18x18_icon_map.png") no-repeat scroll -36px -33px;
+    display: block;
+    height: 18px;
+    left: 10px;
+    position: absolute;
+    top: 0px;
+    width: 18px;
+}
+.contacts-switch .status_tgl a.draft.active {
+    background: #fff;
+    color: #2a99f8;
+    padding-left: 35px;
+    border-radius: 20px;
+    position: relative;
+}
+.contacts-switch .status_tgl a.draft.active .toggletag-icon {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/18x18_icon_map.png") no-repeat scroll -20px -53px;
+    display: block;
+    height: 18px;
+    left: 10px;
+    position: absolute;
+    top: 2px;
+    width: 18px;
 }
