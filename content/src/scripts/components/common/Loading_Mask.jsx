@@ -6,7 +6,7 @@ class LoadingMask extends Component{
     }
 
     render(){
-      if(!this.props.message){
+      if(!this.props.showLoading){
         return (<div></div>);
       }
       return (<div className="loader-mask">

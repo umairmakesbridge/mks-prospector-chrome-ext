@@ -474,7 +474,12 @@ border: none;
 input:disabled,button:disabled{
  background-color:#ccc !important;
 }
-
+.click_default{
+  cursor: default !important;
+}
+.click_pointer{
+  cursor: pointer !important;
+}
 /*===========================================
 Login form CSS
 ============================================*/
@@ -581,8 +586,8 @@ START contact found page
 .list_contact_found_wraper{
 }
 .list_contact_found_height{
- min-height: 270px;
- max-height: 270px;
+ min-height: 150px;
+ max-height: 188px;
  overflow-y: auto;
  overflow-x: hidden;
 }
@@ -1760,12 +1765,31 @@ position:relative; z-index:9;
 /*================================================
     Clickers,Visitors,Contacts Switch Styling
 =================================================*/
+.last24{
+    position: relative;
+    top: 3px;
+}
+.last24 li.active{
+  color: #006ffd;
+}
 .top-header.contact_found {
     color: rgb(185, 194, 201);
     font-weight: 100;
     font-size: 12px;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    position: relative;
 }
+.plc_marginbottom30{
+    margin-bottom : 30px;
+}
+.top-header .loader-mask {
+    top: 0px;
+    left: 0px;
+}
+.top-header .loader-mask .spinner{
+    line-height: 40px;
+  }
 .top-header.contact_found .click-label{
   margin-right: 5px;
 }

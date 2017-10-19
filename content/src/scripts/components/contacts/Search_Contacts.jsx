@@ -4,6 +4,9 @@ import request
        from 'superagent';
 import SingleContact
        from './Single_Contact';
+import LoadingMask
+       from '../common/Loading_Mask';
+
 
 class SearchContacts extends Component{
     constructor (props){
@@ -22,7 +25,14 @@ class SearchContacts extends Component{
                     cactive : 'active',
                     tactive : '',
                     placeholder: 'Enter name or email',
-                    type:''
+                    type:'',
+                    loadingMessage : '',
+                    showLoading : true,
+                    ckclickable : false,
+                    wvclickable : false,
+                    wvactive    : '',
+                    ckactive    : '',
+                    clickState : ''
                   }
     }
 
@@ -58,6 +68,18 @@ class SearchContacts extends Component{
       console.log(type);
       //https://mks.bridgemailsystem.com/pms/io/subscriber/getData/?BMS_REQ_TK=GX2Syeq1dZlJn8LNQxG18DgSh3uoNV&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1
       if(type=="CK" || type=="WV"){
+        if(type=="CK" && this.state.clicks == 0){
+          return;
+        }else{
+          this.setState({wvactive : '',ckactive : 'active',clickState : 'load'});
+        }
+        if(type=="WV" && this.state.visits == 0){
+          return;
+        }else{
+          this.setState({wvactive : 'active',ckactive : '',clickState : 'load'});
+        }
+
+
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy='+type+'&lastXDays=1&ukey='+this.users_details[0].userKey
                         +'&isMobileLogin=Y&userId='+this.users_details[0].userId
@@ -99,13 +121,14 @@ class SearchContacts extends Component{
                       this.setState({
                         vcsubscribers : subscriberEmails,
                         searchstat:'',
-                        type : (type == "CK") ? "Clicks" : "Visitors"
+                        clickState : '',
+                        type : type
                       })
                     }else if(type=="search" || type=="searchTag"){
                       this.setState({
                         subscriber : subscriberEmails,
                         searchstat:'',
-                        type : "contacts"
+                        type : type
                       })
                     }
 
@@ -143,7 +166,10 @@ class SearchContacts extends Component{
                                   this.setState({
                                     clicks : jsonResponse.clickCount,
                                     visits : jsonResponse.visitCount,
-                                    countSet : true
+                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer" : "default",
+                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer" : "default",
+                                    countSet : true,
+                                    showLoading : false
                                   });
                                 }
                               });
@@ -154,10 +180,11 @@ class SearchContacts extends Component{
         return (
           <div className="s_contact_found_wraper">
             <div className="top-header contact_found">
+              <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
                 <span className="click-label">Last 24 hrs: </span>
-                <ul>
-                  <li onClick={this.generateReqObjec.bind(this,"CK")}><span className="pclr23 badge">{this.state.clicks}</span> Clickers</li>
-                  <li onClick={this.generateReqObjec.bind(this,"WV")}><span className="pclr19 badge">{this.state.visits}</span> Visitors</li>
+                <ul className="last24">
+                  <li onClick={this.generateReqObjec.bind(this,"CK")} className={`click_${this.state.ckclickable} ${this.state.ckactive} ripple`}><span className="pclr23 badge">{this.state.clicks}</span> Clickers</li>
+                  <li onClick={this.generateReqObjec.bind(this,"WV")} className={`click_${this.state.wvclickable} ${this.state.wvactive} ripple`}><span className="pclr19 badge">{this.state.visits}</span> Visitors</li>
                 </ul>
             </div>
             <div className="container">
@@ -165,32 +192,35 @@ class SearchContacts extends Component{
                   contact={this.state.vcsubscribers}
                   onEmailSelect={this.props.onEmailSelect}
                   type = {this.state.type}
+                  cvstate = {this.state.clickState}
                 />
             </div>
-              <div className='searchBar'>
-                  <p>Open an email or search for a contact on Makesbridge</p>
-                  <h2>Search</h2>
-                    <div className="contacts-switch">
-                        <div className="status_tgl">
-                            <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
-                            <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
-                      </div>
-                    </div>
-                  <input
-                    type="text"
-                    placeholder = {this.state.placeholder}
-                    value = {this.state.searchContact}
-                    onKeyPress = {this.handleOnKeyPress.bind(this)}
-                    onChange = {this.handleOnChange.bind(this)}
-                  />
-                <span className="mksph_icon_search" aria-hidden="true" data-icon="&#xe903;"></span>
-              </div>
+
               <div className="container">
+                <div className='searchBar'>
+                    <p>Open an email or search for a contact on Makesbridge</p>
+                    <h2>Search</h2>
+                      <div className="contacts-switch">
+                          <div className="status_tgl">
+                              <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
+                              <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
+                        </div>
+                      </div>
+                    <input
+                      type="text"
+                      placeholder = {this.state.placeholder}
+                      value = {this.state.searchContact}
+                      onKeyPress = {this.handleOnKeyPress.bind(this)}
+                      onChange = {this.handleOnChange.bind(this)}
+                    />
+                  <span className="mksph_icon_search" aria-hidden="true" data-icon="&#xe903;"></span>
+                </div>
                   <SingleContact
                     contact={this.state.subscriber}
                     stat={this.state.searchstat}
                     onEmailSelect={this.props.onEmailSelect}
-                    type = {this.state.type}
+                    searchtype = {this.state.type}
+                    searchContact = {this.state.searchContact}
                   />
               </div>
           </div>

@@ -26,7 +26,8 @@ class ContactDetailInfo extends Component{
       tagName    : '',
       tagCode    : '',
       disabled: false,
-      loadingMessage : ''
+      loadingMessage : '',
+      showLoading : false
     }
   };
 
@@ -68,7 +69,8 @@ class ContactDetailInfo extends Component{
   }
   deleteTagName(tagName){
     this.setState({
-      loadingMessage : 'Deleting '+tagName+' Tag'
+      loadingMessage : 'Deleting '+tagName+' Tag',
+      showLoading    : true
     })
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -189,7 +191,7 @@ class ContactDetailInfo extends Component{
                     </div>
                   </ToggleDisplay>
                   <div className="tags-contents">
-                    <LoadingMask message={this.state.loadingMessage}/>
+                    <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} />
                     <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
                   </div>
                 </div>
