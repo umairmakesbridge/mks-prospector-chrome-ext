@@ -92,6 +92,7 @@ html, body{ height:100%;}
 }
 
 .mkspanel{
+  position: relative;
 }
 
 .mkspanelhead{
@@ -218,9 +219,6 @@ html, body{ height:100%;}
  transition: 0s
 }
 
-.s_contact_found_wraper{
-   padding: 18px;
-}
 
 .s_contact_found{
  background: #fff;
@@ -480,6 +478,107 @@ input:disabled,button:disabled{
 .click_pointer{
   cursor: pointer !important;
 }
+/*-----------------------------Alerts---------------------------*/
+.messagebox {
+	color: #784900;
+	font-size: 14px;
+	font-weight: bold;
+	margin:20px auto;
+	padding: 10px 35px 10px 60px;
+	width: 285px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-transition: opacity .3s ease-out;
+  -moz-transition: opacity .3s ease-out;
+  -o-transition: opacity .3s ease-out;
+  transition: opacity .3s ease-out;
+  position: absolute;
+  top: -20px;
+  z-index: 999;
+
+}
+.messagebox:after {content:""; width:45px; height:100%; display:block; position:absolute; left:0; top:0;}
+.messagebox a.closebtn {
+	display:block;
+	position:absolute;
+	right:10px;
+	top:10px;
+	opacity:0;
+	-webkit-transition: opacity .3s ease-out;
+    -moz-transition: opacity .3s ease-out;
+    -o-transition: opacity .3s ease-out;
+    transition: opacity .3s ease-out;
+}
+.messagebox:hover a.closebtn {
+	opacity:1;
+}
+.messagebox a.closebtn:hover {
+	opacity:0.7;
+}
+.messagebox h3 {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    margin: 0;
+    padding: 0 0 5px;
+}
+.messagebox p {
+	font-size:13px;
+	padding:0;
+	margin:0;
+	display:table-cell;
+	vertical-align:middle;
+	font-weight:normal;
+	text-align:left;
+}
+span.alert_icon{
+  position: absolute;
+  left: 13px;
+  z-index: 999;
+  color: #fff;
+  font-size: 18px;
+  line-height: 38px;
+}
+.messagebox a.alert_close_icon{
+  z-index: 9999;
+  color: #fff;
+  right: 10px;
+  position: absolute;
+  top: 5px;
+}
+.messagebox.success {
+	background-color:#c9e78e;
+	background-color:#d9eeb0;
+/*	border: 2px solid #94cf1e;
+*/}
+.messagebox.success:after {background-color: #c1e37d;  }
+.messagebox.success  h3, .messagebox.success  p { color:#5c873d; }
+
+.messagebox.error {
+	background-color:#fb8c8c;
+	background-color:#fcaeae;
+/*	border: 2px solid #f71a1a;
+*/}
+.messagebox.error:after {background-color:#fb8080;  }
+.messagebox.error  h3, .messagebox.error  p { color:#b11a0b; }
+
+.messagebox.caution {
+	background-color:#ffcd7f;
+	background-color:#ffdca5;
+/*	border: 2px solid #ff9c00;
+*/}
+/*.messagebox.caution:after {background: url("../img/caution.png") no-repeat scroll center center #ffc872;  }*/
+.messagebox.caution h3, .messagebox.caution p { color:#e05f00; }
+
+.messagebox.info {
+	background-color:#80d6f6;
+	background-color:#a6e2f9;
+/*	border: 2px solid #01aeee;
+*/}
+/*.messagebox.info:after {background: url("../img/info.png") no-repeat scroll center center #73d2f5;  }*/
+.messagebox.info h3, .messagebox.info p { color:#00739e; }
+
 /*===========================================
 Login form CSS
 ============================================*/
@@ -650,6 +749,7 @@ START contact found page
    font-size: 16px;
    display: table-cell;
    vertical-align: middle;
+   padding-bottom: 4px;
 }
 .contact_found:hover{
    background: #006eff;
@@ -659,9 +759,16 @@ START contact found page
    -moz-transition: all 0.3s ease-in-out;
    -o-transition: all 0.3s ease-in-out;
 }
-.contact_found:hover > .cf_email p{color: #fff;}
+.contact_found:hover > .cf_email p,.contact_found:hover > .cf_email span.ckvwicon{color: #fff;}
 
-
+.cf_email span.ckvwicon{
+      display: table-row;
+      font-size: 11px;
+      color: #4f87ab;
+}
+.cf_email span.ckvwicon span{
+  margin-right: 5px;
+}
 /* END contact found page*/
 
 /*=============================================
@@ -698,7 +805,7 @@ Slider Start
 
 
 .s_contact_found_wraper{
-    padding: 18px 18px 0px 18px;
+    padding: 8px 18px 0px 18px;
 }
 
 .s_contact_found{
@@ -1771,17 +1878,20 @@ position:relative; z-index:9;
 }
 .last24 li.active{
   color: #006ffd;
+  font-weight: 600;
 }
 .top-header.contact_found {
     color: rgb(185, 194, 201);
     font-weight: 100;
     font-size: 12px;
     margin-bottom: 5px;
-    margin-top: 15px;
     position: relative;
 }
 .plc_marginbottom30{
     margin-bottom : 30px;
+}
+.plc_marginbottom10{
+  margin-bottom : 10px;
 }
 .top-header .loader-mask {
     top: 0px;

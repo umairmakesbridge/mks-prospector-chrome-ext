@@ -6,8 +6,8 @@ import SingleContact
        from './Single_Contact';
 import LoadingMask
        from '../common/Loading_Mask';
-
-
+import {GetTimeline,GetServerDate}
+       from './activity_components/Filter_Api';
 class SearchContacts extends Component{
     constructor (props){
       super(props);
@@ -32,15 +32,19 @@ class SearchContacts extends Component{
                     wvclickable : false,
                     wvactive    : '',
                     ckactive    : '',
-                    clickState : ''
+                    clickState  : '',
+                    serverDate  : ''
                   }
     }
 
     componentDidUpdate(prevProps, prevState){
       if(this.users_details.length > 0 && !this.state.countSet){
           this.getClickVisitCount();
+          //ErrorAlert({message:"Already Exists."});
+          
         }
     }
+
 
 
     handleOnKeyPress(event){
@@ -70,15 +74,16 @@ class SearchContacts extends Component{
       if(type=="CK" || type=="WV"){
         if(type=="CK" && this.state.clicks == 0){
           return;
-        }else{
-          this.setState({wvactive : '',ckactive : 'active',clickState : 'load'});
         }
         if(type=="WV" && this.state.visits == 0){
           return;
-        }else{
-          this.setState({wvactive : 'active',ckactive : '',clickState : 'load'});
         }
 
+        this.setState({
+          wvactive : (type=="WV") ? 'active' : '',
+          ckactive : (type=="CK") ? 'active' : '',
+          clickState : 'load'
+        })
 
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy='+type+'&lastXDays=1&ukey='+this.users_details[0].userKey
@@ -97,6 +102,7 @@ class SearchContacts extends Component{
       }
       this.getConactDetails(searchUrl,type);
     }
+
     getConactDetails(searchUrl,type){
 
       request
@@ -166,16 +172,29 @@ class SearchContacts extends Component{
                                   this.setState({
                                     clicks : jsonResponse.clickCount,
                                     visits : jsonResponse.visitCount,
-                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer" : "default",
-                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer" : "default",
+                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer ripple" : "default",
+                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default",
                                     countSet : true,
-                                    showLoading : false
+                                    showLoading : false,
+                                    serverDate : GetServerDate({users_details:this.users_details,baseUrl:this.baseUrl,callback:this.setServerDate.bind(this)})
                                   });
                                 }
                               });
     }
 
+    setServerDate(responseDate){
+        //let _formatDate = {date: responseDate.format("DD MMM YYYY"), time: responseDate.format("hh:mm A")}
 
+        this.setState({
+          serverDate : responseDate
+        })
+    }
+
+    lastOpenActivityDate(activityDate){
+      let serverDate = this.state.serverDate;
+      console.log('Activity Date : ' + activityDate, 'Server Date : '+ serverDate );
+
+    }
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -183,8 +202,8 @@ class SearchContacts extends Component{
               <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
                 <span className="click-label">Last 24 hrs: </span>
                 <ul className="last24">
-                  <li onClick={this.generateReqObjec.bind(this,"CK")} className={`click_${this.state.ckclickable} ${this.state.ckactive} ripple`}><span className="pclr23 badge">{this.state.clicks}</span> Clickers</li>
-                  <li onClick={this.generateReqObjec.bind(this,"WV")} className={`click_${this.state.wvclickable} ${this.state.wvactive} ripple`}><span className="pclr19 badge">{this.state.visits}</span> Visitors</li>
+                  <li onClick={this.generateReqObjec.bind(this,"CK")} className={`click_${this.state.ckclickable} ${this.state.ckactive}`}><span className="pclr23 badge">{this.state.clicks}</span> Clickers</li>
+                  <li onClick={this.generateReqObjec.bind(this,"WV")} className={`click_${this.state.wvclickable} ${this.state.wvactive}`}><span className="pclr19 badge">{this.state.visits}</span> Visitors</li>
                 </ul>
             </div>
             <div className="container">
@@ -193,6 +212,7 @@ class SearchContacts extends Component{
                   onEmailSelect={this.props.onEmailSelect}
                   type = {this.state.type}
                   cvstate = {this.state.clickState}
+                  serverDate = {this.state.serverDate}
                 />
             </div>
 
@@ -221,6 +241,7 @@ class SearchContacts extends Component{
                     onEmailSelect={this.props.onEmailSelect}
                     searchtype = {this.state.type}
                     searchContact = {this.state.searchContact}
+
                   />
               </div>
           </div>

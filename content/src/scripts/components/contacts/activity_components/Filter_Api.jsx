@@ -67,8 +67,12 @@ export const GetServerDate = (props) => {
           if(res.status==200){
             let _json =  JSON.parse(res.text);
             var _date = Moment(decodeHTML(_json[0]),'YYYY-M-D H:m');
-            var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
-            props.callback(format);
+            //var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
+            if(props.callback){
+              props.callback(_date);
+            }
+            
+
             return false;
           }else{
             alert(res[1])

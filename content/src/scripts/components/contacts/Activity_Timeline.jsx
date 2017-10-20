@@ -53,8 +53,9 @@ class ActivityTimeline extends Component{
                });
   }
   setServerDate(responseDate){
+      let _formatDate = {date: responseDate.format("DD MMM YYYY"), time: responseDate.format("hh:mm A")}
       this.setState({
-        serverDate : responseDate
+        serverDate : _formatDate
       })
   }
   setActivityObj(activity,loadMore){

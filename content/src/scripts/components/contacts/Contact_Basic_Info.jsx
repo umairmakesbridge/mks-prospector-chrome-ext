@@ -3,6 +3,8 @@ import ToggleDisplay
        from 'react-toggle-display';
 import request
        from 'superagent';
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
 
 
 class ContactBasicInfo extends Component{
@@ -68,8 +70,9 @@ class ContactBasicInfo extends Component{
               showContact : true,
               editContact : false,
               disabled    : false,
-              statusMessage : 'Contact created successfully.'
+              //statusMessage : 'Contact created successfully.'
             })
+            SuccessAlert({message:"Contact created successfully."});
             this.props.contactInfo['subNum'] = jsonResponse[1];
             this.props.contactInfo['checkSum'] = jsonResponse[2];
 
@@ -81,9 +84,7 @@ class ContactBasicInfo extends Component{
             this.props.updateContactHappened();
 
           }else{
-            this.setStatus({
-              statusMessage : 'Something went wrong.Please try again later.'
-            });
+            ErrorAlert({message:"Something went wrong.Please try again later."});
           }
         });
   }
@@ -117,6 +118,7 @@ class ContactBasicInfo extends Component{
               editContact : false,
               disabled    : false
             })
+            SuccessAlert({message:"Contact updated successfully."});
             this.props.contact['company'] = this.state.company;
             this.props.updateContactHappened();
 

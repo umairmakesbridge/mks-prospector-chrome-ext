@@ -6,7 +6,7 @@ import EmailItem from './Email_Item';
 // Refactor to Make Class Based Component
 const GmailEmailList = (props) => {
     let EmailItems = '';
-    const showEmailList = (props.gmail_email_list.length > 0) ? 's_contact_found_wraper' : 's_contact_found_wraper hide';
+    const showEmailList = (props.gmail_email_list.length > 0) ? 's_contact_found_wraper plc_marginbottom10' : 's_contact_found_wraper hide';
     console.log(showEmailList);
     if(props.gmail_email_list && props.gmail_email_list.length > 0){
       EmailItems = props.gmail_email_list.map((item) => {
