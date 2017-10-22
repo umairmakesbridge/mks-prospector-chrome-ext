@@ -34,7 +34,12 @@ class LoginForm extends Component {
             this.onClickOfButton();
         }
     }
-
+    autoLogin(autoUsername,autoPassword){
+      alert('Triggered auto Login');
+      this.state.username = autoUsername;
+      this.state.password = autoPassword;
+      this.onClickOfButton();
+    }
     onClickOfButton() {
       //if(this.users_details && this.users_details.length > 0 && this.state.disabled !="disabled"){
       //Check if username or password is empty and button is not disabled.
@@ -43,13 +48,14 @@ class LoginForm extends Component {
       }
       this.setState({
           disabled:'disabled'
-      })
+      });
       var _this = this;
       request.post(this.baseUrl+'/mobile/mobileService/mobileLogin')
          .set('Content-Type', 'application/x-www-form-urlencoded')
          .send({ userId  : this.state.username, password: this.state.password })
          .end((err, res) => {
               if(parseInt(res.body.errorCode) != 2){
+                localStorage.setItem('pmks_userpass', this.state.username+'__'+this.state.password);
                 console.log(res.body);
                 _this.users_details.splice(0,1);
                 _this.users_details.push(res.body);

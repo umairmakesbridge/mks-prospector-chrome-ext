@@ -40,6 +40,8 @@ class App extends Component {
       gmail_emails_body: [],
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
+
+
     this.onEmailSelect = this.onEmailSelect.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
     this.hideTopMenu = this.hideTopMenu.bind(this);
@@ -98,6 +100,13 @@ class App extends Component {
 
     });
 
+  }
+  componentDidMount(){
+    if(localStorage.getItem('pmks_userpass')){
+      let username = localStorage.getItem('pmks_userpass').split("__")[0];
+      let password = localStorage.getItem('pmks_userpass').split("__")[1]
+      this.refs.loginform.autoLogin(username,password);
+    }
   }
 
   extractEmailsFromBody(text){
@@ -207,6 +216,12 @@ class App extends Component {
   });
  }
 
+ logOut(){
+   console.log('1. Logout is triggered');
+   localStorage.removeItem('pmks_userpass');
+   this.setState({showLogin:true,gmailEmails:false,showContacts:false});
+ }
+
   render() {
     return (
       <div className="appWrapper">
@@ -250,7 +265,7 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
-                        <div className="mksph_logout" onClick={ showLogin => this.setState({showLogin:true,gmailEmails:false,showContacts:false}) }>logout</div>
+                        <div className="mksph_logout" onClick={ this.logOut.bind(this) }>logout</div>
 
                         <div className="clr"></div>
                     </div>
@@ -267,6 +282,7 @@ class App extends Component {
                                   })}
                 createNewList={this.createNewList}
                 checkSubscriberList={this.checkSubscriberList}
+                ref="loginform"
         />
         </ToggleDisplay>
         <ToggleDisplay show={this.state.gmailEmails}>
