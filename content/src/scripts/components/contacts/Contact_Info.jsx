@@ -10,7 +10,8 @@ import ContactDetailInfo
        from './Contact_Details_Info';
 import ActivityTimeline
        from './Activity_Timeline';
-
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
 
 class ContactInfo extends Component{
 
@@ -83,7 +84,7 @@ class ContactInfo extends Component{
 
                 if (jsonResponse[0] == "err"){
                     if(jsonResponse[1] == "SESSION_EXPIRED"){
-                      alert(jsonResponse[1]);
+                      ErrorAlert({message:jsonResponse[1]});
                       jQuery('.mksph_logout').trigger('click');
                     }
                   return false;
@@ -136,7 +137,7 @@ class ContactInfo extends Component{
                                 console.log(jsonResponse);
 
                               }else{
-                                alert(jsonResponse[1])
+                                ErrorAlert({ message : jsonResponse[1] })
                               }
                             });
   }

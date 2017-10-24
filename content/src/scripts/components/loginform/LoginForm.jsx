@@ -2,6 +2,8 @@ import React, {Component}
        from 'react';
 import request
        from 'superagent';
+import {ErrorAlert}
+       from '../common/Alerts.jsx';
 
 class LoginForm extends Component {
   constructor(props){
@@ -35,7 +37,7 @@ class LoginForm extends Component {
         }
     }
     autoLogin(autoUsername,autoPassword){
-      alert('Triggered auto Login');
+      //alert('Triggered auto Login');
       this.state.username = autoUsername;
       this.state.password = autoPassword;
       this.onClickOfButton();
@@ -77,8 +79,9 @@ class LoginForm extends Component {
               }else{
                 _this.setState({
                     disabled:''
-                })
-                alert(res.body.errorDetail)
+                });
+                localStorage.removeItem('pmks_userpass');
+                ErrorAlert({message:res.body.errorDetail});
               }
          });
     }

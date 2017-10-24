@@ -18,6 +18,7 @@ import GmailEmail  from './components/gmaillist/Email_List';
 import ContactInfo from './components/contacts/Contact_Info';
 import SearchContacts from './components/contacts/Search_Contacts';
 import Menu from './components/menu/menu';
+import LoadingMask from './components/common/Loading_Mask';
 
 const anchor = document.createElement('div');
 anchor.id = 'rcr-anchor';
@@ -33,6 +34,8 @@ class App extends Component {
       gmail_email_list : [],
       showLogin        : true,
       gmailEmails      : false,
+      showLoading      : false,
+      loadingMessage   : 'Loading....',
       showContacts     : false,
       appPanel         : false,
       selectedEmail    : null,
@@ -104,8 +107,10 @@ class App extends Component {
   componentDidMount(){
     if(localStorage.getItem('pmks_userpass')){
       let username = localStorage.getItem('pmks_userpass').split("__")[0];
-      let password = localStorage.getItem('pmks_userpass').split("__")[1]
+      let password = localStorage.getItem('pmks_userpass').split("__")[1];
       this.refs.loginform.autoLogin(username,password);
+      this.state.showLogin = false;
+      this.state.showLoading = true;
     }
   }
 
@@ -271,14 +276,16 @@ class App extends Component {
                     </div>
                 </div>
         <Menu />
+        <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} extraClass="fullHeight"/>
         <ToggleDisplay show={this.state.showLogin}>
 
         <LoginForm
                 users_details={this.state.users_details}
                 baseUrl = {this.state.baseUrl}
                 toggleShowLogin={showLogin => this.setState({
-                                    showLogin:!this.state.showLogin,
-                                    gmailEmails:!this.state.gmailEmails
+                                    showLogin: false,
+                                    gmailEmails:!this.state.gmailEmails,
+                                    showLoading : false
                                   })}
                 createNewList={this.createNewList}
                 checkSubscriberList={this.checkSubscriberList}

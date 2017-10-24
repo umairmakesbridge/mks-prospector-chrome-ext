@@ -35,7 +35,7 @@ const SingleContact = (props) => {
     return(<div> No Contact Found...</div>)
   }
   else if(props.cvstate=="load"){
-    return(<div className="plc_marginbottom30"> <p className="not-found">Loading Contact...</p></div>)
+    return(<div className="plc_marginbottom30 mksph_cardbox"> <p className="not-found">Loading Contact...</p></div>)
   }
   else if(!props.contact){
     return <div className="plc_marginbottom30"></div>;

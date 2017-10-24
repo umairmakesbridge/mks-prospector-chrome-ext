@@ -8,6 +8,7 @@ import request
        from 'superagent';
 import Moment from 'moment';
 import {encodeHTML,decodeHTML} from '../../common/Encode_Method';
+import {ErrorAlert,SuccessAlert} from '../../common/Alerts';
 
 
 export const GetTimeline = (props)=>{
@@ -24,7 +25,7 @@ export const GetTimeline = (props)=>{
             let jsonResponse =  JSON.parse(res.text);
             if(jsonResponse[0] == "err"){
               if(jsonResponse[1]=="SESSION_EXPIRED"){
-                  alert(jsonResponse[1]);
+                  ErrorAlert({message:jsonResponse[1]});
                   jQuery('.mksph_logout').trigger('click');
               }
 
@@ -48,7 +49,7 @@ export const GetTimeline = (props)=>{
 
             return false;
           }else{
-            alert(res[1])
+              ErrorAlert({message:res[1]});
           }
         });
 }
@@ -71,11 +72,11 @@ export const GetServerDate = (props) => {
             if(props.callback){
               props.callback(_date);
             }
-            
+
 
             return false;
           }else{
-            alert(res[1])
+            ErrorAlert({message:res[1]});
           }
         });
 }

@@ -13,7 +13,7 @@ input:focus {
 .loading_false{display:none;}
 .loading_true{display:block;}
 .LoadMore.loading_true{left: 90px;font-style: italic;}
-.mksph_logout{visibility: hidden;}
+/*.mksph_logout{visibility: hidden;}*/
 .makesbridge_plugin {
  right: 0;
    z-index: 999;
@@ -478,6 +478,45 @@ input:disabled,button:disabled{
 .click_pointer{
   cursor: pointer !important;
 }
+.mkb_btn {
+    background: #ddd;
+    position: relative;
+    right: 0;
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 2px;
+    margin-right: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #9a8b8b;
+}
+.pull-right {
+    float: right;
+}
+.pull-left {
+    float: left;
+}
+.mkb_done {
+    background: #006dff;
+    color: #fff;
+}
+.height90{
+  max-height: 90px;
+	overflow: hidden;
+
+	/* Set our transitions up. */
+	/*-webkit-transition: max-height 1s;
+	-moz-transition: max-height 1s;
+	transition: max-height 1s;*/
+
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+}
+
+.heighAuto {
+    max-height: 350px;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;
@@ -759,7 +798,7 @@ START contact found page
    -moz-transition: all 0.3s ease-in-out;
    -o-transition: all 0.3s ease-in-out;
 }
-.contact_found:hover > .cf_email p,.contact_found:hover > .cf_email span.ckvwicon{color: #fff;}
+
 
 .cf_email span.ckvwicon{
       display: table-row;
@@ -769,6 +808,7 @@ START contact found page
 .cf_email span.ckvwicon span{
   margin-right: 5px;
 }
+.contact_found:hover > .cf_email p,.contact_found:hover .ckvwicon{color: #fff;}
 /* END contact found page*/
 
 /*=============================================
@@ -1472,6 +1512,7 @@ div#custom-fields ul li {
     display: block;
     z-index: 1;
 }
+
 .loader-mask p{
     text-align: center;
     text-transform: lowercase;
@@ -1484,7 +1525,12 @@ div#custom-fields ul li {
   width: 70px;
   text-align: center;
 }
-
+.loader-mask.fullHeight{
+  background-color: transparent;
+}
+.loader-mask.fullHeight .spinner{
+  margin: 320px auto 0;
+}
 .spinner > div {
   width: 18px;
   height: 18px;

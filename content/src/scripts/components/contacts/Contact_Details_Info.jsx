@@ -12,7 +12,8 @@ import LoadingMask
        from '../common/Loading_Mask';
 import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
-
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
 
 
 class ContactDetailInfo extends Component{
@@ -27,10 +28,80 @@ class ContactDetailInfo extends Component{
       tagCode    : '',
       disabled: false,
       loadingMessage : '',
-      showLoading : false
+      showLoading : false,
+      company     : "",
+      showLabel  : 'show',
+      showInput : 'hide',
+      showEdit  : 'show',
+      showDone  : 'hide',
+      setFullHeight : '',
+      telephone : '',
+      city: '',
+      state: '',
+      address1: '',
+      jobStatus: '',
+      salesRep: '',
+      salesStatus: '',
+      birthDate: '',
+      areaCode: '',
+      country: '',
+      zip: '',
+      address2: '',
+      industry: '',
+      source: '',
+      occupation: '',
+      collapseMsg : 'Click to expand'
     }
   };
+  updateBasicField(){
+    this.setState({ showInput : 'hide',showLabel : 'show' })
+    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
+       .set('Content-Type', 'application/x-www-form-urlencoded')
+       .send({
+                 subNum: this.props.contact.subNum
+                ,company:this.state.company
+                ,telephone: this.state.telephone
+                ,city: this.state.city
+                ,state: this.state.state
+                ,address1: this.state.address1
+                ,jobStatus: this.state.jobStatus
+                ,salesRep: this.state.salesRep
+                ,salesStatus: this.state.salesStatus
+                ,birthDate: this.state.birthDate
+                ,areaCode: this.state.areaCode
+                ,country: this.state.country
+                ,zip: this.state.zip
+                ,address2: this.state.address2
+                ,industry: this.state.industry
+                ,source: this.state.source
+                ,occupation: this.state.occupation
+                ,ukey:this.users_details[0].userKey
+                ,listNum  : this.users_details[0].listObj['listNum']
+                ,isMobileLogin:'Y'
+                ,userId:this.users_details[0].userId
+              })
+       .then((res) => {
+          console.log(res.status);
 
+          var jsonResponse =  JSON.parse(res.text);
+          console.log(jsonResponse);
+          if(jsonResponse.success){
+            this.setState({
+              showContact : true,
+              editContact : false,
+              disabled    : false
+            })
+            SuccessAlert({message:"Contact updated successfully."});
+            this.props.contact['company'] = this.state.company;
+            this.props.updateContactHappened();
+
+          }else{
+            ErrorAlert({message : jsonResponse[1]});
+          }
+        });
+
+
+  }
   addNewTag(){
     console.log('Add New Tag hit');
 
@@ -50,6 +121,7 @@ class ContactDetailInfo extends Component{
                 ,ukey:this.users_details[0].userKey
                 ,isMobileLogin:'Y'
                 ,userId:this.users_details[0].userId
+
               })
        .then((res) => {
           console.log(res.status);
@@ -114,7 +186,35 @@ class ContactDetailInfo extends Component{
     }
   }
 
+  componentWillUpdate(nextProps, nextState){
+    console.log('Component Will Update ', nextProps);
+    if(nextProps.contact){
+      this.state.company = nextProps.contact.company;
+      this.state.telephone = nextProps.contact.telephone;
+      this.state.city = nextProps.contact.city;
+      this.state.state = nextProps.contact.company;
+      this.state.address1 = nextProps.contact.address1;
+      this.state.jobStatus = nextProps.contact.jobStatus;
+      this.state.salesRep = nextProps.contact.salesRep;
+      this.state.salesStatus = nextProps.contact.salesStatus;
+      this.state.birthDate = nextProps.contact.birthDate;
+      this.state.areaCode = nextProps.contact.areaCode;
+      this.state.country = nextProps.contact.country;
+      this.state.zip = nextProps.contact.zip;
+      this.state.address2 = nextProps.contact.address2;
+      this.state.industry = nextProps.contact.industry;
+      this.state.source = nextProps.contact.source;
+      this.state.occupation = nextProps.contact.occupation;
 
+    }
+  }
+  toggleHeight(){
+      if(this.state.setFullHeight){
+        this.setState({setFullHeight : ''});
+      }else{
+        this.setState({setFullHeight : 'heighAuto'});
+      }
+  }
   render(){
     console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
@@ -135,19 +235,95 @@ class ContactDetailInfo extends Component{
     }
     return (
       <div className="contacts-wrap">
-        <div id="Contact" className="tabcontent mksph_cardbox">
+        <div id="Contact" className={`tabcontent mksph_cardbox`}>
               <h3>Contact Info</h3>
-                <div className="mksph_contact_data">
+                <span className={`mkb_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide' }) } }>Edit</span>
+                <span className={`mkb_btn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
+              <div className={`height90 ${this.state.setFullHeight}`}>
+              <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Company : </span>
-                  <span className="mksph_contact_value"> {this.props.contact.company}</span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.company}</span>
+                  <input className={`${this.state.showInput}`} value={this.state.company} onChange = {event => this.setState({company : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Phone : </span>
-                  <span className="mksph_contact_value"> {this.props.contact.telephone}</span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.telephone}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.telephone} onChange = {event => this.setState({telephone : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">City : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.city}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.city} onChange = {event => this.setState({city : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">State : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.state}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.state} onChange = {event => this.setState({state : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Address 1 : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.address1}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.address1} onChange = {event => this.setState({address1 : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Job Title : </span>
-                  <span className="mksph_contact_value"> {this.props.contact.jobStatus}</span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.jobStatus}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.jobStatus} onChange = {event => this.setState({jobStatus : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Sales Status : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.salesStatus}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.salesStatus} onChange = {event => this.setState({salesStatus : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Birthday (YYYY-MM-DD): </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.birthDate}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.birthDate} onChange = {event => this.setState({birthDate : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Area Code : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.areaCode}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.areaCode} onChange = {event => this.setState({areaCode : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Country : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.country}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.country} onChange = {event => this.setState({country : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Address 2 : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.address2}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.address2} onChange = {event => this.setState({address2 : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Zip : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.zip}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.zip} onChange = {event => this.setState({zip : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Industry : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.industry}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.industry} onChange = {event => this.setState({industry : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Occupation : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.occupation}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.occupation} onChange = {event => this.setState({occupation : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Source : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.source}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.source} onChange = {event => this.setState({source : event.target.value})}  />
+                </div>
+                <div className="mksph_contact_data">
+                  <span className="mksph_contact_title">Sales Rep : </span>
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.salesRep}</span>
+                    <input className={`${this.state.showInput}`} value={this.state.salesRep} onChange = {event => this.setState({salesRep : event.target.value})}  />
+                </div>
+                </div>
+                <div className={`collapse`} onClick={this.toggleHeight.bind(this)}>
+                  <span>{this.state.collapseMsg}</span>
+                  <span className="mksicon-ArrowNext rotate-down"></span>
                 </div>
             </div>
             <div id="Tags" className="tabcontent mksph_cardbox">
