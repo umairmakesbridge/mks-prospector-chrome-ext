@@ -10,6 +10,7 @@ export const encodeHTML=(str)=>{
               str = str.replace(/\"/g, "&quot;");
               str = str.replace(/\‘/g, "&#8216;");
               str = str.replace(//g, "");
+              str = str.replace(/%20/g,'+')
           }
           else {
               str = "";

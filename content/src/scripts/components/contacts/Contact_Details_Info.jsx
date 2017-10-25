@@ -102,6 +102,28 @@ class ContactDetailInfo extends Component{
 
 
   }
+  cancelField(){
+    this.setState({
+      showInput : 'hide',
+      showLabel : 'show'
+      ,company:this.props.contact.company
+      ,telephone: this.props.contact.telephone
+      ,city: this.props.contact.city
+      ,state: this.props.contact.state
+      ,address1: this.props.contact.address1
+      ,jobStatus: this.props.contact.jobStatus
+      ,salesRep: this.props.contact.salesRep
+      ,salesStatus: this.props.contact.salesStatus
+      ,birthDate: this.props.contact.birthDate
+      ,areaCode: this.props.contact.areaCode
+      ,country: this.props.contact.country
+      ,zip: this.props.contact.zip
+      ,address2: this.props.contact.address2
+      ,industry: this.props.contact.industry
+      ,source: this.props.contact.source
+      ,occupation: this.props.contact.occupation
+    })
+  }
   addNewTag(){
     console.log('Add New Tag hit');
 
@@ -192,7 +214,7 @@ class ContactDetailInfo extends Component{
       this.state.company = nextProps.contact.company;
       this.state.telephone = nextProps.contact.telephone;
       this.state.city = nextProps.contact.city;
-      this.state.state = nextProps.contact.company;
+      this.state.state = nextProps.contact.state;
       this.state.address1 = nextProps.contact.address1;
       this.state.jobStatus = nextProps.contact.jobStatus;
       this.state.salesRep = nextProps.contact.salesRep;
@@ -238,6 +260,7 @@ class ContactDetailInfo extends Component{
         <div id="Contact" className={`tabcontent mksph_cardbox`}>
               <h3>Contact Info</h3>
                 <span className={`mkb_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide' }) } }>Edit</span>
+                <span className={`mkb_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
                 <span className={`mkb_btn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
               <div className={`height90 ${this.state.setFullHeight}`}>
               <div className="mksph_contact_data">
@@ -373,7 +396,8 @@ class ContactDetailInfo extends Component{
                 </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>
-                      <CustomFields custom_fields={this.props.contact.cusFldList}/>
+
+                      <CustomFields custom_fields={this.props.contact.cusFldList} contact={this.props.contact} users_details={this.users_details} baseUrl={this.baseUrl}/>
                 </div>
       </div>
     );
