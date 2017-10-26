@@ -40,6 +40,7 @@ class App extends Component {
       appPanel         : false,
       selectedEmail    : null,
       chromeExObj      : null,
+      logOut           : 'hide',
       gmail_emails_body: [],
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
@@ -270,7 +271,7 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
-                        <div className="mksph_logout" onClick={ this.logOut.bind(this) }>logout</div>
+                        <div className={`${this.state.logOut} mksph_logout ripple`} onClick={ this.logOut.bind(this) }><span className="mksicon-logout"></span>logout</div>
 
                         <div className="clr"></div>
                     </div>
@@ -285,7 +286,8 @@ class App extends Component {
                 toggleShowLogin={showLogin => this.setState({
                                     showLogin: false,
                                     gmailEmails:!this.state.gmailEmails,
-                                    showLoading : false
+                                    showLoading : false,
+                                    logOut : ''
                                   })}
                 createNewList={this.createNewList}
                 checkSubscriberList={this.checkSubscriberList}

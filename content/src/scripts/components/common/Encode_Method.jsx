@@ -34,6 +34,7 @@ export const decodeHTML= (str,lineFeed)=>{
              str = str.replace(/&quot;/g, "\"");
              str = str.replace(/&#8216;/g, "‘");
              str = str.replace(/&#61;/g, "=");
+             str = str.replace(/%252B/g,' ')
              if (lineFeed) {
                  str = str.replace(/&line;/g, "\n");   // NEED TO DISCUSS THIS WITH UMAIR
              }

@@ -146,7 +146,7 @@ class ContactBasicInfo extends Component{
                     </div>
                     <div className="scf_o_right">
                         <ul>
-                            <li onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
+                            <li className="wrap_scf_o_create_contact" onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
                                 <div className="scf_option_icon ripple">
                                     <a href="#">
                                         <div className="wrap_scf_o_i">

@@ -16,7 +16,11 @@ class CustomFields extends Component{
       CustomField : '',
       showLabel  : 'show',
       showInput : 'hide',
-      customFieldKeys : []
+      customFieldKeys : [],
+      setFullHeight : '',
+      setFullHeight : '',
+      collapseMsg: 'Click to expand',
+      collapseExpand:'expand'
     }
     const Fields = this.props.custom_fields;
     let customFieldsArray = [];
@@ -71,6 +75,13 @@ class CustomFields extends Component{
           }
         });
   }
+  toggleHeight(){
+      if(this.state.setFullHeight){
+        this.setState({setFullHeight : '',collapseMsg: 'Click to expand',collapseExpand:'expand'});
+      }else{
+        this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
+      }
+  }
   cancelField(){
     const Fields = this.props.custom_fields;
     let customFieldsArray = [];
@@ -82,7 +93,10 @@ class CustomFields extends Component{
                             )
       this.setState({
         showLabel  : 'show',
-        showInput : 'hide'
+        showInput : 'hide',
+        setFullHeight : '',
+        collapseMsg: 'Click to expand',
+        collapseExpand:'expand'
       })
   }
   ChangeHandler(objKey,event){
@@ -93,7 +107,7 @@ class CustomFields extends Component{
     return this.state.customFieldKeys.map((field,key)=>
                               <li key={field} >
                                 <div>
-                                <span className={`mksph_contact_title`}>{field} :</span>
+                                <span className={`mksph_contact_title`}>{decodeHTML(field)} :</span>
                                   <span className={`mksph_contact_value ${this.state.showLabel}`}>{ decodeHTML(this.state[field])  }</span>
                                   <input className={`${this.state.showInput}`} value={ decodeHTML(this.state[field]) } onChange = { this.ChangeHandler.bind(this,field) } />
                                   </div>
@@ -105,31 +119,26 @@ class CustomFields extends Component{
       return (<div><p className="not-found">No custom fields available.</p></div>)
     }
 
-    //this.generateCustomFields(customFieldsArray);
-
     return (
-      <div className="csfields-contents">
-        <span className={`mkb_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide' }) } }>Edit</span>
-        <span className={`mkb_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
-        <span className={`mkb_btn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
+      <div className="customField_ul_wraps">
+        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse'  }) } }>Edit</span>
+        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
+        <span className={`mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
+      <div className={`csfields-contents scfe_field height90 ${this.state.setFullHeight}`}>
+
         <ul>{this.generateCustomFields()}</ul>
 
         </div>
+        <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
+          <span>{this.state.collapseMsg}</span>
+          <span className="mksicon-ArrowNext"></span>
+        </div>
+      </div>
     )
   }
 
 }
-/*const CustomFields = (props) => {
-  if(!props.custom_fields){
-    return (<div><p className="not-found">No custom fields available.</p></div>)
-  }
 
-
-
-               return (
-                 <div className="csfields-contents"><ul>{CustomField}</ul></div>
-               );
-}*/
 
 
 export default CustomFields;

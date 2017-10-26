@@ -50,7 +50,8 @@ class ContactDetailInfo extends Component{
       industry: '',
       source: '',
       occupation: '',
-      collapseMsg : 'Click to expand'
+      collapseMsg : 'Click to expand',
+      collapseExpand : 'expand'
     }
   };
   updateBasicField(){
@@ -104,8 +105,11 @@ class ContactDetailInfo extends Component{
   }
   cancelField(){
     this.setState({
-      showInput : 'hide',
-      showLabel : 'show'
+      showInput : 'hide'
+      ,showLabel : 'show'
+      ,setFullHeight : ''
+      ,collapseMsg: 'Click to expand'
+      ,collapseExpand:'expand'
       ,company:this.props.contact.company
       ,telephone: this.props.contact.telephone
       ,city: this.props.contact.city
@@ -122,6 +126,7 @@ class ContactDetailInfo extends Component{
       ,industry: this.props.contact.industry
       ,source: this.props.contact.source
       ,occupation: this.props.contact.occupation
+
     })
   }
   addNewTag(){
@@ -160,6 +165,9 @@ class ContactDetailInfo extends Component{
 
           }
         });
+  }
+  createConact(){
+    jQuery('.wrap_scf_o_create_contact').trigger('click');
   }
   deleteTagName(tagName){
     this.setState({
@@ -232,9 +240,9 @@ class ContactDetailInfo extends Component{
   }
   toggleHeight(){
       if(this.state.setFullHeight){
-        this.setState({setFullHeight : ''});
+        this.setState({setFullHeight : '',collapseMsg: 'Click to expand',collapseExpand:'expand'});
       }else{
-        this.setState({setFullHeight : 'heighAuto'});
+        this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
       }
   }
   render(){
@@ -252,17 +260,63 @@ class ContactDetailInfo extends Component{
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Contact</h3>
               <p className="not-found">No Contact Found</p>
+              <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create Found</button>
           </div>
               </div>);
     }
     return (
       <div className="contacts-wrap">
-        <div id="Contact" className={`tabcontent mksph_cardbox`}>
-              <h3>Contact Info</h3>
-                <span className={`mkb_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide' }) } }>Edit</span>
-                <span className={`mkb_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
-                <span className={`mkb_btn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
-              <div className={`height90 ${this.state.setFullHeight}`}>
+        <div id="Tags" className="tabcontent mksph_cardbox">
+              <h3>Tags</h3>
+              <a className="addTag mkb_btn mkb_greenbtn" onClick={showAddTag => { this.setState({showAddBox : true}) } } >Add Tag</a>
+              <ToggleDisplay show={this.state.showAddBox}>
+                <div className="">
+                  <input
+                    type="text"
+                    value={this.state.tagName}
+                    onChange={event => this.setState({tagName : event.target.value}) }
+                    onKeyPress={this.handleOnTagInput.bind(this)}
+                    disabled={this.state.disabled}
+                  />
+
+
+                  <div className="scfe_control_option">
+                      <div className="scfe_close_wrap" onClick={showAddTag => { this.setState({showAddBox : false,tagName: ''}) }}>
+                          <a className="scfe_c_ach" href="#">
+                              <div className="scfe_close_t">
+                                  <span>Close</span>
+                              </div>
+                              <div className="scfe_close_i_md">
+                                  <div className="scfe_close_i" aria-hidden="true" data-icon="&#xe915;"></div>
+                              </div>
+                          </a>
+                      </div>
+                      <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={ this.addNewTag.bind(this) } >
+                          <a className="scfe_ach" href="#">
+                              <div className="scfe_save_t">
+                                  <span>Save</span>
+                              </div>
+                              <div className="scfe_save_i_md">
+                                  <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
+                              </div>
+                          </a>
+                      </div>
+                      <div className="clr"></div>
+                  </div>
+
+                </div>
+              </ToggleDisplay>
+              <div className="tags-contents">
+                <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} />
+                <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
+              </div>
+            </div>
+        <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
+              <h3>Basic Fields</h3>
+                <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse' }) } }>Edit</span>
+                <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
+                <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
+              <div className={`height90 ${this.state.setFullHeight} scfe_field`}>
               <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Company : </span>
                   <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.company}</span>
@@ -344,56 +398,12 @@ class ContactDetailInfo extends Component{
                     <input className={`${this.state.showInput}`} value={this.state.salesRep} onChange = {event => this.setState({salesRep : event.target.value})}  />
                 </div>
                 </div>
-                <div className={`collapse`} onClick={this.toggleHeight.bind(this)}>
+                <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
                   <span>{this.state.collapseMsg}</span>
-                  <span className="mksicon-ArrowNext rotate-down"></span>
+                  <span className="mksicon-ArrowNext"></span>
                 </div>
             </div>
-            <div id="Tags" className="tabcontent mksph_cardbox">
-                  <h3>Tags</h3>
-                  <a className="addTag" onClick={showAddTag => { this.setState({showAddBox : true}) } } >Add Tag</a>
-                  <ToggleDisplay show={this.state.showAddBox}>
-                    <div className="">
-                      <input
-                        type="text"
-                        value={this.state.tagName}
-                        onChange={event => this.setState({tagName : event.target.value}) }
-                        onKeyPress={this.handleOnTagInput.bind(this)}
-                        disabled={this.state.disabled}
-                      />
 
-
-                      <div className="scfe_control_option">
-                          <div className="scfe_close_wrap" onClick={showAddTag => { this.setState({showAddBox : false,tagName: ''}) }}>
-                              <a className="scfe_c_ach" href="#">
-                                  <div className="scfe_close_t">
-                                      <span>Close</span>
-                                  </div>
-                                  <div className="scfe_close_i_md">
-                                      <div className="scfe_close_i" aria-hidden="true" data-icon="&#xe915;"></div>
-                                  </div>
-                              </a>
-                          </div>
-                          <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={ this.addNewTag.bind(this) } >
-                              <a className="scfe_ach" href="#">
-                                  <div className="scfe_save_t">
-                                      <span>Save</span>
-                                  </div>
-                                  <div className="scfe_save_i_md">
-                                      <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
-                                  </div>
-                              </a>
-                          </div>
-                          <div className="clr"></div>
-                      </div>
-
-                    </div>
-                  </ToggleDisplay>
-                  <div className="tags-contents">
-                    <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} />
-                    <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
-                  </div>
-                </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>
 
