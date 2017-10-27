@@ -40,7 +40,7 @@ class App extends Component {
       appPanel         : false,
       selectedEmail    : null,
       chromeExObj      : null,
-      logOut           : 'hide',
+      islogOut           : 'hide',
       gmail_emails_body: [],
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
@@ -225,7 +225,7 @@ class App extends Component {
  logOut(){
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
-   this.setState({showLogin:true,gmailEmails:false,showContacts:false,logout:'hide'});
+   this.setState({showLogin:true,gmailEmails:false,showContacts:false,islogOut:'hide',selectedEmail:null});
  }
 
   render() {
@@ -271,7 +271,7 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
-                        <div className={`${this.state.logOut} mksph_logout ripple`} onClick={ this.logOut.bind(this) }><span className="mksicon-logout"></span>logout</div>
+                        <div className={`${this.state.islogOut} mksph_logout ripple`} onClick={ this.logOut.bind(this) }><span className="mksicon-logout"></span>logout</div>
 
                         <div className="clr"></div>
                     </div>
@@ -287,7 +287,7 @@ class App extends Component {
                                     showLogin: false,
                                     gmailEmails:!this.state.gmailEmails,
                                     showLoading : false,
-                                    logOut : ''
+                                    islogOut : ''
                                   })}
                 createNewList={this.createNewList}
                 checkSubscriberList={this.checkSubscriberList}

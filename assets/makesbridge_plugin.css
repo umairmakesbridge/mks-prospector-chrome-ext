@@ -18,6 +18,7 @@ input:focus {
     float: right;
     width: 6%;
     height: 50px;
+    cursor: pointer;
 }
 .makesbridge_plugin {
  right: 0;
@@ -210,6 +211,7 @@ html, body{ height:100%;}
 .mksph_icon_menu:hover{color: #fff;}
 .mksph_icon_close:hover{color: #fff;}
 .mksph_icon_back:hover{color: #fff;}
+.mksicon-logout:hover{color: #fff;}
 
 .mksph_row a{text-decoration: none;}
 
