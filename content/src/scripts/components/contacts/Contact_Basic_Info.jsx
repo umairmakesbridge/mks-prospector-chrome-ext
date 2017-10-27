@@ -101,7 +101,7 @@ class ContactBasicInfo extends Component{
                  subNum: this.props.contact.subNum
                 ,firstName:this.state.firstName
                 ,lastName: this.state.lastName
-                ,company: this.state.company
+                //,company: this.state.company
                 ,ukey:this.users_details[0].userKey
                 ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
@@ -173,7 +173,7 @@ class ContactBasicInfo extends Component{
                       <span>{this.props.contactInfo.firstName} </span>
                       <span> {this.props.contactInfo.lastName}</span>
                       <div className="clr"></div>
-                      <span>{this.props.contactInfo.email}</span>
+                      <span >{this.props.contactInfo.email}</span>
                     </div>
                 </div>
                 <div className="clr"></div>
@@ -202,7 +202,7 @@ class ContactBasicInfo extends Component{
                   <div className="scfe_field">
                       <input placeholder="First Name" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } />
                       <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
-                      <input placeholder="Company"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
+                      <input placeholder="Company" className="hide"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
 
                   </div>
                   <div className="scfe_control_option">
@@ -305,7 +305,7 @@ class ContactBasicInfo extends Component{
                <div className="scfe_field">
                    <input placeholder="First Name" disabled={this.state.disabled}  value= {this.state.firstName} onChange={event=> { this.setState({firstName: event.target.value }) } } />
                    <input placeholder="Last Name"  disabled={this.state.disabled}  value={this.state.lastName} onChange={event=> { this.setState({lastName: event.target.value }) } } />
-                   <input placeholder="Company"    disabled={this.state.disabled}  value={this.state.company} onChange={event=> { this.setState({company: event.target.value }) } } />
+                   <input placeholder="Company" className="hide"    disabled={this.state.disabled}  value={this.state.company} onChange={event=> { this.setState({company: event.target.value }) } } />
 
                </div>
                <div className="scfe_control_option">

@@ -22,7 +22,9 @@ class CustomFields extends Component{
       collapseMsg: 'Click to expand',
       collapseExpand:'expand'
     }
+    if(this.props.custom_fields){
     const Fields = this.props.custom_fields;
+
     let customFieldsArray = [];
     jQuery.each(Fields[0],(key,value)=>{
                         customFieldsArray.push(value[0])
@@ -37,22 +39,41 @@ class CustomFields extends Component{
       customFieldsArray.map((field,key)=>
                                 this.state.customFieldKeys.push(Object.keys(field)[0])
                           )
-
-      console.log(this.state);
+    }
   }
 
   updateCustomFields(){
     this.setState({ showInput : 'hide',showLabel : 'show' });
     let reqObj = {};
     this.state.customFieldKeys.map((field,key)=>
-                            reqObj["frmFld_"+encodeHTML(encodeURIComponent(field))] = this.state[field]
+                            reqObj["frmFld_"+encodeHTML(field)] = this.state[field]
                         );
     console.log(reqObj);
     reqObj["subNum"] = this.props.contact.subNum;
+    reqObj["firstName"] = this.props.contact.firstName;
+    reqObj["lastName"] = this.props.contact.lastName;
+    reqObj["company"] = this.props.contactInfoState.company;
+    reqObj["telephone"] = this.props.contactInfoState.telephone;
+    reqObj["city"] = this.props.contactInfoState.city;
+    reqObj["state"] = this.props.contactInfoState.state;
+    reqObj["address1"] = this.props.contactInfoState.address1;
+    reqObj["jobStatus"] = this.props.contactInfoState.jobStatus;
+    reqObj["salesRep"] = this.props.contactInfoState.salesRep;
+    reqObj["salesStatus"] = this.props.contactInfoState.salesStatus;
+    reqObj["birthDate"] = this.props.contactInfoState.birthDate;
+    reqObj["areaCode"] = this.props.contactInfoState.areaCode;
+    reqObj["country"] = this.props.contactInfoState.country;
+    reqObj["zip"] = this.props.contactInfoState.zip;
+    reqObj["address2"] = this.props.contactInfoState.address2;
+    reqObj["industry"] = this.props.contactInfoState.industry;
+    reqObj["source"] = this.props.contactInfoState.source;
+    reqObj["occupation"] = this.props.contactInfoState.occupation;
+
     reqObj["ukey"] = this.users_details[0].userKey;
     reqObj["listNum"] = this.users_details[0].listObj['listNum'];
     reqObj["isMobileLogin"] = 'Y';
     reqObj["userId"] = this.users_details[0].userId;
+
 
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
        .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -69,7 +90,7 @@ class CustomFields extends Component{
               disabled    : false
             })
             SuccessAlert({message:"Contact updated successfully."});
-
+            this.props.getSubscriberDetails();
           }else{
             ErrorAlert({message : jsonResponse[1]});
           }

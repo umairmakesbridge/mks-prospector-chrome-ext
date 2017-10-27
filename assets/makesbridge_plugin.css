@@ -192,7 +192,7 @@ html, body{ height:100%;}
 }
 .mksph_create_contact {
     color: rgb(255, 255, 255);
-    width: 180px;
+    width: 110px;
     text-transform: uppercase;
     cursor: pointer;
     font-size: 14px;
@@ -204,6 +204,7 @@ html, body{ height:100%;}
     padding: 10px;
     border-radius: 2px;
     margin: 20px auto 0;
+    display: block;
 }
 
 .mksph_icon_menu:hover{color: #fff;}
@@ -580,7 +581,7 @@ input:disabled,button:disabled{
 }
 
 .heighAuto {
-    max-height: 750px;
+    max-height: 1500px;
 }
 
 /*-----------------------------Alerts---------------------------*/
@@ -1514,7 +1515,6 @@ span.mksph_contact_value {
  position: relative;
 }
 .csfields-contents {
-  overflow-y: auto;
   overflow-x: hidden;
   padding: 15px 0 0px;
   position: relative;
@@ -1525,7 +1525,6 @@ span.mksph_contact_value {
    float: right;
    top: -19px;
    text-decoration: underline;
-   text-transform: lowercase;
    cursor:pointer;
    background: rgb(0, 111, 253);
    color: #fff;

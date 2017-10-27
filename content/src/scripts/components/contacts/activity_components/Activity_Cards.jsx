@@ -68,6 +68,10 @@ const ActivityCard = (props)=>{
           return(
             <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
           );
+      }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
+        return(
+          <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
+        );
       }
 
   });

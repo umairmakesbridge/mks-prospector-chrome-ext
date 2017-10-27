@@ -225,7 +225,7 @@ class App extends Component {
  logOut(){
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
-   this.setState({showLogin:true,gmailEmails:false,showContacts:false});
+   this.setState({showLogin:true,gmailEmails:false,showContacts:false,logout:'hide'});
  }
 
   render() {

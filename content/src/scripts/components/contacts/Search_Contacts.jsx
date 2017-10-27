@@ -41,7 +41,7 @@ class SearchContacts extends Component{
       if(this.users_details.length > 0 && !this.state.countSet){
           this.getClickVisitCount();
           //ErrorAlert({message:"Already Exists."});
-          
+
         }
     }
 
@@ -222,8 +222,9 @@ class SearchContacts extends Component{
                     <h2>Search</h2>
                       <div className="contacts-switch">
                           <div className="status_tgl">
+                            <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
+                    
                               <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
-                              <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
                         </div>
                       </div>
                     <input

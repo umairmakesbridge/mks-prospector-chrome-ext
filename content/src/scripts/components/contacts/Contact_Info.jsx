@@ -35,7 +35,8 @@ class ContactInfo extends Component{
                     activityActive: '',
                     changeInTagsView    : false,
                     changeInContactBasic: false,
-                    contactnotFound  : false
+                    contactnotFound  : false,
+                    showScore : ''
                    }
   }
 
@@ -63,7 +64,7 @@ class ContactInfo extends Component{
   componentWillReceiveProps(nextProps){
     //this.loadSubscriptionData(nextProps.subscriptionId);
     if(nextProps.contact_email && this.state.email != nextProps.contact_email){
-        this.setState({diffEmail : true,email : nextProps.contact_email})
+        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:''})
     }else{
         this.setState({diffEmail : false})
     }
@@ -105,7 +106,9 @@ class ContactInfo extends Component{
                 }else{
                   this.setState({
                     contactnotFound : true,
-                    diffEmail: false
+                    activityActive : 'hide',
+                    diffEmail: false,
+                    showScore : 'hide'
                   });
                 }
               }
@@ -165,13 +168,14 @@ class ContactInfo extends Component{
                                updateContactHappened={this.updateBasicContactInfo.bind(this)}
                                baseUrl={this.baseUrl}
                                users_details={this.users_details}
+
                               />
                           <div className="scf_tab_wrap">
                               <div className="scf_tab">
                                   <div className="tab">
                                     <button className={`tablinks ripple ${this.state.contactActive}`} onClick={switchTab => { this.setState({showContacts:true,showActivity:false,activityActive:'',contactActive:'active'})} }>Contact</button>
                                     <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
-                                    <div className="score">
+                                    <div className={`score ${this.state.showScore}`}>
                                       <i className="icon score"></i>
                                       +
                                       <span className="score-value">{this.state.score}</span>
@@ -186,6 +190,7 @@ class ContactInfo extends Component{
                                           baseUrl={this.baseUrl}
                                           changeInTagsView={this.changeTagView.bind(this)}
                                           contactnotFound={this.state.contactnotFound}
+                                          getSubscriberDetails = {this.getSubscriberDetails.bind(this)}
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>

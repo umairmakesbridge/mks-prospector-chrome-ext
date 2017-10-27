@@ -24,6 +24,7 @@ class ContactDetailInfo extends Component{
     this.baseUrl = this.props.baseUrl;
     this.state = {
       showAddBox : false,
+      tagBtn     : '',
       tagName    : '',
       tagCode    : '',
       disabled: false,
@@ -61,6 +62,8 @@ class ContactDetailInfo extends Component{
        .send({
                  subNum: this.props.contact.subNum
                 ,company:this.state.company
+                ,firstName : this.state.firstName
+                ,lastName  : this.state.lastName
                 ,telephone: this.state.telephone
                 ,city: this.state.city
                 ,state: this.state.state
@@ -93,9 +96,9 @@ class ContactDetailInfo extends Component{
               disabled    : false
             })
             SuccessAlert({message:"Contact updated successfully."});
-            this.props.contact['company'] = this.state.company;
-            this.props.updateContactHappened();
-
+            //this.props.contact['company'] = this.state.company;
+            //this.props.updateContactHappened();
+            this.props.getSubscriberDetails();
           }else{
             ErrorAlert({message : jsonResponse[1]});
           }
@@ -159,6 +162,7 @@ class ContactDetailInfo extends Component{
             this.setState({
                 tagName:'',
                 showAddBox:false,
+                tagBtn : '',
                 disabled:false
             })
             this.props.changeInTagsView();
@@ -192,7 +196,8 @@ class ContactDetailInfo extends Component{
           if(jsonResponse.success){
             this.setState({
                 tagName:'',
-                showAddBox:false
+                showAddBox:false,
+                tagBtn:''
             })
             let _this = this;
             setTimeout(function(){
@@ -204,6 +209,7 @@ class ContactDetailInfo extends Component{
             this.setState({
               tagName:'',
               showAddBox:false,
+              tagBtn : '',
               loadingMessage: ''
             })
           }
@@ -219,6 +225,8 @@ class ContactDetailInfo extends Component{
   componentWillUpdate(nextProps, nextState){
     console.log('Component Will Update ', nextProps);
     if(nextProps.contact){
+      this.state.firstName = nextProps.contact.firstName;
+      this.state.lastName = nextProps.contact.lastName;
       this.state.company = nextProps.contact.company;
       this.state.telephone = nextProps.contact.telephone;
       this.state.city = nextProps.contact.city;
@@ -260,7 +268,7 @@ class ContactDetailInfo extends Component{
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Contact</h3>
               <p className="not-found">No Contact Found</p>
-              <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create Found</button>
+              <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create</button>
           </div>
               </div>);
     }
@@ -268,7 +276,7 @@ class ContactDetailInfo extends Component{
       <div className="contacts-wrap">
         <div id="Tags" className="tabcontent mksph_cardbox">
               <h3>Tags</h3>
-              <a className="addTag mkb_btn mkb_greenbtn" onClick={showAddTag => { this.setState({showAddBox : true}) } } >Add Tag</a>
+              <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={showAddTag => { this.setState({showAddBox : true,tagBtn : 'hide'}) } } >Add Tag</a>
               <ToggleDisplay show={this.state.showAddBox}>
                 <div className="">
                   <input
@@ -281,7 +289,7 @@ class ContactDetailInfo extends Component{
 
 
                   <div className="scfe_control_option">
-                      <div className="scfe_close_wrap" onClick={showAddTag => { this.setState({showAddBox : false,tagName: ''}) }}>
+                      <div className="scfe_close_wrap" onClick={showAddTag => { this.setState({showAddBox : false,tagName: '',tagBtn:''}) }}>
                           <a className="scfe_c_ach" href="#">
                               <div className="scfe_close_t">
                                   <span>Close</span>
@@ -407,7 +415,14 @@ class ContactDetailInfo extends Component{
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>
 
-                      <CustomFields custom_fields={this.props.contact.cusFldList} contact={this.props.contact} users_details={this.users_details} baseUrl={this.baseUrl}/>
+                      <CustomFields
+                        contactInfoState = {this.state}
+                        custom_fields={this.props.contact.cusFldList}
+                        contact={this.props.contact}
+                        users_details={this.users_details}
+                        baseUrl={this.baseUrl}
+                        getSubscriberDetails={this.props.getSubscriberDetails}
+                        />
                 </div>
       </div>
     );
