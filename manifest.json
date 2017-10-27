@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Gmail Prospector Makesbridge",
+  "name": "Makesbridge Prospector",
   "description": "Makesbridge™",
-  "version": "0.0.0.1",
+  "version": "0.0.0.2",
   "background": {
     "scripts": [
       "background.js"
@@ -18,7 +18,7 @@
   "browser_action": {
     "default_title": "Gmail Prospector Makesbridge"
   },
-  "short_name": "MKS App",
+  "short_name": "MKS Prospector",
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
