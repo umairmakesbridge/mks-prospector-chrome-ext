@@ -10,7 +10,8 @@ import ContactDetailInfo
        from './Contact_Details_Info';
 import ActivityTimeline
        from './Activity_Timeline';
-
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
 
 class ContactInfo extends Component{
 
@@ -34,8 +35,9 @@ class ContactInfo extends Component{
                     activityActive: '',
                     changeInTagsView    : false,
                     changeInContactBasic: false,
-                    contactnotFound  : false
-                  }
+                    contactnotFound  : false,
+                    showScore : ''
+                   }
   }
 
   componentDidUpdate(){
@@ -63,7 +65,7 @@ class ContactInfo extends Component{
   componentWillReceiveProps(nextProps){
     //this.loadSubscriptionData(nextProps.subscriptionId);
     if(nextProps.contact_email && this.state.email != nextProps.contact_email){
-        this.setState({diffEmail : true,score:0, email : nextProps.contact_email})
+        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:''})
     }else{
         this.setState({diffEmail : false})
     }
@@ -84,7 +86,7 @@ class ContactInfo extends Component{
 
                 if (jsonResponse[0] == "err"){
                     if(jsonResponse[1] == "SESSION_EXPIRED"){
-                      alert(jsonResponse[1]);
+                      ErrorAlert({message:jsonResponse[1]});
                       jQuery('.mksph_logout').trigger('click');
                     }
                   return false;
@@ -105,7 +107,9 @@ class ContactInfo extends Component{
                 }else{
                   this.setState({
                     contactnotFound : true,
-                    diffEmail: false
+                    activityActive : 'hide',
+                    diffEmail: false,
+                    showScore : 'hide'
                   });
                 }
               }
@@ -138,7 +142,7 @@ class ContactInfo extends Component{
                                 console.log(jsonResponse);
 
                               }else{
-                                alert(jsonResponse[1])
+                                ErrorAlert({ message : jsonResponse[1] })
                               }
                             });
   }
@@ -166,19 +170,18 @@ class ContactInfo extends Component{
                                updateContactHappened={this.updateBasicContactInfo.bind(this)}
                                baseUrl={this.baseUrl}
                                users_details={this.users_details}
+
                               />
                           <div className="scf_tab_wrap">
                               <div className="scf_tab">
                                   <div className="tab">
                                     <button className={`tablinks ripple ${this.state.contactActive}`} onClick={switchTab => { this.setState({showContacts:true,showActivity:false,activityActive:'',contactActive:'active'})} }>Contact</button>
-                                    <ToggleDisplay show={!this.state.contactnotFound && this.state.subscriber}>
-                                        <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
-
-                                        <div className="score">
-                                          <i className="icon score"></i>
-                                          <span className="score-value">{this.state.score}</span>
-                                        </div>
-                                      </ToggleDisplay>
+                                    <button className={`tablinks ripple ${this.state.activityActive}`} onClick={switchTab => { this.setState({showContacts:false,showActivity:true,activityActive:'active',contactActive:''}) } } id="defaultOpen">Activity</button>
+                                    <div className={`score ${this.state.showScore}`}>
+                                      <i className="icon score"></i>
+                                      +
+                                      <span className="score-value">{this.state.score}</span>
+                                    </div>
                                   </div>
 
                                   <div className="tab_content_wrap">
@@ -189,6 +192,7 @@ class ContactInfo extends Component{
                                           baseUrl={this.baseUrl}
                                           changeInTagsView={this.changeTagView.bind(this)}
                                           contactnotFound={this.state.contactnotFound}
+                                          getSubscriberDetails = {this.getSubscriberDetails.bind(this)}
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>

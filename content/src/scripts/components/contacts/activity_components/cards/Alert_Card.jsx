@@ -8,13 +8,16 @@ const AlertCard = (props) => {
       let displayicon = (props.mapping.icon) ? props.mapping.icon : 'mksicon-Mail';
       let _date = Moment(decodeHTML(props.activity.logTime), 'M/D/YYYY h:m a');
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
+      let _subject = (props.activity.alertComments) ? props.activity.alertComments : (props.activity.subject) ? props.activity.subject : "";
+      let _subjecLabel = (props.activity.subject) ? "" : "hide";
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
            <h5><a>{decodeHTML(props.activity.botLabel)}</a></h5>
            <div className="info-p">
                 <div className="infotxt">
-                    <a>{decodeHTML(props.activity.alertComments,true)}</a>
+                    <strong className={_subjecLabel}>Subject</strong>
+                    <a>{decodeHTML(_subject,true)}</a>
                 </div>
             </div>
             <div className="btm-bar ">

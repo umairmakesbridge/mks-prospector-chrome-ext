@@ -55,7 +55,18 @@ you can use the generic selector below, but it's slower:
   -webkit-font-smoothing: antialiased;
 }
 
-
+.mksicon-users:before {
+  content: "\e931";
+}
+.mksicon-tag:before {
+  content: "\e932";
+}
+.mksicon-file:before {
+  content: "\e933";
+}
+.mksicon-logout:before {
+  content: "\e930";
+}
 .mksicon-startflag:before {
   content: "\e92f";
 }

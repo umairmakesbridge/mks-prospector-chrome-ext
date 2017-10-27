@@ -18,6 +18,7 @@ import GmailEmail  from './components/gmaillist/Email_List';
 import ContactInfo from './components/contacts/Contact_Info';
 import SearchContacts from './components/contacts/Search_Contacts';
 import Menu from './components/menu/menu';
+import LoadingMask from './components/common/Loading_Mask';
 
 const anchor = document.createElement('div');
 anchor.id = 'rcr-anchor';
@@ -33,13 +34,18 @@ class App extends Component {
       gmail_email_list : [],
       showLogin        : true,
       gmailEmails      : false,
+      showLoading      : false,
+      loadingMessage   : 'Loading....',
       showContacts     : false,
       appPanel         : false,
       selectedEmail    : null,
       chromeExObj      : null,
+      islogOut           : 'hide',
       gmail_emails_body: [],
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
+
+
     this.onEmailSelect = this.onEmailSelect.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
     this.hideTopMenu = this.hideTopMenu.bind(this);
@@ -98,6 +104,15 @@ class App extends Component {
 
     });
 
+  }
+  componentDidMount(){
+    if(localStorage.getItem('pmks_userpass')){
+      let username = localStorage.getItem('pmks_userpass').split("__")[0];
+      let password = localStorage.getItem('pmks_userpass').split("__")[1];
+      this.refs.loginform.autoLogin(username,password);
+      this.state.showLogin = false;
+      this.state.showLoading = true;
+    }
   }
 
   extractEmailsFromBody(text){
@@ -207,6 +222,12 @@ class App extends Component {
   });
  }
 
+ logOut(){
+   console.log('1. Logout is triggered');
+   localStorage.removeItem('pmks_userpass');
+   this.setState({showLogin:true,gmailEmails:false,showContacts:false,islogOut:'hide',selectedEmail:null});
+ }
+
   render() {
     return (
       <div className="appWrapper">
@@ -250,23 +271,27 @@ class App extends Component {
                           >
                         <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
-                        <div className="mksph_logout" onClick={ showLogin => this.setState({showLogin:true,gmailEmails:false,showContacts:false}) }>logout</div>
+                        <div className={`${this.state.islogOut} mksph_logout ripple`} onClick={ this.logOut.bind(this) }><span className="mksicon-logout"></span>logout</div>
 
                         <div className="clr"></div>
                     </div>
                 </div>
         <Menu />
+        <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} extraClass="fullHeight"/>
         <ToggleDisplay show={this.state.showLogin}>
 
         <LoginForm
                 users_details={this.state.users_details}
                 baseUrl = {this.state.baseUrl}
                 toggleShowLogin={showLogin => this.setState({
-                                    showLogin:!this.state.showLogin,
-                                    gmailEmails:!this.state.gmailEmails
+                                    showLogin: false,
+                                    gmailEmails:!this.state.gmailEmails,
+                                    showLoading : false,
+                                    islogOut : ''
                                   })}
                 createNewList={this.createNewList}
                 checkSubscriberList={this.checkSubscriberList}
+                ref="loginform"
         />
         </ToggleDisplay>
         <ToggleDisplay show={this.state.gmailEmails}>

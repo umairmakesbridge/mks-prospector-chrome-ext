@@ -22,26 +22,26 @@ const ActivityCard = (props)=>{
   var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
-                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score"}
+                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'blue','icon':'mksicon-act_score_c'}
                     , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red",'icon' : 'mksicon-act_alert'}
-                    , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait"}
+                    , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait", "color":"red", 'icon':'mksicon-act_alert'}
                     , "CS": {"name": "Sent", "action": "Campaign", "cssClass": "sent","color":"green",'icon':'mksicon-ActSent'}
                     , "OP": {"name": "Opened", "action": "Campaign", "cssClass": "open","color":"blue",'icon':'mksicon-OpenMail'}
                     , "CK": {"name": "Clicked", "action": "Campaign", "cssClass": "click","color":"blue",'icon' : 'mksicon-act_click'}
                     , "WV": {"name": "Page Viewed", "action": "Web", "cssClass": "pageview","color":"blue",'icon':'mksicon-act_pageview'}
-                    , "CT": {"name": "Converted", "action": "Campaign", "cssClass": "conversion"}
-                    , "TF": {"name": "Tell a friend", "action": "Campaign", "cssClass": "tellfriend"}
-                    , "UN": {"name": "Unsubscribed", "action": "Campaign", "cssClass": "unsubscribe","color":"red"}
-                    , "SP": {"name": "Suppressed", "action": "Campaign", "cssClass": "suppress"}
-                    , "CB": {"name": "Bounced", "action": "Email", "cssClass": "bounce"}
-                    , "MT": {"name": "Sent", "action": "Email", "cssClass": "sent"}
-                    , "MC": {"name": "Clicked", "action": "Email", "cssClass": "click","color":"blue"}
-                    , "MO": {"name": "Opened", "action": "Email", "cssClass": "open"}
-                    , "MS": {"name": "Surpressed", "action": "Email", "cssClass": "suppress"}
-                    , "WA": {"name": "Alert", "action": "Workflow", "cssClass": "alert"}
-                    , "WM": {"name": "Workflow Trigger Mail", "action": "Workflow", "cssClass": "wtmail"}
-                    , "MM": {"name": "Trigger Mail Sent", "action": "Workflow", "cssClass": "wtmail"}
-                    , "N": {"name": "Workflow Do Nothing", "action": "Workflow", "cssClass": "alert"}
+                    , "CT": {"name": "Converted", "action": "Campaign", "cssClass": "conversion","color":"blue",'icon':'mksicon-act_conversion'}
+                    , "TF": {"name": "Tell a friend", "action": "Campaign", "cssClass": "tellfriend",'color':'blue','icon':'mksicon-act_tellfriend'}
+                    , "UN": {"name": "Unsubscribed", "action": "Campaign", "cssClass": "unsubscribe","color":"red",'icon':'mksicon-act_unsubscribe'}
+                    , "SP": {"name": "Suppressed", "action": "Campaign", "cssClass": "suppress",'color':'red' ,'icon':'mksicon-act_suppress'}
+                    , "CB": {"name": "Bounced", "action": "Email", "cssClass": "bounce",'color':'red','icon':'mksicon-act_bounce'}
+                    , "MT": {"name": "Sent", "action": "Email", "cssClass": "sent",'color':'blue','icon':'mksicon-ActSent'}//
+                    , "MC": {"name": "Clicked", "action": "Email", "cssClass": "click","color":"blue",'icon':'mksicon-act_click'}
+                    , "MO": {"name": "Opened", "action": "Email", "cssClass": "open",'color':'blue','icon':'mksicon-OpenMail'}
+                    , "MS": {"name": "Surpressed", "action": "Email", "cssClass": "suppress",'color':'red','icon':'mksicon-act_suppress'}//
+                    , "WA": {"name": "Alert", "action": "Workflow", "cssClass": "alert",'color':'red','icon':'mksicon-act_alert'}//
+                    , "WM": {"name": "Workflow Trigger Mail", "action": "Workflow", "cssClass": "wtmail",'color':'green','icon':'mksicon-act_workflow'}//
+                    , "MM": {"name": "Trigger Mail Sent", "action": "Workflow", "cssClass": "wtmail",'color':'green','icon':'mksicon-act_wtmail'}//
+                    , "N": {"name": "Workflow Do Nothing", "action": "Workflow", "cssClass": "alert",'color':'blue','icon':'mksicon-act_alert'}//
                 }
 
                 console.log('activity activityBatch : ',props.activityBatch);
@@ -68,6 +68,10 @@ const ActivityCard = (props)=>{
           return(
             <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
           );
+      }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
+        return(
+          <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
+        );
       }
 
   });

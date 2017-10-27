@@ -3,6 +3,8 @@ import ToggleDisplay
        from 'react-toggle-display';
 import request
        from 'superagent';
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
 
 
 class ContactBasicInfo extends Component{
@@ -68,8 +70,9 @@ class ContactBasicInfo extends Component{
               showContact : true,
               editContact : false,
               disabled    : false,
-              statusMessage : 'Contact created successfully.'
+              //statusMessage : 'Contact created successfully.'
             })
+            SuccessAlert({message:"Contact created successfully."});
             this.props.contactInfo['subNum'] = jsonResponse[1];
             this.props.contactInfo['checkSum'] = jsonResponse[2];
 
@@ -81,9 +84,7 @@ class ContactBasicInfo extends Component{
             this.props.updateContactHappened();
 
           }else{
-            this.setStatus({
-              statusMessage : 'Something went wrong.Please try again later.'
-            });
+            ErrorAlert({message:"Something went wrong.Please try again later."});
           }
         });
   }
@@ -100,7 +101,7 @@ class ContactBasicInfo extends Component{
                  subNum: this.props.contact.subNum
                 ,firstName:this.state.firstName
                 ,lastName: this.state.lastName
-                ,company: this.state.company
+                //,company: this.state.company
                 ,ukey:this.users_details[0].userKey
                 ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
@@ -117,6 +118,7 @@ class ContactBasicInfo extends Component{
               editContact : false,
               disabled    : false
             })
+            SuccessAlert({message:"Contact updated successfully."});
             this.props.contact['company'] = this.state.company;
             this.props.updateContactHappened();
 
@@ -144,7 +146,7 @@ class ContactBasicInfo extends Component{
                     </div>
                     <div className="scf_o_right">
                         <ul>
-                            <li onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
+                            <li className="wrap_scf_o_create_contact" onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
                                 <div className="scf_option_icon ripple">
                                     <a href="#">
                                         <div className="wrap_scf_o_i">
@@ -171,7 +173,7 @@ class ContactBasicInfo extends Component{
                       <span>{this.props.contactInfo.firstName} </span>
                       <span> {this.props.contactInfo.lastName}</span>
                       <div className="clr"></div>
-                      <span>{this.props.contactInfo.email}</span>
+                      <span >{this.props.contactInfo.email}</span>
                     </div>
                 </div>
                 <div className="clr"></div>
@@ -200,7 +202,7 @@ class ContactBasicInfo extends Component{
                   <div className="scfe_field">
                       <input placeholder="First Name" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } />
                       <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
-                      <input placeholder="Company"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
+                      <input placeholder="Company" className="hide"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
 
                   </div>
                   <div className="scfe_control_option">
@@ -303,7 +305,7 @@ class ContactBasicInfo extends Component{
                <div className="scfe_field">
                    <input placeholder="First Name" disabled={this.state.disabled}  value= {this.state.firstName} onChange={event=> { this.setState({firstName: event.target.value }) } } />
                    <input placeholder="Last Name"  disabled={this.state.disabled}  value={this.state.lastName} onChange={event=> { this.setState({lastName: event.target.value }) } } />
-                   <input placeholder="Company"    disabled={this.state.disabled}  value={this.state.company} onChange={event=> { this.setState({company: event.target.value }) } } />
+                   <input placeholder="Company" className="hide"    disabled={this.state.disabled}  value={this.state.company} onChange={event=> { this.setState({company: event.target.value }) } } />
 
                </div>
                <div className="scfe_control_option">
