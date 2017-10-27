@@ -134,7 +134,7 @@ class SearchContacts extends Component{
                       this.setState({
                         subscriber : subscriberEmails,
                         searchstat:'',
-                        type : type
+                        searchtype : type
                       })
                     }
 
@@ -240,7 +240,7 @@ class SearchContacts extends Component{
                     contact={this.state.subscriber}
                     stat={this.state.searchstat}
                     onEmailSelect={this.props.onEmailSelect}
-                    searchtype = {this.state.type}
+                    searchtype = {this.state.searchtype}
                     searchContact = {this.state.searchContact}
 
                   />
