@@ -45,7 +45,30 @@ class SearchContacts extends Component{
         }
     }
 
-
+    resetSearch(){
+      this.setState({
+                    searchContact : '',
+                    code:'',
+                    subscriber : '',
+                    vcsubscribers : '',
+                    searchstat: '',
+                    clicks:0,
+                    visits:0,
+                    countSet:false,
+                    cactive : 'active',
+                    tactive : '',
+                    placeholder: 'Enter name or email',
+                    type:'',
+                    loadingMessage : '',
+                    showLoading : true,
+                    ckclickable : false,
+                    wvclickable : false,
+                    wvactive    : '',
+                    ckactive    : '',
+                    clickState  : '',
+                    serverDate  : ''
+                  })
+    }
 
     handleOnKeyPress(event){
       const code = event.keyCode || event.which;
@@ -222,9 +245,8 @@ class SearchContacts extends Component{
                     <h2>Search</h2>
                       <div className="contacts-switch">
                           <div className="status_tgl">
-                            <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
-
-                              <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
+                            <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
+                              <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
                         </div>
                       </div>
                     <input

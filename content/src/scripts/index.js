@@ -225,7 +225,14 @@ class App extends Component {
  logOut(){
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
-   this.setState({showLogin:true,gmailEmails:false,showContacts:false,islogOut:'hide',selectedEmail:null});
+   this.setState({showLogin:true,
+                  gmailEmails:false,
+                  showContacts:false,
+                  islogOut:'hide',
+                  selectedEmail:null,
+                  gmail_email_list:[]
+                });
+  this.refs.gmailemail.resetGmail();
  }
 
   render() {
@@ -301,6 +308,7 @@ class App extends Component {
           users_details={this.state.users_details}
           chromeExObj = {this.state.chromeExObj}
           baseUrl = {this.state.baseUrl}
+          ref="gmailemail"
           />
 
         </ToggleDisplay>
