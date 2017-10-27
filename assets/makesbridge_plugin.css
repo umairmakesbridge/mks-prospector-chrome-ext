@@ -223,6 +223,12 @@ html, body{ height:100%;}
  transform: translate3d(0, 0, 0);
 }
 
+
+.ripple_default {
+ position: relative;
+ overflow: hidden;
+}
+
 .ripple:after {
  content: "";
  display: block;
@@ -794,7 +800,7 @@ START contact found page
 }
 .list_contact_found_height{
  min-height: 150px;
- max-height: 188px;
+ max-height: 350px;
  overflow-y: auto;
  overflow-x: hidden;
 }

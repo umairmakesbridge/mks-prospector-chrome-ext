@@ -172,8 +172,8 @@ class SearchContacts extends Component{
                                   this.setState({
                                     clicks : jsonResponse.clickCount,
                                     visits : jsonResponse.visitCount,
-                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer ripple" : "default",
-                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default",
+                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer ripple" : "default ripple_default",
+                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default ripple_default",
                                     countSet : true,
                                     showLoading : false,
                                     serverDate : GetServerDate({users_details:this.users_details,baseUrl:this.baseUrl,callback:this.setServerDate.bind(this)})
