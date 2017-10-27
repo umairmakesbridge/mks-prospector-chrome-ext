@@ -223,7 +223,7 @@ class SearchContacts extends Component{
                       <div className="contacts-switch">
                           <div className="status_tgl">
                             <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
-                    
+
                               <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
                         </div>
                       </div>
