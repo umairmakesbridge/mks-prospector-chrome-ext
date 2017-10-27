@@ -134,7 +134,7 @@ class SearchContacts extends Component{
                       this.setState({
                         subscriber : subscriberEmails,
                         searchstat:'',
-                        type : type
+                        searchtype : type
                       })
                     }
 
@@ -223,7 +223,7 @@ class SearchContacts extends Component{
                       <div className="contacts-switch">
                           <div className="status_tgl">
                             <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
-                    
+
                               <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
                         </div>
                       </div>
@@ -240,7 +240,7 @@ class SearchContacts extends Component{
                     contact={this.state.subscriber}
                     stat={this.state.searchstat}
                     onEmailSelect={this.props.onEmailSelect}
-                    searchtype = {this.state.type}
+                    searchtype = {this.state.searchtype}
                     searchContact = {this.state.searchContact}
 
                   />
