@@ -64,9 +64,9 @@ class ContactInfo extends Component{
   componentWillReceiveProps(nextProps){
     //this.loadSubscriptionData(nextProps.subscriptionId);
     if(nextProps.contact_email && this.state.email != nextProps.contact_email){
-        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:''})
+        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:'',contactActive : 'active',showContacts : true,showActivity  : false})
     }else{
-        this.setState({diffEmail : false})
+        this.setState({diffEmail : false,contactActive : 'active',showContacts : true,showActivity  : false})
     }
   }
   searchEmailInMks(email){

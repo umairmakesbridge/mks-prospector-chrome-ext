@@ -42,6 +42,7 @@ class App extends Component {
       chromeExObj      : null,
       islogOut           : 'hide',
       gmail_emails_body: [],
+      isLoggedOut      : false,
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
 
@@ -203,6 +204,10 @@ class App extends Component {
                                                                           }
                                         console.log(this.state.users_details);
                                     }
+                                    if(this.state.isLoggedOut){
+                                      this.refs.gmailemail.autoRequestGen('logout');
+                                      this.state['isLoggedOut'] = false;
+                                    }
                                   }
                               });
     console.log('First to check list by get');
@@ -233,6 +238,7 @@ class App extends Component {
                   islogOut:'hide',
                   selectedEmail:null,
                   gmail_email_list:[],
+                  isLoggedOut   : true,
                   users_details : this.state.users_details.splice(0,1)
                 });
   this.refs.gmailemail.resetGmail();
