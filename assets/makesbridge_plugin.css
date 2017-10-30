@@ -508,6 +508,10 @@ input:disabled,button:disabled{
 .click_default{
   cursor: default !important;
 }
+li.click_default {
+    top: -3px;
+    position: relative;
+}
 .click_pointer{
   cursor: pointer !important;
 }
@@ -1506,7 +1510,7 @@ a:hover, a:focus {
    font-size: 16px;
 }
 span.mksph_contact_title {
-   color: #e1e5e8;
+   color: #748592;
    font-weight: 100;
    font-size: 14px;
    display: inline-block;
