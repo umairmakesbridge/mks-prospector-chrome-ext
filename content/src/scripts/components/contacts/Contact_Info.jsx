@@ -106,7 +106,6 @@ class ContactInfo extends Component{
                 }else{
                   this.setState({
                     contactnotFound : true,
-                    activityActive : 'hide',
                     diffEmail: false,
                     showScore : 'hide'
                   });
@@ -197,6 +196,7 @@ class ContactInfo extends Component{
                                       <ActivityTimeline
                                         contact={this.state.subscriber}
                                         users_details={this.users_details}
+                                        contactnotFound={this.state.contactnotFound}
                                         baseUrl={this.baseUrl}
                                       />
                                     </ToggleDisplay>

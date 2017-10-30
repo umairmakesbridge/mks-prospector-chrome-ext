@@ -22,7 +22,9 @@ class SearchContacts extends Component{
                     clicks:0,
                     visits:0,
                     countSet:false,
+                    loggedOut : false,
                     cactive : 'active',
+                    autoRequest : false,
                     tactive : '',
                     placeholder: 'Enter name or email',
                     type:'',
@@ -38,36 +40,37 @@ class SearchContacts extends Component{
     }
 
     componentDidUpdate(prevProps, prevState){
+      console.log('Search Component did Update');
       if(this.users_details.length > 0 && !this.state.countSet){
           this.getClickVisitCount();
-          //ErrorAlert({message:"Already Exists."});
-
         }
     }
-
     resetSearch(){
-      this.setState({
-                    searchContact : '',
-                    code:'',
-                    subscriber : '',
-                    vcsubscribers : '',
-                    searchstat: '',
-                    clicks:0,
-                    visits:0,
-                    countSet:false,
-                    cactive : 'active',
-                    tactive : '',
-                    placeholder: 'Enter name or email',
-                    type:'',
-                    loadingMessage : '',
-                    showLoading : true,
-                    ckclickable : false,
-                    wvclickable : false,
-                    wvactive    : '',
-                    ckactive    : '',
-                    clickState  : '',
-                    serverDate  : ''
-                  })
+                  this.setState(() => {
+                     return {
+                          searchContact : '',
+                          code:'',
+                          subscriber : '',
+                          vcsubscribers : '',
+                          searchstat: '',
+                          clicks:0,
+                          visits:0,
+                          countSet:false,
+                          cactive : 'active',
+                          tactive : '',
+                          placeholder: 'Enter name or email',
+                          type:'',
+                          loadingMessage : '',
+                          showLoading : true,
+                          ckclickable : false,
+                          wvclickable : false,
+                          autoRequest : false,
+                          wvactive    : '',
+                          ckactive    : '',
+                          clickState  : '',
+                          serverDate  : ''
+                      };
+                 });
     }
 
     handleOnKeyPress(event){
@@ -180,7 +183,6 @@ class SearchContacts extends Component{
         /*var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1&ukey='+this.users_details[0].userKey
                         +'&isMobileLogin=Y&userId='+this.users_details[0].userId*/
-
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                                       + this.users_details[0].bmsToken +'&type=getSAMSubscriberStats&ukey='+this.users_details[0].userKey
                                       +'&isMobileLogin=Y&userId='+this.users_details[0].userId
@@ -199,6 +201,7 @@ class SearchContacts extends Component{
                                     wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default",
                                     countSet : true,
                                     showLoading : false,
+                                    autoRequest : true,
                                     serverDate : GetServerDate({users_details:this.users_details,baseUrl:this.baseUrl,callback:this.setServerDate.bind(this)})
                                   });
                                 }

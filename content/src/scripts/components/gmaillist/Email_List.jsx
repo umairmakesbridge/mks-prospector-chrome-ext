@@ -14,6 +14,9 @@ class GmailEmailList extends Component{
 
         }
       }
+      autoRequestGen(){
+        this.refs.searchcontacts.getClickVisitCount();
+      }
       resetGmail(){
         this.refs.searchcontacts.resetSearch();
       }

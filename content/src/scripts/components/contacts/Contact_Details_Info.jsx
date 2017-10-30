@@ -267,7 +267,7 @@ class ContactDetailInfo extends Component{
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Contact</h3>
-              <p className="not-found">No Contact Found</p>
+              <p className="not-found">No Contact Found on Makesbridge</p>
               <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create</button>
           </div>
               </div>);
