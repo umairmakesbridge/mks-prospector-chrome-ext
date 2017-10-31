@@ -87,7 +87,7 @@ class ActivityTimeline extends Component{
     if(this.props.contactnotFound){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
-            <h3>Contact</h3>
+            <h3>Activity Timeline</h3>
               <p className="not-found">No Contact Found on Makesbridge</p>
           </div>
               </div>);

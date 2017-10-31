@@ -8,6 +8,9 @@ import LoadingMask
        from '../common/Loading_Mask';
 import {GetTimeline,GetServerDate}
        from './activity_components/Filter_Api';
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
+
 class SearchContacts extends Component{
     constructor (props){
       super(props);
@@ -168,7 +171,7 @@ class SearchContacts extends Component{
 
                   }
                 }else{
-                  alert(jsonResponse[1]);
+                  ErrorAlert({message:jsonResponse[1]});
                   jQuery('.mksph_logout').trigger('click');
                   this.setState({
                     searchstat: 'err',
