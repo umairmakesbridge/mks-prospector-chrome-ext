@@ -605,7 +605,7 @@ li.click_default {
   -moz-transition: opacity .3s ease-out;
   -o-transition: opacity .3s ease-out;
   transition: opacity .3s ease-out;
-  position: absolute;
+  position: fixed;
   top: -20px;
   z-index: 999;
 

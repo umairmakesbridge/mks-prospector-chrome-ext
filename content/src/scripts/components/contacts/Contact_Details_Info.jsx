@@ -320,7 +320,7 @@ class ContactDetailInfo extends Component{
               </div>
             </div>
         <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
-              <h3>Basic Fields</h3>
+              <h3 style={{'margin-bottom': "15px"}}>Basic Fields</h3>
                 <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse' }) } }>Edit</span>
                 <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
                 <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
