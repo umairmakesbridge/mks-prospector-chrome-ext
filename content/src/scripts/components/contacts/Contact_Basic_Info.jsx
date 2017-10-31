@@ -84,7 +84,8 @@ LoadingMask
             this.props.updateContactHappened();
 
           }else{
-            ErrorAlert({message:"Something went wrong.Please try again later."});
+            let errormsg = (jsonResponse[0]=="err") ? jsonResponse[1] : "Something went wrong.Please try again later.";
+            ErrorAlert({message:errormsg});
             this.setState({showStatus : false});
           }
         });

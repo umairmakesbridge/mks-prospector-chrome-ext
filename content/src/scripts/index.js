@@ -178,7 +178,7 @@ class App extends Component {
 
   checkSubscriberList(){
     let userDetails = this.state.users_details[0];
-    let userName    =    userDetails.userId.split('@')[0];
+    let userName    = userDetails.userId.split('@')[0];
     var searchUrl   = this.state.baseUrl
                       +'/io/list/getListData/?BMS_REQ_TK='
                       +userDetails.bmsToken
