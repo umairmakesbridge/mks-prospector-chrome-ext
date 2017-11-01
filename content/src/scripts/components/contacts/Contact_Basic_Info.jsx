@@ -129,7 +129,29 @@ LoadingMask
 
 
   }
+  handleOnEnter (type,event){
+    const code = event.keyCode || event.which;
+    if(code == 13){
+      console.log('Enter Is recieved from Contact Baisc with tyle : '+type);
+      if(type=="update"){
+        this.updateContactRequest();
+      }else{
+        this.createContactRequest();
+      }
+    }
+  }
+  switchContact(type){
+    if(type=="edit"){
+      this.setState({ showContact : false,editContact : true,firstName: this.props.contact.firstName,lastName: this.props.contact.lastName,title: this.props.contact.title,company: this.props.contact.company})
+    }else{
+      this.setState({ showContact : false,editContact : true});
+    }
 
+
+    setTimeout(function(){
+        jQuery('#firstName').focus();
+    },500)
+  }
   render(){
     if(!this.props.contact){
       return (
@@ -148,7 +170,7 @@ LoadingMask
                     <div className="scf_o_right">
 
                         <ul>
-                            <li className="wrap_scf_o_create_contact" onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
+                            <li className="wrap_scf_o_create_contact" onClick={this.switchContact.bind(this,'create') } >
                                 <div className="scf_option_icon ripple">
                                     <a href="#">
                                         <div className="wrap_scf_o_i">
@@ -202,7 +224,7 @@ LoadingMask
           <div className="s_contact_found_edit_wraper">
               <div className="s_contact_found_edit">
                   <div className="scfe_field">
-                      <input placeholder="First Name" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } />
+                      <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this,'create')} />
                       <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
                       <input placeholder="Company" className="hide"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
 
@@ -251,7 +273,7 @@ LoadingMask
                     </div>
                     <div className="scf_o_right">
                         <ul>
-                            <li onClick={switchContact=> { this.setState({ showContact : false,editContact : true,firstName: this.props.contact.firstName,lastName: this.props.contact.lastName,title: this.props.contact.title,company: this.props.contact.company}) } }>
+                            <li onClick={this.switchContact.bind(this,'edit') }>
                                 <div className="scf_option_icon ripple">
                                     <a href="#">
                                         <div className="wrap_scf_o_i">
@@ -305,7 +327,7 @@ LoadingMask
        <div className="s_contact_found_edit_wraper">
            <div className="s_contact_found_edit">
                <div className="scfe_field">
-                   <input placeholder="First Name" disabled={this.state.disabled}  value= {this.state.firstName} onChange={event=> { this.setState({firstName: event.target.value }) } } />
+                   <input placeholder="First Name" id="firstName" disabled={this.state.disabled}  value= {this.state.firstName} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this,'update')} />
                    <input placeholder="Last Name"  disabled={this.state.disabled}  value={this.state.lastName} onChange={event=> { this.setState({lastName: event.target.value }) } } />
                    <input placeholder="Company" className="hide"    disabled={this.state.disabled}  value={this.state.company} onChange={event=> { this.setState({company: event.target.value }) } } />
 
