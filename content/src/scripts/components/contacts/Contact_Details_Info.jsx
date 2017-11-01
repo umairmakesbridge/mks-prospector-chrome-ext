@@ -221,7 +221,19 @@ class ContactDetailInfo extends Component{
       this.addNewTag();
     }
   }
+  showAddTagFocus(){
+    this.setState({showAddBox : true,tagBtn : 'hide'});
+    setTimeout(function(){
+        jQuery('#addTagName').focus();
+    },500)
+  }
+  showInputB(){
+    this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse' });
 
+    setTimeout(function(){
+        jQuery('.focusThis').focus();
+    },500)
+  }
   componentWillUpdate(nextProps, nextState){
     console.log('Component Will Update ', nextProps);
     if(nextProps.contact){
@@ -267,7 +279,7 @@ class ContactDetailInfo extends Component{
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
             <h3>Contact</h3>
-              <p className="not-found">No Contact Found on Makesbridge</p>
+              <p className="not-found">Contact not found on Makesbridge</p>
               <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create</button>
           </div>
               </div>);
@@ -276,7 +288,7 @@ class ContactDetailInfo extends Component{
       <div className="contacts-wrap">
         <div id="Tags" className="tabcontent mksph_cardbox">
               <h3>Tags</h3>
-              <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={showAddTag => { this.setState({showAddBox : true,tagBtn : 'hide'}) } } >Add Tag</a>
+              <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
               <ToggleDisplay show={this.state.showAddBox}>
                 <div className="">
                   <input
@@ -285,6 +297,7 @@ class ContactDetailInfo extends Component{
                     onChange={event => this.setState({tagName : event.target.value}) }
                     onKeyPress={this.handleOnTagInput.bind(this)}
                     disabled={this.state.disabled}
+                    id="addTagName"
                   />
 
 
@@ -320,15 +333,15 @@ class ContactDetailInfo extends Component{
               </div>
             </div>
         <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
-              <h3 style={{'margin-bottom': "15px"}}>Contact Info</h3>
-                <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse' }) } }>Edit</span>
+              <h3 style={{'margin-bottom': "15px"}}>Basic Fields</h3>
+                <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={ this.showInputB.bind(this) }>Edit</span>
                 <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
                 <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
               <div className={`height90 ${this.state.setFullHeight} scfe_field`}>
               <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Company : </span>
                   <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.company}</span>
-                  <input className={`${this.state.showInput}`} value={this.state.company} onChange = {event => this.setState({company : event.target.value})}  />
+                  <input className={`${this.state.showInput} focusThis`} value={this.state.company} onChange = {event => this.setState({company : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Phone : </span>

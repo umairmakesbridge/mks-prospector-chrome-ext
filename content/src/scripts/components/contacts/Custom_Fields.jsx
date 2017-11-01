@@ -124,6 +124,12 @@ class CustomFields extends Component{
     this.state[objKey] = event.target.value;
     this.forceUpdate();
   }
+  showInputCF(){
+    this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse'  });
+    setTimeout(function(){
+        jQuery('.customFields_ul input').eq(0).focus();
+    },500)
+  }
   generateCustomFields(customFieldsArray){
     return this.state.customFieldKeys.map((field,key)=>
                               <li key={field} >
@@ -142,12 +148,12 @@ class CustomFields extends Component{
 
     return (
       <div className="customField_ul_wraps">
-        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={showInput => {this.setState({ showInput : 'show',showLabel : 'hide', setFullHeight : 'heighAuto', collapseMsg: 'Click to collapse', collapseExpand:'collapse'  }) } }>Edit</span>
+        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={this.showInputCF.bind(this)}>Edit</span>
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
         <span className={`mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
       <div className={`csfields-contents scfe_field height90 ${this.state.setFullHeight}`}>
 
-        <ul>{this.generateCustomFields()}</ul>
+        <ul className="customFields_ul">{this.generateCustomFields()}</ul>
 
         </div>
         <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
