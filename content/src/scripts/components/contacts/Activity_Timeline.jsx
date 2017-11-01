@@ -84,6 +84,14 @@ class ActivityTimeline extends Component{
   }
 
   render(){
+    if(this.props.contactnotFound){
+      return (<div className="contacts-wrap">
+      <div id="NoContact" className="tabcontent mksph_cardbox">
+            <h3>Activity Timeline</h3>
+              <p className="not-found">No Contact Found on Makesbridge</p>
+          </div>
+              </div>);
+    }
     if(!this.props.contact && !this.state.noActivity){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
@@ -92,6 +100,8 @@ class ActivityTimeline extends Component{
           </div>
               </div>);
     }
+    console.log('No Contact Found ',this.props.contactnotFound)
+
     if(this.state.noActivity){
       return (<div className="contacts-wrap">
       <div id="NoContact" className="tabcontent mksph_cardbox">
@@ -101,15 +111,7 @@ class ActivityTimeline extends Component{
               </div>);
     }
 
-    if(this.props.contactnotFound){
-      return (<div className="contacts-wrap">
-      <div id="NoContact" className="tabcontent mksph_cardbox">
-            <h3>Contact</h3>
-              <p className="not-found">No Contact Found on Makesbridge</p>
-              <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create</button>
-          </div>
-              </div>);
-    }
+
     if(!this.state.activitytimeline){
         return (
           <div className="contacts-wrap">

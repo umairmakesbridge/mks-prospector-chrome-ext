@@ -5,12 +5,12 @@ import request
        from 'superagent';
 import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
-
-
+import LoadingMask
+       from '../common/Loading_Mask';
 class ContactBasicInfo extends Component{
   constructor(props){
     super(props);
-
+LoadingMask
     const acronym = '';
     this.baseUrl=this.props.baseUrl;
     this.users_details = this.props.users_details;
@@ -84,7 +84,9 @@ class ContactBasicInfo extends Component{
             this.props.updateContactHappened();
 
           }else{
-            ErrorAlert({message:"Something went wrong.Please try again later."});
+            let errormsg = (jsonResponse[0]=="err") ? jsonResponse[1] : "Something went wrong.Please try again later.";
+            ErrorAlert({message:errormsg});
+            this.setState({showStatus : false});
           }
         });
   }
@@ -134,9 +136,8 @@ class ContactBasicInfo extends Component{
         <div>
       <ToggleDisplay show={this.state.showContact}>
         <div className="scf_option">
-          <p className={`status-messages show_${this.state.showStatus}`}>
-               {this.state.statusMessage}
-         </p>
+          <LoadingMask message={this.state.statusMessage} showLoading={this.state.showStatus} extraClass={"alignloadingClass"}/>
+
             <div className="scf_option_control one">
                 <div className="scf_option_panel">
                     <div className="scf_o_left">
@@ -145,6 +146,7 @@ class ContactBasicInfo extends Component{
                         </div>
                     </div>
                     <div className="scf_o_right">
+
                         <ul>
                             <li className="wrap_scf_o_create_contact" onClick={switchContact=> { this.setState({ showContact : false,editContact : true}) } } >
                                 <div className="scf_option_icon ripple">

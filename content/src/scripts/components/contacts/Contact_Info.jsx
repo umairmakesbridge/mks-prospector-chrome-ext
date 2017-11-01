@@ -65,17 +65,17 @@ class ContactInfo extends Component{
   componentWillReceiveProps(nextProps){
     //this.loadSubscriptionData(nextProps.subscriptionId);
     if(nextProps.contact_email && this.state.email != nextProps.contact_email){
-        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:''})
+        this.setState({diffEmail : true,email : nextProps.contact_email,activityActive:'',showScore:'',contactActive : 'active',showContacts : true,showActivity  : false})
     }else{
-        this.setState({diffEmail : false})
+        this.setState({diffEmail : false,contactActive : 'active',showContacts : true,showActivity  : false})
     }
   }
   searchEmailInMks(email){
     var searchUrl = this.baseUrl
                     +'/io/subscriber/getData/?BMS_REQ_TK='
-                    + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
-                    +email+'&orderBy=lastActivityDate&ukey='+this.users_details[0].userKey
-                    +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                    + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
+                    +email+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
+                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
 
     request
           .get(searchUrl)
@@ -120,9 +120,9 @@ class ContactInfo extends Component{
 
     var searchUrl = this.baseUrl
                     +'/io/subscriber/getData/?BMS_REQ_TK='
-                    + this.users_details[0].bmsToken +'&type=getSubscriber&subNum='
-                    +this.state.subNum+'&ukey='+this.users_details[0].userKey
-                    +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                    + this.props.users_details[0].bmsToken +'&type=getSubscriber&subNum='
+                    +this.state.subNum+'&ukey='+this.props.users_details[0].userKey
+                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
     var _this = this;
                     request
                           .get(searchUrl)
@@ -168,7 +168,7 @@ class ContactInfo extends Component{
                                contact={this.state.subscriber}
                                updateContactHappened={this.updateBasicContactInfo.bind(this)}
                                baseUrl={this.baseUrl}
-                               users_details={this.users_details}
+                               users_details={this.props.users_details}
 
                               />
                           <div className="scf_tab_wrap">
@@ -187,7 +187,7 @@ class ContactInfo extends Component{
                                       <ToggleDisplay show={this.state.showContacts}>
                                         <ContactDetailInfo
                                           contact={this.state.subscriber}
-                                          users_details={this.users_details}
+                                          users_details={this.props.users_details}
                                           baseUrl={this.baseUrl}
                                           changeInTagsView={this.changeTagView.bind(this)}
                                           contactnotFound={this.state.contactnotFound}
@@ -197,7 +197,7 @@ class ContactInfo extends Component{
                                     <ToggleDisplay show={this.state.showActivity}>
                                       <ActivityTimeline
                                         contact={this.state.subscriber}
-                                        users_details={this.users_details}
+                                        users_details={this.props.users_details}
                                         contactnotFound={this.state.contactnotFound}
                                         baseUrl={this.baseUrl}
                                       />

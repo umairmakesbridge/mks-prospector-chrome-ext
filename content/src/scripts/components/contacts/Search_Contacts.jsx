@@ -8,6 +8,9 @@ import LoadingMask
        from '../common/Loading_Mask';
 import {GetTimeline,GetServerDate}
        from './activity_components/Filter_Api';
+import {ErrorAlert,SuccessAlert}
+       from '../common/Alerts';
+
 class SearchContacts extends Component{
     constructor (props){
       super(props);
@@ -32,6 +35,7 @@ class SearchContacts extends Component{
                     showLoading : true,
                     ckclickable : false,
                     wvclickable : false,
+                    isLoggodOut : false,
                     wvactive    : '',
                     ckactive    : '',
                     clickState  : '',
@@ -41,7 +45,7 @@ class SearchContacts extends Component{
 
     componentDidUpdate(prevProps, prevState){
       console.log('Search Component did Update');
-      if(this.users_details.length > 0 && !this.state.countSet){
+      if(this.users_details.length > 0 && !this.state.countSet && !this.state.isLoggodOut){
           this.getClickVisitCount();
         }
     }
@@ -68,7 +72,8 @@ class SearchContacts extends Component{
                           wvactive    : '',
                           ckactive    : '',
                           clickState  : '',
-                          serverDate  : ''
+                          serverDate  : '',
+                          isLoggodOut : true
                       };
                  });
     }
@@ -166,7 +171,7 @@ class SearchContacts extends Component{
 
                   }
                 }else{
-                  alert(jsonResponse[1]);
+                  ErrorAlert({message:jsonResponse[1]});
                   jQuery('.mksph_logout').trigger('click');
                   this.setState({
                     searchstat: 'err',
@@ -177,8 +182,10 @@ class SearchContacts extends Component{
               });
     }
 
-    getClickVisitCount (){
-
+    getClickVisitCount (type){
+        if(type==='logout'){
+          this.setState( ()=>{return {showLoading : true} } )
+        }
         //https://mks.bridgemailsystem.com/pms/io/subscriber/getData/?BMS_REQ_TK=GX2Syeq1dZlJn8LNQxG18DgSh3uoNV&type=getSAMSubscriberStats
         /*var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1&ukey='+this.users_details[0].userKey

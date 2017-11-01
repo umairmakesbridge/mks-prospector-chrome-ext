@@ -69,10 +69,10 @@ class CustomFields extends Component{
     reqObj["source"] = this.props.contactInfoState.source;
     reqObj["occupation"] = this.props.contactInfoState.occupation;
 
-    reqObj["ukey"] = this.users_details[0].userKey;
-    reqObj["listNum"] = this.users_details[0].listObj['listNum'];
+    reqObj["ukey"] = this.props.users_details[0].userKey;
+    reqObj["listNum"] = this.props.users_details[0].listObj['listNum'];
     reqObj["isMobileLogin"] = 'Y';
-    reqObj["userId"] = this.users_details[0].userId;
+    reqObj["userId"] = this.props.users_details[0].userId;
 
 
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
