@@ -204,8 +204,8 @@ class SearchContacts extends Component{
                                   this.setState({
                                     clicks : jsonResponse.clickCount,
                                     visits : jsonResponse.visitCount,
-                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer ripple" : "default ripple_default",
-                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default ripple_default",
+                                    ckclickable : (jsonResponse.clickCount > 0) ? "pointer ripple" : "default",
+                                    wvclickable : (jsonResponse.visitCount > 0) ? "pointer ripple" : "default",
                                     countSet : true,
                                     showLoading : false,
                                     autoRequest : true,
