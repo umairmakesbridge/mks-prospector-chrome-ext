@@ -5,7 +5,12 @@ import request
 import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
 import {ErrorAlert,SuccessAlert}
-              from '../common/Alerts';
+       from '../common/Alerts';
+import ToggleDisplay
+       from 'react-toggle-display';
+import AddBox
+       from '../common/Add_Box';
+
 class CustomFields extends Component{
   constructor(props){
     super(props);
@@ -20,7 +25,8 @@ class CustomFields extends Component{
       setFullHeight : '',
       setFullHeight : '',
       collapseMsg: 'Click to expand',
-      collapseExpand:'expand'
+      collapseExpand:'expand',
+      showAddBox : false
     }
     if(this.props.custom_fields){
     const Fields = this.props.custom_fields;
@@ -130,6 +136,18 @@ class CustomFields extends Component{
         jQuery('.customFields_ul input').eq(0).focus();
     },500)
   }
+  handleOnCFInput (event){
+    const code = event.keyCode || event.which;
+    if(code == 13){
+      this.addNewTag();
+    }
+  }
+  showAddCusFocus(){
+    this.setState({showAddBox : true});
+    setTimeout(function(){
+        jQuery('.focusThis').focus();
+    },500)
+  }
   generateCustomFields(customFieldsArray){
     return this.state.customFieldKeys.map((field,key)=>
                               <li key={field} >
@@ -143,15 +161,24 @@ class CustomFields extends Component{
   }
   render(){
     if(!this.props.custom_fields){
-      return (<div><p className="not-found">No custom fields available.</p></div>)
+      return (<div><span className={`mkb_btn pull-right mkb_greenbtn addTag ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span><p className="not-found">No custom fields available.</p></div>)
     }
 
     return (
       <div className="customField_ul_wraps">
+        <ToggleDisplay show={this.state.showAddBox}>
+            <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", id: "ckey"},{name : "cvlaue", className:"", id: "cvalue"}] } />
+        </ToggleDisplay>
+        <ToggleDisplay show={!this.state.showAddBox}>
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={this.showInputCF.bind(this)}>Edit</span>
+
+        <span className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
+        </ToggleDisplay >
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
-        <span className={`mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
-      <div className={`csfields-contents scfe_field height90 ${this.state.setFullHeight}`}>
+        <span className={`addTag mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
+
+
+        <div className={`csfields-contents scfe_field height90 ${this.state.setFullHeight}`}>
 
         <ul className="customFields_ul">{this.generateCustomFields()}</ul>
 
