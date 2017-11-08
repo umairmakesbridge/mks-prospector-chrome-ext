@@ -17,7 +17,7 @@ class AddBox extends Component{
     }
     handleOnSave(){
       console.log('Show Box Save Callback');
-      this.setState({disabled : true})
+
       let els = document.querySelectorAll("div.addBox_wrapper_container input");
       let requestObj = {};
       let isValid = true;
@@ -34,9 +34,10 @@ class AddBox extends Component{
                   console.log(isValid);
                   // If valid Generating Object
                   if(isValid){
+                    this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
-                      this.setState(this.baseState);
+                      setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
                     }
 
                   }
@@ -83,33 +84,35 @@ class AddBox extends Component{
         return (<div></div>);
       }
       return (
-        <div className="addBox_wrapper_container scfe_field">
+        <div className={`addBox_wrapper_container scfe_field`}>
+          <h2>{this.props.showTitle}</h2>
+          <div className="addBox_input_wrappers">
           {this.generateInputFields()}
 
-          <div className="scfe_control_option">
-              <div className="scfe_close_wrap" onClick={this.handleOnCancel.bind(this)}>
-                  <a className="scfe_c_ach" href="#">
-                      <div className="scfe_close_t">
-                          <span>Close</span>
-                      </div>
-                      <div className="scfe_close_i_md">
-                          <div className="scfe_close_i" aria-hidden="true" data-icon="&#xe915;"></div>
-                      </div>
-                  </a>
+            <div className="scfe_control_option">
+                <div className="scfe_close_wrap" onClick={this.handleOnCancel.bind(this)}>
+                    <a className="scfe_c_ach" href="#">
+                        <div className="scfe_close_t">
+                            <span>Close</span>
+                        </div>
+                        <div className="scfe_close_i_md">
+                            <div className="scfe_close_i" aria-hidden="true" data-icon="&#xe915;"></div>
+                        </div>
+                    </a>
+                </div>
+                <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={this.handleOnSave.bind(this)}>
+                    <a className="scfe_ach" href="#">
+                        <div className="scfe_save_t">
+                            <span>Save</span>
+                        </div>
+                        <div className="scfe_save_i_md">
+                            <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
+                        </div>
+                    </a>
+                </div>
+                <div className="clr"></div>
               </div>
-              <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={this.handleOnSave.bind(this)}>
-                  <a className="scfe_ach" href="#">
-                      <div className="scfe_save_t">
-                          <span>Save</span>
-                      </div>
-                      <div className="scfe_save_i_md">
-                          <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
-                      </div>
-                  </a>
-              </div>
-              <div className="clr"></div>
           </div>
-
         </div>
       );
     }

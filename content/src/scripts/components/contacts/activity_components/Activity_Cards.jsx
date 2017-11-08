@@ -51,26 +51,26 @@ const ActivityCard = (props)=>{
   }else if(props.showLoadingMsg){
       showLoadingButton = 'hide';
   }
-  const activityCard= props.activityBatch.activities.map((activity) => {
+  const activityCard= props.activityBatch.activities.map((activity,key) => {
       if(activity.campaignType == "N"){
         return(
-            <CampaignCard mapping={mapping[activity.activityType]} activity={activity} />
+            <CampaignCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
         );
       }else if(activity.campaignType == "T"){
           return(
-            <NurturetrackCard mapping={mapping[activity.activityType]} activity={activity}  />
+            <NurturetrackCard mapping={mapping[activity.activityType]} key={key} activity={activity}  />
             );
       }else if(activity.campaignType =="W"){
           return(
-            <WorkflowCard mapping={mapping[activity.activityType]} activity={activity}  />
+            <WorkflowCard mapping={mapping[activity.activityType]} key={key} activity={activity}  />
           );
       }else if(activity.botActionType == "A"){
           return(
-            <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
+            <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
           );
       }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
         return(
-          <AlertCard mapping={mapping[activity.activityType]} activity={activity} />
+          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
         );
       }
 

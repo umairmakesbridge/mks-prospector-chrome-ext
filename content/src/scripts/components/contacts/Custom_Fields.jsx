@@ -26,6 +26,7 @@ class CustomFields extends Component{
       setFullHeight : '',
       collapseMsg: 'Click to expand',
       collapseExpand:'expand',
+      overlayHeight : 0,
       showAddBox : false
     }
     if(this.props.custom_fields){
@@ -174,7 +175,8 @@ class CustomFields extends Component{
     }
   }
   showAddCusFocus(){
-    this.setState({showAddBox : true});
+    let height = jQuery('.mkspanel').height();
+    this.setState({showAddBox : true,overlayHeight:height});
     setTimeout(function(){
         jQuery('.focusThis').focus();
     },500)
@@ -208,12 +210,20 @@ class CustomFields extends Component{
     return (
       <div className="customField_ul_wraps">
         <ToggleDisplay show={this.state.showAddBox}>
-            <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)}/>
+            <AddBox
+              addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},
+                              {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"}
+              create={this.updateCustomFields.bind(this)}
+              cancel={this.hideAddCus.bind(this)}
+              showTitle={"Add New Custom Field"}
+            />
+            <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
         </ToggleDisplay>
         <ToggleDisplay show={!this.state.showAddBox}>
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={this.showInputCF.bind(this)}>Edit</span>
 
         <span className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
+
         </ToggleDisplay >
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
         <span className={`addTag mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>

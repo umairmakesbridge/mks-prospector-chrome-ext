@@ -592,6 +592,16 @@ li.click_default {
 input.hasError {
     border-color: #e83434 !important;
 }
+.OverLay{
+    position: fixed;
+    background: #232323;
+    width: 382px;
+    height: 848px;
+    top: 0px;
+    right: -2px;
+    z-index: 1;
+    opacity: 0.9;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;
@@ -692,7 +702,25 @@ span.alert_icon{
 */}
 /*.messagebox.info:after {background: url("../img/info.png") no-repeat scroll center center #73d2f5;  }*/
 .messagebox.info h3, .messagebox.info p { color:#00739e; }
-
+/*-------------------------Add Box-------------------------*/
+.addBox_wrapper_container{
+  position: fixed;
+  top: 185px;
+  z-index: 2;
+  background: #fff;
+  width: 340px;
+  right: 19px;
+}
+.addBox_wrapper_container h2{
+  background: #6494af;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 15px;
+  padding: 10px 15px;
+}
+.addBox_input_wrappers{
+  padding: 15px;
+}
 /*===========================================
 Login form CSS
 ============================================*/
