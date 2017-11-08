@@ -35,7 +35,7 @@ class CustomFields extends Component{
     jQuery.each(Fields[0],(key,value)=>{
                         customFieldsArray.push(value[0])
                       });
-      console.log(customFieldsArray);
+      console.log('Custom Fields Array : ', customFieldsArray);
 
       // Setting State keys and values
       customFieldsArray.map((field,key)=>
@@ -47,14 +47,44 @@ class CustomFields extends Component{
                           )
     }
   }
+  componentDidUpdate(prevProps, prevState, prevContext){
+    console.log('Component Did Update');
+    if(Object.keys(prevProps.custom_fields[0]).length != Object.keys(this.props.custom_fields[0]).length){
+      console.log('The Fields are different');
 
-  updateCustomFields(){
+      if(this.props.custom_fields){
+      const Fields = this.props.custom_fields;
+
+      let customFieldsArray = [];
+      jQuery.each(Fields[0],(key,value)=>{
+                          customFieldsArray.push(value[0])
+                        });
+        console.log('Custom Fields Array : ', customFieldsArray);
+
+        // Setting State keys and values
+        customFieldsArray.map((field,key)=>
+                                  this.state[Object.keys(field)[0]] = decodeHTML(field[Object.keys(field)[0]])
+                            )
+        // Keys into Array
+        customFieldsArray.map((field,key)=>
+                                  this.state.customFieldKeys.push(Object.keys(field)[0])
+                            )
+      }
+      this.forceUpdate();
+
+    }
+  }
+  updateCustomFields(type,arrayObj){
     this.setState({ showInput : 'hide',showLabel : 'show' });
     let reqObj = {};
     this.state.customFieldKeys.map((field,key)=>
                             reqObj["frmFld_"+encodeHTML(field)] = this.state[field]
                         );
     console.log(reqObj);
+    if(type && type=="customFields"){
+      reqObj['frmFld_'+encodeHTML(arrayObj[0])] = arrayObj[1];
+    }
+    debugger;
     reqObj["subNum"] = this.props.contact.subNum;
     reqObj["firstName"] = this.props.contact.firstName;
     reqObj["lastName"] = this.props.contact.lastName;
@@ -93,7 +123,8 @@ class CustomFields extends Component{
             this.setState({
               showContact : true,
               editContact : false,
-              disabled    : false
+              disabled    : false,
+              showAddBox  : false
             })
             SuccessAlert({message:"Contact updated successfully."});
             this.props.getSubscriberDetails();
@@ -148,6 +179,9 @@ class CustomFields extends Component{
         jQuery('.focusThis').focus();
     },500)
   }
+  hideAddCus(){
+    this.setState({showAddBox : false});
+  }
   generateCustomFields(customFieldsArray){
     return this.state.customFieldKeys.map((field,key)=>
                               <li key={field} >
@@ -161,13 +195,20 @@ class CustomFields extends Component{
   }
   render(){
     if(!this.props.custom_fields){
-      return (<div><span className={`mkb_btn pull-right mkb_greenbtn addTag ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span><p className="not-found">No custom fields available.</p></div>)
+      return (<div style={{position: "relative"}}>
+                  <ToggleDisplay show={this.state.showAddBox}>
+                      <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key *"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)} />
+                  </ToggleDisplay>
+                  <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
+                  <p className="not-found">No custom fields available.</p>
+
+                  </div>)
     }
 
     return (
       <div className="customField_ul_wraps">
         <ToggleDisplay show={this.state.showAddBox}>
-            <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", id: "ckey"},{name : "cvlaue", className:"", id: "cvalue"}] } />
+            <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)}/>
         </ToggleDisplay>
         <ToggleDisplay show={!this.state.showAddBox}>
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={this.showInputCF.bind(this)}>Edit</span>

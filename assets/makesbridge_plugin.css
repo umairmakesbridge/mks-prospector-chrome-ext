@@ -589,7 +589,9 @@ li.click_default {
 .heighAuto {
     max-height: 1500px;
 }
-
+input.hasError {
+    border-color: #e83434 !important;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;

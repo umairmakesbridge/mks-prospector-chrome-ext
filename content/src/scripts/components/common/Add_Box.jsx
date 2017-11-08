@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
-
+import {encodeHTML,decodeHTML}
+       from './Encode_Method';
 class AddBox extends Component{
     constructor(props){
         super(props);
@@ -11,9 +12,34 @@ class AddBox extends Component{
         jQuery.each(this.props.addFieldsObj,function(key,value){
                   _this.state['input'+(key+1)] = "";
         })
+        // preserve the initial state in a new object
+        this.baseState = this.state
     }
     handleOnSave(){
       console.log('Show Box Save Callback');
+      this.setState({disabled : true})
+      let els = document.querySelectorAll("div.addBox_wrapper_container input");
+      let requestObj = {};
+      let isValid = true;
+      console.log(els);
+      els.forEach((element)=>{
+                    if(element.getAttribute('data-required')=='required'){
+                        if(!element.value){
+                          isValid = false;
+                          jQuery(element).addClass('hasError');
+                        }
+                    }
+
+                  });
+                  console.log(isValid);
+                  // If valid Generating Object
+                  if(isValid){
+                    if(this.props.boxType=="customFields"){
+                      this.props.create("customFields",[els[0].value,els[1].value]);
+                      this.setState(this.baseState);
+                    }
+
+                  }
     }
     handleKeyPress(event){
         const code = event.keyCode || event.which;
@@ -29,11 +55,13 @@ class AddBox extends Component{
     }
     handleOnCancel(){
       console.log('Show Box Cancel Callback');
+      this.props.cancel();
     }
     generateInputFields(){
 
      return this.props.addFieldsObj.map((field,key)=>
                               <input
+                                key={key}
                                 type="text"
                                 name={field.name}
                                 value={this.state['input'+(key+1)]}
@@ -42,6 +70,9 @@ class AddBox extends Component{
                                 disabled={this.state.disabled}
                                 id={'input'+(key+1)}
                                 className={field.className}
+                                data-required = {field.required}
+                                data-fieldkey = {field.fieldType}
+                                placeholder = {field.placeholder}
                               />
                           );
 
@@ -52,7 +83,7 @@ class AddBox extends Component{
         return (<div></div>);
       }
       return (
-        <div className="">
+        <div className="addBox_wrapper_container scfe_field">
           {this.generateInputFields()}
 
           <div className="scfe_control_option">
