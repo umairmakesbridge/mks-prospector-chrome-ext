@@ -1631,6 +1631,24 @@ div#custom-fields ul li {
 /*Ends*/
 
 /*==========================
+Autocomplete CSS
+===========================*/
+.autocomplete__menu ul.autocomplete__items,.autocomplete__menu--hidden ul.autocomplete__items {
+    box-shadow: 1px 0px 3px 2px #ddd;
+    max-height: 230px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.autocomplete__menu ul.autocomplete__items li,.autocomplete__menu--hidden ul.autocomplete__items li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.autocomplete__menu ul.autocomplete__items li:hover,.autocomplete__menu--hidden ul.autocomplete__items li:hover {
+    background: #eee;
+}
+
+
+/*==========================
   Spinner CSS
 ===========================*/
 

@@ -12,6 +12,8 @@ import ActivityTimeline
        from './Activity_Timeline';
 import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
+import {encodeHTML,decodeHTML}
+       from '../common/Encode_Method';
 
 class ContactInfo extends Component{
 
@@ -36,7 +38,9 @@ class ContactInfo extends Component{
                     changeInTagsView    : false,
                     changeInContactBasic: false,
                     contactnotFound  : false,
-                    showScore : ''
+                    showScore : '',
+                    autoFillTags : [],
+                    loadingMaskAppear : false
                    }
   }
 
@@ -128,6 +132,7 @@ class ContactInfo extends Component{
                            .then((res) => {
                               if(res.status==200){
                                 let jsonResponse =  JSON.parse(res.text);
+                                _this.getAllTags();
                                 _this.setState({
                                   subscriber : jsonResponse,
                                   changeInTagsView : false,
@@ -143,7 +148,58 @@ class ContactInfo extends Component{
                               }
                             });
   }
+  getAllTags(){
+    var searchUrl = this.baseUrl
+                    +'/io/user/getData/?BMS_REQ_TK='
+                    + this.props.users_details[0].bmsToken +'&type=allSubscriberTags&ukey='+this.props.users_details[0].userKey
+                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+        //https://test.bridgemailsystem.com/pms/io/user/getData/?BMS_REQ_TK=c7jJ1hJuurtB3BmDSvlO1XHDinnjMF&type=allSubscriberTags
+    request
+           .get(searchUrl)
+           .set('Content-Type', 'application/x-www-form-urlencoded')
+           .then((res) => {
+              if(res.status==200){
+                let jsonResponse = JSON.parse(res.text);
+                let tagsA = [];
+                if (jsonResponse[0] == "err"){
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      ErrorAlert({message:jsonResponse[1]});
+                      jQuery('.mksph_logout').trigger('click');
+                    }
+                  return false;
+                }
+                console.log(jsonResponse);
 
+                if(parseInt(jsonResponse.count) > 0){
+                  
+                  var i=0;
+                  jQuery.each(jsonResponse.tags[0],function(key,value){
+                      tagsA.push({id:++i,value:decodeHTML(value[0].tag)});
+                  });
+                  this.setState({autoFillTags : tagsA});
+                }
+                /*if(parseInt(jsonResponse.totalCount) > 0){
+
+                    this.setState({
+                                  subNum   : jsonResponse.subscriberList[0].subscriber1[0].subNum,
+                                  checkSum : jsonResponse.subscriberList[0].subscriber1[0].checkSum,
+                                  email    : jsonResponse.subscriberList[0].subscriber1[0].email,
+                                  score    : jsonResponse.subscriberList[0].subscriber1[0].score,
+                                  diffEmail: false,
+                                });
+                    this.getSubscriberDetails();
+                    //this.forceUpdate()
+
+                }else{
+                  this.setState({
+                    contactnotFound : true,
+                    diffEmail: false,
+                    showScore : 'hide'
+                  });
+                }*/
+              }
+            });
+  }
   updateBasicContactInfo(){
         console.log('Time to get parameter and send for update');
         this.setState({changeInContactBasic:true});
@@ -151,7 +207,8 @@ class ContactInfo extends Component{
   /*=re-render on change state of tags=*/
   changeTagView(){
     this.setState({
-      changeInTagsView : true
+      changeInTagsView : true,
+      loadingMaskAppear : true
     })
   }
 
@@ -190,6 +247,8 @@ class ContactInfo extends Component{
                                           changeInTagsView={this.changeTagView.bind(this)}
                                           contactnotFound={this.state.contactnotFound}
                                           getSubscriberDetails = {this.getSubscriberDetails.bind(this)}
+                                          autoFillTags = {this.state.autoFillTags}
+                                          loadingMaskAppear = {this.state.loadingMaskAppear}
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>

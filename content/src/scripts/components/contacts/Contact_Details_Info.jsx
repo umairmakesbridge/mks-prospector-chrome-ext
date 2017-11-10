@@ -14,6 +14,7 @@ import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
 import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
+import Search from '../common/Search';
 
 
 class ContactDetailInfo extends Component{
@@ -106,6 +107,16 @@ class ContactDetailInfo extends Component{
 
 
   }
+
+  HiItems(items,selectedItem) {
+    this.setState({tagName : selectedItem});
+  }
+  handleAutoFillEnterTag(requestValue){
+    if(requestValue){
+      this.state['tagName'] = requestValue;
+      this.addNewTag();
+    }
+  }
   cancelField(){
     this.setState({
       showInput : 'hide'
@@ -141,34 +152,42 @@ class ContactDetailInfo extends Component{
     this.setState({
       disabled:true
     })
-    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
-       .set('Content-Type', 'application/x-www-form-urlencoded')
-       .send({
-                 type: 'addTag'
-                ,tags:''
-                ,subNum: this.props.contact.subNum
-                ,tag: encodeHTML(this.state.tagName)
-                ,ukey:this.users_details[0].userKey
-                ,isMobileLogin:'Y'
-                ,userId:this.users_details[0].userId
 
+    setTimeout(function(){
+      request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
+         .set('Content-Type', 'application/x-www-form-urlencoded')
+         .send({
+                   type: 'addTag'
+                  ,tags:''
+                  ,subNum: this.props.contact.subNum
+                  ,tag: encodeHTML(this.state.tagName)
+                  ,ukey:this.users_details[0].userKey
+                  ,isMobileLogin:'Y'
+                  ,userId:this.users_details[0].userId
+
+                })
+         .then((res) => {
+            console.log(res.status);
+
+            var jsonResponse =  JSON.parse(res.text);
+            console.log(jsonResponse);
+            if(jsonResponse.success){
+              this.setState({
+                  tagName:'',
+                  showAddBox:false,
+                  tagBtn : '',
+                  disabled:false,
+                  loadingMessage : 'Creating Tag...',
+                  showLoading    : true
               })
-       .then((res) => {
-          console.log(res.status);
 
-          var jsonResponse =  JSON.parse(res.text);
-          console.log(jsonResponse);
-          if(jsonResponse.success){
-            this.setState({
-                tagName:'',
-                showAddBox:false,
-                tagBtn : '',
-                disabled:false
-            })
-            this.props.changeInTagsView();
 
-          }
-        });
+              this.props.changeInTagsView();
+
+            }
+          });
+    }.bind(this),3000)
+
   }
   createConact(){
     jQuery('.wrap_scf_o_create_contact').trigger('click');
@@ -197,7 +216,8 @@ class ContactDetailInfo extends Component{
             this.setState({
                 tagName:'',
                 showAddBox:false,
-                tagBtn:''
+                tagBtn:'',
+                showLoading:false
             })
             let _this = this;
             setTimeout(function(){
@@ -221,8 +241,13 @@ class ContactDetailInfo extends Component{
       this.addNewTag();
     }
   }
+  handleOnTagChange(event){
+        this.setState({tagName : event.target.value});
+      //  this.requestAutoFillTag();
+  }
   showAddTagFocus(){
     this.setState({showAddBox : true,tagBtn : 'hide'});
+    this.refs.autoCompleteSearch.cleanInput();
     setTimeout(function(){
         jQuery('#addTagName').focus();
     },500)
@@ -258,6 +283,11 @@ class ContactDetailInfo extends Component{
 
     }
   }
+  componentDidUpdate(prevProps, prevState, prevContext){
+    if(this.props.contact && (this.props.contact.tags.split(',').length != prevProps.contact.tags.split(',').length)){
+      this.setState({showLoading  : false})
+    }
+  }
   toggleHeight(){
       if(this.state.setFullHeight){
         this.setState({setFullHeight : '',collapseMsg: 'Click to expand',collapseExpand:'expand'});
@@ -265,7 +295,10 @@ class ContactDetailInfo extends Component{
         this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
       }
   }
+
+
   render(){
+    let items = this.props.autoFillTags;
     console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
       return (<div className="contacts-wrap">
@@ -290,14 +323,22 @@ class ContactDetailInfo extends Component{
               <h3>Tags</h3>
               <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
               <ToggleDisplay show={this.state.showAddBox}>
+                <Search items={items}
+                placeholder='Add New Tag'
+                maxSelected={1}
+                multiple={false}
+                onItemsChanged={this.HiItems.bind(this)}
+                addNewTag= {this.handleAutoFillEnterTag.bind(this)}
+                ref="autoCompleteSearch"
+                />
                 <div className="">
                   <input
                     type="text"
                     value={this.state.tagName}
-                    onChange={event => this.setState({tagName : event.target.value}) }
+                    onChange={this.handleOnTagChange.bind(this) }
                     onKeyPress={this.handleOnTagInput.bind(this)}
                     disabled={this.state.disabled}
-                    id="addTagName"
+                    className="hide"
                   />
 
 

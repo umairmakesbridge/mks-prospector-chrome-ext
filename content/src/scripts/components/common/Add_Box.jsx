@@ -27,6 +27,7 @@ class AddBox extends Component{
                         if(!element.value){
                           isValid = false;
                           jQuery(element).addClass('hasError');
+                          element.focus();
                         }
                     }
 
@@ -34,6 +35,7 @@ class AddBox extends Component{
                   console.log(isValid);
                   // If valid Generating Object
                   if(isValid){
+                    jQuery(element).removeClass('hasError');
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
