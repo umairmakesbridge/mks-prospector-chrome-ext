@@ -284,7 +284,7 @@ class ContactDetailInfo extends Component{
     }
   }
   componentDidUpdate(prevProps, prevState, prevContext){
-    if(this.props.contact && (this.props.contact.tags.split(',').length != prevProps.contact.tags.split(',').length)){
+    if(this.props.contact && (this.props.contact.tags && this.props.contact.tags.split(',').length != prevProps.contact.tags.split(',').length)){
       this.setState({showLoading  : false})
     }
   }

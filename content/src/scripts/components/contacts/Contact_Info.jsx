@@ -139,9 +139,10 @@ class ContactInfo extends Component{
                                   changeInContactBasic : false,
                                   firstName     : jsonResponse.firstName,
                                   lastName      : jsonResponse.lastName,
+                                  suppress      : jsonResponse.supress,
                                   contactnotFound : false
-                                })
-                                console.log(jsonResponse);
+                                });
+                                console.log('1. Getting Subscriber',jsonResponse);
 
                               }else{
                                 ErrorAlert({ message : jsonResponse[1] })
@@ -171,7 +172,7 @@ class ContactInfo extends Component{
                 console.log(jsonResponse);
 
                 if(parseInt(jsonResponse.count) > 0){
-                  
+
                   var i=0;
                   jQuery.each(jsonResponse.tags[0],function(key,value){
                       tagsA.push({id:++i,value:decodeHTML(value[0].tag)});
@@ -211,13 +212,48 @@ class ContactInfo extends Component{
       loadingMaskAppear : true
     })
   }
+  suppressContact(){
+    let userDetails = this.props.users_details[0];
+    var r = confirm("Are you sure you want to Suppress "+ this.state.email);
+    var _this = this;
+     if (r == true) {
+      //https://mks.bridgemailsystem.com/pms/io/subscriber/setData/?BMS_REQ_TK=YpErXBzNUybsRCfCLNDNfOHxLisskQ
+      request.post(this.baseUrl+'/io/subscriber/setData/')
+         .set('Content-Type', 'application/x-www-form-urlencoded')
+         .send({
 
+                   BMS_REQ_TK: userDetails.bmsToken
+                  ,type:'suppress'
+                  ,subNum: this.state.subNum
+                  ,ukey:userDetails.userKey
+                  ,isMobileLogin:'Y'
+                  ,userId:userDetails.userId
+                })
+         .then((res) => {
+            console.log(res);
+
+            var jsonResponse =  JSON.parse(res.text);
+            console.log(jsonResponse);
+            if(res.status==200){
+              SuccessAlert({message:"Contact created successfully."});
+              _this.getSubscriberDetails();
+            }else{
+              if(jsonResponse[1] == "SESSION_EXPIRED"){
+                ErrorAlert({message:jsonResponse[1]});
+                jQuery('.mksph_logout').trigger('click');
+              }else{
+                ErrorAlert({message:jsonResponse[1]});
+              }
+            }
+          });
+     }
+  }
   render(){
         if(!this.props.contact_email){
           return <div>Loading...</div>
         }
         return (
-                   <div className="s_contact_found_wraper">
+                   <div className={`s_contact_found_wraper suppress_${(this.state.subscriber) ? this.state.subscriber.supress : ""}`}>
                              <ContactBasicInfo
                                contactInfo={this.state}
                                contact={this.state.subscriber}
@@ -226,6 +262,49 @@ class ContactInfo extends Component{
                                users_details={this.props.users_details}
 
                               />
+
+                            <div className="top-header contact_found top_managerLists_wrappers">
+                                      <div className="scf_o_right">
+                                          <ul className="top_manager_ul_wraps">
+                                              <li>
+                                                <div className="scf_option_icon ripple top_manage_lists">
+                                                  <a href="#" style={{textDecoration: 'unset'}}>
+                                                    <div className="wrap_scf_o_i">
+                                                      <div className="wrap_scf_o_i_md">
+                                                        <div className="scf_o_icon scf_o_edit mksicon-ManageLists mks_manageList_wrap"></div>
+                                                        <p className="scf_o_txt">Manage lists</p>
+                                                        </div>
+                                                        </div>
+                                                    </a>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                      <div className="scf_option_icon ripple top_manage_lists">
+                                                        <a href="#" style={{textDecoration: 'unset'}}>
+                                                          <div className="wrap_scf_o_i">
+                                                            <div className="wrap_scf_o_i_md">
+                                                              <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
+                                                              <p className="scf_o_txt">Add into list</p>
+                                                              </div>
+                                                              </div>
+                                                          </a>
+                                                              </div>
+                                                          </li>
+                                                          <li onClick={this.suppressContact.bind(this)}>
+                                                            <div className="scf_option_icon ripple top_manage_lists">
+                                                              <a href="#" style={{textDecoration: 'unset'}}>
+                                                                <div className="wrap_scf_o_i">
+                                                                  <div className="wrap_scf_o_i_md">
+                                                                    <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
+                                                                    <p className="scf_o_txt">Suppress user</p>
+                                                                    </div>
+                                                                    </div>
+                                                                </a>
+                                                                    </div>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                      </div>
                           <div className="scf_tab_wrap">
                               <div className="scf_tab">
                                   <div className="tab">

@@ -153,6 +153,7 @@ LoadingMask
     },500)
   }
   render(){
+
     if(!this.props.contact){
       return (
         <div>
@@ -189,7 +190,7 @@ LoadingMask
             <div className="s_contact_found">
                 <div className="scf_silhouette">
                     <div className="scf_silhouette_text">
-                        <p>{this.state.acronym}</p>
+                        <p>{this.state.acronym}  </p>
                     </div>
                 </div>
                 <div className="scf_email_wrap">
@@ -260,6 +261,7 @@ LoadingMask
     }
 
     if(this.props.contact){
+
     return (
       <div>
       <ToggleDisplay show={this.state.showContact}>

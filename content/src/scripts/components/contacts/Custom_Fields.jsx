@@ -50,7 +50,7 @@ class CustomFields extends Component{
   }
   componentDidUpdate(prevProps, prevState, prevContext){
     console.log('Component Did Update');
-    if(Object.keys(prevProps.custom_fields[0]).length != Object.keys(this.props.custom_fields[0]).length){
+    if(prevProps.custom_fields && (Object.keys(prevProps.custom_fields[0]).length != Object.keys(this.props.custom_fields[0]).length)){
       console.log('The Fields are different');
 
       if(this.props.custom_fields){
@@ -199,8 +199,9 @@ class CustomFields extends Component{
     if(!this.props.custom_fields){
       return (<div style={{position: "relative"}}>
                   <ToggleDisplay show={this.state.showAddBox}>
-                      <AddBox addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key *"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)} />
-                  </ToggleDisplay>
+                      <AddBox showTitle={"Add New Custom Field"} addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key *"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)} />
+                      <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+                </ToggleDisplay>
                   <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
                   <p className="not-found">No custom fields available.</p>
 

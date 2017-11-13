@@ -243,7 +243,7 @@ class App extends Component {
                 });
   this.refs.gmailemail.resetGmail();
  }
-
+ 
   render() {
     return (
       <div className="appWrapper">

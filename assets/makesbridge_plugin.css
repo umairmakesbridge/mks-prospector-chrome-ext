@@ -602,6 +602,18 @@ input.hasError {
     z-index: 1;
     opacity: 0.9;
 }
+
+.suppress_S .s_contact_found {
+    background: #f2b2a8;
+}
+.suppress_S .scf_option_control,
+.suppress_S .top_managerLists_wrappers,
+.suppress_S .addTag,
+.suppress_S .mkb_basic_edit,
+.suppress_S .addCF,
+.suppress_S .mkb_cf_btn {
+    display: none;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;
@@ -2066,6 +2078,37 @@ position:relative; z-index:9;
 .pclr25 {
  background-color:#f9e9a3!important;
  color:#bb8207!important
+}
+/*================================================
+    Managers Lists,Suppress
+=================================================*/
+.top_manage_lists{
+
+}
+.top_manage_lists .wrap_scf_o_i{
+  background: transparent;
+  width: 90px;
+  height: 60px;
+}
+.top_manage_lists .mks_manageList_wrap{
+  font-size: 24px;
+  color: #748592;
+}
+.top_manage_lists .scf_o_txt{
+  color: #748592;
+}
+.top_manage_lists .mks_manageList_wrap::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    background: rgb(116, 133, 146);
+    height: 14px;
+    position: absolute;
+    right: 0;
+    top: 24px;
+}
+ul.top_manager_ul_wraps li:last-child div::after {
+    width: 0;
 }
 /*================================================
     Clickers,Visitors,Contacts Switch Styling
