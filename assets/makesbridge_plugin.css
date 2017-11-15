@@ -1,5 +1,6 @@
 @import url('plugin_font_icon.css');
 @import url('animate.css');
+@import url('skins/all.css');
 
 *{
  margin: 0;
@@ -2088,7 +2089,7 @@ position:relative; z-index:9;
 .top_manage_lists .wrap_scf_o_i{
   background: transparent;
   width: 90px;
-  height: 60px;
+  height: 48px;
 }
 .top_manage_lists .mks_manageList_wrap{
   font-size: 24px;
@@ -2105,10 +2106,62 @@ position:relative; z-index:9;
     height: 14px;
     position: absolute;
     right: 0;
-    top: 24px;
+    top: 14px;
 }
 ul.top_manager_ul_wraps li:last-child div::after {
     width: 0;
+}
+.SuppressNotify{
+  position: relative;
+  top: 9px;
+  margin: 0 auto;
+  width: 248px;
+}
+.SuppressNotify::after {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/info.png") no-repeat scroll center center #e09387;
+  }
+.suppress_S .SuppressNotify{
+  display: block !important;
+}
+.SuppressNotify.info h3, .SuppressNotify.info p {
+    color: #8a2020;
+}
+.messagebox.info {
+    background-color: #f2b2a8;
+}
+/*================================================
+    Manage Lists and Add Lists Styling
+=================================================*/
+.cc_wraps_mks{
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sl_wrap_list label {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.sl_wrap_list label {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.sl_wrap_list label span {
+    margin-left: 10px;
+    color :rgb(116, 133, 146);
+}
+.dialog_loading_class_wrap{
+  right: 0px;
+    top: 0;
+}
+.dialog_loading_class_wrap .spinner{
+  top: 90px;
+  position: relative;
+}
+.dialog_loading_class_wrap p{
+  top: 90px;
+  position: relative;
 }
 /*================================================
     Clickers,Visitors,Contacts Switch Styling
@@ -2226,3 +2279,71 @@ ul.top_manager_ul_wraps li:last-child div::after {
     top: 2px;
     width: 18px;
 }
+/*-----------------------*/
+/* iCheck plugin Flat skin, green
+----------------------------------- */
+
+
+/* iCheck plugin Square skin, blue
+----------------------------------- */
+.icheckbox_square-blue,
+.iradio_square-blue {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    background: url(blue.png) no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_square-blue {
+    background-position: 0 0;
+}
+    .icheckbox_square-blue.hover {
+        background-position: -24px 0;
+    }
+    .icheckbox_square-blue.checked {
+        background-position: -48px 0;
+    }
+    .icheckbox_square-blue.disabled {
+        background-position: -72px 0;
+        cursor: default;
+    }
+    .icheckbox_square-blue.checked.disabled {
+        background-position: -96px 0;
+    }
+
+.iradio_square-blue {
+    background-position: -120px 0;
+}
+    .iradio_square-blue.hover {
+        background-position: -144px 0;
+    }
+    .iradio_square-blue.checked {
+        background-position: -168px 0;
+    }
+    .iradio_square-blue.disabled {
+        background-position: -192px 0;
+        cursor: default;
+    }
+    .iradio_square-blue.checked.disabled {
+        background-position: -216px 0;
+    }
+
+/* HiDPI support */
+@media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+    .icheckbox_square-blue,
+    .iradio_square-blue {
+        background-image: url("chrome-extension://__MSG_@@extension_id__/img/blue@2x.png");
+        -webkit-background-size: 240px 24px;
+        background-size: 240px 24px;
+    }
+}
+
+/*-----------------------*/
+/* iCheck plugin Flat skin, Ends
+----------------------------------- */

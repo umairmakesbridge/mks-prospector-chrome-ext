@@ -40,7 +40,8 @@ export default class Search extends Component {
       selectedItems: [],
       searchValue: '',
       currentValue : '',
-      menuVisible: false
+      menuVisible: false,
+      disabled : false
     }
   }
 
@@ -54,7 +55,7 @@ export default class Search extends Component {
   }
 
   cleanInput(){
-    this.setState({currentValue : ''});
+    this.setState({currentValue : '',disabled:false});
   }
 
   SearchItemInArrayObjects(items, input, searchKey) {
@@ -85,7 +86,7 @@ export default class Search extends Component {
     if (this.props.onItemsChanged !== undefined) {
       this.props.onItemsChanged(this.state.selectedItems,this.state.currentValue);
       setTimeout(function(){this.hideMenu();}.bind(this),100);
-      
+
     }
   }
 
@@ -210,7 +211,11 @@ export default class Search extends Component {
     let item = { id: parseInt(element.dataset.id), value: element.innerHTML.replace(/&amp;/g, '&') }
     this.selectMenuItem(item)
   }
-
+  disabledInput(){
+    this.setState({
+      disabled : true
+    })
+  }
   handleKeyChange (e) {
     const { getItemsAsync } = this.props;
     let value = this.refs.searchInput.value;
@@ -220,8 +225,9 @@ export default class Search extends Component {
     this.setState({currentValue : value});
     const code = e.keyCode || e.which;
     if(code == 13){
+      this.setState({disabled : true});
       this.props.addNewTag(this.state.currentValue);
-      setTimeout(function(){this.setState({currentValue : ''})}.bind(this),5000);
+      setTimeout(function(){this.setState({currentValue : '',disabled : false});}.bind(this),5000);
     }
     this.triggerKeyChange(value)
     if( getItemsAsync != undefined ) {
@@ -327,6 +333,7 @@ export default class Search extends Component {
              onBlur={this.handleBlur.bind(this)}
              onKeyUp={this.handleKeyChange.bind(this)}
              onChange={this.handleOnChange.bind(this)}
+             disabled={this.state.disabled}
              />
     )
   }

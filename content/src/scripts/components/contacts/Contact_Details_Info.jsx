@@ -150,9 +150,11 @@ class ContactDetailInfo extends Component{
       return;
     }
     this.setState({
-      disabled:true
+      disabled:true,
+      loadingMessage : 'Creating Tag...',
+      showLoading    : true
     })
-
+    this.refs.autoCompleteSearch.disabledInput();
     setTimeout(function(){
       request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken)
          .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -175,13 +177,10 @@ class ContactDetailInfo extends Component{
               this.setState({
                   tagName:'',
                   showAddBox:false,
-                  tagBtn : '',
-                  disabled:false,
-                  loadingMessage : 'Creating Tag...',
-                  showLoading    : true
+                  tagBtn : ''
               })
 
-
+              setTimeout(function(){this.setState({loadingMessage:'',showLoading:false})}.bind(this),3000)
               this.props.changeInTagsView();
 
             }
@@ -246,7 +245,7 @@ class ContactDetailInfo extends Component{
       //  this.requestAutoFillTag();
   }
   showAddTagFocus(){
-    this.setState({showAddBox : true,tagBtn : 'hide'});
+    this.setState({showAddBox : true,tagBtn : 'hide',disabled:false});
     this.refs.autoCompleteSearch.cleanInput();
     setTimeout(function(){
         jQuery('#addTagName').focus();
@@ -284,9 +283,10 @@ class ContactDetailInfo extends Component{
     }
   }
   componentDidUpdate(prevProps, prevState, prevContext){
-    if(this.props.contact && (this.props.contact.tags && this.props.contact.tags.split(',').length != prevProps.contact.tags.split(',').length)){
+    console.log(this.props.contact);
+    /*if(this.props.contact && (this.props.contact.tags && this.props.contact.tags.split(',').length != prevProps.contact.tags.split(',').length)){
       this.setState({showLoading  : false})
-    }
+    }*/
   }
   toggleHeight(){
       if(this.state.setFullHeight){

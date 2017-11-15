@@ -14,11 +14,18 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
+import Dialog
+       from '../common/dialog';
+import SubscriberLists
+       from './subscriberLists';
+import LoadingMask
+       from '../common/Loading_Mask';
 
 class ContactInfo extends Component{
 
   constructor(props){
       super(props);
+
       this.contact_info  = this.props.contact_email;
       this.users_details = this.props.users_details;
       this.baseUrl       = this.props.baseUrl;
@@ -40,7 +47,10 @@ class ContactInfo extends Component{
                     contactnotFound  : false,
                     showScore : '',
                     autoFillTags : [],
-                    loadingMaskAppear : false
+                    loadingMaskAppear : false,
+                    showParticipant : false,
+                    showSubscriberAdd : false,
+                    showLoading : false
                    }
   }
 
@@ -218,6 +228,7 @@ class ContactInfo extends Component{
     var _this = this;
      if (r == true) {
       //https://mks.bridgemailsystem.com/pms/io/subscriber/setData/?BMS_REQ_TK=YpErXBzNUybsRCfCLNDNfOHxLisskQ
+      this.setState({showLoading:true,message:"Supprssing Contact"})
       request.post(this.baseUrl+'/io/subscriber/setData/')
          .set('Content-Type', 'application/x-www-form-urlencoded')
          .send({
@@ -235,6 +246,8 @@ class ContactInfo extends Component{
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
             if(res.status==200){
+
+              this.setState({showLoading:false,message:""})
               SuccessAlert({message:"Contact created successfully."});
               _this.getSubscriberDetails();
             }else{
@@ -248,7 +261,12 @@ class ContactInfo extends Component{
           });
      }
   }
+  addContactToList(){
+    this.setState({showSubscriberAdd: !this.state.showSubscriberAdd})
+  }
   render(){
+
+
         if(!this.props.contact_email){
           return <div>Loading...</div>
         }
@@ -262,8 +280,29 @@ class ContactInfo extends Component{
                                users_details={this.props.users_details}
 
                               />
+                            <div className="hide SuppressNotify messagebox info animated"><p>This account has been <strong>Suppressed</strong></p></div>
 
+                            <ToggleDisplay show={this.state.showSubscriberAdd}>
+
+                                  <Dialog
+                                    childProps= {this.refs.childSubscriberList}
+                                    showTitle={"Add Contact to List"}
+                                    ref="parentSubscriberList"
+                                    addContactToList = {this.addContactToList.bind(this)}
+                                  >
+                                      <SubscriberLists
+                                        ref="childSubscriberList"
+                                        parentProps = {this.refs.parentSubscriberList}
+                                        baseUrl={this.baseUrl}
+                                        users_details={this.props.users_details}
+                                        contact={this.state.subscriber}
+                                        addContactToList = {this.addContactToList.bind(this)}
+                                      />
+                                  </Dialog>
+                                  <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+                              </ToggleDisplay>
                             <div className="top-header contact_found top_managerLists_wrappers">
+                                      <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
                                       <div className="scf_o_right">
                                           <ul className="top_manager_ul_wraps">
                                               <li>
@@ -279,15 +318,15 @@ class ContactInfo extends Component{
                                                         </div>
                                                     </li>
                                                     <li>
-                                                      <div className="scf_option_icon ripple top_manage_lists">
-                                                        <a href="#" style={{textDecoration: 'unset'}}>
-                                                          <div className="wrap_scf_o_i">
-                                                            <div className="wrap_scf_o_i_md">
-                                                              <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
-                                                              <p className="scf_o_txt">Add into list</p>
-                                                              </div>
-                                                              </div>
-                                                          </a>
+                                                      <div className="scf_option_icon ripple top_manage_lists" onClick={this.addContactToList.bind(this)}>
+                                                              <a href="#" style={{textDecoration: 'unset'}}>
+                                                                <div className="wrap_scf_o_i">
+                                                                  <div className="wrap_scf_o_i_md">
+                                                                    <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
+                                                                    <p className="scf_o_txt">Add into list</p>
+                                                                    </div>
+                                                                    </div>
+                                                                </a>
                                                               </div>
                                                           </li>
                                                           <li onClick={this.suppressContact.bind(this)}>
