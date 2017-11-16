@@ -22,10 +22,10 @@ class Dialog extends Component{
    })
  }
  handleSave (){
-   this.props.childProps.saveContactIntoList()
+   this.props.saveCallback()
  }
  handleCancel(){
-   this.props.addContactToList();
+   this.props.closeCallback();
  }
  render(){
     return(

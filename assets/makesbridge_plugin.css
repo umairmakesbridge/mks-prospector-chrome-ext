@@ -2132,6 +2132,18 @@ ul.top_manager_ul_wraps li:last-child div::after {
 .messagebox.info {
     background-color: #f2b2a8;
 }
+.mks_mnglist_wrap {
+    padding: 10px 5px;
+    background: #ddd;
+    margin-bottom: 2px;
+}
+.mks_mnglist_wrap h4 {
+    display: inline;
+    margin-right: 10px;
+}
+.mks_mnglist_wrap select {
+    float: right;
+}
 /*================================================
     Manage Lists and Add Lists Styling
 =================================================*/

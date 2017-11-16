@@ -18,6 +18,8 @@ import Dialog
        from '../common/dialog';
 import SubscriberLists
        from './subscriberLists';
+import ManageSubscriberLists
+       from './ManageSubscriberLists';
 import LoadingMask
        from '../common/Loading_Mask';
 
@@ -50,6 +52,7 @@ class ContactInfo extends Component{
                     loadingMaskAppear : false,
                     showParticipant : false,
                     showSubscriberAdd : false,
+                    showSubscriberManager : false,
                     showLoading : false
                    }
   }
@@ -263,8 +266,19 @@ class ContactInfo extends Component{
   }
   addContactToList(){
     let height = jQuery('.makesbridge_plugin').height();
+    this.setState({showSubscriberAdd: !this.state.showSubscriberAdd,overlayHeight:height});
 
-    this.setState({showSubscriberAdd: !this.state.showSubscriberAdd,overlayHeight:height})
+  }
+  addContactIntoSubsList(){
+    this.refs.childSubscriberList.saveContactIntoList()
+  }
+  manageContactToList(){
+    let height = jQuery('.makesbridge_plugin').height();
+    this.setState({showSubscriberManager: !this.state.showSubscriberManager,overlayHeight:height});
+    this.refs.childSubscriberManagerList.manageLoadList();
+  }
+  updateContactIntoLists(){
+    this.refs.childSubscriberManagerList.updateContactIntoLists();
   }
   render(){
 
@@ -287,10 +301,10 @@ class ContactInfo extends Component{
                             <ToggleDisplay show={this.state.showSubscriberAdd}>
 
                                   <Dialog
-                                    childProps= {this.refs.childSubscriberList}
+                                    saveCallback= {this.addContactIntoSubsList.bind(this)}
                                     showTitle={"Add Contact into List"}
                                     ref="parentSubscriberList"
-                                    addContactToList = {this.addContactToList.bind(this)}
+                                    closeCallback = {this.addContactToList.bind(this)}
                                   >
                                       <SubscriberLists
                                         ref="childSubscriberList"
@@ -299,16 +313,39 @@ class ContactInfo extends Component{
                                         users_details={this.props.users_details}
                                         contact={this.state.subscriber}
                                         addContactToList = {this.addContactToList.bind(this)}
+                                        type={"add"}
+
                                       />
+
                                   </Dialog>
                                   <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
                               </ToggleDisplay>
+                                <ToggleDisplay show={this.state.showSubscriberManager}>
+                                  <Dialog
+                                    saveCallback= {this.updateContactIntoLists.bind(this)}
+                                    showTitle={"Manage Contact into List"}
+                                    ref="parentSubscriberList"
+                                    closeCallback = {this.manageContactToList.bind(this)}
+                                  >
+                                  <ManageSubscriberLists
+                                    ref="childSubscriberManagerList"
+                                    parentProps = {this.refs.parentSubscriberList}
+                                    baseUrl={this.baseUrl}
+                                    users_details={this.props.users_details}
+                                    contact={this.state.subscriber}
+                                    manageContactToList = {this.manageContactToList.bind(this)}
+                                    type={"manage"}
+                                  />
+                                </Dialog>
+                                <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+
+                                </ToggleDisplay>
                             <div className="top-header contact_found top_managerLists_wrappers">
                                       <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
                                       <div className="scf_o_right">
                                           <ul className="top_manager_ul_wraps">
                                               <li>
-                                                <div className="scf_option_icon ripple top_manage_lists">
+                                                <div className="scf_option_icon ripple top_manage_lists" onClick={this.manageContactToList.bind(this)}>
                                                   <a href="#" style={{textDecoration: 'unset'}}>
                                                     <div className="wrap_scf_o_i">
                                                       <div className="wrap_scf_o_i_md">
