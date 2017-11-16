@@ -286,7 +286,7 @@ class ContactInfo extends Component{
 
                                   <Dialog
                                     childProps= {this.refs.childSubscriberList}
-                                    showTitle={"Add Contact to List"}
+                                    showTitle={"Add Contact into List"}
                                     ref="parentSubscriberList"
                                     addContactToList = {this.addContactToList.bind(this)}
                                   >
