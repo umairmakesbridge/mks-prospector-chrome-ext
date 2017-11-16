@@ -26,6 +26,7 @@ class SubscriberLists extends Component{
       saveContactIntoList (){
 
         if(!document.querySelector('.checked input[name=radio]:checked')){
+          ErrorAlert({message : "No list selected."});
           return;
         }
         this.props.parentProps.toggleLoadingMask("Updating Contact into List");
@@ -76,7 +77,6 @@ class SubscriberLists extends Component{
                  .then((res) => {
                     if(res.status==200){
                       let jsonResponse =  JSON.parse(res.text);
-                      debugger;
                       if (jsonResponse[0] == "err"){
                           if(jsonResponse[1] == "SESSION_EXPIRED"){
                             ErrorAlert({message:jsonResponse[1]});
@@ -88,7 +88,9 @@ class SubscriberLists extends Component{
                       if(parseInt(jsonResponse.count) > 0){
 
                         jQuery.each(jsonResponse['lists'][0],function(key,list){
-                              lists.push(list[0]);
+                              if(list[0].isSupressList == "false"){
+                                lists.push(list[0]);
+                              }
                         });
                         this.setState({
                           subLists : lists

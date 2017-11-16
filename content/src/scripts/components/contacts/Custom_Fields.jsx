@@ -175,7 +175,7 @@ class CustomFields extends Component{
     }
   }
   showAddCusFocus(){
-    let height = jQuery('.mkspanel').height();
+    let height = jQuery('.makesbridge_plugin').height();
     this.setState({showAddBox : true,overlayHeight:height});
     setTimeout(function(){
         jQuery('.focusThis').focus();

@@ -262,7 +262,9 @@ class ContactInfo extends Component{
      }
   }
   addContactToList(){
-    this.setState({showSubscriberAdd: !this.state.showSubscriberAdd})
+    let height = jQuery('.makesbridge_plugin').height();
+
+    this.setState({showSubscriberAdd: !this.state.showSubscriberAdd,overlayHeight:height})
   }
   render(){
 

@@ -1545,6 +1545,7 @@ a:hover, a:focus {
    font-weight: 200;
    color: #474747;
    font-size: 16px;
+   margin-bottom: 15px;
 }
 span.mksph_contact_title {
    color: #748592;
@@ -1659,7 +1660,9 @@ Autocomplete CSS
 .autocomplete__menu ul.autocomplete__items li:hover,.autocomplete__menu--hidden ul.autocomplete__items li:hover {
     background: #eee;
 }
-
+#addTagName.autocomplete__input {
+    margin: 0;
+}
 
 /*==========================
   Spinner CSS
