@@ -29,6 +29,7 @@ class ManageSubscriberLists extends Component{
       }
       componentDidMount(){
       }
+      
       manageLoadList(){
 
 
@@ -53,7 +54,6 @@ class ManageSubscriberLists extends Component{
                         }
 
                         if(parseInt(jsonResponse.count) > 0){
-                          debugger;
                           console.log(jsonResponse);
                           jQuery.each(jsonResponse['listInfo'][0],function(key,list){
                             lists.push(list[0]);
@@ -70,9 +70,9 @@ class ManageSubscriberLists extends Component{
           // console.log(this.state.mangLists);
 
           const ListItems = this.state.mangLists.map((list,key) =>
-                <li key={key}>
+                <li key={key} className="mngList_li_wrap">
                     <div className="mks_mnglist_wrap">
-                      <h4>{list.listName}</h4>
+                      <h4 title={decodeHTML(list.listName)} >{decodeHTML(list.listName)}</h4>
                           <select data-listNum={list.listNumber} className="list-action" defaultValue={list.status}>
                             <option value="S">Subscribe</option>
                             <option value="U">Unsubscribe</option>

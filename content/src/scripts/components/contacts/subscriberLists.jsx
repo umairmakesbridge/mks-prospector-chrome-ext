@@ -23,6 +23,9 @@ class SubscriberLists extends Component{
         // preserve the initial state in a new object
         this.baseState = this.state;
       }
+      setStateDefault(){
+        this.setState(this.baseState);
+      }
       saveContactIntoList (){
 
         if(!document.querySelector('.checked input[name=radio]:checked')){
@@ -53,14 +56,12 @@ class SubscriberLists extends Component{
               else if(parseInt(jsonResponse.updatedCount) > 0 || parseInt(jsonResponse.addedCount) > 0){
                 this.setState(this.baseState);
                 this.props.addContactToList();
-                this.loadLists();
                 this.props.parentProps.toggleLoadingMask();
                 SuccessAlert({message:"Contact added successfully."});
               }
             });
       }
       componentDidMount(){
-          this.loadLists();
       }
 
       loadLists(){

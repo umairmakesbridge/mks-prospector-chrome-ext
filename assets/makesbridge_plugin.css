@@ -17,7 +17,7 @@ input:focus {
 /*.mksph_logout{visibility: hidden;}*/
 .mksph_logout {
     float: right;
-    width: 6%;
+    width: 15%;
     height: 50px;
     cursor: pointer;
 }
@@ -131,7 +131,7 @@ html, body{ height:100%;}
 }
 .mksph_close{
    float: right;
-   width: 15%;
+   width: 7%;
    height: 50px;
 }
 .back-container{
@@ -604,9 +604,7 @@ input.hasError {
     opacity: 0.9;
 }
 
-.suppress_S .s_contact_found {
-    background: #f2b2a8;
-}
+
 .suppress_S .scf_option_control,
 .suppress_S .top_managerLists_wrappers,
 .suppress_S .addTag,
@@ -614,6 +612,9 @@ input.hasError {
 .suppress_S .addCF,
 .suppress_S .mkb_cf_btn {
     display: none;
+}
+.new_contact_true .top_managerLists_wrappers{
+  display: none !important;
 }
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
@@ -2133,16 +2134,30 @@ ul.top_manager_ul_wraps li:last-child div::after {
     background-color: #f2b2a8;
 }
 .mks_mnglist_wrap {
-    padding: 10px 5px;
-    background: #ddd;
-    margin-bottom: 2px;
+  display: block;
+  height: 20px;
+  padding: 12px 5px 8px;
+  background: rgb(239, 247, 251);
 }
 .mks_mnglist_wrap h4 {
-    display: inline;
-    margin-right: 10px;
+  width: 160px;
+height: 16px;
+float: left;
+overflow: hidden;
+cursor: pointer;
+background: rgb(239, 247, 251);
+color:rgb(2, 175, 239);
+font-size: 14px;
+font-weight: lighter;
 }
 .mks_mnglist_wrap select {
     float: right;
+    top:-2px;
+    position: relative;
+}
+.mngList_li_wrap{
+  display: block;
+  margin-bottom: 2px;
 }
 /*================================================
     Manage Lists and Add Lists Styling
@@ -2162,6 +2177,7 @@ ul.top_manager_ul_wraps li:last-child div::after {
 .sl_wrap_list label span {
     margin-left: 10px;
     color : #02afef;
+    font-size: 14px;
 }
 .dialog_loading_class_wrap{
   right: 0px;

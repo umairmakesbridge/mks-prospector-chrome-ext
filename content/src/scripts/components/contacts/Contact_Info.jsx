@@ -267,7 +267,11 @@ class ContactInfo extends Component{
   addContactToList(){
     let height = jQuery('.makesbridge_plugin').height();
     this.setState({showSubscriberAdd: !this.state.showSubscriberAdd,overlayHeight:height});
-
+    this.refs.childSubscriberList.loadLists();
+  }
+  closeAddContactToList(){
+    this.setState({showSubscriberAdd: false});
+    this.refs.childSubscriberList.setStateDefault();
   }
   addContactIntoSubsList(){
     this.refs.childSubscriberList.saveContactIntoList()
@@ -287,7 +291,7 @@ class ContactInfo extends Component{
           return <div>Loading...</div>
         }
         return (
-                   <div className={`s_contact_found_wraper suppress_${(this.state.subscriber) ? this.state.subscriber.supress : ""}`}>
+                   <div className={`s_contact_found_wraper new_contact_${this.state.contactnotFound} suppress_${(this.state.subscriber) ? this.state.subscriber.supress : ""}`}>
                              <ContactBasicInfo
                                contactInfo={this.state}
                                contact={this.state.subscriber}
@@ -302,9 +306,9 @@ class ContactInfo extends Component{
 
                                   <Dialog
                                     saveCallback= {this.addContactIntoSubsList.bind(this)}
-                                    showTitle={"Add Contact into List"}
+                                    showTitle={"Add Contact to List"}
                                     ref="parentSubscriberList"
-                                    closeCallback = {this.addContactToList.bind(this)}
+                                    closeCallback = {this.closeAddContactToList.bind(this)}
                                   >
                                       <SubscriberLists
                                         ref="childSubscriberList"

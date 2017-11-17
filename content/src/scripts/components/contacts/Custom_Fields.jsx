@@ -85,7 +85,7 @@ class CustomFields extends Component{
     if(type && type=="customFields"){
       reqObj['frmFld_'+encodeHTML(arrayObj[0])] = arrayObj[1];
     }
-    debugger;
+    // debugger;
     reqObj["subNum"] = this.props.contact.subNum;
     reqObj["firstName"] = this.props.contact.firstName;
     reqObj["lastName"] = this.props.contact.lastName;
