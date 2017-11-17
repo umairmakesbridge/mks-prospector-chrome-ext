@@ -17,7 +17,7 @@ class SubscriberLists extends Component{
         this.baseUrl = this.props.baseUrl;
 
         this.state = {
-          subLists : null
+          subLists : null,
         };
 
         // preserve the initial state in a new object
@@ -60,7 +60,7 @@ class SubscriberLists extends Component{
             });
       }
       componentDidMount(){
-        this.loadLists();
+          this.loadLists();
       }
 
       loadLists(){
@@ -94,7 +94,7 @@ class SubscriberLists extends Component{
                         });
                         this.setState({
                           subLists : lists
-                        })
+                        });
                       }
                     }
                   });
@@ -119,6 +119,7 @@ class SubscriberLists extends Component{
 
         return ListItems;
       }
+
       render(){
         if(!this.state.subLists){
           return(
@@ -129,16 +130,18 @@ class SubscriberLists extends Component{
                 </div>
           )
         }
-
         return(
-          <div className="sl_wrap_list">
+          <div className="sl_lists_wrapper">
+            <div className={`sl_wrap_list`}>
 
 
-              <RadioGroup name="radio">
-              {this.generateLists()}
-            </RadioGroup>
+                <RadioGroup name="radio">
+                {this.generateLists()}
+              </RadioGroup>
 
-          </div>
+            </div>
+
+        </div>
         )
 
       }

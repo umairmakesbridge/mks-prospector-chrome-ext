@@ -48,17 +48,17 @@ LoadingMask
         disabled:true
       });
     }
-    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=addSubscriber')
+    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addSubscriber')
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
                  email:this.props.contactInfo.email
-                ,ukey:this.users_details[0].userKey
+                ,ukey:this.props.users_details[0].userKey
                 ,firstName:this.state.firstName
                 ,lastName : this.state.lastName
                 ,company  : this.state.company
-                ,listNum  : this.users_details[0].listObj['listNum']
+                ,listNum  : this.props.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
-                ,userId:this.users_details[0].userId
+                ,userId:this.props.users_details[0].userId
               })
        .then((res) => {
           console.log(res.status);
@@ -97,17 +97,32 @@ LoadingMask
       disabled:true
     })
 
-    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
+    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=editProfile')
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
                  subNum: this.props.contact.subNum
                 ,firstName:this.state.firstName
                 ,lastName: this.state.lastName
-                //,company: this.state.company
-                ,ukey:this.users_details[0].userKey
-                ,listNum  : this.users_details[0].listObj['listNum']
+                ,company: this.props.contact.company
+                ,telephone: this.props.contact.telephone
+                ,city: this.props.contact.city
+                ,state: this.props.contact.state
+                ,address1: this.props.contact.address1
+                ,jobStatus: this.props.contact.jobStatus
+                ,salesRep: this.props.contact.salesRep
+                ,salesStatus: this.props.contact.salesStatus
+                ,birthDate: this.props.contact.birthDate
+                ,areaCode: this.props.contact.areaCode
+                ,country: this.props.contact.country
+                ,zip: this.props.contact.zip
+                ,address2: this.props.contact.address2
+                ,industry: this.props.contact.industry
+                ,source: this.props.contact.source
+                ,occupation: this.props.contact.occupation
+                ,ukey:this.props.users_details[0].userKey
+                ,listNum  : this.props.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
-                ,userId:this.users_details[0].userId
+                ,userId:this.props.users_details[0].userId
               })
        .then((res) => {
           console.log(res.status);

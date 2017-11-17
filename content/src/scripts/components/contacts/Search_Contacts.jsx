@@ -117,19 +117,19 @@ class SearchContacts extends Component{
         })
 
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
-                        + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy='+type+'&lastXDays=1&ukey='+this.users_details[0].userKey
-                        +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                        + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy='+type+'&lastXDays=1&ukey='+this.props.users_details[0].userKey
+                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
       }else if(type=="search"){
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
-                        + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
-                        +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.users_details[0].userKey
-                        +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                        + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
+                        +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
+                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
       }else if(type=="searchTag"){
         //https://mks.bridgemailsystem.com/pms/io/subscriber/getData/?BMS_REQ_TK=PpYb22mrbT7MLY9B2SmVQQNSozbnJd&type=getSAMSubscriberList&offset=0&searchTag=mks&orderBy=lastActivityDate
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
-                        + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchTag='
-                        +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.users_details[0].userKey
-                        +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                        + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchTag='
+                        +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
+                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
       }
       this.getConactDetails(searchUrl,type);
     }
@@ -191,8 +191,8 @@ class SearchContacts extends Component{
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1&ukey='+this.users_details[0].userKey
                         +'&isMobileLogin=Y&userId='+this.users_details[0].userId*/
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
-                                      + this.users_details[0].bmsToken +'&type=getSAMSubscriberStats&ukey='+this.users_details[0].userKey
-                                      +'&isMobileLogin=Y&userId='+this.users_details[0].userId
+                                      + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberStats&ukey='+this.props.users_details[0].userKey
+                                      +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
         request
               .get(searchUrl)
                .set('Content-Type', 'application/x-www-form-urlencoded')

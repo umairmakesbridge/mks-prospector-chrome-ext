@@ -46,6 +46,17 @@ class App extends Component {
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
 
+    //// preserve the initial state in a new object
+    this.baseState = {
+                     showLogin:this.state.showLogin,
+                     gmailEmails:this.state.gmailEmails,
+                     showContacts:this.state.showContacts,
+                     islogOut:'hide',
+                     selectedEmail:this.state.selectedEmail,
+                     gmail_email_list:this.state.gmail_email_list,
+                     isLoggedOut   : true,
+                     users_details : this.state.users_details
+    };
 
     this.onEmailSelect = this.onEmailSelect.bind(this);
     this.toggleTopMenu = this.toggleTopMenu.bind(this);
@@ -232,15 +243,7 @@ class App extends Component {
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
 
-   this.setState({showLogin:true,
-                  gmailEmails:false,
-                  showContacts:false,
-                  islogOut:'hide',
-                  selectedEmail:null,
-                  gmail_email_list:[],
-                  isLoggedOut   : true,
-                  users_details : this.state.users_details.splice(0,1)
-                });
+   this.setState(this.baseState);
   this.refs.gmailemail.resetGmail();
  }
 
