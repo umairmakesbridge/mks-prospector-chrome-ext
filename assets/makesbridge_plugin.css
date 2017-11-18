@@ -613,7 +613,7 @@ input.hasError {
 .suppress_S .mkb_cf_btn {
     display: none;
 }
-.new_contact_true .top_managerLists_wrappers{
+.new_contact_true .top_managerLists_wrappers,.new_contact_true .scf_tab_wrap .tab{
   display: none !important;
 }
 /*-----------------------------Alerts---------------------------*/

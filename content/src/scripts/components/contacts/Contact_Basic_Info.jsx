@@ -7,10 +7,14 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import LoadingMask
        from '../common/Loading_Mask';
+import AddBox
+       from '../common/Add_Box';
+import {encodeHTML,decodeHTML}
+       from '../common/Encode_Method';
+
 class ContactBasicInfo extends Component{
   constructor(props){
     super(props);
-LoadingMask
     const acronym = '';
     this.baseUrl=this.props.baseUrl;
     this.users_details = this.props.users_details;
@@ -19,7 +23,9 @@ LoadingMask
          editContact : false,
          acronym : '',
          disabled: false,
-         showStatus:false
+         showStatus:false,
+         showAddBox : false,
+         newCustomFieldsArray : []
     }
 
 
@@ -48,18 +54,38 @@ LoadingMask
         disabled:true
       });
     }
+    let reqObj = {};
+    this.state.newCustomFieldsArray.map((field,key)=>
+                            reqObj["frmFld_"+encodeHTML(Object.keys(field)[0])] = field[Object.keys(field)[0]]
+                        );
+    console.log(reqObj);
+            reqObj['email']=this.props.contactInfo.email
+            reqObj['ukey']=this.props.users_details[0].userKey
+            reqObj['firstName']=this.state.firstName
+            reqObj['lastName'] = this.state.lastName
+            reqObj['company'] = this.state.company
+            reqObj['telephone'] = this.state.telephone
+            reqObj['city']= this.state.city
+            reqObj['state']= this.state.state
+            reqObj['address1']= this.state.address1
+            reqObj['jobStatus']= this.state.jobStatus
+            reqObj['salesRep']= this.state.salesRep
+            reqObj['salesStatus']= this.state.salesStatus
+            reqObj['birthDate']= this.state.birthDate
+            reqObj['areaCode']= this.state.areaCode
+            reqObj['country']= this.state.country
+            reqObj['zip']= this.state.zip
+            reqObj['address2']= this.state.address2
+            reqObj['industry']= this.state.industry
+            reqObj['source']= this.state.source
+            reqObj['occupation']= this.state.occupation
+            reqObj['listNum']  = this.props.users_details[0].listObj['listNum']
+            reqObj['isMobileLogin']='Y'
+            reqObj['userId']=this.props.users_details[0].userId
+
     request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addSubscriber')
        .set('Content-Type', 'application/x-www-form-urlencoded')
-       .send({
-                 email:this.props.contactInfo.email
-                ,ukey:this.props.users_details[0].userKey
-                ,firstName:this.state.firstName
-                ,lastName : this.state.lastName
-                ,company  : this.state.company
-                ,listNum  : this.props.users_details[0].listObj['listNum']
-                ,isMobileLogin:'Y'
-                ,userId:this.props.users_details[0].userId
-              })
+       .send(reqObj)
        .then((res) => {
           console.log(res.status);
 
@@ -167,6 +193,41 @@ LoadingMask
         jQuery('#firstName').focus();
     },500)
   }
+  addCustomFields(type,arrayObj){
+    var obj = {};
+    obj[arrayObj[0]] = arrayObj[1];
+
+    this.state.newCustomFieldsArray.push(obj);
+    this.hideAddCus();
+  }
+  hideAddCus(){
+    this.setState({showAddBox : false});
+  }
+  populateCustomFields(){
+    if(this.state.newCustomFieldsArray){
+
+      return this.state.newCustomFieldsArray.map((field,key)=>
+
+                                <div key={key}>
+                                  <span className={`mksph_contact_title`}>{Object.keys(field)[0]} :</span>
+                                    <span className={`mksph_contact_value ${this.state.showLabel}`}>{ field[Object.keys(field)[0]]  }</span>
+                                      <i onClick={this.removeCustomObj.bind(this,field)}>x</i>
+                                  </div>
+                          );
+    }
+  }
+
+  removeCustomObj(field){
+    debugger;
+    let newAr = this.state.newCustomFieldsArray;
+    alert('Time to delete object from Array');
+    var idx = newAr.indexOf(field);
+     if (idx !== -1) {
+         newAr.splice(idx, 1);
+     }
+    this.setState({newCustomFieldsArray : newAr});
+
+  }
   render(){
 
     if(!this.props.contact){
@@ -242,8 +303,26 @@ LoadingMask
                   <div className="scfe_field">
                       <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this,'create')} />
                       <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
-                      <input placeholder="Company" className="hide"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
+                      <input placeholder="Company"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
 
+                      <input placeholder="Telephone"  disabled={this.state.disabled} onChange={event=> { this.setState({telephone: event.target.value }) } } />
+                      <input placeholder="City"    disabled={this.state.disabled} onChange={event=> { this.setState({city: event.target.value }) } } />
+                      <input placeholder="State"    disabled={this.state.disabled} onChange={event=> { this.setState({state: event.target.value }) } } />
+                      <input placeholder="Address1"    disabled={this.state.disabled} onChange={event=> { this.setState({address1: event.target.value }) } } />
+                      <input placeholder="Job Status"    disabled={this.state.disabled} onChange={event=> { this.setState({jobStatus: event.target.value }) } } />
+                      <input placeholder="Sales Rep"    disabled={this.state.disabled} onChange={event=> { this.setState({salesRep: event.target.value }) } } />
+                      <input placeholder="Sales Status"    disabled={this.state.disabled} onChange={event=> { this.setState({salesStatus: event.target.value }) } } />
+                      <input placeholder="Birth Date"    disabled={this.state.disabled} onChange={event=> { this.setState({birthDate: event.target.value }) } } />
+                      <input placeholder="Area Code"    disabled={this.state.disabled} onChange={event=> { this.setState({areaCode: event.target.value }) } } />
+                      <input placeholder="Country"    disabled={this.state.disabled} onChange={event=> { this.setState({country: event.target.value }) } } />
+                      <input placeholder="Zip"    disabled={this.state.disabled} onChange={event=> { this.setState({zip: event.target.value }) } } />
+                      <input placeholder="Address 2"    disabled={this.state.disabled} onChange={event=> { this.setState({address2: event.target.value }) } } />
+                      <input placeholder="Industry"    disabled={this.state.disabled} onChange={event=> { this.setState({industry: event.target.value }) } } />
+                      <input placeholder="Source"    disabled={this.state.disabled} onChange={event=> { this.setState({source: event.target.value }) } } />
+                      <input placeholder="Occupation"    disabled={this.state.disabled} onChange={event=> { this.setState({occupation: event.target.value }) } } />
+                      <div className="new_custom_field_wraps">
+                          {this.populateCustomFields()}
+                      </div>
                   </div>
                   <div className="scfe_control_option">
                       <div className="scfe_close_wrap" onClick={ switchContact=>{ this.setState({editContact:false,showContact:true}) } }>
@@ -266,10 +345,30 @@ LoadingMask
                               </div>
                           </a>
                       </div>
+                      <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={ switchShowBox=>{ this.setState({showAddBox : true}) } }>
+                          <a className="scfe_ach" href="#">
+                              <div className="scfe_save_t">
+                                  <span>Add Custom Field</span>
+                              </div>
+                              <div className="scfe_save_i_md">
+                                  <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
+                              </div>
+                          </a>
+                      </div>
                       <div className="clr"></div>
                   </div>
               </div>
           </div>
+          <ToggleDisplay show={this.state.showAddBox}>
+              <AddBox
+                addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},
+                                {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"}
+                create={this.addCustomFields.bind(this)}
+                cancel={this.hideAddCus.bind(this)}
+                showTitle={"Add New Custom Field"}
+              />
+              <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+          </ToggleDisplay>
         </ToggleDisplay>
       </div>
       );
