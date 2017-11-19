@@ -1476,7 +1476,17 @@ START Edit Selected Contact Found
  display: table;
  background: #1fb97e;
 }
+.cfe_add_customField{
+  width: 112px;
+  margin-right: 7px;
 
+}
+.cfe_add_customField .scfe_save_t{
+  background: rgb(14, 123, 247);
+}
+.cfe_add_customField .scfe_ach:hover > .scfe_save_t {
+    background: rgb(14, 123, 247);
+}
 a:hover, a:focus {
    text-decoration: none ! important;
 }
@@ -1642,6 +1652,26 @@ div#custom-fields ul li {
 .addCF {
     color: #fff;
     right: 45px;
+}
+.new_custom_field_wraps {
+    margin-top: 3px;
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+}
+
+.new_custom_field_wraps h4 {
+    color: #738591;
+    font-weight: normal;
+    margin-bottom: 5px;
+    margin-top: 8px;
+}
+.new_custom_field_wraps i{
+    font-style: normal;
+    font-size: 12px;
+    color: #016dfd;
+    text-decoration: underline;
+    float: right;
+    cursor:pointer;
 }
 /*Ends*/
 

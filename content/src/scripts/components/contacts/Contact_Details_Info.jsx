@@ -188,7 +188,8 @@ class ContactDetailInfo extends Component{
     }.bind(this),3000)
 
   }
-  createConact(){
+  createConact(event){
+    jQuery(event.currentTarget).parent().hide();
     jQuery('.wrap_scf_o_create_contact').trigger('click');
   }
   deleteTagName(tagName){

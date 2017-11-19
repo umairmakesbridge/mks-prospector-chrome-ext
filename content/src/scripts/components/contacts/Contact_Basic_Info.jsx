@@ -25,7 +25,11 @@ class ContactBasicInfo extends Component{
          disabled: false,
          showStatus:false,
          showAddBox : false,
-         newCustomFieldsArray : []
+         setFullHeight : '',
+         newCustomFieldsArray : [],
+         collapseMsg : 'Click to expand',
+         collapseExpand : 'expand',
+         showCFTitle : 'hide'
     }
 
 
@@ -204,29 +208,44 @@ class ContactBasicInfo extends Component{
     this.setState({showAddBox : false});
   }
   populateCustomFields(){
-    if(this.state.newCustomFieldsArray){
+    if(this.state.newCustomFieldsArray.length > 0){
+      if(this.state.showCFTitle == 'hide'){
+        this.setState({'showCFTitle' :  'show'});
+      }
 
       return this.state.newCustomFieldsArray.map((field,key)=>
 
                                 <div key={key}>
                                   <span className={`mksph_contact_title`}>{Object.keys(field)[0]} :</span>
                                     <span className={`mksph_contact_value ${this.state.showLabel}`}>{ field[Object.keys(field)[0]]  }</span>
-                                      <i onClick={this.removeCustomObj.bind(this,field)}>x</i>
+                                      <i onClick={this.removeCustomObj.bind(this,field)}>delete</i>
                                   </div>
                           );
+
     }
   }
 
   removeCustomObj(field){
-    debugger;
     let newAr = this.state.newCustomFieldsArray;
-    alert('Time to delete object from Array');
     var idx = newAr.indexOf(field);
      if (idx !== -1) {
          newAr.splice(idx, 1);
      }
     this.setState({newCustomFieldsArray : newAr});
 
+  }
+  toggleHeight(){
+      if(this.state.setFullHeight){
+        this.setState({setFullHeight : '',collapseMsg: 'Click to expand',collapseExpand:'expand'});
+      }else{
+        this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
+      }
+  }
+  switchShowBox(){
+    this.setState({showAddBox : true});
+    setTimeout(function(){
+        jQuery('.focusThis').focus();
+    },500)
   }
   render(){
 
@@ -300,7 +319,7 @@ class ContactBasicInfo extends Component{
                        </div>
           <div className="s_contact_found_edit_wraper">
               <div className="s_contact_found_edit">
-                  <div className="scfe_field">
+                  <div className={`scfe_field height90 ${this.state.setFullHeight}`}>
                       <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this,'create')} />
                       <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
                       <input placeholder="Company"    disabled={this.state.disabled} onChange={event=> { this.setState({company: event.target.value }) } } />
@@ -320,9 +339,15 @@ class ContactBasicInfo extends Component{
                       <input placeholder="Industry"    disabled={this.state.disabled} onChange={event=> { this.setState({industry: event.target.value }) } } />
                       <input placeholder="Source"    disabled={this.state.disabled} onChange={event=> { this.setState({source: event.target.value }) } } />
                       <input placeholder="Occupation"    disabled={this.state.disabled} onChange={event=> { this.setState({occupation: event.target.value }) } } />
-                      <div className="new_custom_field_wraps">
-                          {this.populateCustomFields()}
-                      </div>
+
+                  </div>
+                  <div className="new_custom_field_wraps">
+                      <h4 className={`${this.state.showCFTitle}`}>Custom Fields</h4>
+                      {this.populateCustomFields()}
+                  </div>
+                  <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
+                    <span>{this.state.collapseMsg}</span>
+                    <span className="mksicon-ArrowNext"></span>
                   </div>
                   <div className="scfe_control_option">
                       <div className="scfe_close_wrap" onClick={ switchContact=>{ this.setState({editContact:false,showContact:true}) } }>
@@ -345,13 +370,10 @@ class ContactBasicInfo extends Component{
                               </div>
                           </a>
                       </div>
-                      <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={ switchShowBox=>{ this.setState({showAddBox : true}) } }>
+                      <div className={`scfe_save_wrap disable_${this.state.disabled} cfe_add_customField`} onClick={ this.switchShowBox.bind(this) } }>
                           <a className="scfe_ach" href="#">
                               <div className="scfe_save_t">
                                   <span>Add Custom Field</span>
-                              </div>
-                              <div className="scfe_save_i_md">
-                                  <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>
                               </div>
                           </a>
                       </div>
