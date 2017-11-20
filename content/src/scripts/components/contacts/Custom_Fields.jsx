@@ -128,6 +128,7 @@ class CustomFields extends Component{
               showAddBox  : false
             })
             SuccessAlert({message:"Contact updated successfully."});
+            this.refs.addboxView.setDefaultState();
             this.props.getSubscriberDetails();
           }else{
             ErrorAlert({message : jsonResponse[1]});
@@ -199,7 +200,7 @@ class CustomFields extends Component{
     if(!this.props.custom_fields){
       return (<div style={{position: "relative"}}>
                   <ToggleDisplay show={this.state.showAddBox}>
-                      <AddBox showTitle={"Add New Custom Field"} addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key *"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)} />
+                      <AddBox ref="addboxView" showTitle={"Add New Custom Field"} addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key *"},{name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"} create={this.updateCustomFields.bind(this)} cancel={this.hideAddCus.bind(this)} />
                       <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
                 </ToggleDisplay>
                   <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>

@@ -285,13 +285,13 @@ class App extends Component {
                             </div>
                         </div>
                         <div className={`${this.state.islogOut} mksph_logout ripple`} onClick={ this.logOut.bind(this) }>
-                          <span className="mksicon-logout"></span>logout</div>
+                          <span className="mksicon-logout" title="Logout Prospector"></span>logout</div>
 
                         <div
                           className="mksph_close ripple"
                           onClick={showLogin => this.setState({appPanel:false})}
                           >
-                        <a href="#"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
+                        <a href="#" title="Close Prospector"><span className="mksph_icon_close" aria-hidden="true" data-icon="&#xe915;"></span></a>
                         </div>
 
                         <div className="clr"></div>

@@ -39,10 +39,13 @@ class AddBox extends Component{
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
-                      setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
+                      //setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
                     }
 
                   }
+    }
+    setDefaultState(){
+      this.setState(this.baseState);
     }
     handleKeyPress(event){
         const code = event.keyCode || event.which;

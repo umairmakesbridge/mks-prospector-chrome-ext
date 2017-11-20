@@ -586,7 +586,9 @@ li.click_default {
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
 }
-
+.height100{
+  max-height: 103px;
+}
 .heighAuto {
     max-height: 1500px;
 }
