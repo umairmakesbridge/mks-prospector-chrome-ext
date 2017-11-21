@@ -243,6 +243,7 @@ class ContactBasicInfo extends Component{
   }
   switchShowBox(){
     this.setState({showAddBox : true});
+    this.refs.customFieldBox.setDefaultState();
     setTimeout(function(){
         jQuery('.focusThis').focus();
     },500)
@@ -393,6 +394,7 @@ class ContactBasicInfo extends Component{
                 create={this.addCustomFields.bind(this)}
                 cancel={this.hideAddCus.bind(this)}
                 showTitle={"Add New Custom Field"}
+                ref="customFieldBox"
               />
               <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
           </ToggleDisplay>
