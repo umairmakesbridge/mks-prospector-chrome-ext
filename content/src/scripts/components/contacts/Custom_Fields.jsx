@@ -213,6 +213,7 @@ class CustomFields extends Component{
       <div className="customField_ul_wraps">
         <ToggleDisplay show={this.state.showAddBox}>
             <AddBox
+              ref="addboxView"
               addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},
                               {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"}
               create={this.updateCustomFields.bind(this)}
