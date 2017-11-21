@@ -26,6 +26,7 @@ class CustomFields extends Component{
       setFullHeight : '',
       collapseMsg: 'Click to expand',
       collapseExpand:'expand',
+      addedNewField : false,
       overlayHeight : 0,
       showAddBox : false
     }
@@ -49,10 +50,9 @@ class CustomFields extends Component{
     }
   }
   componentDidUpdate(prevProps, prevState, prevContext){
-    console.log('Component Did Update');
-    if(prevProps.custom_fields && (Object.keys(prevProps.custom_fields[0]).length != Object.keys(this.props.custom_fields[0]).length)){
+    console.log('Component Did Update Custom Fields : ',this.props.custom_fields);
+    if((prevProps.custom_fields && (Object.keys(prevProps.custom_fields[0]).length != Object.keys(this.props.custom_fields[0]).length) ) || (this.props.custom_fields && this.state.addedNewField === true )){
       console.log('The Fields are different');
-
       if(this.props.custom_fields){
       const Fields = this.props.custom_fields;
 
@@ -71,6 +71,7 @@ class CustomFields extends Component{
                                   this.state.customFieldKeys.push(Object.keys(field)[0])
                             )
       }
+      this.state.addedNewField = false;
       this.forceUpdate();
 
     }
@@ -83,26 +84,27 @@ class CustomFields extends Component{
                         );
     console.log(reqObj);
     if(type && type=="customFields"){
-      reqObj['frmFld_'+encodeHTML(arrayObj[0])] = arrayObj[1];
+      reqObj['frmFld_'+encodeHTML(arrayObj[0])] = encodeHTML(arrayObj[1]);
+      this.state.addedNewField = true;
     }
     // debugger;
     reqObj["subNum"] = this.props.contact.subNum;
-    reqObj["firstName"] = this.props.contact.firstName;
-    reqObj["lastName"] = this.props.contact.lastName;
-    reqObj["company"] = this.props.contactInfoState.company;
-    reqObj["telephone"] = this.props.contactInfoState.telephone;
-    reqObj["city"] = this.props.contactInfoState.city;
-    reqObj["state"] = this.props.contactInfoState.state;
-    reqObj["address1"] = this.props.contactInfoState.address1;
-    reqObj["jobStatus"] = this.props.contactInfoState.jobStatus;
-    reqObj["salesRep"] = this.props.contactInfoState.salesRep;
-    reqObj["salesStatus"] = this.props.contactInfoState.salesStatus;
-    reqObj["birthDate"] = this.props.contactInfoState.birthDate;
-    reqObj["areaCode"] = this.props.contactInfoState.areaCode;
-    reqObj["country"] = this.props.contactInfoState.country;
-    reqObj["zip"] = this.props.contactInfoState.zip;
-    reqObj["address2"] = this.props.contactInfoState.address2;
-    reqObj["industry"] = this.props.contactInfoState.industry;
+    reqObj["firstName"] = encodeHTML(this.props.contact.firstName);
+    reqObj["lastName"] = encodeHTML(this.props.contact.lastName);
+    reqObj["company"] = encodeHTML(this.props.contactInfoState.company);
+    reqObj["telephone"] = encodeHTML(this.props.contactInfoState.telephone);
+    reqObj["city"] = encodeHTML(this.props.contactInfoState.city);
+    reqObj["state"] = encodeHTML(this.props.contactInfoState.state);
+    reqObj["address1"] = encodeHTML(this.props.contactInfoState.address1);
+    reqObj["jobStatus"] = encodeHTML(this.props.contactInfoState.jobStatus);
+    reqObj["salesRep"] = encodeHTML(this.props.contactInfoState.salesRep);
+    reqObj["salesStatus"] = encodeHTML(this.props.contactInfoState.salesStatus);
+    reqObj["birthDate"] = encodeHTML(this.props.contactInfoState.birthDate);
+    reqObj["areaCode"] = encodeHTML(this.props.contactInfoState.areaCode);
+    reqObj["country"] = encodeHTML(this.props.contactInfoState.country);
+    reqObj["zip"] = encodeHTML(this.props.contactInfoState.zip);
+    reqObj["address2"] = encodeHTML(this.props.contactInfoState.address2);
+    reqObj["industry"] = encodeHTML(this.props.contactInfoState.industry);
     reqObj["source"] = this.props.contactInfoState.source;
     reqObj["occupation"] = this.props.contactInfoState.occupation;
 
