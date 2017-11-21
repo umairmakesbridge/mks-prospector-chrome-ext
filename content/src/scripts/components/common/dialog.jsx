@@ -19,7 +19,7 @@ class Dialog extends Component{
    this.setState({
      showLoading : !this.state.showLoading,
      loadingMessage : Message
-   })
+   });
  }
  handleSave (){
    this.props.saveCallback()

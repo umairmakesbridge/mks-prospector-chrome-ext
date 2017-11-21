@@ -62,24 +62,24 @@ class ContactDetailInfo extends Component{
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
                  subNum: this.props.contact.subNum
-                ,company:this.state.company
-                ,firstName : this.state.firstName
-                ,lastName  : this.state.lastName
-                ,telephone: this.state.telephone
-                ,city: this.state.city
-                ,state: this.state.state
-                ,address1: this.state.address1
-                ,jobStatus: this.state.jobStatus
-                ,salesRep: this.state.salesRep
-                ,salesStatus: this.state.salesStatus
-                ,birthDate: this.state.birthDate
-                ,areaCode: this.state.areaCode
-                ,country: this.state.country
-                ,zip: this.state.zip
-                ,address2: this.state.address2
-                ,industry: this.state.industry
-                ,source: this.state.source
-                ,occupation: this.state.occupation
+                ,company:encodeHTML(this.state.company)
+                ,firstName : encodeHTML(this.state.firstName)
+                ,lastName  : encodeHTML(this.state.lastName)
+                ,telephone: encodeHTML(this.state.telephone)
+                ,city: encodeHTML(this.state.city)
+                ,state: encodeHTML(this.state.state)
+                ,address1: encodeHTML(this.state.address1)
+                ,jobStatus: encodeHTML(this.state.jobStatus)
+                ,salesRep: encodeHTML(this.state.salesRep)
+                ,salesStatus: encodeHTML(this.state.salesStatus)
+                ,birthDate: encodeHTML(this.state.birthDate)
+                ,areaCode: encodeHTML(this.state.areaCode)
+                ,country: encodeHTML(this.state.country)
+                ,zip: encodeHTML(this.state.zip)
+                ,address2: encodeHTML(this.state.address2)
+                ,industry: encodeHTML(this.state.industry)
+                ,source: encodeHTML(this.state.source)
+                ,occupation: encodeHTML(this.state.occupation)
                 ,ukey:this.users_details[0].userKey
                 ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
@@ -382,83 +382,83 @@ class ContactDetailInfo extends Component{
               <div className={`height90 ${this.state.setFullHeight} scfe_field`}>
               <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Company : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.company}</span>
-                  <input className={`${this.state.showInput} focusThis`} value={this.state.company} onChange = {event => this.setState({company : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.company)}</span>
+                  <input className={`${this.state.showInput} focusThis`} value={decodeHTML(this.state.company)} onChange = {event => this.setState({company : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Phone : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.telephone}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.telephone} onChange = {event => this.setState({telephone : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.telephone)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.telephone)} onChange = {event => this.setState({telephone : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">City : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.city}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.city} onChange = {event => this.setState({city : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.city)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.city)} onChange = {event => this.setState({city : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">State : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.state}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.state} onChange = {event => this.setState({state : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.state)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.state)} onChange = {event => this.setState({state : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Address 1 : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.address1}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.address1} onChange = {event => this.setState({address1 : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.address1)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.address1)} onChange = {event => this.setState({address1 : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Job Title : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.jobStatus}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.jobStatus} onChange = {event => this.setState({jobStatus : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.jobStatus)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.jobStatus)} onChange = {event => this.setState({jobStatus : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Sales Status : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.salesStatus}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.salesStatus} onChange = {event => this.setState({salesStatus : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.salesStatus)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.salesStatus)} onChange = {event => this.setState({salesStatus : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Birthday (YYYY-MM-DD): </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.birthDate}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.birthDate} onChange = {event => this.setState({birthDate : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.birthDate)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.birthDate)} onChange = {event => this.setState({birthDate : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Area Code : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.areaCode}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.areaCode} onChange = {event => this.setState({areaCode : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.areaCode)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.areaCode)} onChange = {event => this.setState({areaCode : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Country : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.country}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.country} onChange = {event => this.setState({country : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.country)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.country)} onChange = {event => this.setState({country : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Address 2 : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.address2}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.address2} onChange = {event => this.setState({address2 : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.address2)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.address2)} onChange = {event => this.setState({address2 : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Zip : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.zip}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.zip} onChange = {event => this.setState({zip : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.zip)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.zip)} onChange = {event => this.setState({zip : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Industry : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.industry}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.industry} onChange = {event => this.setState({industry : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.industry)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.industry)} onChange = {event => this.setState({industry : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Occupation : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.occupation}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.occupation} onChange = {event => this.setState({occupation : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.occupation)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.occupation)} onChange = {event => this.setState({occupation : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Source : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.source}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.source} onChange = {event => this.setState({source : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.source)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.source)} onChange = {event => this.setState({source : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Sales Rep : </span>
-                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {this.state.salesRep}</span>
-                    <input className={`${this.state.showInput}`} value={this.state.salesRep} onChange = {event => this.setState({salesRep : event.target.value})}  />
+                  <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.salesRep)}</span>
+                    <input className={`${this.state.showInput}`} value={decodeHTML(this.state.salesRep)} onChange = {event => this.setState({salesRep : event.target.value})}  />
                 </div>
                 </div>
                 <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>

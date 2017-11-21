@@ -307,12 +307,12 @@ class ContactInfo extends Component{
                                   <Dialog
                                     saveCallback= {this.addContactIntoSubsList.bind(this)}
                                     showTitle={"Add Contact to List"}
-                                    ref="parentSubscriberList"
+                                    ref="dialogSubscriberList1"
                                     closeCallback = {this.closeAddContactToList.bind(this)}
                                   >
                                       <SubscriberLists
                                         ref="childSubscriberList"
-                                        parentProps = {this.refs.parentSubscriberList}
+                                        parentProps = {this.refs.dialogSubscriberList1}
                                         baseUrl={this.baseUrl}
                                         users_details={this.props.users_details}
                                         contact={this.state.subscriber}
@@ -328,12 +328,12 @@ class ContactInfo extends Component{
                                   <Dialog
                                     saveCallback= {this.updateContactIntoLists.bind(this)}
                                     showTitle={"Manage Contact into List"}
-                                    ref="parentSubscriberList"
+                                    ref="dialogManagerList"
                                     closeCallback = {this.manageContactToList.bind(this)}
                                   >
                                   <ManageSubscriberLists
                                     ref="childSubscriberManagerList"
-                                    parentProps = {this.refs.parentSubscriberList}
+                                    parentProps = {this.refs.dialogManagerList}
                                     baseUrl={this.baseUrl}
                                     users_details={this.props.users_details}
                                     contact={this.state.subscriber}

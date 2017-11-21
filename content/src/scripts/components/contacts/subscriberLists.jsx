@@ -54,10 +54,12 @@ class SubscriberLists extends Component{
                 ErrorAlert({message : jsonResponse[1]});
               }
               else if(parseInt(jsonResponse.updatedCount) > 0 || parseInt(jsonResponse.addedCount) > 0){
-                this.setState(this.baseState);
-                this.props.addContactToList();
+
+
                 this.props.parentProps.toggleLoadingMask();
                 SuccessAlert({message:"Contact added successfully."});
+                this.props.addContactToList();
+                this.setState(this.baseState);
               }
             });
       }
