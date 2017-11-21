@@ -602,7 +602,7 @@ input.hasError {
     height: 848px;
     top: 0px;
     right: -2px;
-    z-index: 1;
+    z-index: 19;
     opacity: 0.9;
 }
 
@@ -722,7 +722,7 @@ span.alert_icon{
 .addBox_wrapper_container{
   position: fixed;
   top: 185px;
-  z-index: 2;
+  z-index: 299;
   background: #fff;
   width: 340px;
   right: 19px;
