@@ -22,6 +22,8 @@ import ManageSubscriberLists
        from './ManageSubscriberLists';
 import LoadingMask
        from '../common/Loading_Mask';
+import Workflow
+       from './Workflow';
 
 class ContactInfo extends Component{
 
@@ -53,7 +55,8 @@ class ContactInfo extends Component{
                     showParticipant : false,
                     showSubscriberAdd : false,
                     showSubscriberManager : false,
-                    showLoading : false
+                    showLoading : false,
+                    showWorkFlowDialog : false
                    }
   }
 
@@ -284,6 +287,16 @@ class ContactInfo extends Component{
   updateContactIntoLists(){
     this.refs.childSubscriberManagerList.updateContactIntoLists();
   }
+  showToWorkFlow(){
+    let height = jQuery('.makesbridge_plugin').height();
+    this.setState({showWorkFlowDialog: !this.state.showWorkFlowDialog,overlayHeight:height});
+    this.refs.childSubscriberWorkflow.wfLoadList();
+  }
+  saveWorkflowLists(){
+    alert('Call child save function for workflow');
+    this.refs.childSubscriberWorkflow.saveWorkFlow()
+  }
+
   render(){
 
 
@@ -327,7 +340,7 @@ class ContactInfo extends Component{
                                 <ToggleDisplay show={this.state.showSubscriberManager}>
                                   <Dialog
                                     saveCallback= {this.updateContactIntoLists.bind(this)}
-                                    showTitle={"Manage Contact into List"}
+                                    showTitle={"Manage list subscription"}
                                     ref="dialogManagerList"
                                     closeCallback = {this.manageContactToList.bind(this)}
                                   >
@@ -339,6 +352,26 @@ class ContactInfo extends Component{
                                     contact={this.state.subscriber}
                                     manageContactToList = {this.manageContactToList.bind(this)}
                                     type={"manage"}
+                                  />
+                                </Dialog>
+                                <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+
+                                </ToggleDisplay>
+
+                                <ToggleDisplay show={this.state.showWorkFlowDialog}>
+                                  <Dialog
+                                    saveCallback= {this.saveWorkflowLists.bind(this)}
+                                    showTitle={"Workflow"}
+                                    ref="dialogWorkflowList"
+                                    closeCallback = {this.showToWorkFlow.bind(this)}
+                                  >
+                                  <Workflow
+                                    ref="childSubscriberWorkflow"
+                                    parentProps = {this.refs.dialogWorkflowList}
+                                    baseUrl={this.baseUrl}
+                                    users_details={this.props.users_details}
+                                    contact={this.state.subscriber}
+                                    showToWorkFlow = {this.showToWorkFlow.bind(this)}
                                   />
                                 </Dialog>
                                 <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
@@ -366,7 +399,7 @@ class ContactInfo extends Component{
                                                                 <div className="wrap_scf_o_i">
                                                                   <div className="wrap_scf_o_i_md">
                                                                     <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
-                                                                    <p className="scf_o_txt">Add into list</p>
+                                                                    <p className="scf_o_txt">Add to list</p>
                                                                     </div>
                                                                     </div>
                                                                 </a>
@@ -378,12 +411,24 @@ class ContactInfo extends Component{
                                                                 <div className="wrap_scf_o_i">
                                                                   <div className="wrap_scf_o_i_md">
                                                                     <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
-                                                                    <p className="scf_o_txt">Suppress user</p>
+                                                                    <p className="scf_o_txt">Suppress</p>
                                                                     </div>
                                                                     </div>
                                                                 </a>
                                                                     </div>
                                                                 </li>
+                                                                <li>
+                                                                  <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
+                                                                    <a href="#" style={{textDecoration: 'unset'}}>
+                                                                      <div className="wrap_scf_o_i">
+                                                                        <div className="wrap_scf_o_i_md">
+                                                                          <div className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
+                                                                          <p className="scf_o_txt">Workflow</p>
+                                                                          </div>
+                                                                          </div>
+                                                                      </a>
+                                                                          </div>
+                                                                      </li>
                                                 </ul>
                                             </div>
                                       </div>

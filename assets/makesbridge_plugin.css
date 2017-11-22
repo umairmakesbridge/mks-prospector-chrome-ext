@@ -2362,13 +2362,13 @@ font-weight: lighter;
 }
 
 .icheckbox_square-blue {
-    background-position: 0 0;
+    background-position: -120px 0;
 }
     .icheckbox_square-blue.hover {
-        background-position: -24px 0;
+      background-position: -144px 0;
     }
     .icheckbox_square-blue.checked {
-        background-position: -48px 0;
+        background-position: -168px 0;
     }
     .icheckbox_square-blue.disabled {
         background-position: -72px 0;

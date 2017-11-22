@@ -325,7 +325,7 @@ class ContactDetailInfo extends Component{
               <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
               <ToggleDisplay show={this.state.showAddBox}>
                 <Search items={items}
-                placeholder='Add New Tag'
+                placeholder='add or apply a tag to this contact...'
                 maxSelected={1}
                 multiple={false}
                 onItemsChanged={this.HiItems.bind(this)}
