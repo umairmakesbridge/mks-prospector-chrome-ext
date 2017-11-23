@@ -2344,12 +2344,15 @@ font-weight: lighter;
 /* Makesbridge Workflows
 ----------------------------------- */
 .workflow_wrap_rendering h4{
-  font-size: 14px;
-    margin: 15px 3px 9px;
+    font-size: 15px;
+    margin: 10px 3px;
+    color: rgb(116, 133, 146);
     font-weight: 200;
 }
 .workflow_wrap_rendering span {
     margin-left: 5px;
+    font-size: 13px;
+    color: rgb(116, 133, 146);
 }
 .workflow_wrap_rendering label {
     margin-bottom: 7px;

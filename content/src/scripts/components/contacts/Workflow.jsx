@@ -15,7 +15,9 @@ class Workflow extends Component{
       this.state = {
         wfLists : null,
         stepsHtml : "",
-        showDropDown: 'hide'
+        disabledDD: true,
+        workflowId : '-1',
+        stepOrder : '-1'
       };
 
       // preserve the initial state in a new object
@@ -47,7 +49,7 @@ class Workflow extends Component{
                     this.setState({
                       wfLists : jsonResponse.workflows
                     });
-                    debugger;
+
                   }
                 }
               });
@@ -56,7 +58,9 @@ class Workflow extends Component{
       const ListItems = this.state.wfLists.map((list,key) =>
                     <option data-checksum={list['workflow.checksum']} key={key} value={list.name}>{list.name}</option>
         );
-
+      setTimeout(function(){
+        jQuery('.icheckbox_square-blue').eq(0).addClass('checked')
+      },500);
       return ListItems;
     }
     generateSteps(steps){
@@ -75,9 +79,9 @@ class Workflow extends Component{
         let obj = this.state.wfLists.find(x => x['workflow.checksum'] === checksumValue);
         this.state['workflowId'] = obj['workflow.encode'];
         this.generateSteps(obj.steps)
-        this.setState({showDropDown : 'show'})
+        this.setState({disabledDD : false})
       }else{
-        this.setState({showDropDown : 'hide'})
+        this.setState({disabledDD : true})
       }
 
     }
@@ -90,6 +94,7 @@ class Workflow extends Component{
       }
     }
     saveWorkFlow(){
+      debugger;
       this.props.parentProps.toggleLoadingMask("Saving Workflow");
       //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=addtoworkflow
       request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addtoworkflow')
@@ -132,12 +137,14 @@ class Workflow extends Component{
       }
       return(
         <div className="Rendering workflow_wrap_rendering">
+          <h4>Choose workflow to manually add subscriber </h4>
             <select onChange={this.firstChangeDropDown.bind(this)}>
-              <option value="-1">Select...</option>
+              <option value="-1">Select Workflow...</option>
               {this.generateFirstDropDown()}
             </select>
-            <select onChange={this.stepsChangeDropDown.bind(this)} className={`${this.state.showDropDown}`}>
-                <option value="-1">Steps</option>
+            <h4>Choose Steps </h4>
+            <select onChange={this.stepsChangeDropDown.bind(this)} disabled={this.state.disabledDD} className={``}>
+                <option value="-1">Select Steps...</option>
                 {this.state.stepsHtml}
             </select>
 
@@ -148,8 +155,9 @@ class Workflow extends Component{
                 radioClass="icheckbox_square-blue"
                 increaseArea="20%"
                 value="N"
-                label="Add at selected step only"
+                label="Allow rules to take over after this step"
                 defaultChecked="checked"
+                ref={"enhancedSwitch"}
               />
               <br/>
               <Radio
@@ -157,7 +165,8 @@ class Workflow extends Component{
                 radioClass="icheckbox_square-blue"
                 increaseArea="20%"
                 value="Y"
-                label="play workflow to completion without interruption"
+                label="Play workflow to completion with interruption"
+                ref={"enhancedSwitch"}
               />
               </RadioGroup>
         </div>

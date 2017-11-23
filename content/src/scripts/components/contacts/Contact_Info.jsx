@@ -361,7 +361,7 @@ class ContactInfo extends Component{
                                 <ToggleDisplay show={this.state.showWorkFlowDialog}>
                                   <Dialog
                                     saveCallback= {this.saveWorkflowLists.bind(this)}
-                                    showTitle={"Workflow"}
+                                    showTitle={"Add to workflow"}
                                     ref="dialogWorkflowList"
                                     closeCallback = {this.showToWorkFlow.bind(this)}
                                   >
