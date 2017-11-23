@@ -2124,7 +2124,7 @@ position:relative; z-index:9;
 }
 .top_manage_lists .wrap_scf_o_i{
   background: transparent;
-  width: 90px;
+  width: 70px;
   height: 48px;
 }
 .top_manage_lists .mks_manageList_wrap{
@@ -2341,10 +2341,21 @@ font-weight: lighter;
     width: 18px;
 }
 /*-----------------------*/
-/* iCheck plugin Flat skin, green
+/* Makesbridge Workflows
 ----------------------------------- */
-
-
+.workflow_wrap_rendering h4{
+  font-size: 14px;
+    margin: 15px 3px 9px;
+    font-weight: 200;
+}
+.workflow_wrap_rendering span {
+    margin-left: 5px;
+}
+.workflow_wrap_rendering label {
+    margin-bottom: 7px;
+    display: inline-block;
+}
+/*-----------------------------------*/
 /* iCheck plugin Square skin, blue
 ----------------------------------- */
 .icheckbox_square-blue,

@@ -90,6 +90,7 @@ class Workflow extends Component{
       }
     }
     saveWorkFlow(){
+      this.props.parentProps.toggleLoadingMask("Saving Workflow");
       //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=addtoworkflow
       request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addtoworkflow')
              .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -116,6 +117,7 @@ class Workflow extends Component{
                       //this.props.parentProps.toggleLoadingMask();
                       SuccessAlert({message:"Contact added to Workflow successfully."});
                     }
+                    this.props.parentProps.toggleLoadingMask();
                   });
     }
     render(){
@@ -129,7 +131,7 @@ class Workflow extends Component{
         )
       }
       return(
-        <div className="Rendering">
+        <div className="Rendering workflow_wrap_rendering">
             <select onChange={this.firstChangeDropDown.bind(this)}>
               <option value="-1">Select...</option>
               {this.generateFirstDropDown()}
@@ -147,6 +149,7 @@ class Workflow extends Component{
                 increaseArea="20%"
                 value="N"
                 label="Add at selected step only"
+                defaultChecked="checked"
               />
               <br/>
               <Radio

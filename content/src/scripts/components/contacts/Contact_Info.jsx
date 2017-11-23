@@ -387,7 +387,7 @@ class ContactInfo extends Component{
                                                     <div className="wrap_scf_o_i">
                                                       <div className="wrap_scf_o_i_md">
                                                         <div className="scf_o_icon scf_o_edit mksicon-ManageLists mks_manageList_wrap"></div>
-                                                        <p className="scf_o_txt">Manage lists</p>
+                                                        <p className="scf_o_txt">Mang.list</p>
                                                         </div>
                                                         </div>
                                                     </a>
@@ -409,7 +409,7 @@ class ContactInfo extends Component{
                                                             <div className="scf_option_icon ripple top_manage_lists">
                                                               <a href="#" style={{textDecoration: 'unset'}}>
                                                                 <div className="wrap_scf_o_i">
-                                                                  <div className="wrap_scf_o_i_md">
+                                                                  <div className="wrap_scf_o_i_md" >
                                                                     <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
                                                                     <p className="scf_o_txt">Suppress</p>
                                                                     </div>
@@ -421,7 +421,7 @@ class ContactInfo extends Component{
                                                                   <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
                                                                     <a href="#" style={{textDecoration: 'unset'}}>
                                                                       <div className="wrap_scf_o_i">
-                                                                        <div className="wrap_scf_o_i_md">
+                                                                        <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
                                                                           <div className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
                                                                           <p className="scf_o_txt">Workflow</p>
                                                                           </div>

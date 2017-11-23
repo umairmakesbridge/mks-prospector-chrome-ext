@@ -174,6 +174,7 @@ class ContactDetailInfo extends Component{
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
             if(jsonResponse.success){
+              this.props.contact.tags+=","+encodeHTML(this.state.tagName);
               this.setState({
                   tagName:'',
                   showAddBox:false,
