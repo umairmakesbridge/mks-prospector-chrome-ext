@@ -53,7 +53,8 @@ class ContactDetailInfo extends Component{
       source: '',
       occupation: '',
       collapseMsg : 'Click to expand',
-      collapseExpand : 'expand'
+      collapseExpand : 'expand',
+      showCreateCardBox : 'show'
     }
   };
   updateBasicField(){
@@ -190,7 +191,10 @@ class ContactDetailInfo extends Component{
 
   }
   createConact(event){
-    jQuery(event.currentTarget).parent().hide();
+    //jQuery('no_contact').hide();
+    this.setState({
+      showCreateCardBox : 'hide'
+    })
     jQuery('.wrap_scf_o_create_contact').trigger('click');
   }
   deleteTagName(tagName){
@@ -301,6 +305,7 @@ class ContactDetailInfo extends Component{
 
   render(){
     let items = this.props.autoFillTags;
+    debugger;
     console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
       return (<div className="contacts-wrap">
@@ -312,7 +317,7 @@ class ContactDetailInfo extends Component{
     }
     if(this.props.contactnotFound){
       return (<div className="contacts-wrap">
-      <div id="NoContact" className="tabcontent mksph_cardbox">
+      <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showCreateCardBox}`}>
             <h3>Contact</h3>
               <p className="not-found">Contact not found on Makesbridge</p>
               <button type="button" className="mksph_create_contact ripple" onClick={this.createConact.bind(this)}>Create</button>

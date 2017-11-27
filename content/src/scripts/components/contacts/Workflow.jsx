@@ -64,13 +64,23 @@ class Workflow extends Component{
       return ListItems;
     }
     generateSteps(steps){
+
+      /*
         const stepsHtmlC = steps.map((list,key) =>
                         <option key={key} value={list.stepOrder}>{list.stepOrder}</option>
           );
-          this.setState({
-            stepsHtml : stepsHtmlC
-          })
-
+          */
+          const stepsHtmlC = steps.map((list,key) =>
+          {
+            if(list.label){
+              return (<option key={key} value={list.stepOrder}>{list.label}</option>)
+            }else{
+              return (<option key={key} value={list.stepOrder}>{"Step "+list.stepOrder}</option>)
+            }
+          });
+            this.setState({
+              stepsHtml : stepsHtmlC
+            })
     }
     firstChangeDropDown(event){
       console.log(event.target.value);

@@ -2357,6 +2357,7 @@ font-weight: lighter;
 .workflow_wrap_rendering label {
     margin-bottom: 7px;
     display: inline-block;
+    cursor: pointer;
 }
 /*-----------------------------------*/
 /* iCheck plugin Square skin, blue
