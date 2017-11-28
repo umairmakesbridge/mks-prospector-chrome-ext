@@ -305,7 +305,6 @@ class ContactDetailInfo extends Component{
 
   render(){
     let items = this.props.autoFillTags;
-    debugger;
     console.log('Rendering Contact Details');
     if(!this.props.contact && !this.props.contactnotFound){
       return (<div className="contacts-wrap">

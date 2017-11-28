@@ -216,7 +216,7 @@ class CustomFields extends Component{
         <ToggleDisplay show={this.state.showAddBox}>
             <AddBox
               ref="addboxView"
-              addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter Key*"},
+              addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter field name *"},
                               {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"}
               create={this.updateCustomFields.bind(this)}
               cancel={this.hideAddCus.bind(this)}

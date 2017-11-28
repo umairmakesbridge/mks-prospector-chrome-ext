@@ -292,8 +292,12 @@ class ContactInfo extends Component{
     this.setState({showWorkFlowDialog: !this.state.showWorkFlowDialog,overlayHeight:height});
     this.refs.childSubscriberWorkflow.wfLoadList();
   }
+  closeToWorkflow(){
+    this.setState({showWorkFlowDialog: false});
+    this.refs.childSubscriberWorkflow.setStateDefault();
+  }
   saveWorkflowLists(){
-    alert('Call child save function for workflow');
+    //alert('Call child save function for workflow');
     this.refs.childSubscriberWorkflow.saveWorkFlow()
   }
 
@@ -363,7 +367,7 @@ class ContactInfo extends Component{
                                     saveCallback= {this.saveWorkflowLists.bind(this)}
                                     showTitle={"Add to workflow"}
                                     ref="dialogWorkflowList"
-                                    closeCallback = {this.showToWorkFlow.bind(this)}
+                                    closeCallback = {this.closeToWorkflow.bind(this)}
                                   >
                                   <Workflow
                                     ref="childSubscriberWorkflow"
@@ -423,7 +427,7 @@ class ContactInfo extends Component{
                                                                       <div className="wrap_scf_o_i">
                                                                         <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
                                                                           <div className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
-                                                                          <p className="scf_o_txt">Workflow</p>
+                                                                          <p className="scf_o_txt">Add to workflow</p>
                                                                           </div>
                                                                           </div>
                                                                       </a>

@@ -17,7 +17,9 @@ class Workflow extends Component{
         stepsHtml : "",
         disabledDD: true,
         workflowId : '-1',
-        stepOrder : '-1'
+        stepOrder : '-1',
+        showNoEligible: 'hide',
+        showWorkflow  : 'hide'
       };
 
       // preserve the initial state in a new object
@@ -25,10 +27,11 @@ class Workflow extends Component{
     }
     wfLoadList(){
       let lists = [];
-      //https://test.bridgemailsystem.com/pms/io/workflow/getWorkflowData/?BMS_REQ_TK=QLiMU4FG6cvgh4O3GWrDnHA8mSb2qx&type=get&isMobileLogin=Y&userId=umair
+      //https://test.bridgemailsystem.com/pms/io/workflow/getWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=get&isManualAdditio
+      //https://test.bridgemailsystem.com/pms/io/workflow/getWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=get&isManualAddition=Y
       var Url = this.baseUrl
                       +'/io/workflow/getWorkflowData/?BMS_REQ_TK='
-                      + this.props.users_details[0].bmsToken +'&type=get&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+                      + this.props.users_details[0].bmsToken +'&type=get&isManualAddition=Y&isMobileLogin=Y&userId='+this.props.users_details[0].userId
 
       request
             .get(Url)
@@ -49,7 +52,60 @@ class Workflow extends Component{
                     this.setState({
                       wfLists : jsonResponse.workflows
                     });
+                    this.wfAddedList();
+                  }
+                }
+              });
+    }
+    setStateDefault(){
+      this.setState(this.baseState);
+      jQuery('.workflow_wrap_rendering').parents('.addBox_wrapper_container').find('.scfe_save_wrap').removeClass('mkbtemphide hide');
+    }
+    wfAddedList(){
+      //https://test.bridgemailsystem.com/pms/io/workflow/getWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=getManualAdditionWF&subscriberNumber=kzaqwSj26Jj17He20Fb21Ob30Qa33Ja26Bb17kvgGu
+      let self = this;
+      var Url = this.baseUrl
+                      +'/io/workflow/getWorkflowData/?BMS_REQ_TK='
+                      + this.props.users_details[0].bmsToken +'&type=getManualAdditionWF&isMobileLogin=Y&userId='+this.props.users_details[0].userId+'&subscriberNumber='+ this.props.contact.subNum
 
+      request
+            .get(Url)
+             .set('Content-Type', 'application/x-www-form-urlencoded')
+             .then((res) => {
+                if(res.status==200){
+                  let jsonResponse =  JSON.parse(res.text);
+                  if (jsonResponse[0] == "err"){
+                      if(jsonResponse[1] == "SESSION_EXPIRED"){
+                        ErrorAlert({message:jsonResponse[1]});
+                        jQuery('.mksph_logout').trigger('click');
+                      }
+                    return false;
+                  }
+
+                  if(parseInt(jsonResponse.totalCount) > 0){
+                    console.log('Workflow Added list : ',jsonResponse);
+                    let workflows = jsonResponse.workflows;
+                    console.log(this.state.wfLists);
+                    if(this.state.wfLists.length === workflows.length){
+                      jQuery('.workflow_wrap_rendering').parents('.addBox_wrapper_container').find('.scfe_save_wrap').addClass('mkbtemphide hide');
+                      this.setState({
+                        showNoEligible : 'show',
+                        showWorkflow   : 'hide'
+                      })
+                    }else{
+                      workflows.forEach((item) => {
+                        console.log(item);
+                        jQuery('#first_wf_drop_down option[data-checksum='+item["workflow.checksum"]+']').addClass('hide');
+                      });
+                      this.setState({
+                        showWorkflow : 'show'
+                      })
+                    }
+
+                  }else{
+                    this.setState({
+                      showWorkflow : 'show'
+                    })
                   }
                 }
               });
@@ -59,8 +115,8 @@ class Workflow extends Component{
                     <option data-checksum={list['workflow.checksum']} key={key} value={list.name}>{list.name}</option>
         );
       setTimeout(function(){
-        jQuery('.icheckbox_square-blue').eq(0).addClass('checked')
-      },500);
+        jQuery('.workflow_wrap_rendering .icheckbox_square-blue').eq(0).trigger('click');
+      },100);
       return ListItems;
     }
     generateSteps(steps){
@@ -86,7 +142,7 @@ class Workflow extends Component{
       console.log(event.target.value);
       if(event.target.value!="-1"){
         let checksumValue = event.target.options[event.target.selectedIndex].getAttribute("data-checksum");
-        let obj = this.state.wfLists.find(x => x['workflow.checksum'] === checksumValue);
+        let obj = this.state.wfLists.find(x => x['workflow.checksum'] === checksumValue); //  finding object in wfList
         this.state['workflowId'] = obj['workflow.encode'];
         this.generateSteps(obj.steps)
         this.setState({disabledDD : false})
@@ -104,7 +160,6 @@ class Workflow extends Component{
       }
     }
     saveWorkFlow(){
-      debugger;
       this.props.parentProps.toggleLoadingMask("Saving Workflow");
       //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=addtoworkflow
       request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addtoworkflow')
@@ -126,10 +181,10 @@ class Workflow extends Component{
                       ErrorAlert({message : jsonResponse[1]});
                     }
                     else{
-                      //this.setState(this.baseState);
-                      //this.props.manageContactToList();
+                      this.setState(this.baseState);
                       //this.loadLists();
                       //this.props.parentProps.toggleLoadingMask();
+                      this.props.showToWorkFlow();
                       SuccessAlert({message:"Contact added to Workflow successfully."});
                     }
                     this.props.parentProps.toggleLoadingMask();
@@ -146,9 +201,14 @@ class Workflow extends Component{
         )
       }
       return(
-        <div className="Rendering workflow_wrap_rendering">
+        <div>
+        <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showNoEligible}`}>
+
+                  <p className="not-found" style={{color:"#016efd"}}>No eligible workflow found</p>
+        </div>
+        <div className={`Rendering workflow_wrap_rendering ${this.state.showWorkflow}`}>
           <h4>Choose workflow to manually add subscriber </h4>
-            <select onChange={this.firstChangeDropDown.bind(this)}>
+            <select id="first_wf_drop_down" onChange={this.firstChangeDropDown.bind(this)}>
               <option value="-1">Select Workflow...</option>
               {this.generateFirstDropDown()}
             </select>
@@ -180,6 +240,7 @@ class Workflow extends Component{
               />
               </RadioGroup>
         </div>
+      </div>
       )
     }
 }
