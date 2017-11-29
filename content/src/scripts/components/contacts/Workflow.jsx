@@ -19,7 +19,8 @@ class Workflow extends Component{
         workflowId : '-1',
         stepOrder : '-1',
         showNoEligible: 'hide',
-        showWorkflow  : 'hide'
+        showWorkflow  : 'hide',
+        showTemploading : 'show'
       };
 
       // preserve the initial state in a new object
@@ -90,7 +91,8 @@ class Workflow extends Component{
                       jQuery('.workflow_wrap_rendering').parents('.addBox_wrapper_container').find('.scfe_save_wrap').addClass('mkbtemphide hide');
                       this.setState({
                         showNoEligible : 'show',
-                        showWorkflow   : 'hide'
+                        showWorkflow   : 'hide',
+                        showTemploading : 'hide'
                       })
                     }else{
                       workflows.forEach((item) => {
@@ -98,13 +100,15 @@ class Workflow extends Component{
                         jQuery('#first_wf_drop_down option[data-checksum='+item["workflow.checksum"]+']').addClass('hide');
                       });
                       this.setState({
-                        showWorkflow : 'show'
+                        showWorkflow : 'show',
+                        showTemploading : 'hide'
                       })
                     }
 
                   }else{
                     this.setState({
-                      showWorkflow : 'show'
+                      showWorkflow : 'show',
+                      showTemploading : 'hide'
                     })
                   }
                 }
@@ -211,6 +215,11 @@ class Workflow extends Component{
 
                   <p className="not-found" style={{color:"#016efd"}}>No eligible workflow found</p>
         </div>
+
+        <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showTemploading}`}>
+
+                <p className="not-found">Loading...</p>
+            </div>
         <div className={`Rendering workflow_wrap_rendering ${this.state.showWorkflow}`}>
           <h4>Choose workflow to manually add subscriber </h4>
             <select id="first_wf_drop_down" onChange={this.firstChangeDropDown.bind(this)}>
