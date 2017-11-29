@@ -365,7 +365,7 @@ class ContactInfo extends Component{
                                 <ToggleDisplay show={this.state.showWorkFlowDialog}>
                                   <Dialog
                                     saveCallback= {this.saveWorkflowLists.bind(this)}
-                                    showTitle={"Add to workflow"}
+                                    showTitle={"Add to Sequence"}
                                     ref="dialogWorkflowList"
                                     closeCallback = {this.closeToWorkflow.bind(this)}
                                   >
@@ -385,6 +385,18 @@ class ContactInfo extends Component{
                                       <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
                                       <div className="scf_o_right">
                                           <ul className="top_manager_ul_wraps">
+                                            <li>
+                                              <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
+                                                <a href="#" style={{textDecoration: 'unset'}}>
+                                                  <div className="wrap_scf_o_i">
+                                                    <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
+                                                      <div className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
+                                                      <p className="scf_o_txt">Add to Sequence</p>
+                                                      </div>
+                                                      </div>
+                                                  </a>
+                                                      </div>
+                                                  </li>
                                               <li>
                                                 <div className="scf_option_icon ripple top_manage_lists" onClick={this.manageContactToList.bind(this)}>
                                                   <a href="#" style={{textDecoration: 'unset'}}>
@@ -421,18 +433,7 @@ class ContactInfo extends Component{
                                                                 </a>
                                                                     </div>
                                                                 </li>
-                                                                <li>
-                                                                  <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
-                                                                    <a href="#" style={{textDecoration: 'unset'}}>
-                                                                      <div className="wrap_scf_o_i">
-                                                                        <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
-                                                                          <div className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
-                                                                          <p className="scf_o_txt">Add to workflow</p>
-                                                                          </div>
-                                                                          </div>
-                                                                      </a>
-                                                                          </div>
-                                                                      </li>
+
                                                 </ul>
                                             </div>
                                       </div>

@@ -144,7 +144,8 @@ class Workflow extends Component{
         let checksumValue = event.target.options[event.target.selectedIndex].getAttribute("data-checksum");
         let obj = this.state.wfLists.find(x => x['workflow.checksum'] === checksumValue); //  finding object in wfList
         this.state['workflowId'] = obj['workflow.encode'];
-        this.generateSteps(obj.steps)
+
+        this.generateSteps(obj.steps);
         this.setState({disabledDD : false})
       }else{
         this.setState({disabledDD : true})
@@ -160,19 +161,23 @@ class Workflow extends Component{
       }
     }
     saveWorkFlow(){
+      if(jQuery('.workflow_wrap_rendering .icheckbox_square-blue.checked').length == 0){
+          ErrorAlert({message : "Atleast one checkbox must be selected"});
+          return;
+      }
       this.props.parentProps.toggleLoadingMask("Saving Workflow");
       //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=VsihjNdZZgcxRCT6bhKuQIuA6vZGgY&type=addtoworkflow
       request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=addtoworkflow')
              .set('Content-Type', 'application/x-www-form-urlencoded')
              .send({
                   "workflowId" : this.state.workflowId,
-                  "stepOrder"  : this.state.stepOrder,
+                  "stepOrder"  : "1",
                   "overrideRules"  : document.querySelector('.checked input[name=radio]:checked').value,
                   "subscriberId" : this.props.contact.subNum,
                   "isMobileLogin" : "Y",
                   "userId" : this.props.users_details[0].userId
 
-             })
+                  })
                  .then((res) => {
                     console.log(res.status);
                     var jsonResponse =  JSON.parse(res.text);
@@ -212,10 +217,10 @@ class Workflow extends Component{
               <option value="-1">Select Workflow...</option>
               {this.generateFirstDropDown()}
             </select>
-            <h4>Choose Steps </h4>
-            <select onChange={this.stepsChangeDropDown.bind(this)} disabled={this.state.disabledDD} className={``}>
+            <h4 className="hide">Choose Steps </h4>
+            <select onChange={this.stepsChangeDropDown.bind(this)} disabled={this.state.disabledDD} className={`hide`}>
                 <option value="-1">Select Steps...</option>
-                {this.state.stepsHtml}
+
             </select>
 
             <h4>Override Workflow Rules:</h4>
