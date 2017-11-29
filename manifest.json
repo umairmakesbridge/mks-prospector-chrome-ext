@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Gmail Prospector Makesbridge",
+  "name": "Makesbirdge Sales Assistant",
   "description": "Makesbridge™",
-  "version": "0.0.0.1",
+  "version": "0.0.1.4",
   "background": {
     "scripts": [
       "background.js"
@@ -16,7 +16,7 @@
       "48": "img/icon48.png"
    },
   "browser_action": {
-    "default_title": "Gmail Prospector Makesbridge"
+    "default_title": "Makesbirdge Sales Assistant"
   },
   "content_scripts": [
     {
