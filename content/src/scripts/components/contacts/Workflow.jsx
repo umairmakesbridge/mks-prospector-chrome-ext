@@ -194,7 +194,7 @@ class Workflow extends Component{
                       //this.loadLists();
                       //this.props.parentProps.toggleLoadingMask();
                       this.props.showToWorkFlow();
-                      SuccessAlert({message:"Contact added to Workflow successfully."});
+                      SuccessAlert({message:"Contact added to sequence successfully."});
                     }
                     this.props.parentProps.toggleLoadingMask();
                   });
@@ -213,7 +213,7 @@ class Workflow extends Component{
         <div>
         <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showNoEligible}`}>
 
-                  <p className="not-found" style={{color:"#016efd"}}>No eligible workflow found</p>
+                  <p className="not-found" style={{color:"#016efd"}}>No eligible sequence found</p>
         </div>
 
         <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showTemploading}`}>
@@ -221,9 +221,9 @@ class Workflow extends Component{
                 <p className="not-found">Loading...</p>
             </div>
         <div className={`Rendering workflow_wrap_rendering ${this.state.showWorkflow}`}>
-          <h4>Choose workflow to manually add subscriber </h4>
+          <h4>Choose sequence to manually add subscriber </h4>
             <select id="first_wf_drop_down" onChange={this.firstChangeDropDown.bind(this)}>
-              <option value="-1">Select Workflow...</option>
+              <option value="-1">Select Sequence...</option>
               {this.generateFirstDropDown()}
             </select>
             <h4 className="hide">Choose Steps </h4>
@@ -232,7 +232,7 @@ class Workflow extends Component{
 
             </select>
 
-            <h4>Override Workflow Rules:</h4>
+            <h4>Override Sequence Rules:</h4>
               <RadioGroup name="radio">
               <Radio
                 name="aa"
@@ -249,7 +249,7 @@ class Workflow extends Component{
                 radioClass="icheckbox_square-blue"
                 increaseArea="20%"
                 value="Y"
-                label="Play workflow to completion with interruption"
+                label="Play sequence to completion with interruption"
                 ref={"enhancedSwitch"}
               />
               </RadioGroup>
