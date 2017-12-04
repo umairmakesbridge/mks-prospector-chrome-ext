@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import SearchContacts from '../contacts/Search_Contacts';
 import EmailItem from './Email_Item';
-
+import {CustomScrollBar} from 'react-custom-scrollbar';
 
 // Refactor to Make Class Based Component
 class GmailEmailList extends Component{
@@ -47,13 +47,25 @@ class GmailEmailList extends Component{
         if(this.props.gmail_email_list && this.props.gmail_email_list.length > 0){
           return (
                 <div>
+
                 <div className="s_contact_found_wraper plc_marginbottom10" >
                             <h2 className="total-count-head">
                               <strong className="badge total-count">{this.props.gmail_email_list.length}</strong>
                                 <span className="total-text">emails found on page</span>
                             </h2>
-                          <div className="list_contact_found_wraper list_contact_found_height">{this.generateGmailEmails()}</div>
+                            <CustomScrollBar
+                              allowOuterScroll={false}
+                              heightRelativeToParent={`188`}
+                              onScroll={() => {console.log('Scrolling')}}
+                              addScrolledClass={true}
+                              freezePosition={false}
+                              handleClass="inner-handle"
+                              minScrollHandleHeight={38}
+                          >
+                          <div className="list_contact_found_wraper">{this.generateGmailEmails()}</div>
+                            </CustomScrollBar>
                         </div>
+
                 <SearchContacts
                   baseUrl = {this.props.baseUrl}
                   onEmailSelect={this.props.onEmailSelect}
