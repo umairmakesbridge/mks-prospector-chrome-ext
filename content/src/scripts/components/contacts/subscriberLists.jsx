@@ -18,6 +18,7 @@ class SubscriberLists extends Component{
 
         this.state = {
           subLists : null,
+          orginalLists: null
         };
 
         // preserve the initial state in a new object
@@ -96,11 +97,47 @@ class SubscriberLists extends Component{
                               }
                         });
                         this.setState({
-                          subLists : lists
+                          subLists : lists,
+                          orginalLists : lists
                         });
                       }
                     }
                   });
+
+      }
+      filterSearch(event){
+            var value = event.currentTarget.value;
+
+
+            if(value){
+              let returnedArray = this.filter(this.state.subLists,value,'name');
+              this.setState({
+                subLists  : returnedArray
+              });
+              console.log(returnedArray);
+            }else{
+              let orginalLists = this.state.orginalLists;
+              this.setState({
+                subLists  : orginalLists
+              })
+            }
+      }
+      /*filterIt(arr, value) {
+            return arr.filter(obj => Object.keys(obj).some(key => obj[key].includes(value)));
+          }*/
+      filter(array, value, key) {
+              debugger;
+              let a=array;
+              return array.filter(key ? function (a) {
+                  if(a[key].toLowerCase().indexOf(value.toLowerCase()) > -1){
+                    return a[key];
+                  }
+              } : function (a) {
+              return Object.keys(a).some(function (k) {
+                  return a[k] === value;
+              });
+
+          });
 
       }
       generateLists(){
@@ -137,7 +174,7 @@ class SubscriberLists extends Component{
           <div className="sl_lists_wrapper">
             <div className={`sl_wrap_list`}>
 
-
+                <input className="sl_filter_lists" onChange={this.filterSearch.bind(this)}/>
                 <RadioGroup name="radio">
                 {this.generateLists()}
               </RadioGroup>
