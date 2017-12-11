@@ -9,7 +9,6 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import {Checkbox, Radio,RadioGroup}
        from 'react-icheck';
-var Highlight = require('react-highlighter');
 
 class SubscriberLists extends Component{
       constructor(props){
@@ -206,11 +205,10 @@ class SubscriberLists extends Component{
                 <input className="sl_filter_lists" style={{marginBottom: "20px"}} placeholder="Search Lists..." onChange={this.filterSearch.bind(this)}/>
                   <div id="NoContact" className={`tabcontent mksph_cardbox mks_not_found_wrap ${this.state.showNotFound}`}><p className="not-found">No List Found</p></div>
                 <span className={`${this.state.hideLists} addc_lists_wrapper`}>
-                <Highlight search={this.state.searchedValue}>
+
                     <RadioGroup name="radio">
                     {this.generateLists()}
                   </RadioGroup>
-              </Highlight>
             </span>
             </div>
 
