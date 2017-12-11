@@ -39,7 +39,9 @@ class SearchContacts extends Component{
                     wvactive    : '',
                     ckactive    : '',
                     clickState  : '',
-                    serverDate  : ''
+                    serverDate  : '',
+                    serachIcon  : 'show',
+                    closeIcon   : 'hide'
                   }
     }
 
@@ -165,7 +167,9 @@ class SearchContacts extends Component{
                       this.setState({
                         subscriber : subscriberEmails,
                         searchstat:'',
-                        searchtype : type
+                        searchtype : type,
+                        serachIcon  : 'hide',
+                        closeIcon   : 'show'
                       })
                     }
 
@@ -190,6 +194,7 @@ class SearchContacts extends Component{
         /*var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1&ukey='+this.users_details[0].userKey
                         +'&isMobileLogin=Y&userId='+this.users_details[0].userId*/
+
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                                       + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberStats&ukey='+this.props.users_details[0].userKey
                                       +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
@@ -201,6 +206,14 @@ class SearchContacts extends Component{
                                 var jsonResponse =  JSON.parse(res.text);
                                 if(jsonResponse[0] != "err"){
                                   console.log(jsonResponse);
+                                  // Resetting if counts changed
+                                  if(this.state.clicks !=  jsonResponse.clickCount || this.state.visits !=  jsonResponse.visitCount ){
+                                    this.setState({
+                                      vcsubscribers : '',
+                                      wvactive    : '',
+                                      ckactive    : ''
+                                    })
+                                  }
                                   this.setState({
                                     clicks : jsonResponse.clickCount,
                                     visits : jsonResponse.visitCount,
@@ -213,6 +226,15 @@ class SearchContacts extends Component{
                                   });
                                 }
                               });
+    }
+
+    removeSerachContacts(){
+      this.setState({
+        subscriber : '',
+        searchContact : '',
+        serachIcon  : 'show',
+        closeIcon   : 'hide'
+      })
     }
 
     setServerDate(responseDate){
@@ -266,7 +288,8 @@ class SearchContacts extends Component{
                       onKeyPress = {this.handleOnKeyPress.bind(this)}
                       onChange = {this.handleOnChange.bind(this)}
                     />
-                  <span className="mksph_icon_search" aria-hidden="true" data-icon="&#xe903;"></span>
+                  <span className={`${this.state.serachIcon} mksph_icon_search`} aria-hidden="true" data-icon="&#xe903;"></span>
+                  <span className={`${this.state.closeIcon} mksicon-Close`} onClick={this.removeSerachContacts.bind(this)} aria-hidden="true"></span>
                 </div>
                   <SingleContact
                     contact={this.state.subscriber}

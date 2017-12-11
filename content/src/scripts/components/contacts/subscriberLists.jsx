@@ -9,7 +9,7 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import {Checkbox, Radio,RadioGroup}
        from 'react-icheck';
-
+var Highlight = require('react-highlighter');
 
 class SubscriberLists extends Component{
       constructor(props){
@@ -18,7 +18,10 @@ class SubscriberLists extends Component{
 
         this.state = {
           subLists : null,
-          orginalLists: null
+          orginalLists: null,
+          showNotFound : 'hide',
+          hideLists    : 'show',
+          searchedValue : 'Hello'
         };
 
         // preserve the initial state in a new object
@@ -105,20 +108,47 @@ class SubscriberLists extends Component{
                   });
 
       }
+
+
+      hiliter(word, element) {
+          debugger;
+
+          var str = element.innerHTML.replace(/<\/?span[^>]*>/g,"");
+          var rgxp = new RegExp(word, 'g');
+          var repl = '<span class="myClass">' + word + '</span>';
+          element.innerHTML = str.replace(rgxp, repl);
+      }
+
+
+
       filterSearch(event){
             var value = event.currentTarget.value;
 
 
             if(value){
               let returnedArray = this.filter(this.state.subLists,value,'name');
-              this.setState({
-                subLists  : returnedArray
-              });
+
               console.log(returnedArray);
+              if(returnedArray.length > 0){
+                this.setState({
+                  subLists  : returnedArray,
+                  hideLists    : 'show',
+                  showNotFound : 'hide',
+                  searchedValue : value
+                }
+              );
+              }else{
+                this.setState({
+                  hideLists    : 'hide',
+                  showNotFound : 'show'
+                })
+              }
             }else{
               let orginalLists = this.state.orginalLists;
               this.setState({
-                subLists  : orginalLists
+                subLists  : orginalLists,
+                hideLists    : 'show',
+                showNotFound : 'hide'
               })
             }
       }
@@ -126,7 +156,6 @@ class SubscriberLists extends Component{
             return arr.filter(obj => Object.keys(obj).some(key => obj[key].includes(value)));
           }*/
       filter(array, value, key) {
-              debugger;
               let a=array;
               return array.filter(key ? function (a) {
                   if(a[key].toLowerCase().indexOf(value.toLowerCase()) > -1){
@@ -152,11 +181,11 @@ class SubscriberLists extends Component{
                         increaseArea="20%"
                         ref={"enhancedSwitch"+key}
                         value={list['listNumber.encode']}
-                        label={decodeHTML(list.name)}
+                        label={`<span class='labels'>${decodeHTML(list.name)} </span>`}
                       />
 
           );
-
+        this.state['searchedValue'] = 'umair';
         return ListItems;
       }
 
@@ -174,11 +203,15 @@ class SubscriberLists extends Component{
           <div className="sl_lists_wrapper">
             <div className={`sl_wrap_list`}>
 
-                <input className="sl_filter_lists" onChange={this.filterSearch.bind(this)}/>
-                <RadioGroup name="radio">
-                {this.generateLists()}
-              </RadioGroup>
-
+                <input className="sl_filter_lists" style={{marginBottom: "20px"}} placeholder="Search Lists..." onChange={this.filterSearch.bind(this)}/>
+                  <div id="NoContact" className={`tabcontent mksph_cardbox mks_not_found_wrap ${this.state.showNotFound}`}><p className="not-found">No List Found</p></div>
+                <span className={`${this.state.hideLists} addc_lists_wrapper`}>
+                <Highlight search={this.state.searchedValue}>
+                    <RadioGroup name="radio">
+                    {this.generateLists()}
+                  </RadioGroup>
+              </Highlight>
+            </span>
             </div>
 
         </div>

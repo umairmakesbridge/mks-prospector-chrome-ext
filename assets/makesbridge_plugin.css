@@ -809,6 +809,14 @@ Search Bar Styling
    right: 11px;
    color: #BAC2CA;
 }
+.searchBar span.mksicon-Close{
+    position: absolute;
+    bottom: 20px;
+    right: 11px;
+    color: #2c99f8;
+    font-size: 13px;
+    cursor: pointer;
+}
 
 
 /*===========================================
@@ -1389,6 +1397,14 @@ START Edit Selected Contact Found
    font-style: italic;
    padding-top: 13px;
 }
+.mks_not_found_wrap {
+    padding: 0;
+    border: 0;
+}
+.mks_not_found_wrap p.not-found {
+    padding: 5px 0;
+}
+
 .s_contact_found_edit{
    background: #fff;
    padding: 0px 20px 20px 20px;
@@ -2196,6 +2212,7 @@ font-weight: lighter;
 =================================================*/
 .cc_wraps_mks{
   max-height: 260px;
+  min-height: 260px;
   overflow-y: auto;
   overflow-x: hidden;
 }

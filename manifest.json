@@ -28,6 +28,7 @@
   "web_accessible_resources": [
     "jquery.min.js",
     "gmail.js",
+    "jquery.highlight.js",
     "main.js",
     "img/*",
     "fonts/plugin_icon/*"

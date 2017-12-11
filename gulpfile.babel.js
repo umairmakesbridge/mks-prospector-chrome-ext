@@ -42,6 +42,10 @@ gulp.task('copy-jquery-min-js', ['clean'], () => {
   return gulp.src('assets/jquery.min.js')
     .pipe(gulp.dest('./build'));
 });
+gulp.task('copy-highlight-min-js', ['clean'], () => {
+  return gulp.src('assets/jquery.highlight.js')
+    .pipe(gulp.dest('./build'));
+});
 gulp.task('copy-gmail-js', ['clean'], () => {
   return gulp.src('assets/gmail.js')
     .pipe(gulp.dest('./build'));
@@ -101,6 +105,7 @@ gulp.task('build', ['copy-manifest',
                     'main-js',
                     'copy-jquery-min-js',
                     'copy-gmail-js',
+                    'copy-highlight-min-js',
                     'copy-makesbridge_plugin-css',
                     'copy-images',
                     'copy-plugin_font_icon-css',
