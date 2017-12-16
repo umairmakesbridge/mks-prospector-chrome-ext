@@ -30,10 +30,8 @@ chrome.runtime.onMessage.addListener(
 
 
           var main = function() {
-            var h = document.createElement('script');
-            h.src = chrome.extension.getURL('jquery.highlight.js');
-            (document.head || document.documentElement).appendChild(g);
             
+
             var s = document.createElement('script');
             s.id  = "_mks_main_file";
             s.src = chrome.extension.getURL('main.js');

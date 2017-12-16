@@ -250,6 +250,8 @@ class SearchContacts extends Component{
       console.log('Activity Date : ' + activityDate, 'Server Date : '+ serverDate );
 
     }
+
+    
     render(){
         return (
           <div className="s_contact_found_wraper">

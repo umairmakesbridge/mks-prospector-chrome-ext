@@ -24,6 +24,8 @@ import LoadingMask
        from '../common/Loading_Mask';
 import Workflow
        from './Workflow';
+import Salesforce
+        from './Salesforce'
 
 class ContactInfo extends Component{
 
@@ -56,7 +58,8 @@ class ContactInfo extends Component{
                     showSubscriberAdd : false,
                     showSubscriberManager : false,
                     showLoading : false,
-                    showWorkFlowDialog : false
+                    showWorkFlowDialog : false,
+                    showSFDialog : false
                    }
   }
 
@@ -141,6 +144,8 @@ class ContactInfo extends Component{
                     + this.props.users_details[0].bmsToken +'&type=getSubscriber&subNum='
                     +this.state.subNum+'&ukey='+this.props.users_details[0].userKey
                     +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+
+
     var _this = this;
                     request
                           .get(searchUrl)
@@ -158,6 +163,7 @@ class ContactInfo extends Component{
                                   suppress      : jsonResponse.supress,
                                   contactnotFound : false
                                 });
+
                                 console.log('1. Getting Subscriber',jsonResponse);
 
                               }else{
@@ -194,6 +200,7 @@ class ContactInfo extends Component{
                       tagsA.push({id:++i,value:decodeHTML(value[0].tag)});
                   });
                   this.setState({autoFillTags : tagsA});
+
                 }
                 /*if(parseInt(jsonResponse.totalCount) > 0){
 
@@ -217,6 +224,7 @@ class ContactInfo extends Component{
               }
             });
   }
+
   updateBasicContactInfo(){
         console.log('Time to get parameter and send for update');
         this.setState({changeInContactBasic:true});
@@ -301,6 +309,20 @@ class ContactInfo extends Component{
     this.refs.childSubscriberWorkflow.saveWorkFlow()
   }
 
+  showAddToSalesforce(){
+    let height = jQuery('.makesbridge_plugin').height();
+    this.setState({showSFDialog: !this.state.showSFDialog,overlayHeight:height});
+    this.refs.childSubscriberSalesforce.getSalesforceData();
+  }
+  saveSalesforce(){
+    alert('Call child save function for SF');
+    this.refs.childSubscriberSalesforce.saveSalesForce()
+  }
+  closeSalesforce(){
+    this.setState({showSFDialog: false});
+    //this.refs.childSubscriberWorkflow.setStateDefault();
+  }
+
   render(){
 
 
@@ -381,6 +403,26 @@ class ContactInfo extends Component{
                                 <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
 
                                 </ToggleDisplay>
+
+                                <ToggleDisplay show={this.state.showSFDialog}>
+                                  <Dialog
+                                    saveCallback= {this.saveSalesforce.bind(this)}
+                                    showTitle={"Add to Salesforce"}
+                                    ref="dialogSalesforce"
+                                    closeCallback = {this.closeSalesforce.bind(this)}
+                                  >
+                                  <Salesforce
+                                    ref="childSubscriberSalesforce"
+                                    parentProps = {this.refs.dialogSalesforce}
+                                    baseUrl={this.baseUrl}
+                                    users_details={this.props.users_details}
+                                    contact={this.state.subscriber}
+                                    showToSalesforce = {this.showAddToSalesforce.bind(this)}
+                                  />
+                                </Dialog>
+                                <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+
+                                </ToggleDisplay>
                             <div className="top-header contact_found top_managerLists_wrappers">
                                       <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
                                       <div className="scf_o_right">
@@ -433,6 +475,19 @@ class ContactInfo extends Component{
                                                                 </a>
                                                                     </div>
                                                                 </li>
+
+                                                                <li onClick={this.showAddToSalesforce.bind(this)}>
+                                                                  <div className="scf_option_icon ripple top_manage_lists">
+                                                                    <a href="#" style={{textDecoration: 'unset'}}>
+                                                                      <div className="wrap_scf_o_i">
+                                                                        <div className="wrap_scf_o_i_md" >
+                                                                          <div className="scf_o_icon scf_o_edit mksicon-act_wait mks_manageList_wrap"></div>
+                                                                          <p className="scf_o_txt">Add to Salesforce</p>
+                                                                          </div>
+                                                                          </div>
+                                                                      </a>
+                                                                          </div>
+                                                                      </li>
 
                                                 </ul>
                                             </div>

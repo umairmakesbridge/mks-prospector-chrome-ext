@@ -50,10 +50,17 @@ class Workflow extends Component{
 
                   if(parseInt(jsonResponse.totalCount) > 0){
                     console.log('Workflow list : ',jsonResponse);
+                    debugger;
                     this.setState({
                       wfLists : jsonResponse.workflows
                     });
                     this.wfAddedList();
+
+                  }else {
+                    debugger;
+                    this.setState({
+                      wfLists : "N"
+                    });
                   }
                 }
               });
@@ -206,6 +213,16 @@ class Workflow extends Component{
           <div id="NoContact" className="tabcontent mksph_cardbox">
 
                   <p className="not-found">Loading...</p>
+              </div>
+        )
+      }
+      if(this.state.wfLists == "N"){
+        debugger;
+        return(
+
+          <div id="NoContact" className="tabcontent mksph_cardbox">
+
+                  <p className="not-found">No eligible sequence available.</p>
               </div>
         )
       }

@@ -54,12 +54,16 @@ class ContactDetailInfo extends Component{
       occupation: '',
       collapseMsg : 'Click to expand',
       collapseExpand : 'expand',
-      showCreateCardBox : 'show'
+      showCreateCardBox : 'show',
+      conLeadId : '',
+      showSfUpdate : 'hide',
+      showLoadingSF : false
     }
   };
-  updateBasicField(){
+  updateBasicField(reqtype){
     this.setState({ showInput : 'hide',showLabel : 'show' })
-    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
+    let updateSFtype = (reqtype == 'SF') ? '&updateAtSF=y' : '';
+    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile'+updateSFtype)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send({
                  subNum: this.props.contact.subNum
@@ -81,6 +85,8 @@ class ContactDetailInfo extends Component{
                 ,industry: encodeHTML(this.state.industry)
                 ,source: encodeHTML(this.state.source)
                 ,occupation: encodeHTML(this.state.occupation)
+                ,conLeadId : encodeHTML(this.props.contact.conLeadId)
+                ,owner : encodeHTML(this.props.contact.salesRep)
                 ,ukey:this.users_details[0].userKey
                 ,listNum  : this.users_details[0].listObj['listNum']
                 ,isMobileLogin:'Y'
@@ -95,7 +101,8 @@ class ContactDetailInfo extends Component{
             this.setState({
               showContact : true,
               editContact : false,
-              disabled    : false
+              disabled    : false,
+              showLoadingSF : false
             })
             SuccessAlert({message:"Contact updated successfully."});
             //this.props.contact['company'] = this.state.company;
@@ -141,6 +148,7 @@ class ContactDetailInfo extends Component{
       ,industry: this.props.contact.industry
       ,source: this.props.contact.source
       ,occupation: this.props.contact.occupation
+      ,conLeadId : this.props.contact.conLeadId
 
     })
   }
@@ -285,7 +293,9 @@ class ContactDetailInfo extends Component{
       this.state.industry = nextProps.contact.industry;
       this.state.source = nextProps.contact.source;
       this.state.occupation = nextProps.contact.occupation;
-
+      if(nextProps.contact.conLeadId){
+        this.state['showSfUpdate'] = 'show';
+      }
     }
   }
   componentDidUpdate(prevProps, prevState, prevContext){
@@ -301,8 +311,25 @@ class ContactDetailInfo extends Component{
         this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
       }
   }
-
-
+  updateDataSalesforce(){
+    console.log('Triggered Salesforce');
+    this.setState({
+      showLoadingSF : true
+    })
+    debugger;
+    if(this.props.contact.cusFldList){
+      console.log('We have Custom Fields and SF will update from CUSTOM Field Component');
+      this.refs.CustomFieldsComponent.updateAtSF();
+    }else{
+      console.log('Only basic field are available so update will be from Basic Component')
+      this.updateBasicField('SF')
+    }
+  }
+  hideSFMask(){
+    this.setState({
+      showLoadingSF : false
+    })
+  }
   render(){
     let items = this.props.autoFillTags;
     console.log('Rendering Contact Details');
@@ -324,7 +351,9 @@ class ContactDetailInfo extends Component{
               </div>);
     }
     return (
+
       <div className="contacts-wrap">
+        <LoadingMask message={'Updating Fields to Salesforce'} showLoading={this.state.showLoadingSF} />
         <div id="Tags" className="tabcontent mksph_cardbox">
               <h3>Tags</h3>
               <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
@@ -379,6 +408,9 @@ class ContactDetailInfo extends Component{
                 <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
               </div>
             </div>
+        <div id="SalesForce" onClick={this.updateDataSalesforce.bind(this)} className={`${this.state.showSfUpdate} tabcontent mkb_basicField_wrap mksph_cardbox`}>
+          <span className={`mkb_btn pull-left mkb_basic_edit mkb_sf_btn`}>Update fields to Salesforce</span>
+        </div>
         <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
               <h3 style={{marginBottom: "15px"}}>Basic Fields</h3>
                 <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={ this.showInputB.bind(this) }>Edit</span>
@@ -465,6 +497,8 @@ class ContactDetailInfo extends Component{
                   <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.salesRep)}</span>
                     <input className={`${this.state.showInput}`} value={decodeHTML(this.state.salesRep)} onChange = {event => this.setState({salesRep : event.target.value})}  />
                 </div>
+
+
                 </div>
                 <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
                   <span>{this.state.collapseMsg}</span>
@@ -476,12 +510,14 @@ class ContactDetailInfo extends Component{
                       <h3>Custom Fields</h3>
 
                       <CustomFields
+                        ref="CustomFieldsComponent"
                         contactInfoState = {this.state}
                         custom_fields={this.props.contact.cusFldList}
                         contact={this.props.contact}
                         users_details={this.users_details}
                         baseUrl={this.baseUrl}
                         getSubscriberDetails={this.props.getSubscriberDetails}
+                        hideLoadingMask = {this.hideSFMask.bind(this)}
                         />
                 </div>
       </div>

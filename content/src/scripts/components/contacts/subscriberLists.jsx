@@ -20,7 +20,8 @@ class SubscriberLists extends Component{
           orginalLists: null,
           showNotFound : 'hide',
           hideLists    : 'show',
-          searchedValue : 'Hello'
+          searchedValue : '',
+          closeIcon : 'hide'
         };
 
         // preserve the initial state in a new object
@@ -130,16 +131,23 @@ class SubscriberLists extends Component{
               console.log(returnedArray);
               if(returnedArray.length > 0){
                 this.setState({
-                  subLists  : returnedArray,
-                  hideLists    : 'show',
-                  showNotFound : 'hide',
+                  subLists      : returnedArray,
+                  hideLists     : 'show',
+                  showNotFound  : 'hide',
+                  closeIcon     : 'show',
                   searchedValue : value
-                }
-              );
+                }, function() {
+                  this.highlightSearchText(value);
+                });
+
               }else{
                 this.setState({
-                  hideLists    : 'hide',
-                  showNotFound : 'show'
+                    hideLists     : 'hide',
+                    showNotFound  : 'show',
+                    closeIcon     : 'hide',
+                    searchedValue : ''
+                },function(){
+                  this.highlightSearchText('')
                 })
               }
             }else{
@@ -147,6 +155,7 @@ class SubscriberLists extends Component{
               this.setState({
                 subLists  : orginalLists,
                 hideLists    : 'show',
+                closeIcon    : 'hide',
                 showNotFound : 'hide'
               })
             }
@@ -168,6 +177,23 @@ class SubscriberLists extends Component{
           });
 
       }
+      highlightSearchText(searchTextvalue){
+        console.log('Search Text Value', searchTextvalue);
+        $.each($('.mks_search_labels'),function(key,val){
+          $(val).removeHighlight().highlight(searchTextvalue);
+        })
+
+      }
+      removeSerachContacts(){
+
+        let orginalLists = this.state.orginalLists;
+        //this.state['searchedValue'] = '';
+        this.setState({
+          closeIcon     : 'hide',
+          subLists      : orginalLists,
+          searchedValue : ''
+        });
+      }
       generateLists(){
 
         const ListItems = this.state.subLists.map((list,key) =>
@@ -180,11 +206,10 @@ class SubscriberLists extends Component{
                         increaseArea="20%"
                         ref={"enhancedSwitch"+key}
                         value={list['listNumber.encode']}
-                        label={`<span class='labels'>${decodeHTML(list.name)} </span>`}
+                        label={`<span class='mks_search_labels'>${decodeHTML(list.name)} </span>`}
                       />
 
           );
-        this.state['searchedValue'] = 'umair';
         return ListItems;
       }
 
@@ -202,14 +227,15 @@ class SubscriberLists extends Component{
           <div className="sl_lists_wrapper">
             <div className={`sl_wrap_list`}>
 
-                <input className="sl_filter_lists" style={{marginBottom: "20px"}} placeholder="Search Lists..." onChange={this.filterSearch.bind(this)}/>
+                <div className="searchBar" >
+                  <input className="sl_filter_lists" style={{marginBottom: "20px"}} placeholder="Search Lists..." value={this.state.searchedValue} onChange={this.filterSearch.bind(this)}/><span style={{bottom : '30px'}} className={`${this.state.closeIcon} mksicon-Close`} onClick={this.removeSerachContacts.bind(this)}  aria-hidden="true"></span>
                   <div id="NoContact" className={`tabcontent mksph_cardbox mks_not_found_wrap ${this.state.showNotFound}`}><p className="not-found">No List Found</p></div>
+                  </div>
                 <span className={`${this.state.hideLists} addc_lists_wrapper`}>
-
                     <RadioGroup name="radio">
-                    {this.generateLists()}
-                  </RadioGroup>
-            </span>
+                      {this.generateLists()}
+                    </RadioGroup>
+                </span>
             </div>
 
         </div>

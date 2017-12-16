@@ -76,9 +76,11 @@ class CustomFields extends Component{
 
     }
   }
-  updateCustomFields(type,arrayObj){
+  updateCustomFields(type,arrayObj,sfType){
+
     this.setState({ showInput : 'hide',showLabel : 'show' });
     let reqObj = {};
+    let sfUrl = (sfType == 'SF') ? '&updateAtSF=y' : '';
     this.state.customFieldKeys.map((field,key)=>
                             reqObj["frmFld_"+encodeHTML(field)] = this.state[field]
                         );
@@ -87,7 +89,7 @@ class CustomFields extends Component{
       reqObj['frmFld_'+encodeHTML(arrayObj[0])] = encodeHTML(arrayObj[1]);
       this.state.addedNewField = true;
     }
-    // debugger;
+     debugger;
     reqObj["subNum"] = this.props.contact.subNum;
     reqObj["firstName"] = encodeHTML(this.props.contact.firstName);
     reqObj["lastName"] = encodeHTML(this.props.contact.lastName);
@@ -106,15 +108,18 @@ class CustomFields extends Component{
     reqObj["address2"] = encodeHTML(this.props.contactInfoState.address2);
     reqObj["industry"] = encodeHTML(this.props.contactInfoState.industry);
     reqObj["source"] = this.props.contactInfoState.source;
-    reqObj["occupation"] = this.props.contactInfoState.occupation;
-
+    reqObj["occupation"] = this.props.contactInfoState.salesRep;
+    if(sfUrl){
+      reqObj["conLeadId"] = this.props.contact.conLeadId;
+      reqObj["owner"] = this.props.contact.salesRep;
+    }
     reqObj["ukey"] = this.props.users_details[0].userKey;
     reqObj["listNum"] = this.props.users_details[0].listObj['listNum'];
     reqObj["isMobileLogin"] = 'Y';
     reqObj["userId"] = this.props.users_details[0].userId;
 
 
-    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile')
+    request.post(this.baseUrl+'/io/subscriber/setData/?BMS_REQ_TK='+this.users_details[0].bmsToken+'&type=editProfile'+sfUrl)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send(reqObj)
        .then((res) => {
@@ -130,6 +135,9 @@ class CustomFields extends Component{
               showAddBox  : false
             })
             SuccessAlert({message:"Contact updated successfully."});
+            if(sfType == 'SF'){
+              this.props.hideLoadingMask();
+            }
             this.refs.addboxView.setDefaultState();
             this.props.getSubscriberDetails();
           }else{
@@ -176,6 +184,10 @@ class CustomFields extends Component{
     if(code == 13){
       this.addNewTag();
     }
+  }
+  updateAtSF(){
+    console.log('Update Fields on SF as well');
+    this.updateCustomFields('','','SF');
   }
   showAddCusFocus(){
     let height = jQuery('.makesbridge_plugin').height();

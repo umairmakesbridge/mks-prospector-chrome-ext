@@ -618,13 +618,25 @@ input.hasError {
 .new_contact_true .top_managerLists_wrappers,.new_contact_true .scf_tab_wrap .tab{
   display: none !important;
 }
+.highlight {
+    background-color: #08c !important;
+    color: #fff !important;
+    float: none !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+.mskLogog_bluetext{
+  color : #04aced !important;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;
 	font-size: 14px;
 	font-weight: bold;
 	margin:20px auto;
-	padding: 10px 35px 10px 60px;
+	padding: 10px 35px 10px 60px;#04aced;
 	width: 285px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -2283,7 +2295,7 @@ font-weight: lighter;
 .top-header.contact_found ul li {
     list-style-type: none;
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 6px;
     cursor: pointer;
 }
 .top-header.contact_found ul li .badge{
@@ -2515,3 +2527,60 @@ font-weight: lighter;
 /*-----------------------*/
 /* Custom Scroll Ends
 ----------------------------------- */
+
+/*------------------------------
+Salesforce
+--------------------------------*/
+.mkb_sf_btn{
+
+position: relative;
+margin: 0 auto;
+width: auto;
+float: none;
+background: rgb(35, 206, 140);
+left: unset;
+width: 190px;
+text-align: center;
+display: block;
+top: 0;
+font-size: 14px;
+  color: #fff;
+}
+.mkssf_wrap_rendering .source{
+  max-width: 300px;
+}
+.mkssf_wrap_rendering h4{
+    display: inline-block;
+    font-size: 17px;
+    color: rgb(116, 133, 146);
+    font-weight: 200;
+    margin: 10px 3px;
+}
+
+.Rendering.mkssf_wrap_rendering select.twoHunderWidth {
+    min-width: 200px;
+    max-width: 200px;
+    position: relative;
+    left: 10px;
+}
+
+.sf_lead_owner_div_wrap {
+    padding: 2px 0px 4px;
+}
+.sf_lead_owner_div_wrap input, .sf_cont_owner_div_wrap input, .sf_basic_div_wrap input,.sf_cf_div_wrap input {
+    width: 23px;
+}
+.sf_lead_owner_div_wrap span, .sf_cont_owner_div_wrap span, .sf_basic_div_wrap span ,.sf_cf_div_wrap span{
+    font-size: 13px;
+    color: rgb(116, 133, 146);
+}
+.sf_lead_owner_div_wrap select, .sf_cont_owner_div_wrap select {
+    width: 221px;
+    position: relative;
+    top: 3px;
+    left: 22px;
+}
+.sf_cf_div_wrap span {
+    width: 90%;
+    display: inline-block;
+}

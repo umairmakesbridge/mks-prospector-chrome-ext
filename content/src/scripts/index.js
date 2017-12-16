@@ -43,7 +43,7 @@ class App extends Component {
       islogOut           : 'hide',
       gmail_emails_body: [],
       isLoggedOut      : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
+      baseUrl          : 'https://test.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
@@ -205,7 +205,7 @@ class App extends Component {
                                       if(parseInt(jsonResponse.totalCount)==0){
 
                                         this.createNewList();
-
+                                        this.getUserSFStats();
                                     }else{
 
                                         console.log(jsonResponse.totalCount)
@@ -213,6 +213,7 @@ class App extends Component {
                                                                             listNum:jsonResponse.lists[0].list1[0]['listNumber.encode']
                                                                             ,listChecksum:jsonResponse.lists[0].list1[0]['listNumber.checksum']
                                                                           }
+                                        this.getUserSFStats();
                                         console.log(this.state.users_details);
                                     }
                                     if(this.state.isLoggedOut){
@@ -222,6 +223,36 @@ class App extends Component {
                                   }
                               });
     console.log('First to check list by get');
+  }
+  getUserSFStats(){
+    //https://test.bridgemailsystem.com/pms/
+    //io/salesforce/getData/?BMS_REQ_TK=nVla24lTtjV9TbuHJ3SMzXDbAE5AvH&type=status
+    let userDetails = this.state.users_details[0];
+    var searchUrl = this.state.baseUrl
+                    +'/io/salesforce/getData/?BMS_REQ_TK='
+                    + userDetails.bmsToken +'&type=status&ukey='+userDetails.userKey
+                    +'&isMobileLogin=Y&userId='+userDetails.userId
+                    request
+                           .get(searchUrl)
+                           .set('Content-Type', 'application/x-www-form-urlencoded')
+                           .then((res) => {
+                              if(res.status==200){
+                                let jsonResponse = JSON.parse(res.text);
+                                let tagsA = [];
+                                if (jsonResponse[0] == "err"){
+                                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                                      //ErrorAlert({message:jsonResponse[1]});
+                                      jQuery('.mksph_logout').trigger('click');
+                                    }
+                                  return false;
+                                }
+                                console.log(jsonResponse);
+
+                                if(jsonResponse.isLoggedIn == "Y"){
+                                  this.state.users_details[0]['isSalesforceUser'] = jsonResponse.isSalesforceUser;
+                                }
+                              }
+                            });
   }
   toggleTopMenu (event){
     jQuery("#lists_option").animate({width: 'toggle'})
