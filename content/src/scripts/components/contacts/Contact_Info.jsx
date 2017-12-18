@@ -312,7 +312,18 @@ class ContactInfo extends Component{
   showAddToSalesforce(){
     let height = jQuery('.makesbridge_plugin').height();
     this.setState({showSFDialog: !this.state.showSFDialog,overlayHeight:height});
-    this.refs.childSubscriberSalesforce.getSalesforceData();
+    this.callSalesforce();
+  }
+  callSalesforce(){
+    if(this.state.subNum){
+      this.refs.childSubscriberSalesforce.getSalesforceData();
+    }else{
+      setTimout(function(){
+        console.log('Recurrsive call executed (salesforce)')
+        this.callSalesforce();
+      }.bind(this),100);
+    }
+
   }
   saveSalesforce(){
     alert('Call child save function for SF');
