@@ -1089,7 +1089,7 @@ Slider Start
     text-align: center;
     color: #fff;
     line-height: 17px;
-    font-size: 7px;
+    font-size: 9px;
     visibility: hidden;
     margin: -17px 0 0 0;
     opacity: 0;
@@ -1207,8 +1207,6 @@ Slider Start
    -moz-transition: width .4s ease-in-out, visibility .5s linear;
    -o-transition: width .4s ease-in-out, visibility .5s linear;
    transition: width .4s ease-in-out, visibility .5s linear;
-
-
 }
 
 .slide-btns:hover  {width:585px;
@@ -2154,12 +2152,15 @@ position:relative; z-index:9;
 /*================================================
     Managers Lists,Suppress
 =================================================*/
+ul.top_manager_ul_wraps.four .sf_icons{
+  display:none;
+}
 .top_manage_lists{
 
 }
 .top_manage_lists .wrap_scf_o_i{
   background: transparent;
-  width: 58px;
+  width: 70px;
   height: 48px;
 }
 .top_manage_lists .mks_manageList_wrap{
@@ -2169,6 +2170,7 @@ position:relative; z-index:9;
 .top_manage_lists .scf_o_txt{
   color: #748592;
 }
+
 .top_manage_lists .mks_manageList_wrap::after {
     content: "";
     display: inline-block;
@@ -2181,6 +2183,12 @@ position:relative; z-index:9;
 }
 ul.top_manager_ul_wraps li:last-child div::after {
     width: 0;
+}
+ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
+  width: 58px;
+}
+ul.top_manager_ul_wraps.five .scf_o_txt{
+    font-size: 7px;
 }
 .SuppressNotify{
   position: relative;
@@ -2590,4 +2598,14 @@ font-size: 14px;
 .sf_cf_div_wrap span {
     width: 90%;
     display: inline-block;
+}
+span.sf_cus_span2{
+  width :42%;
+}
+.loadingMaks-additional{
+  top: 0;
+  left: 0;
+}
+.loadingMaks-additional .spinner{
+  padding-top: 130px;
 }

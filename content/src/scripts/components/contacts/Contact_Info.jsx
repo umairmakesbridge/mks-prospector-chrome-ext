@@ -61,8 +61,11 @@ class ContactInfo extends Component{
                     showWorkFlowDialog : false,
                     showSFDialog : false,
                     showJumpSF : 'hide',
-                    showAddSf : 'hide'
+                    showAddSf : 'hide',
+                    isSalesforceUser : "four"
                    }
+
+                   console.log('Salesforce user value : ',this.props.users_details.isSalesforceUser)
   }
 
   componentDidUpdate(){
@@ -165,7 +168,8 @@ class ContactInfo extends Component{
                                   suppress      : jsonResponse.supress,
                                   contactnotFound : false,
                                   showJumpSF : (jsonResponse.sfUrl) ? 'show' : 'hide',
-                                  showAddSf  : (!jsonResponse.sfUrl) ? 'show': 'hide'
+                                  showAddSf  : (!jsonResponse.sfUrl) ? 'show': 'hide',
+                                  showActionButtons : (this.props.users_details[0].isSalesforceUser) ? "five" : "four"
                                 });
 
                                 console.log('1. Getting Subscriber',jsonResponse);
@@ -452,7 +456,7 @@ class ContactInfo extends Component{
                             <div className="top-header contact_found top_managerLists_wrappers">
                                       <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
                                       <div className="scf_o_right">
-                                          <ul className="top_manager_ul_wraps">
+                                          <ul className={`top_manager_ul_wraps ${this.state.showActionButtons}`}>
                                             <li>
                                               <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
                                                 <a href="#" style={{textDecoration: 'unset'}}>
@@ -502,7 +506,7 @@ class ContactInfo extends Component{
                                                                     </div>
                                                                 </li>
 
-                                                                <li className={`${this.state.showAddSf}`} onClick={this.showAddToSalesforce.bind(this)}>
+                                                                <li className={`${this.state.showAddSf} sf_icons`} onClick={this.showAddToSalesforce.bind(this)}>
                                                                   <div className="scf_option_icon ripple top_manage_lists">
                                                                     <a href="#" style={{textDecoration: 'unset'}}>
                                                                       <div className="wrap_scf_o_i">
@@ -515,7 +519,7 @@ class ContactInfo extends Component{
                                                                           </div>
                                                                       </li>
 
-                                                                      <li className={`${this.state.showJumpSF}`} onClick={this.jumpToSalesforce.bind(this)}>
+                                                                      <li className={`${this.state.showJumpSF} sf_icons`} onClick={this.jumpToSalesforce.bind(this)}>
                                                                         <div className="scf_option_icon ripple top_manage_lists">
                                                                           <a href="#" style={{textDecoration: 'unset'}}>
                                                                             <div className="wrap_scf_o_i">

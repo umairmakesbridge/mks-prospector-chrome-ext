@@ -254,6 +254,17 @@ class Salesforce extends Component{
           ErrorAlert({message:'Sales Rep must be selected'});
           return false;
       }
+      debugger;
+
+      if(!this.props.contact.lastName){
+        ErrorAlert({message:'Please update contact Last name.'});
+        return false;
+      }
+      else if(this.state.addAsVal == "lead" && !this.props.contact.company){
+        ErrorAlert({message:'Please update contact Company name.'});
+        return false;
+      }
+
       this.setState({
         showLoadingSF : true
       })
@@ -327,7 +338,7 @@ class Salesforce extends Component{
     }
     return (
       <div className={`Rendering mkssf_wrap_rendering`}>
-        <LoadingMask message={'Adding subscriber to Salesforce'} showLoading={this.state.showLoadingSF} />
+        <LoadingMask message={'Adding subscriber to Salesforce'} extraClass={'loadingMaks-additional'} showLoading={this.state.showLoadingSF} />
         <h4>Add as </h4>
           <select name="salesStatus" onChange={this.addAsSF.bind(this)} className="twoHunderWidth" id="first_wf_drop_down">
             <option value="lead">Lead</option>
@@ -361,7 +372,7 @@ class Salesforce extends Component{
                   <div className="sf_lead_owner_div_wrap">
                     <input type="radio" name="lowner" value="2" onClick={this.selectleadsOwner.bind(this)}/>
                     <span>Assign To</span>
-                    <select className={`${this.state.showSalesRep}`}  onChange={this.salesRep.bind(this)}>
+                    <select className={`${this.state.showSalesRep}`} style={{width: "200px"}} onChange={this.salesRep.bind(this)}>
                         <option value="-1">Select Salesrep</option>
                         {this.generatesalesReps()}
                     </select>
