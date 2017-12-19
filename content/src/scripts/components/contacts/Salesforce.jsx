@@ -8,7 +8,8 @@ import {Checkbox, Radio,RadioGroup}
        from 'react-icheck';
 import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
-
+import LoadingMask
+              from '../common/Loading_Mask';
 
 class Salesforce extends Component{
     constructor(props){
@@ -36,6 +37,7 @@ class Salesforce extends Component{
           ruleIdVal : -1,
           salesRepVal : -1,
           LCustomArrayKey : [],
+          showLoadingSF : false
        }
 
       // preserve the initial state in a new object
@@ -252,6 +254,9 @@ class Salesforce extends Component{
           ErrorAlert({message:'Sales Rep must be selected'});
           return false;
       }
+      this.setState({
+        showLoadingSF : true
+      })
       let reqObj = {}
       let basicAr = [];
       $.each(this.state.LCustomArrayKey,function(key,value){
@@ -295,10 +300,15 @@ class Salesforce extends Component{
                 }else{
                   ErrorAlert({message:jsonResponse[1]});
                 }
+                this.setState({
+                  showLoadingSF : false
+                })
               return false;
             }
-
+              this.props.changeSalesforceStatus();
               SuccessAlert({message:jsonResponse[1]});
+              this.props.closeSalesforce();
+              this.setState(this.baseState);
               //this.props.contact['company'] = this.state.company;
               //this.props.updateContactHappened();
 
@@ -317,6 +327,7 @@ class Salesforce extends Component{
     }
     return (
       <div className={`Rendering mkssf_wrap_rendering`}>
+        <LoadingMask message={'Adding subscriber to Salesforce'} showLoading={this.state.showLoadingSF} />
         <h4>Add as </h4>
           <select name="salesStatus" onChange={this.addAsSF.bind(this)} className="twoHunderWidth" id="first_wf_drop_down">
             <option value="lead">Lead</option>

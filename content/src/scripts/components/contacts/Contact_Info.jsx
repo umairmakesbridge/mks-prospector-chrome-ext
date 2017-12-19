@@ -59,7 +59,9 @@ class ContactInfo extends Component{
                     showSubscriberManager : false,
                     showLoading : false,
                     showWorkFlowDialog : false,
-                    showSFDialog : false
+                    showSFDialog : false,
+                    showJumpSF : 'hide',
+                    showAddSf : 'hide'
                    }
   }
 
@@ -161,7 +163,9 @@ class ContactInfo extends Component{
                                   firstName     : jsonResponse.firstName,
                                   lastName      : jsonResponse.lastName,
                                   suppress      : jsonResponse.supress,
-                                  contactnotFound : false
+                                  contactnotFound : false,
+                                  showJumpSF : (jsonResponse.sfUrl) ? 'show' : 'hide',
+                                  showAddSf  : (!jsonResponse.sfUrl) ? 'show': 'hide'
                                 });
 
                                 console.log('1. Getting Subscriber',jsonResponse);
@@ -326,14 +330,22 @@ class ContactInfo extends Component{
 
   }
   saveSalesforce(){
-    alert('Call child save function for SF');
+    //alert('Call child save function for SF');
     this.refs.childSubscriberSalesforce.saveSalesForce()
   }
   closeSalesforce(){
     this.setState({showSFDialog: false});
     //this.refs.childSubscriberWorkflow.setStateDefault();
   }
-
+  changeSalesforceStatus(){
+    this.getSubscriberDetails();
+  }
+  jumpToSalesforce(event){
+    console.log('Time to jump to salesforce');
+    var url = this.state.subscriber.sfUrl;
+    window.open(decodeHTML(url), 'newwindow', 'scrollbars=yes,resizable=yes');
+    event.stopPropagation();
+  }
   render(){
 
 
@@ -421,6 +433,7 @@ class ContactInfo extends Component{
                                     showTitle={"Add to Salesforce"}
                                     ref="dialogSalesforce"
                                     closeCallback = {this.closeSalesforce.bind(this)}
+                                    additionalClass = {"dialog_height_increased"}
                                   >
                                   <Salesforce
                                     ref="childSubscriberSalesforce"
@@ -429,6 +442,8 @@ class ContactInfo extends Component{
                                     users_details={this.props.users_details}
                                     contact={this.state.subscriber}
                                     showToSalesforce = {this.showAddToSalesforce.bind(this)}
+                                    closeSalesforce = {this.closeSalesforce.bind(this)}
+                                    changeSalesforceStatus = {this.changeSalesforceStatus.bind(this)}
                                   />
                                 </Dialog>
                                 <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
@@ -487,18 +502,31 @@ class ContactInfo extends Component{
                                                                     </div>
                                                                 </li>
 
-                                                                <li onClick={this.showAddToSalesforce.bind(this)}>
+                                                                <li className={`${this.state.showAddSf}`} onClick={this.showAddToSalesforce.bind(this)}>
                                                                   <div className="scf_option_icon ripple top_manage_lists">
                                                                     <a href="#" style={{textDecoration: 'unset'}}>
                                                                       <div className="wrap_scf_o_i">
-                                                                        <div className="wrap_scf_o_i_md" >
-                                                                          <div className="scf_o_icon scf_o_edit mksicon-act_wait mks_manageList_wrap"></div>
-                                                                          <p className="scf_o_txt">Add to Salesforce</p>
+                                                                        <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
+                                                                          <div className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
+                                                                          <p className="scf_o_txt">Add Salesforce</p>
                                                                           </div>
                                                                           </div>
                                                                       </a>
                                                                           </div>
                                                                       </li>
+
+                                                                      <li className={`${this.state.showJumpSF}`} onClick={this.jumpToSalesforce.bind(this)}>
+                                                                        <div className="scf_option_icon ripple top_manage_lists">
+                                                                          <a href="#" style={{textDecoration: 'unset'}}>
+                                                                            <div className="wrap_scf_o_i">
+                                                                              <div className="wrap_scf_o_i_md" >
+                                                                                <div className="scf_o_icon scf_o_edit mksicon-jump_to_salesforce_record mks_manageList_wrap"></div>
+                                                                                <p className="scf_o_txt">Jump Salesforce</p>
+                                                                                </div>
+                                                                                </div>
+                                                                            </a>
+                                                                                </div>
+                                                                            </li>
 
                                                 </ul>
                                             </div>

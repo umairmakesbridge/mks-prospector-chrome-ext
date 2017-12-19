@@ -29,7 +29,7 @@ class Dialog extends Component{
  }
  render(){
     return(
-      <div className={`addBox_wrapper_container scfe_field`}>
+      <div className={`addBox_wrapper_container scfe_field ${this.props.additionalClass}`}>
 
         <h2>{this.props.showTitle}</h2>
         <div className="addBox_input_wrappers">
