@@ -2181,9 +2181,17 @@ ul.top_manager_ul_wraps.four .sf_icons{
     right: 0;
     top: 14px;
 }
+
 ul.top_manager_ul_wraps li:last-child div::after {
     width: 0;
 }
+ul.top_manager_ul_wraps.five li:nth-child(5) div::after {
+    width: 0;
+}
+ul.top_manager_ul_wraps.four li:nth-child(4) div::after {
+    width: 0;
+}
+
 ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
   width: 58px;
 }

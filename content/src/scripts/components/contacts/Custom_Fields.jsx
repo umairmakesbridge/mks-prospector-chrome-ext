@@ -134,9 +134,12 @@ class CustomFields extends Component{
               disabled    : false,
               showAddBox  : false
             })
-            SuccessAlert({message:"Contact updated successfully."});
+
             if(sfType == 'SF'){
               this.props.hideLoadingMask();
+              SuccessAlert({message:"Contact updated successfully on salesforce."});
+            }else{
+              SuccessAlert({message:"Contact updated successfully."});
             }
             this.refs.addboxView.setDefaultState();
             this.props.getSubscriberDetails();

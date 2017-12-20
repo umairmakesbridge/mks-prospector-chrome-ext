@@ -105,7 +105,12 @@ class ContactDetailInfo extends Component{
               disabled    : false,
               showLoadingSF : false
             })
-            SuccessAlert({message:"Contact updated successfully."});
+            if(reqtype=='SF'){
+              SuccessAlert({message:"Contact updated successfully on salesforce."});
+            }else{
+              SuccessAlert({message:"Contact updated successfully."});
+            }
+
             //this.props.contact['company'] = this.state.company;
             //this.props.updateContactHappened();
             this.props.getSubscriberDetails();
