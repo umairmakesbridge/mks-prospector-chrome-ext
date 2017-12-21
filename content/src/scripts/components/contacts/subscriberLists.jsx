@@ -111,7 +111,6 @@ class SubscriberLists extends Component{
 
 
       hiliter(word, element) {
-          debugger;
 
           var str = element.innerHTML.replace(/<\/?span[^>]*>/g,"");
           var rgxp = new RegExp(word, 'g');

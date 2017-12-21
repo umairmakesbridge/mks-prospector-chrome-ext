@@ -239,7 +239,6 @@ class Salesforce extends Component{
         $('#SF_'+event.currentTarget.id+"_label").addClass('hide');
       }
       console.log(this.state);
-      debugger;
     }
     changeCustomFieldSF(event){
       console.log(event.currentTarget.value);
@@ -254,7 +253,6 @@ class Salesforce extends Component{
           ErrorAlert({message:'Sales Rep must be selected'});
           return false;
       }
-      debugger;
 
       if(!this.props.contact.lastName){
         ErrorAlert({message:'Please update contact Last name.'});
@@ -327,6 +325,9 @@ class Salesforce extends Component{
        console.log(reqObj);
 
 
+    }
+    setStateDefault(){
+        this.setState(this.baseState);
     }
     render(){
       if(!this.state.sfContactCustomFields.length){

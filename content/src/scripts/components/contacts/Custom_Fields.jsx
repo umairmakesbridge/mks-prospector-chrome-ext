@@ -89,7 +89,6 @@ class CustomFields extends Component{
       reqObj['frmFld_'+encodeHTML(arrayObj[0])] = encodeHTML(arrayObj[1]);
       this.state.addedNewField = true;
     }
-     debugger;
     reqObj["subNum"] = this.props.contact.subNum;
     reqObj["firstName"] = encodeHTML(this.props.contact.firstName);
     reqObj["lastName"] = encodeHTML(this.props.contact.lastName);

@@ -321,8 +321,7 @@ class ContactDetailInfo extends Component{
     console.log('Triggered Salesforce');
     this.setState({
       showLoadingSF : true
-    })
-    debugger;
+    });
     if(this.props.contact.cusFldList){
       console.log('We have Custom Fields and SF will update from CUSTOM Field Component');
       this.refs.CustomFieldsComponent.updateAtSF();

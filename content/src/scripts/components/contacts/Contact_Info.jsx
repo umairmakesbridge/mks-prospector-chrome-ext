@@ -339,7 +339,7 @@ class ContactInfo extends Component{
   }
   closeSalesforce(){
     this.setState({showSFDialog: false});
-    //this.refs.childSubscriberWorkflow.setStateDefault();
+    this.refs.childSubscriberSalesforce.setStateDefault();
   }
   changeSalesforceStatus(){
     this.getSubscriberDetails();
