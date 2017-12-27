@@ -251,7 +251,7 @@ class SearchContacts extends Component{
 
     }
 
-    
+
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -293,6 +293,7 @@ class SearchContacts extends Component{
                   <span className={`${this.state.serachIcon} mksph_icon_search`} aria-hidden="true" data-icon="&#xe903;"></span>
                   <span className={`${this.state.closeIcon} mksicon-Close`} onClick={this.removeSerachContacts.bind(this)} aria-hidden="true"></span>
                 </div>
+
                   <SingleContact
                     contact={this.state.subscriber}
                     stat={this.state.searchstat}
@@ -301,6 +302,7 @@ class SearchContacts extends Component{
                     searchContact = {this.state.searchContact}
 
                   />
+
               </div>
           </div>
         );

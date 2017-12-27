@@ -3,7 +3,8 @@ import React
 import Moment
        from 'moment';
 import {encodeHTML,decodeHTML} from '../common/Encode_Method';
-
+import {CustomScrollBar}
+       from 'react-custom-scrollbar';
 
 const SingleContact = (props) => {
   const onEmailSelect = props.onEmailSelect;
@@ -64,7 +65,17 @@ const SingleContact = (props) => {
       return (
           <div>
             <h2 className="total-count-head"><strong className="badge total-count">{props.contact.length}</strong><span className="total-text">{cvmessage}</span></h2>
-            <div className="list_contact_found_height plc_marginbottom30">{contactSubItems}</div>
+              <CustomScrollBar
+                allowOuterScroll={false}
+                heightRelativeToParent={`188`}
+                onScroll={() => {console.log('Scrolling')}}
+                addScrolledClass={true}
+                freezePosition={false}
+                handleClass="inner-handle"
+                minScrollHandleHeight={38}
+            >
+            <div className="plc_marginbottom30">{contactSubItems}</div>
+              </CustomScrollBar>
           </div>
       );
     }
@@ -72,7 +83,17 @@ const SingleContact = (props) => {
       return (
           <div>
             <h2 className="total-count-head"><strong className="badge total-count">{props.contact.length}</strong><span className="total-text">{message}</span></h2>
-            <div className="list_contact_found_height plc_marginbottom30">{contactSubItems}</div>
+              <CustomScrollBar
+                allowOuterScroll={false}
+                heightRelativeToParent={`188`}
+                onScroll={() => {console.log('Scrolling')}}
+                addScrolledClass={true}
+                freezePosition={false}
+                handleClass="inner-handle"
+                minScrollHandleHeight={38}
+            >
+            <div className="plc_marginbottom30">{contactSubItems}</div>
+              </CustomScrollBar>
           </div>
       );
     }
