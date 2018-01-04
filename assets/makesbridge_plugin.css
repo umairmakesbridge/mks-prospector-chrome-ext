@@ -2193,7 +2193,7 @@ ul.top_manager_ul_wraps.four li:nth-child(4) div::after {
 }
 
 ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
-  width: 58px;
+  width: 47px;
 }
 ul.top_manager_ul_wraps.five .scf_o_txt{
     font-size: 7px;
@@ -2392,6 +2392,15 @@ font-weight: lighter;
     top: 2px;
     width: 18px;
 }
+.__react_component_tooltip.type-dark{
+  background-color: #23cd8c !important;
+}
+.__react_component_tooltip.type-dark.place-top:after{
+      border-top-color: #23cd8c !important;
+}
+.__react_component_tooltip.type-dark.place-left:after{
+  border-left-color: #23cd8c !important;
+}
 /*-----------------------*/
 /* Makesbridge Workflows
 ----------------------------------- */
@@ -2550,6 +2559,168 @@ font-weight: lighter;
 /*-----------------------*/
 /* Custom Scroll Ends
 ----------------------------------- */
+
+/*------------------------------
+Course Correct
+--------------------------------*/
+.mks_cc_wf_wrap{
+  color:#748592;
+}
+.mks_mnglist_wrap.mks_cc_wf_wrap,.mks_cc_wf_wrap_top_title {
+    color: #93abbc;
+}
+.icon-cc {
+    float: left;
+    margin-right: 5px;
+}
+.mks_cc_steps_wrapper{
+  /* background: #97C6DC; */
+  background: #f8f7fc;
+  clear: both;
+  padding: 5px;
+  margin-top: 5px;
+  min-height: 220px;
+  display: none;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+}
+.cc_steps_break {
+  clear: both;
+  background: #97C6DC;
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 9px;
+  margin: 5px 0;
+}
+.cc_show_details{
+  height: auto !important;
+}
+.cc_steps_actions_wrap{
+  background: #eff7fb;
+  padding: 0 9px;
+  height: 35px;
+}
+.cc_steps_actions_wrap > div.cc_action_wraps{
+  float: right;
+}
+.cc_show_details .mks_cc_steps_wrapper{
+  display: block;
+}
+.cc_show_c{
+  display: none;
+}
+.cc_show_details .cc_show_c{
+  display: block;
+}
+.cc_show_details .cc_show_d{
+  display: none;
+}
+.mks_cc_steps_wrapper .cc_steps_break_time{
+    display: block;
+    float: right;
+}
+.mks_cc_steps_wrapper h4.cc_basic_rule_title{
+    width: 100%;
+    background: transparent;
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+span.cc_basic_rule_head {
+    color: rgb(116, 133, 146);
+    width: 126px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+}
+span.cc_basic_rule_value {
+    color: #748592;
+    font-size: 12px;
+}
+.single_action_wrap .act_subj_title,.single_action_wrap .act_sent_time {
+    font-size: 11px;
+    color: rgb(116, 133, 146);
+    font-weight: 600;
+}
+span.act_subj_title_value {
+    color: rgb(2, 175, 239);
+    font-size: 11px;
+}
+
+.single_action_wrap .act_sent_time_value{
+    font-size: 11px;
+    color: rgb(116, 133, 146);
+}
+.single_action_wrap span.act_sent_time{
+  margin-left: 23px;
+}
+.cc_act_extra_details{
+    background: #fff;
+    padding: 5px 15px;
+    margin: 5px 0;
+}
+.cc_act_extra_details ul li {
+    color: rgb(116, 133, 146);
+    font-size: 12px;
+    list-style-type: none;
+    margin: 5px 0;
+}
+.cc_act_extra_details ul li span {
+    font-weight: bold;
+    width: 105px;
+    display: inline-block;
+}
+.mks_cc_wf_wrap .expand, .mks_cc_wf_wrap .collapse{
+    display: inline-block;
+    position: relative;
+    top: -11px;
+    font-size: 11px;
+    right: -12px;
+}
+.mks_cc_action{
+  padding: 7px;
+  position: relative;
+  top: 11px;
+  margin-right: 3px;
+}
+.mks_cc_action_gray{
+    background: #7996a8;
+}
+.mks_cc_action_pink{
+    background: #f3a795;
+}
+.mks_cc_action_red{
+  background:#F21A05;
+}
+.cc_basic_opt_wrap_label{
+  display: block;
+background: #fff;
+padding: 5px;
+}
+.cc_option_basic_rule_wrap{
+  padding: 5px 10px;
+border: 2px solid #fff;
+border-bottom: unset;
+}
+.cc_option_action_rule_wrap{
+  padding: 5px 10px;
+  border: 2px solid #fff;
+  border-top: unset;
+}
+.cc_step_options_wrap{
+  margin-top: 8px;
+}
+.cc_title_h3{
+  color: #2bafef;
+    font-weight: normal;
+    letter-spacing: 1p
+}
+.addBox_wrapper_container.cc_wrap h2{
+    font-size: 13px;
+}
+/*------------------------------
+Course Correct Ends
+--------------------------------*/
 
 /*------------------------------
 Salesforce
