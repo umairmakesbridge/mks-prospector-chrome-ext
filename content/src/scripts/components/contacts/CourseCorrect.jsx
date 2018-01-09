@@ -22,7 +22,8 @@ class CourseCorrect extends Component{
           showStepsFlag : '',
           collapseMsg : 'Click to expand',
           collapseExpand : 'expand',
-          showLoading  : false
+          showLoading  : false,
+          showHideSkip : 'show'
         }
 
         // preserve the initial state in a new object
@@ -102,7 +103,7 @@ class CourseCorrect extends Component{
                     <div className="mks_cc_steps_wrapper">
                           <div className={`scf_o_right cc_action_icons_wrap ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "hide" : ""}`}>
                             <ul className="top_manager_ul_wraps five">
-                              <li className={`${(list.isSubscriberManuallyAdded=="N" ) ? "hide" : "" }  `}>
+                              <li className={`${(list.isSubscriberManuallyAdded=="N" ) ? "hide" : "" }  ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "" : "mks_hideRightBorder"}`}>
                                 <div className={`scf_option_icon ripple top_manage_lists`}>
                                       <a href="#" style={{textDecoration: 'unset'}} title={`Subscriber was manually added to this Workflow Step 1 (override all steps) on ${list.subscriberManuallyAddedTime} Pacific`}>
                                         <div className="wrap_scf_o_i">
@@ -219,7 +220,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#e0e0e0"}}>Skipped</span> : {item.stepSkipped}</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#e0e0e0"}}>Skipped</span> : {item.stepSkipped} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'skipped')}</div>
               </div>
@@ -229,7 +230,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#c3fb18"}}>Completed at</span> : {item.stepCompleted}</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {item.stepCompleted} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
@@ -239,7 +240,7 @@ class CourseCorrect extends Component{
                   <div key={i} className="cc_steps_break_wraps">
                     <div className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                       <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                      <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {item.nextAction}</span>
+                      <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {item.nextAction} Pacific</span>
                     </div>
                       <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'nextAction')}</div>
                   </div>
@@ -260,9 +261,10 @@ class CourseCorrect extends Component{
             ListItems = options.map((list,key) =>
                       <div className="cc_step_options_wrap">
                             <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
-                              <span onClick={this.skippWF.bind(this,skippedObj,'unskip')} title="Click to unskip step" className={`${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
-                              <span onClick={this.skippWF.bind(this,skippedObj,'skip')}  title="Click to skip step"  className={`${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
-                            </span>
+                              <span onClick={this.skippWF.bind(this,skippedObj,'unskip')} title="Click to unskip step" className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                              <span onClick={this.skippWF.bind(this,skippedObj,'skip')}  title="Click to skip step"  className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                              {this.checkStateStep(skippedObj.stepSkipped)}
+                          </span>
                             <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
                             <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
                       </div>
@@ -288,7 +290,7 @@ class CourseCorrect extends Component{
                       <div className="cc_basic_rule_wrap">
                           <h4 className="cc_basic_rule_title">{orAll} of the condition(s) below were met</h4>
                           <span className="cc_basic_rule_head">Field:</span>
-                          <span className="cc_basic_rule_value">{list.field}</span>
+                          <span className="cc_basic_rule_value">{(list.field == "{{EMAIL_ADDR}}") ? "[Basic] Email" : list.field }</span>
                           <br/>
                           <span className="cc_basic_rule_head">Match Type:</span>
                           <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : "equals to" }</span>
@@ -323,8 +325,11 @@ class CourseCorrect extends Component{
                             <br/>
                             <span className={(item.Sent) ? 'act_sent_time' : 'act_sent_time hide'}>Sent: </span>
                             <span className={(item.Sent) ? 'act_sent_time_value' : 'act_sent_time_value hide'}>{item.Sent}</span>
-                            <ul>
-                              <li><span>Open(s): </span>{item.opens}</li>
+                            <span className={`act_sent_time ${(item.Skipped) ? "show" : "hide"}`}>Skipped at</span>
+                            <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{item.Skipped + " Pacific"}</span>
+
+                            <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.opens) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
+                              <li><span>Open(s): </span>{item.opens + ","} <span className='cc_last_opened' >last opened on {item.lastOpenOn}</span></li>
                               <li><span>Click(s): </span>{item.clicks}</li>
                               <li><span>Page View(s): </span>{item.pageViews}</li>
                             </ul>
@@ -402,7 +407,15 @@ class CourseCorrect extends Component{
           return newObject;
       }
 
-
+      checkStateStep(skipTime){
+          console.log(skipTime);
+          var skipdate = skipTime.split(" ")[0];
+          var skipdateObj = new Date(skipdate);
+          var currentDate = new Date();
+          if(currentDate > skipdateObj){
+            this.state['showHideSkip'] = 'hide';
+          }
+      }
 
       /*==================Events=====================*/
       showToggle(event){
@@ -447,81 +460,91 @@ class CourseCorrect extends Component{
           console.log(wfId);if($(event.currentTarget).hasClass('cc_disabled')){
             return false;
           }
+          var r = confirm("Are you sure you want to " + actiont + " workflow for current subscriber?");
+          if (r == true) {
+            this.setState({showLoading:true,message: actiont + " workflow for current user."});
+            //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=HM4r0TmFm6Hx0L0yyAlCQqJBPpBVH2&type=setCourseCorrectForSub
+            request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
+               .set('Content-Type', 'application/x-www-form-urlencoded')
+               .send({
+                        type:'setCourseCorrectForSub'
+                        ,subNum: this.props.contact.subNum
+                        ,workflowId: wfId
+                        ,action : actiont
+                        ,ukey:this.props.users_details[0].userKey
+                        ,isMobileLogin:'Y'
+                        ,userId:this.props.users_details[0].userId
+                      })
+               .then((res) => {
+                  console.log(res);
 
-          this.setState({showLoading:true,message: actiont + " workflow for current user."});
-          //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=HM4r0TmFm6Hx0L0yyAlCQqJBPpBVH2&type=setCourseCorrectForSub
-          request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
-             .set('Content-Type', 'application/x-www-form-urlencoded')
-             .send({
-                      type:'setCourseCorrectForSub'
-                      ,subNum: this.props.contact.subNum
-                      ,workflowId: wfId
-                      ,action : actiont
-                      ,ukey:this.props.users_details[0].userKey
-                      ,isMobileLogin:'Y'
-                      ,userId:this.props.users_details[0].userId
-                    })
-             .then((res) => {
-                console.log(res);
-
-                var jsonResponse =  JSON.parse(res.text);
-                console.log(jsonResponse);
-                if(res.status==200){
-                  debugger;
-                  this.setState({showLoading:false,message:""})
-                  SuccessAlert({message:jsonResponse[1]});
-                  this.getCourseCorrect();
-                  //_this.getSubscriberDetails();
-                }else{
-                  if(jsonResponse[1] == "SESSION_EXPIRED"){
-                    ErrorAlert({message:jsonResponse[1]});
-                    jQuery('.mksph_logout').trigger('click');
+                  var jsonResponse =  JSON.parse(res.text);
+                  console.log(jsonResponse);
+                  if(res.status==200){
+                    debugger;
+                    this.setState({showLoading:false,message:""})
+                    SuccessAlert({message:jsonResponse[1]});
+                    this.getCourseCorrect();
+                    //_this.getSubscriberDetails();
                   }else{
-                    ErrorAlert({message:jsonResponse[1]});
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      ErrorAlert({message:jsonResponse[1]});
+                      jQuery('.mksph_logout').trigger('click');
+                    }else{
+                      ErrorAlert({message:jsonResponse[1]});
+                    }
                   }
-                }
-              });
+                });
+          } else {
+              return false;
+          }
+
       }
       skippWF(skippedObj,actionT,event){
         console.log(skippedObj);
         if($(event.currentTarget).hasClass('cc_disabled')){
           return false;
         }
+        var r = confirm("Are you sure you want to " + actionT + " workflow for current subscriber?" );
+          if (r == true) {
+            this.setState({showLoading:true,message: actionT + " workflow for current user."});
+            request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
+               .set('Content-Type', 'application/x-www-form-urlencoded')
+               .send({
+                        type:'setCourseCorrectForSub'
+                        ,subNum: this.props.contact.subNum
+                        ,workflowId: skippedObj.workflowId
+                        ,stepId : skippedObj.skippedId
+                        ,ukey:this.props.users_details[0].userKey
+                        ,isMobileLogin:'Y'
+                        ,userId:this.props.users_details[0].userId
+                        ,action : actionT
+                      })
+               .then((res) => {
+                  console.log(res);
 
-        this.setState({showLoading:true,message: actionT + " workflow for current user."});
-        request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
-           .set('Content-Type', 'application/x-www-form-urlencoded')
-           .send({
-                    type:'setCourseCorrectForSub'
-                    ,subNum: this.props.contact.subNum
-                    ,workflowId: skippedObj.workflowId
-                    ,stepId : skippedObj.skippedId
-                    ,ukey:this.props.users_details[0].userKey
-                    ,isMobileLogin:'Y'
-                    ,userId:this.props.users_details[0].userId
-                    ,action : actionT
-                  })
-           .then((res) => {
-              console.log(res);
+                  var jsonResponse =  JSON.parse(res.text);
+                  console.log(jsonResponse);
+                  if(res.status==200 && jsonResponse[0]=="success"){
+                    debugger;
+                    this.setState({showLoading:false,message:""})
+                    SuccessAlert({message:jsonResponse[1]});
+                    this.getCourseCorrect();
+                    //_this.getSubscriberDetails();
+                  }else{
+                    this.setState({showLoading:false,message:""})
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      ErrorAlert({message:jsonResponse[1]});
+                      jQuery('.mksph_logout').trigger('click');
+                    }else{
+                      ErrorAlert({message:jsonResponse[1]});
+                    }
+                  }
+                });
+          } else {
+            return false;
+          }
 
-              var jsonResponse =  JSON.parse(res.text);
-              console.log(jsonResponse);
-              if(res.status==200 && jsonResponse[0]=="success"){
-                debugger;
-                this.setState({showLoading:false,message:""})
-                SuccessAlert({message:jsonResponse[1]});
-                this.getCourseCorrect();
-                //_this.getSubscriberDetails();
-              }else{
-                this.setState({showLoading:false,message:""})
-                if(jsonResponse[1] == "SESSION_EXPIRED"){
-                  ErrorAlert({message:jsonResponse[1]});
-                  jQuery('.mksph_logout').trigger('click');
-                }else{
-                  ErrorAlert({message:jsonResponse[1]});
-                }
-              }
-            });
         }
       /*==============================================*/
       render(){

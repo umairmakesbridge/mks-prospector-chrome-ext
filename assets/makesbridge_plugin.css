@@ -2621,6 +2621,12 @@ Course Correct
 .mks_cc_steps_wrapper .cc_steps_break_time{
     display: block;
     float: right;
+    font-size: 12px;
+top: 2px;
+position: relative;
+}
+.mks_cc_steps_wrapper .cc_steps_break_title{
+  font-size: 12px;
 }
 .mks_cc_steps_wrapper h4.cc_basic_rule_title{
     width: 100%;
@@ -2776,6 +2782,13 @@ opacity: 0.2;
 }
 .mks_hideRightBorder .top_manage_lists .mks_manageList_wrap::after {
   width: 0px;
+}
+.cc_last_opened{
+  width: 155px !important;
+    position: relative;
+    left: 106px;
+    font-weight: 100 !important;
+    font-size: 11px;
 }
 /*------------------------------
 Course Correct Ends
