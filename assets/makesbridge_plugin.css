@@ -753,8 +753,8 @@ span.alert_icon{
   top: 80px;
 }
 .dialog_height_increased .cc_wraps_mks{
-  min-height: 480px;
-  max-height: 480px;
+  min-height: 490px;
+  max-height: 490px;
 }
 /*===========================================
 Login form CSS
@@ -2592,7 +2592,9 @@ Course Correct
   font-size: 13px;
   padding: 10px 9px;
   margin: 5px 0;
+  font-size: 14px;
 }
+
 .cc_show_details{
   height: auto !important;
 }
@@ -2626,6 +2628,9 @@ Course Correct
     margin-bottom: 5px;
     margin-top: 2px;
 }
+.cc_steps_actions_title{
+  font-size: 13px;
+}
 span.cc_basic_rule_head {
     color: rgb(116, 133, 146);
     width: 126px;
@@ -2650,9 +2655,6 @@ span.act_subj_title_value {
 .single_action_wrap .act_sent_time_value{
     font-size: 11px;
     color: rgb(116, 133, 146);
-}
-.single_action_wrap span.act_sent_time{
-  margin-left: 23px;
 }
 .cc_act_extra_details{
     background: #fff;
@@ -2693,9 +2695,33 @@ span.act_subj_title_value {
   background:#F21A05;
 }
 .cc_basic_opt_wrap_label{
-  display: block;
+display: block;
 background: #fff;
 padding: 5px;
+font-size: 14px;
+padding: 5px 11px;
+font-weight: 100;
+position: relative;
+}
+.cc_basic_opt_wrap_label .mksicon-CPlay{
+  color: #738591;
+  position: absolute;
+  display: inline-block;
+  width: 22px;
+  right: 6px;
+  top: 7px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.cc_basic_opt_wrap_label .mksicon-CPlayNext{
+  color: #738591;
+  position: absolute;
+  width: 22px;
+  right: 30px;
+  display: inline-block;
+  top: 7px;
+  font-size: 15px;
+  cursor: pointer;
 }
 .cc_option_basic_rule_wrap{
   padding: 5px 10px;
@@ -2713,10 +2739,40 @@ border-bottom: unset;
 .cc_title_h3{
   color: #2bafef;
     font-weight: normal;
-    letter-spacing: 1p
+    letter-spacing: 1px;
+    margin: 10px 0px 8px;
+    font-size: 16px;
 }
 .addBox_wrapper_container.cc_wrap h2{
     font-size: 13px;
+}
+h3.cc_title_h3 span {
+    margin-right: 4px;
+}
+.act_subj_title,.act_sent_time{
+  display: inline-block;
+  width: 106px;
+}
+.cc_action_icons_wrap{
+  background: #fff;
+}
+.cc_action_icons_wrap li{
+  display: inline-block;
+}
+.cc_action_icons_wrap .mks_manageList_wrap {
+    font-size: 16px;
+}
+.cc_action_icons_wrap .wrap_scf_o_i_md {
+  padding: 0;
+}
+.cc_action_icons_wrap ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i {
+    height: 42px;
+}
+.cc_action_icons_wrap ul li > div.scf_option_icon {
+    display: flex;
+}
+.cc_disabled{
+opacity: 0.2;
 }
 /*------------------------------
 Course Correct Ends

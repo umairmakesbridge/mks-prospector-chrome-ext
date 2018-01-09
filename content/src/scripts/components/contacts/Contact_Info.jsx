@@ -364,6 +364,7 @@ class ContactInfo extends Component{
   }
   closeCC(){
     console.log('Time to close')
+    this.refs.childSubscriberCC.setStateDefault();
     this.setState({showCCDialog: false});
   }
   render(){
@@ -472,10 +473,10 @@ class ContactInfo extends Component{
 
                                 <ToggleDisplay show={this.state.showCCDialog}>
                                   <Dialog
-                                    showTitle={(this.state.firstName  ? ("Course Correct Drip Messages For " +this.state.firstName + " " + this.state.lastName )  : "Course Correct Drip Messages For "+this.state.email)}
+                                    showTitle={"Course Correct"}
                                     ref="dialogCC"
                                     closeCallback = {this.closeCC.bind(this)}
-                                    additionalClass = {"dialog_height_increased cc_wrap"}
+                                    additionalClass = {"dialog_height_increased"}
                                   >
                                     <CourseCorrect
                                       ref="childSubscriberCC"
