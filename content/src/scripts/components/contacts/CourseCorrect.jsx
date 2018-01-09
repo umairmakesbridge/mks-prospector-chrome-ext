@@ -92,7 +92,7 @@ class CourseCorrect extends Component{
               <li key={key} className="mngList_li_wrap">
                   <div className={`${this.state.showStepsFlag} mks_mnglist_wrap mks_cc_wf_wrap `}>
                     <span className="mksicon-act_workflow icon-cc"></span>
-                    <h4 className="mks_cc_wf_wrap_top_title" title={decodeHTML(list.name)} >{decodeHTML(list.name)}</h4>
+                    <h4 className="mks_cc_wf_wrap_top_title" onClick={this.triggerToggleOnh4.bind(this)} title={decodeHTML(list.name)} >{decodeHTML(list.name)}</h4>
 
                         <div className={`${this.state.collapseExpand} collapseable`} onClick={this.showToggle.bind(this)}>
                           <span className="collapseMsg">Click to expand</span>
@@ -100,11 +100,22 @@ class CourseCorrect extends Component{
                         </div>
 
                     <div className="mks_cc_steps_wrapper">
-                          <div className="scf_o_right cc_action_icons_wrap">
+                          <div className={`scf_o_right cc_action_icons_wrap ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "hide" : ""}`}>
                             <ul className="top_manager_ul_wraps five">
+                              <li className={`${(list.isSubscriberManuallyAdded=="N" ) ? "hide" : "" }  `}>
+                                <div className={`scf_option_icon ripple top_manage_lists`}>
+                                      <a href="#" style={{textDecoration: 'unset'}} title={`Subscriber was manually added to this Workflow Step 1 (override all steps) on ${list.subscriberManuallyAddedTime} Pacific`}>
+                                        <div className="wrap_scf_o_i">
+                                          <div className="wrap_scf_o_i_md">
+                                            <div className="scf_o_icon scf_o_edit mksicon-Silhouette mks_manageList_wrap"></div>
+                                            </div>
+                                        </div>
+                                      </a>
+                                    </div>
+                                </li>
                               <li data-tip="Add to list" >
-                                <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus) ? "" : "cc_disabled"}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'play')}>
-                                        <a href="#" style={{textDecoration: 'unset'}}>
+                                <div className={`scf_option_icon ripple top_manage_lists  ${(list.workflowStatus=="Completed") ? "hide" : ""}  ${(list.workflowStatus) ? "" : "cc_disabled"}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'play')}>
+                                        <a href="#" style={{textDecoration: 'unset'}} title="Click to play">
                                           <div className="wrap_scf_o_i">
                                             <div className="wrap_scf_o_i_md">
                                               <div className="scf_o_icon scf_o_edit  mksicon-Play mks_manageList_wrap"></div>
@@ -113,9 +124,9 @@ class CourseCorrect extends Component{
                                         </a>
                                       </div>
                                     </li>
-                              <li data-tip="Add to list">
-                                        <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'pause')}>
-                                              <a href="#" style={{textDecoration: 'unset'}}>
+                              <li data-tip="Add to list" className="mks_hideRightBorder">
+                                        <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(list.workflowStatus=="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'pause')}>
+                                              <a href="#" style={{textDecoration: 'unset'}} title="Click to pause">
                                                 <div className="wrap_scf_o_i">
                                                   <div className="wrap_scf_o_i_md">
                                                     <div className="scf_o_icon scf_o_edit mksicon-Pause mks_manageList_wrap"></div>
@@ -124,6 +135,8 @@ class CourseCorrect extends Component{
                                               </a>
                                             </div>
                                         </li>
+
+
 
                             <li data-tip="Add to list" style={{visibility: "hidden"}}>
                                     <div className="scf_option_icon ripple top_manage_lists">
@@ -151,8 +164,8 @@ class CourseCorrect extends Component{
               <li key={key} className="mngList_li_wrap ">
                   <div className="mks_mnglist_wrap mks_cc_wf_wrap">
                     <span className="mksicon-Nurture_Track icon-cc"></span>
-                    <h4 title={decodeHTML(list.name)} >{decodeHTML(list.name)}<span>show</span> </h4>
-                      <div className={`${this.state.collapseExpand}`} onClick={this.showToggle.bind(this)}>
+                    <h4 className="cc_title_h4" title={decodeHTML(list.name)} onClick={this.triggerToggleOnh4.bind(this)} >{decodeHTML(list.name)}<span>show</span> </h4>
+                      <div className={`${this.state.collapseExpand} collapseable`} onClick={this.showToggle.bind(this)}>
                         <span className="collapseMsg">Click to expand</span>
                         <span className="mksicon-ArrowNext"></span>
                       </div>
@@ -206,7 +219,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#7996a8"}}>Skipped</span> : {item.stepSkipped}</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#e0e0e0"}}>Skipped</span> : {item.stepSkipped}</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'skipped')}</div>
               </div>
@@ -216,7 +229,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "rgb(35, 206, 140)"}}>Completed at</span> : {item.stepCompleted}</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#c3fb18"}}>Completed at</span> : {item.stepCompleted}</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
@@ -226,7 +239,7 @@ class CourseCorrect extends Component{
                   <div key={i} className="cc_steps_break_wraps">
                     <div className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                       <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                      <span className="cc_steps_break_time"><span style={{"color" : "#F21A05"}}>Next Action</span> : {item.nextAction}</span>
+                      <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {item.nextAction}</span>
                     </div>
                       <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'nextAction')}</div>
                   </div>
@@ -247,8 +260,8 @@ class CourseCorrect extends Component{
             ListItems = options.map((list,key) =>
                       <div className="cc_step_options_wrap">
                             <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
-                              <span onClick={this.skippWF.bind(this,skippedObj,'skip')} title="Skip step" className={`${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
-                              <span onClick={this.skippWF.bind(this,skippedObj,'unskip')}  title="UnSkip step"  className={`${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                              <span onClick={this.skippWF.bind(this,skippedObj,'unskip')} title="Click to unskip step" className={`${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                              <span onClick={this.skippWF.bind(this,skippedObj,'skip')}  title="Click to skip step"  className={`${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
                             </span>
                             <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
                             <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
@@ -412,6 +425,23 @@ class CourseCorrect extends Component{
           $(event.currentTarget).parents('div.mks_cc_wf_wrap').toggleClass('cc_show_details');
         }
       }
+      triggerToggleOnh4(event){
+        $('div.mks_cc_wf_wrap').removeClass('cc_show_details');
+        if($(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').hasClass('collapse')){
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').removeClass('collapse');
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').addClass('expand');
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').find('.collapseMsg').text('Click to expand')
+        }else{
+          $('div.collapseable').removeClass('collapse');
+          $('div.collapseable').addClass('expand');
+          $('div.collapseable').find('.collapseMsg').text('Click to expand')
+
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').removeClass('expand');
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').addClass('collapse');
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').find('.collapseable').find('.collapseMsg').text('Click to collapse');
+          $(event.currentTarget).parents('div.mks_cc_wf_wrap').toggleClass('cc_show_details');
+        }
+      }
 
       playPauseWorkFlows(wfId,actiont,event){
           console.log(wfId);if($(event.currentTarget).hasClass('cc_disabled')){
@@ -492,7 +522,6 @@ class CourseCorrect extends Component{
                 }
               }
             });
-        debugger;
         }
       /*==============================================*/
       render(){
@@ -508,7 +537,7 @@ class CourseCorrect extends Component{
           <div className="sl_lists_wrapper">
             <LoadingMask message={this.state.message} extraClass={'loadingMaks-additional'} showLoading={this.state.showLoading}/>
             <div className={`sl_wrap_list`} >
-              <h2 style={{textAlign: "center",marginBottom: "0px"}}>Drip Messages for {(this.props.contact.firstName || this.props.contact.lastName) ? this.props.contact.firstName + " " + this.props.contact.lastName : this.props.contact.email}</h2>
+              <h2 style={{textAlign: "center",marginBottom: "0px","background":"transparent","color" : "rgb(100, 148, 175)","padding" : "0 15px"}}>Drip Messages for {(this.props.contact.firstName || this.props.contact.lastName) ? this.props.contact.firstName + " " + this.props.contact.lastName : this.props.contact.email}</h2>
                 <ul>
                   <h3 className="cc_title_h3"><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}

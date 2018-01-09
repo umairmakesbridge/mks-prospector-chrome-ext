@@ -8,7 +8,8 @@ class Dialog extends Component{
     // common state will be defined here
     this.state = {
       loadingMessage : '',
-      showLoading : false
+      showLoading : false,
+      hideSaveBtn : 'show'
     };
 
     // preserve the initial state in a new object
@@ -26,6 +27,14 @@ class Dialog extends Component{
  }
  handleCancel(){
    this.props.closeCallback();
+ }
+ hideSaveBtn(flag){
+   if(flag){
+     this.setState({
+       hideSaveBtn : 'hide'
+     })
+   }
+
  }
  render(){
     return(
@@ -48,7 +57,7 @@ class Dialog extends Component{
                       </div>
                   </a>
               </div>
-              <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={this.handleSave.bind(this)}>
+              <div className={`scfe_save_wrap disable_${this.state.disabled} ${this.state.hideSaveBtn}`} onClick={this.handleSave.bind(this)}>
                   <a className="scfe_ach" href="#">
                       <div className="scfe_save_t">
                           <span>Save</span>

@@ -361,6 +361,7 @@ class ContactInfo extends Component{
     let height = jQuery('.makesbridge_plugin').height();
     this.setState({showCCDialog: !this.state.showCCDialog,overlayHeight:height});
     this.refs.childSubscriberCC.getCourseCorrect();
+    this.refs.dialogCC.hideSaveBtn(true);
   }
   closeCC(){
     console.log('Time to close')
@@ -477,6 +478,7 @@ class ContactInfo extends Component{
                                     ref="dialogCC"
                                     closeCallback = {this.closeCC.bind(this)}
                                     additionalClass = {"dialog_height_increased"}
+                                    hideSaveBtn = {true}
                                   >
                                     <CourseCorrect
                                       ref="childSubscriberCC"
