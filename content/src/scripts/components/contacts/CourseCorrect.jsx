@@ -415,6 +415,9 @@ class CourseCorrect extends Component{
 
       checkStateStep(skipTime){
           console.log(skipTime);
+          if(!skipTime){
+            return;
+          }
           var skipdate = skipTime.split(" ")[0];
           var skipdateObj = new Date(skipdate);
           var currentDate = new Date();
