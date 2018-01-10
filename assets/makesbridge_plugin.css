@@ -2394,6 +2394,7 @@ font-weight: lighter;
 }
 .__react_component_tooltip.type-dark{
   background-color: #23cd8c !important;
+  max-width: 300px;
 }
 .__react_component_tooltip.type-dark.place-top:after{
       border-top-color: #23cd8c !important;
