@@ -432,10 +432,20 @@ class ContactDetailInfo extends Component{
                 <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
                 <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
               <div className={`height90 ${this.state.setFullHeight} scfe_field`}>
+                <div className="mksph_contact_data">
+                    <span className="mksph_contact_title">First Name : </span>
+                    <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.firstName)}</span>
+                    <input className={`${this.state.showInput} focusThis`} value={decodeHTML(this.state.firstName)} onChange = {event => this.setState({firstName : event.target.value})}  />
+                  </div>
+                  <div className="mksph_contact_data">
+                      <span className="mksph_contact_title">Last Name : </span>
+                      <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.lastName)}</span>
+                      <input className={`${this.state.showInput}`} value={decodeHTML(this.state.lastName)} onChange = {event => this.setState({lastName : event.target.value})}  />
+                    </div>
               <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Company : </span>
                   <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.company)}</span>
-                  <input className={`${this.state.showInput} focusThis`} value={decodeHTML(this.state.company)} onChange = {event => this.setState({company : event.target.value})}  />
+                  <input className={`${this.state.showInput}`} value={decodeHTML(this.state.company)} onChange = {event => this.setState({company : event.target.value})}  />
                 </div>
                 <div className="mksph_contact_data">
                   <span className="mksph_contact_title">Phone : </span>

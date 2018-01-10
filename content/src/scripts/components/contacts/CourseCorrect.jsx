@@ -10,6 +10,8 @@ import Moment
        from 'moment';
 import LoadingMask
        from '../common/Loading_Mask';
+import ReactTooltip
+       from 'react-tooltip';
 
 class CourseCorrect extends Component{
       constructor(props){
@@ -103,9 +105,10 @@ class CourseCorrect extends Component{
                     <div className="mks_cc_steps_wrapper">
                           <div className={`scf_o_right cc_action_icons_wrap ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "hide" : ""}`}>
                             <ul className="top_manager_ul_wraps five">
-                              <li className={`${(list.isSubscriberManuallyAdded=="N" ) ? "hide" : "" }  ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "" : "mks_hideRightBorder"}`}>
+                              <li data-tip={`Subscriber was manually added to this Workflow Step 1 (override all steps) on ${list.subscriberManuallyAddedTime} Pacific`} className={`${(list.isSubscriberManuallyAdded=="N" ) ? "hide" : "" }  ${(list.workflowStatus=="Completed" && list.isSubscriberManuallyAdded=="N") ? "" : "mks_hideRightBorder"}`}>
+                                <ReactTooltip />
                                 <div className={`scf_option_icon ripple top_manage_lists`}>
-                                      <a href="#" style={{textDecoration: 'unset'}} title={`Subscriber was manually added to this Workflow Step 1 (override all steps) on ${list.subscriberManuallyAddedTime} Pacific`}>
+                                      <a href="#" style={{textDecoration: 'unset'}} >
                                         <div className="wrap_scf_o_i">
                                           <div className="wrap_scf_o_i_md">
                                             <div className="scf_o_icon scf_o_edit mksicon-Silhouette mks_manageList_wrap"></div>
@@ -114,9 +117,10 @@ class CourseCorrect extends Component{
                                       </a>
                                     </div>
                                 </li>
-                              <li data-tip="Add to list" >
+                              <li data-tip="Click to play" >
+                                <ReactTooltip />
                                 <div className={`scf_option_icon ripple top_manage_lists  ${(list.workflowStatus=="Completed") ? "hide" : ""}  ${(list.workflowStatus) ? "" : "cc_disabled"}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'play')}>
-                                        <a href="#" style={{textDecoration: 'unset'}} title="Click to play">
+                                        <a href="#" style={{textDecoration: 'unset'}}>
                                           <div className="wrap_scf_o_i">
                                             <div className="wrap_scf_o_i_md">
                                               <div className="scf_o_icon scf_o_edit  mksicon-Play mks_manageList_wrap"></div>
@@ -125,9 +129,10 @@ class CourseCorrect extends Component{
                                         </a>
                                       </div>
                                     </li>
-                              <li data-tip="Add to list" className="mks_hideRightBorder">
+                              <li data-tip="Click to pause" className="mks_hideRightBorder">
+                                <ReactTooltip />
                                         <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(list.workflowStatus=="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'pause')}>
-                                              <a href="#" style={{textDecoration: 'unset'}} title="Click to pause">
+                                              <a href="#" style={{textDecoration: 'unset'}}>
                                                 <div className="wrap_scf_o_i">
                                                   <div className="wrap_scf_o_i_md">
                                                     <div className="scf_o_icon scf_o_edit mksicon-Pause mks_manageList_wrap"></div>
@@ -185,7 +190,7 @@ class CourseCorrect extends Component{
               <div key={i} className="cc_steps_break_wraps">
                 <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
-                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> : {updationDate}</span>
+                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> : {updationDate} Pacific</span>
                 </div>
                 <div className="mks_cc_action_wraper">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
@@ -199,8 +204,8 @@ class CourseCorrect extends Component{
                       <br/>
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
-                      <ul>
-                        <li><span>Open(s): </span>{item.opens}</li>
+                      <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.clicks) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
+                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {item.lastOpenOn})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
                       </ul>
@@ -261,9 +266,10 @@ class CourseCorrect extends Component{
             ListItems = options.map((list,key) =>
                       <div className="cc_step_options_wrap">
                             <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
-                              <span onClick={this.skippWF.bind(this,skippedObj,'unskip')} title="Click to unskip step" className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
-                              <span onClick={this.skippWF.bind(this,skippedObj,'skip')}  title="Click to skip step"  className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
                               {this.checkStateStep(skippedObj.stepSkipped)}
+                              <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                              <span data-tip="Click to skip step" onClick={this.skippWF.bind(this,skippedObj,'skip')}   className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                              <ReactTooltip />
                           </span>
                             <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
                             <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
@@ -329,7 +335,7 @@ class CourseCorrect extends Component{
                             <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{item.Skipped + " Pacific"}</span>
 
                             <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.opens) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
-                              <li><span>Open(s): </span>{item.opens + ","} <span className='cc_last_opened' >last opened on {item.lastOpenOn}</span></li>
+                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {item.lastOpenOn})</span></li>
                               <li><span>Click(s): </span>{item.clicks}</li>
                               <li><span>Page View(s): </span>{item.pageViews}</li>
                             </ul>
@@ -414,6 +420,8 @@ class CourseCorrect extends Component{
           var currentDate = new Date();
           if(currentDate > skipdateObj){
             this.state['showHideSkip'] = 'hide';
+          }else{
+              this.state['showHideSkip'] = 'show';
           }
       }
 

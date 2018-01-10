@@ -186,7 +186,11 @@ class ContactBasicInfo extends Component{
     }
   }
   switchContact(type){
-    if(type=="edit"){
+    jQuery('.mkb_basic_edit').trigger('click');
+    $('.makesbridge_plugin').animate({
+        scrollTop: $("#Contact").offset().top - 50
+    }, 800);
+    /*if(type=="edit"){
       this.setState({ showContact : false,editContact : true,firstName: this.props.contact.firstName,lastName: this.props.contact.lastName,title: this.props.contact.title,company: this.props.contact.company})
     }else{
       this.setState({ showContact : false,editContact : true});
@@ -195,7 +199,7 @@ class ContactBasicInfo extends Component{
 
     setTimeout(function(){
         jQuery('#firstName').focus();
-    },500)
+    },500)*/
   }
   addCustomFields(type,arrayObj){
     var obj = {};
