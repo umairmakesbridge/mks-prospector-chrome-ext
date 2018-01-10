@@ -2622,18 +2622,23 @@ Course Correct
 .mks_cc_steps_wrapper .cc_steps_break_time{
     display: block;
     float: right;
-    font-size: 12px;
-top: 2px;
+    font-size: 11px;
+top: 3px;
 position: relative;
 }
 .mks_cc_steps_wrapper .cc_steps_break_title{
-  font-size: 12px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+.mks_cc_steps_wrapper h4{
+      font-size: 12px;
 }
 .mks_cc_steps_wrapper h4.cc_basic_rule_title{
     width: 100%;
     background: transparent;
     margin-bottom: 5px;
     margin-top: 2px;
+    font-size: 12px;
 }
 .cc_steps_actions_title{
   font-size: 13px;
@@ -2705,7 +2710,7 @@ span.act_subj_title_value {
 display: block;
 background: #fff;
 padding: 5px;
-font-size: 14px;
+font-size: 12px;
 padding: 5px 11px;
 font-weight: 100;
 position: relative;

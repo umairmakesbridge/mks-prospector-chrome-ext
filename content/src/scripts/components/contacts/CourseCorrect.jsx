@@ -220,6 +220,7 @@ class CourseCorrect extends Component{
       generateSteps(steps,wfId){
           //console.log('My Steps : ', steps);
           let items = steps.map((item, i) => {
+
             if(item.skipped == "true"){
               return (
                 <div key={i} className="cc_steps_break_wraps">
@@ -230,7 +231,7 @@ class CourseCorrect extends Component{
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'skipped')}</div>
               </div>
               )
-            } else if(item.stepCompleted) {
+            } else if(item.stepCompleted && item.label != "DO NOTHING") {
               return (
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
@@ -250,9 +251,19 @@ class CourseCorrect extends Component{
                       <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'nextAction')}</div>
                   </div>
               )
-            }else{
+            }else if(item.label == "DO NOTHING"){
               return (
-                <div>Rest Steps needs to be taken care of</div>
+                <div key={i} className="cc_steps_break_wraps">
+                  <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
+                    <span className="cc_steps_break_title"><span className="mksicon-Prohibition"></span> {item.label.toLowerCase()}</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {item.stepCompleted} Pacific</span>
+                  </div>
+                  <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
+              </div>
+              )
+            }else{
+              return(
+                <div>Rest steps needs to be taken care of</div>
               )
             }
           })
@@ -291,7 +302,7 @@ class CourseCorrect extends Component{
       generateBasicRules(basicRuleObj){
           //$.each()
           if(basicRuleObj.length > 0){
-            let orAll = (basicRuleObj[0].rule == "=") ? "All" : "One";
+            let orAll = (basicRuleObj[0].rule == "=" || basicRuleObj[0].rule == "!ct") ? "All" : "One";
             const ListItems = basicRuleObj.map((list,key) =>
                       <div className="cc_basic_rule_wrap">
                           <h4 className="cc_basic_rule_title">{orAll} of the condition(s) below were met</h4>
@@ -299,7 +310,8 @@ class CourseCorrect extends Component{
                           <span className="cc_basic_rule_value">{(list.field == "{{EMAIL_ADDR}}") ? "[Basic] Email" : list.field }</span>
                           <br/>
                           <span className="cc_basic_rule_head">Match Type:</span>
-                          <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : "equals to" }</span>
+                          <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : (list.rule == "!ct") ? "does not contain" : "equals to" }</span>
+
                           <br/>
                           <span className="cc_basic_rule_head">Format:</span>
                           <span className="cc_basic_rule_value">{(list.format) ? list.format : "--" }</span>
@@ -350,7 +362,7 @@ class CourseCorrect extends Component{
                             <i className="mksicon-act_alert" style={{"marginRight" : "4px"}}></i>View Sales Rep Alert
                           </h4>
                           <span className="act_sent_time" style={{"marginLeft": "0px"}}>Send Alert : </span>
-                          <span className="act_sent_time_value">{item['Send Alert']}</span>
+                          <span className="act_sent_time_value">{(item['Send Alert']) ? item['Send Alert'] : item['Sent']} Pacific</span>
                         </div>
                       )
                     }else if(item.type=="score"){
