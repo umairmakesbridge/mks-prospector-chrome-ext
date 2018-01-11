@@ -204,7 +204,7 @@ class CourseCorrect extends Component{
                       <br/>
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
-                      <ul className={`` } >
+                      <ul className={this.checkFutureDate(item.scheduleDate) } >
                         <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
@@ -347,7 +347,7 @@ class CourseCorrect extends Component{
                             <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{this.parseDateToMoment(item.Skipped)} Pacific}</span>
 
                             <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.opens) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
-                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on this.parseDateToMoment({item.lastOpenOn}))</span></li>
+                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)} )</span></li>
                               <li><span>Click(s): </span>{item.clicks}</li>
                               <li><span>Page View(s): </span>{item.pageViews}</li>
                             </ul>
@@ -362,7 +362,7 @@ class CourseCorrect extends Component{
                             <i className="mksicon-act_alert" style={{"marginRight" : "4px"}}></i>View Sales Rep Alert
                           </h4>
                           <span className="act_sent_time" style={{"marginLeft": "0px"}}>Send Alert : </span>
-                          <span className="act_sent_time_value">{(item['Send Alert']) ? item['Send Alert'] : item['Sent']} Pacific</span>
+                          <span className="act_sent_time_value">{(item['Send Alert']) ? this.parseDateToMoment(item['Send Alert']) : this.parseDateToMoment(item['Sent'])} Pacific</span>
                         </div>
                       )
                     }else if(item.type=="score"){
@@ -441,12 +441,26 @@ class CourseCorrect extends Component{
       }
 
       /*==================Events=====================*/
+      checkFutureDate(scheduleDate){
+        if(!scheduleDate){
+          return;
+        }
+        var skipdate = scheduleDate.split(" ")[0];
+        var skipdateObj = new Date(skipdate);
+        var currentDate = new Date();
+        if(currentDate < skipdateObj){
+          return 'hide';
+        }
+      }
       parseDateToMoment(serverDate){
-        let _date = Moment(serverDate, 'YYYY/M/D h:m');
-        let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
-        let _formatedDateN = _formatedDate.date+","+_formatedDate.time;
-        console.log(_formatedDate)
-        return _formatedDateN;
+        if(serverDate){
+          let _date = Moment(serverDate, 'YYYY/M/D h:m');
+          let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
+          let _formatedDateN = _formatedDate.date+","+_formatedDate.time;
+          console.log(_formatedDate)
+          return _formatedDateN;
+        }
+
       }
       showToggle(event){
         //let stepFlag = this.state.showStepsFlag;
