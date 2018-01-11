@@ -550,19 +550,7 @@ class ContactInfo extends Component{
                                                                     </div>
                                                                 </li>
 
-                                                                <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} sf_icons`} onClick={this.showAddToSalesforce.bind(this)}>
-                                                                  <ReactTooltip />
-                                                                  <div className="scf_option_icon ripple top_manage_lists">
-                                                                    <a href="#" style={{textDecoration: 'unset'}}>
-                                                                      <div className="wrap_scf_o_i">
-                                                                        <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
-                                                                          <div className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
 
-                                                                          </div>
-                                                                          </div>
-                                                                      </a>
-                                                                          </div>
-                                                                      </li>
                                                                       <li data-tip="Course Correct" className={`sf_icons`} onClick={this.showCourseCorrect.bind(this)}>
                                                                           <ReactTooltip />
                                                                         <div className="scf_option_icon ripple top_manage_lists">
@@ -575,7 +563,19 @@ class ContactInfo extends Component{
                                                                             </a>
                                                                                 </div>
                                                                             </li>
+                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} sf_icons`} onClick={this.showAddToSalesforce.bind(this)}>
+                                                                              <ReactTooltip />
+                                                                              <div className="scf_option_icon ripple top_manage_lists">
+                                                                                <a href="#" style={{textDecoration: 'unset'}}>
+                                                                                  <div className="wrap_scf_o_i">
+                                                                                    <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
+                                                                                      <div className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
 
+                                                                                      </div>
+                                                                                      </div>
+                                                                                  </a>
+                                                                                      </div>
+                                                                                  </li>
                                                                       <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} sf_icons`} onClick={this.jumpToSalesforce.bind(this)}>
                                                                         <ReactTooltip />
                                                                         <div className="scf_option_icon ripple top_manage_lists">

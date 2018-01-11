@@ -190,7 +190,7 @@ class CourseCorrect extends Component{
               <div key={i} className="cc_steps_break_wraps">
                 <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
-                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> : {updationDate} Pacific</span>
+                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> :{ this.parseDateToMoment(updationDate)} Pacific</span>
                 </div>
                 <div className="mks_cc_action_wraper">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
@@ -204,8 +204,8 @@ class CourseCorrect extends Component{
                       <br/>
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
-                      <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.clicks) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
-                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {item.lastOpenOn})</span></li>
+                      <ul className={`` } >
+                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
                       </ul>
@@ -226,7 +226,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#e0e0e0"}}>Skipped</span> : {item.stepSkipped} Pacific</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#e0e0e0"}}>Skipped</span> : {this.parseDateToMoment(item.stepSkipped)} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'skipped')}</div>
               </div>
@@ -236,7 +236,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {item.stepCompleted} Pacific</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
@@ -246,7 +246,7 @@ class CourseCorrect extends Component{
                   <div key={i} className="cc_steps_break_wraps">
                     <div className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                       <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                      <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {item.nextAction} Pacific</span>
+                      <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {this.parseDateToMoment(item.nextAction)} Pacific</span>
                     </div>
                       <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'nextAction')}</div>
                   </div>
@@ -256,7 +256,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title"><span className="mksicon-Prohibition"></span> {item.label.toLowerCase()}</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {item.stepCompleted} Pacific</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
@@ -291,7 +291,7 @@ class CourseCorrect extends Component{
                       <div className="cc_step_options_wrap">
                             <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
                             </span>
-                            <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
+                            <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
                             <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
                       </div>
             );
@@ -299,15 +299,15 @@ class CourseCorrect extends Component{
 
           return ListItems;
       }
-      generateBasicRules(basicRuleObj){
+      generateBasicRules(basicRuleObj,ruleCount){
           //$.each()
           if(basicRuleObj.length > 0){
-            let orAll = (basicRuleObj[0].rule == "=" || basicRuleObj[0].rule == "!ct") ? "All" : "One";
+            let orAll = (ruleCount == "A") ? "All" : "One";
             const ListItems = basicRuleObj.map((list,key) =>
                       <div className="cc_basic_rule_wrap">
                           <h4 className="cc_basic_rule_title">{orAll} of the condition(s) below were met</h4>
                           <span className="cc_basic_rule_head">Field:</span>
-                          <span className="cc_basic_rule_value">{(list.field == "{{EMAIL_ADDR}}") ? "[Basic] Email" : list.field }</span>
+                          <span className="cc_basic_rule_value">{(list.field == "{{EMAIL_ADDR}}") ? "[Basic] Email" : list.field.split('_')[1].substring(0, list.field.split('_')[1].length - 2) }</span>
                           <br/>
                           <span className="cc_basic_rule_head">Match Type:</span>
                           <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : (list.rule == "!ct") ? "does not contain" : "equals to" }</span>
@@ -342,12 +342,12 @@ class CourseCorrect extends Component{
                             <span className="act_subj_title_value">{item.subject}</span>
                             <br/>
                             <span className={(item.Sent) ? 'act_sent_time' : 'act_sent_time hide'}>Sent: </span>
-                            <span className={(item.Sent) ? 'act_sent_time_value' : 'act_sent_time_value hide'}>{item.Sent}</span>
+                            <span className={(item.Sent) ? 'act_sent_time_value' : 'act_sent_time_value hide'}>{this.parseDateToMoment(item.Sent)}</span>
                             <span className={`act_sent_time ${(item.Skipped) ? "show" : "hide"}`}>Skipped at</span>
-                            <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{item.Skipped + " Pacific"}</span>
+                            <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{this.parseDateToMoment(item.Skipped)} Pacific}</span>
 
                             <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.opens) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
-                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {item.lastOpenOn})</span></li>
+                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on this.parseDateToMoment({item.lastOpenOn}))</span></li>
                               <li><span>Click(s): </span>{item.clicks}</li>
                               <li><span>Page View(s): </span>{item.pageViews}</li>
                             </ul>
@@ -441,6 +441,13 @@ class CourseCorrect extends Component{
       }
 
       /*==================Events=====================*/
+      parseDateToMoment(serverDate){
+        let _date = Moment(serverDate, 'YYYY/M/D h:m');
+        let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
+        let _formatedDateN = _formatedDate.date+","+_formatedDate.time;
+        console.log(_formatedDate)
+        return _formatedDateN;
+      }
       showToggle(event){
         //let stepFlag = this.state.showStepsFlag;
         $('div.mks_cc_wf_wrap').removeClass('cc_show_details');
