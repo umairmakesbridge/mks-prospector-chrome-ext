@@ -200,7 +200,7 @@ class CourseCorrect extends Component{
 
                     <div className="cc_act_extra_details">
                       <span className="act_subj_title"><i className="mksicon-Mail"></i> Subject: </span>
-                      <span className="act_subj_title_value">{item.subject}</span>
+                      <span className="act_subj_title_value">{decodeHTML(item.subject)}</span>
                       <br/>
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
@@ -236,7 +236,7 @@ class CourseCorrect extends Component{
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title">Step {(i+1)}:</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed </span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
                   </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
@@ -255,9 +255,18 @@ class CourseCorrect extends Component{
               return (
                 <div key={i} className="cc_steps_break_wraps">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                    <span className="cc_steps_break_title"><span className="mksicon-Prohibition"></span> {item.label.toLowerCase()}</span>
-                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed at</span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
+                      <span className="cc_steps_break_title">Step {(i+1)}:</span>
+
+                    <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed </span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
                   </div>
+                  <div className="cc_option_action_rule_wrap" style={{"padding": "0"}}>
+                    <div className="single_action_wrap" style={{"background": "rgb(255, 255, 255)", "padding": "15px","font-size": "14px","text-transform": "capitalize"}}>
+                    <h4 style={{"background": "transparent", "width": "100%","position": "relative","top": "-5px"}}>
+                      <i className="mksicon-Prohibition" style={{"marginRight": "4px","color" : "red"}}></i>{item.label.toLowerCase()}
+                    </h4>
+
+                  </div>
+                </div>
                   <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
               </div>
               )
@@ -274,27 +283,38 @@ class CourseCorrect extends Component{
           let optionLabel = "";
           let ListItems = "";
           if(actType=='nextAction' || actType=='skipped'){
-            ListItems = options.map((list,key) =>
-                      <div className="cc_step_options_wrap">
-                            <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
-                              {this.checkStateStep(skippedObj.stepSkipped)}
-                              <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
-                              <span data-tip="Click to skip step" onClick={this.skippWF.bind(this,skippedObj,'skip')}   className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
-                              <ReactTooltip />
-                          </span>
-                            <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
-                            <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
-                      </div>
-            );
-          }else{
-            ListItems = options.map((list,key) =>
-                      <div className="cc_step_options_wrap">
-                            <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
+            ListItems = options.map((list,key) =>{
+                      if(key > 0){
+                        return;
+                      }
+                      return(
+                        <div className="cc_step_options_wrap">
+                              <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
+                                {this.checkStateStep(skippedObj.stepSkipped)}
+                                <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                                <span data-tip="Click to skip step" onClick={this.skippWF.bind(this,skippedObj,'skip')}   className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                                <ReactTooltip />
                             </span>
-                            <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
-                            <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
-                      </div>
-            );
+                              <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                        </div>
+                      )
+            });
+          }else{
+            ListItems = options.map((list,key) =>{
+                      if(key > 0){
+                        return;
+                      }
+                      return(
+                        <div className="cc_step_options_wrap">
+                              <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
+                              </span>
+                              <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                        </div>
+
+                      )
+            });
           }
 
           return ListItems;
@@ -358,6 +378,9 @@ class CourseCorrect extends Component{
                     } else if(item.type=="alert") {
                       return (
                         <div key={i} className='single_action_wrap' style={{"background": "#fff","padding": "10px 15px"}}>
+                          <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
+                            <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                          </div>
                           <h4 style={{"background": "transparent","width": "100%"}}>
                             <i className="mksicon-act_alert" style={{"marginRight" : "4px"}}></i>View Sales Rep Alert
                           </h4>
@@ -368,6 +391,9 @@ class CourseCorrect extends Component{
                     }else if(item.type=="score"){
                       return (
                         <div key={i} className='single_action_wrap' style={{"background": "#fff","padding": "10px 15px"}}>
+                          <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
+                            <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                          </div>
                           <h4 style={{"background": "transparent","width": "100%"}}>
                             <i className="mksicon-act_score" style={{"marginRight" : "4px"}}></i>Score
                           </h4>
