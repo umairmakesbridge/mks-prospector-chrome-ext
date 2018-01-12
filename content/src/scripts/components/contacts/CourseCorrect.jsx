@@ -223,6 +223,50 @@ class CourseCorrect extends Component{
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
                   <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> :{ (ntObj.ntStatus == "Completed" ) ? this.parseDateToMoment(ntObj.completeTime) : (ntObj.ntStatus == "pause" ) ? this.parseDateToMoment(ntObj.pausedTime) :"" } Pacific</span>
                 </div>
+                <div className={`scf_o_right cc_action_icons_wrap ${(ntObj.ntStatus != "Completed") ? "show" : "hide"}`}>
+                  <ul className="top_manager_ul_wraps five">
+
+                    <li data-tip="Click to play nurturetrack" >
+                      <ReactTooltip />
+                      <div className={`scf_option_icon ripple top_manage_lists  ${(ntObj.ntStatus=="Completed") ? "hide" : ""}  ${(ntObj.ntStatus == "play") ? "" : "cc_disabled"}`} onClick={this.playPauseNurtureTrack.bind(this,item['trackId.encode'],'play')}>
+                              <a href="#" style={{textDecoration: 'unset'}}>
+                                <div className="wrap_scf_o_i">
+                                  <div className="wrap_scf_o_i_md">
+                                    <div className="scf_o_icon scf_o_edit  mksicon-Play mks_manageList_wrap"></div>
+                                    </div>
+                                </div>
+                              </a>
+                            </div>
+                          </li>
+                    <li data-tip="Click to pause nurturetrack" className="mks_hideRightBorder">
+                      <ReactTooltip />
+                              <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(list.workflowStatus=="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'pause')}>
+                                    <a href="#" style={{textDecoration: 'unset'}}>
+                                      <div className="wrap_scf_o_i">
+                                        <div className="wrap_scf_o_i_md">
+                                          <div className="scf_o_icon scf_o_edit mksicon-Pause mks_manageList_wrap"></div>
+                                          </div>
+                                      </div>
+                                    </a>
+                                  </div>
+                              </li>
+
+
+
+                  <li data-tip="Add to list" style={{visibility: "hidden"}}>
+                          <div className="scf_option_icon ripple top_manage_lists">
+                                  <a href="#" style={{textDecoration: 'unset'}}>
+                                    <div className="wrap_scf_o_i">
+                                      <div className="wrap_scf_o_i_md">
+                                        <div className="scf_o_icon scf_o_edit mksicon-Pause mks_manageList_wrap"></div>
+                                        </div>
+                                    </div>
+                                  </a>
+                                </div>
+                            </li>
+
+                </ul>
+              </div>
                 <div className="mks_cc_action_wraper">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
@@ -340,8 +384,8 @@ class CourseCorrect extends Component{
                   <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
 
                     <div className="mks_cc_action_wraper">
-                      <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                        <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                      <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(key > 0) ? 'hide':''}`}>
+                        <span className={`cc_steps_break_title cc_steps_actions_title  `}>Perform the following action(s):</span>
                       </div>
                       <div className='single_action_wrap'>
 
@@ -414,8 +458,8 @@ class CourseCorrect extends Component{
                     if(item.type == "email"){
                       return (
                       <div key={i} className="mks_cc_action_wraper">
-                        <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                          <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                        <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                          <span className={`cc_steps_break_title cc_steps_actions_title `}>Perform the following action(s):</span>
                         </div>
                         <div className='single_action_wrap'>
 
@@ -440,8 +484,8 @@ class CourseCorrect extends Component{
                     } else if(item.type=="alert") {
                       return (
                         <div key={i} className='single_action_wrap' style={{"background": "#fff","padding": "10px 15px"}}>
-                          <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                            <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                          <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                            <span className={`cc_steps_break_title cc_steps_actions_title`}>Perform the following action(s):</span>
                           </div>
                           <h4 style={{"background": "transparent","width": "100%"}}>
                             <i className="mksicon-act_alert" style={{"marginRight" : "4px"}}></i>View Sales Rep Alert
@@ -453,8 +497,8 @@ class CourseCorrect extends Component{
                     }else if(item.type=="score"){
                       return (
                         <div key={i} className='single_action_wrap' style={{"background": "#fff","padding": "10px 15px"}}>
-                          <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                            <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                          <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                            <span className={`cc_steps_break_title cc_steps_actions_title `}>Perform the following action(s):</span>
                           </div>
                           <h4 style={{"background": "transparent","width": "100%"}}>
                             <i className="mksicon-act_score" style={{"marginRight" : "4px"}}></i>Score
@@ -462,8 +506,17 @@ class CourseCorrect extends Component{
                           <span className="act_subj_title">Score Change by : </span>
                           <span className="act_subj_title_value">{item['changeBy']}</span>
                           <br/>
-                          <span className="act_sent_time" style={{"marginLeft": "0px"}}>Score Update Due: </span>
-                          <span className="act_sent_time_value">{item['Score Update Due']}</span>
+
+                            {item['Score Update Due'] &&
+                              <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>Score Update Due: </span>
+                              <span className="act_sent_time_value">{this.parseDateToMoment(item['Score Update Due'])}</span></span>
+                            }
+                            {item['Score Updated On'] &&
+                              <span>
+                                <span className="act_sent_time" style={{"marginLeft": "0px"}}>Score Update On: </span>
+                              <span className="act_sent_time_value">{this.parseDateToMoment(item['Score Updated On'])}</span>
+                            </span>
+                            }
                         </div>
                       )
                     }
@@ -758,7 +811,7 @@ class CourseCorrect extends Component{
                 <ul>
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
-                  
+
                 </ul>
 
             </div>
