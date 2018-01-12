@@ -240,7 +240,7 @@ class CourseCorrect extends Component{
                           </li>
                     <li data-tip="Click to pause nurturetrack" className="mks_hideRightBorder">
                       <ReactTooltip />
-                              <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(list.workflowStatus=="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseWorkFlows.bind(this,list['workflow.encode'],'pause')}>
+                              <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(ntObj.ntStatus =="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,list['trackId.encode'],'pause')}>
                                     <a href="#" style={{textDecoration: 'unset'}}>
                                       <div className="wrap_scf_o_i">
                                         <div className="wrap_scf_o_i_md">
@@ -472,6 +472,10 @@ class CourseCorrect extends Component{
                             <br/>
                             <span className={(item.Sent) ? 'act_sent_time' : 'act_sent_time hide'}>Sent: </span>
                             <span className={(item.Sent) ? 'act_sent_time_value' : 'act_sent_time_value hide'}>{this.parseDateToMoment(item.Sent)}</span>
+
+                            <span className={(item['Send Email']) ? 'act_sent_time' : 'act_sent_time hide'}>Due Date: </span>
+                            <span className={(item['Send Email']) ? 'act_sent_time_value' : 'act_sent_time_value hide'}>{this.parseDateToMoment(item['Send Email'])} Pacific</span>
+
                             <span className={`act_sent_time ${(item.Skipped) ? "show" : "hide"}`}>Skipped at</span>
                             <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{this.parseDateToMoment(item.Skipped)} Pacific}</span>
 
@@ -583,9 +587,7 @@ class CourseCorrect extends Component{
 
           if(newCurrentDate > NewSkippedObj){
             this.state['showHideSkip'] = 'hide';
-            debugger;
           }else{
-            debugger;
             this.state['showHideSkip'] = 'show';
           }
       }
@@ -701,6 +703,9 @@ class CourseCorrect extends Component{
           }
 
       }
+      playPauseNurtureTrack(){
+        console.log('Time to play n pause nt')
+      }
       skippWF(skippedObj,actionT,event){
         console.log(skippedObj);
         if($(event.currentTarget).hasClass('cc_disabled')){
@@ -814,6 +819,7 @@ class CourseCorrect extends Component{
                 <ul>
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
+                  <h3 className={`hide cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span>Nurture Tracks</h3>
 
                 </ul>
 
