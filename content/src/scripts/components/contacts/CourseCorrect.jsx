@@ -86,6 +86,8 @@ class CourseCorrect extends Component{
                             workflowObj.push(val[0]);
                         });*/
                       workflowObj = this.generateSingleObjectWF(jsonResponse.Workflows[0]);
+                    }else{
+                      workflowObj = "empty";
                     }
 
                     if(Object.keys(jsonResponse.NutureTracks[0]).length !=0){
@@ -101,8 +103,11 @@ class CourseCorrect extends Component{
                             nurtureTrackObj.push(val[0]);
 
                         });
+                    }else{
+                      nurtureTrackObj = "empty";
                     }
                     console.log('NT Obj : ', nurtureTrackObj);
+
                     this.setState({
                       workflows : workflowObj,
                       nurtureTracks : nurtureTrackObj
@@ -111,6 +116,9 @@ class CourseCorrect extends Component{
                 });
       }
       generateWorkflows(){
+        if(!this.state.workflows || this.state.workflows == "empty"){
+          return;
+        }
         const ListItems = this.state.workflows.map((list,key) =>
               <li key={key} className="mngList_li_wrap">
                   <div className={`${this.state.showStepsFlag} mks_mnglist_wrap mks_cc_wf_wrap `}>
@@ -186,6 +194,9 @@ class CourseCorrect extends Component{
         return ListItems;
       }
       generateNurturetracks(){
+        if(!this.state.nurtureTracks || this.state.nurtureTracks == "empty" ){
+          return;
+        }
         const ListItems = this.state.nurtureTracks.map((list,key) =>
               <li key={key} className="mngList_li_wrap ">
                   <div className="mks_mnglist_wrap mks_cc_wf_wrap">
@@ -196,21 +207,21 @@ class CourseCorrect extends Component{
                         <span className="mksicon-ArrowNext"></span>
                       </div>
                       <div className="mks_cc_steps_wrapper">
-                          {this.generateNTMessages(list.messages,list.updationDate)}
+                          {this.generateNTMessages(list.messages,list)}
                       </div>
                   </div>
               </li>
         );
         return ListItems;
       }
-      generateNTMessages(messages,updationDate){
+      generateNTMessages(messages,ntObj){
 
         let items = messages.map((item, i) => {
             return (
               <div key={i} className="cc_steps_break_wraps">
                 <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
-                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> :{ this.parseDateToMoment(updationDate)} Pacific</span>
+                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> :{ (ntObj.ntStatus == "Completed" ) ? this.parseDateToMoment(ntObj.completeTime) : (ntObj.ntStatus == "pause" ) ? this.parseDateToMoment(ntObj.pausedTime) :"" } Pacific</span>
                 </div>
                 <div className="mks_cc_action_wraper">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
@@ -279,15 +290,8 @@ class CourseCorrect extends Component{
 
                     <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Completed </span> : {this.parseDateToMoment(item.stepCompleted)} Pacific</span>
                   </div>
-                  <div className="cc_option_action_rule_wrap" style={{"padding": "0"}}>
-                    <div className="single_action_wrap" style={{"background": "rgb(255, 255, 255)", "padding": "15px","font-size": "14px","text-transform": "capitalize"}}>
-                    <h4 style={{"background": "transparent", "width": "100%","position": "relative","top": "-5px"}}>
-                      <i className="mksicon-Prohibition" style={{"marginRight": "4px","color" : "red"}}></i>{item.label.toLowerCase()}
-                    </h4>
 
-                  </div>
-                </div>
-                  <div className="cc_steps_options_wrap">{this.generateOptions(item.options)}</div>
+                  <div className="cc_steps_options_wrap">{this.generateOptions(item.options,'doNothing')}</div>
               </div>
               )
             }else{
@@ -299,6 +303,7 @@ class CourseCorrect extends Component{
           return items;
       }
       generateOptions(options,skippedObj,actType){
+
           // let optionArr = [];
           let optionLabel = "";
           let ListItems = "";
@@ -320,7 +325,26 @@ class CourseCorrect extends Component{
                         </div>
                       )
             });
-          }else{
+          }else if(skippedObj=='doNothing'){
+            ListItems = options.map((list,key) =>{
+                      if(key > 0){
+                        return;
+                      }
+                      return(
+                        <div className="cc_step_options_wrap">
+                              <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
+                              </span>
+                              <div className="cc_option_basic_rule_wrap">
+                                {this.generateBasicRules(list.basicRules,list.applyRuleCount,'doNothing')}
+
+                              </div>
+                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                        </div>
+
+                      )
+            });
+          }
+          else{
             ListItems = options.map((list,key) =>{
                       if(key > 0){
                         return;
@@ -339,8 +363,35 @@ class CourseCorrect extends Component{
 
           return ListItems;
       }
-      generateBasicRules(basicRuleObj,ruleCount){
+      generateBasicRules(basicRuleObj,ruleCount,doN){
           //$.each()
+          if(doN){
+          const ListItems = basicRuleObj.map((list,key) =>
+                    <div className="cc_basic_rule_wrap">
+                        <h4 className="cc_basic_rule_title">All of the condition(s) below were met</h4>
+                        <div className="cc_option_action_rule_wrap" style={{"padding": "0","position": "relative","top": "19px"}}>
+                            <div className="single_action_wrap" style={{"background": "rgb(255, 255, 255)", "padding": "15px","fontSize": "14px","textTransform": "capitalize"}}>
+                            <h4 style={{"background": "transparent", "width": "100%","position": "relative","top": "-13px"}}>
+                              <i className="mksicon-Prohibition" style={{"marginRight": "4px","color" : "red"}}></i>Do Nothing
+                            </h4>
+                          </div>
+                        </div>
+                        <span className="cc_basic_rule_head" style={{"marginTop" : "20px"}}>Field:</span>
+                        <span className="cc_basic_rule_value">{this.grabBasicCustomField(list.field)}</span>
+                        <br/>
+                        <span className="cc_basic_rule_head">Match Type:</span>
+                        <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : (list.rule == "!ct") ? "does not contain" : "equals to" }</span>
+
+                        <br/>
+                        <span className="cc_basic_rule_head">Format:</span>
+                        <span className="cc_basic_rule_value">{(list.format) ? list.format : "--" }</span>
+                        <br/>
+                        <span className="cc_basic_rule_head">Match Value(s):</span>
+                        <span className="cc_basic_rule_value">{list.matchValue}</span>
+                    </div>
+          );
+          return ListItems;
+          }
           if(basicRuleObj.length > 0){
             let orAll = (ruleCount == "A") ? "All" : "One";
             const ListItems = basicRuleObj.map((list,key) =>
@@ -654,16 +705,21 @@ class CourseCorrect extends Component{
               </div>
         )
       }
-
+      if(this.state.workflows == "empty" && this.state.nurtureTracks == "empty"){
+        return (<div id="NoContact" className="tabcontent mksph_cardbox">
+                <p className="not-found" style={{"color" : "#6393af"}}>No Drips found for {(this.props.contact.firstName || this.props.contact.lastName) ? this.props.contact.firstName + " " + this.props.contact.lastName : this.props.contact.email}</p>
+            </div>)
+      }
+      if(this.state.workflows || this.state.nurtureTracks){
         return (
           <div className="sl_lists_wrapper">
             <LoadingMask message={this.state.message} extraClass={'loadingMaks-additional'} showLoading={this.state.showLoading}/>
             <div className={`sl_wrap_list`} >
               <h2 style={{textAlign: "center",marginBottom: "0px","background":"transparent","color" : "rgb(100, 148, 175)","padding" : "0 15px"}}>Drip Messages for {(this.props.contact.firstName || this.props.contact.lastName) ? this.props.contact.firstName + " " + this.props.contact.lastName : this.props.contact.email}</h2>
                 <ul>
-                  <h3 className="cc_title_h3"><span className="mksicon-act_workflow"></span>Workflows</h3>
+                  <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
-                  <h3 className="cc_title_h3"><span className="mksicon-Nurture_Track"></span> Nurture Tracks</h3>
+                  <h3 className={`cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span> Nurture Tracks</h3>
                   {this.generateNurturetracks()}
                 </ul>
 
@@ -671,5 +727,6 @@ class CourseCorrect extends Component{
         </div>
         )
       }
+    }
 }
 export default CourseCorrect;

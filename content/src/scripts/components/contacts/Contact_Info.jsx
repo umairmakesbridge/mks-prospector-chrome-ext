@@ -563,7 +563,7 @@ class ContactInfo extends Component{
                                                                             </a>
                                                                                 </div>
                                                                             </li>
-                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} sf_icons`} onClick={this.showAddToSalesforce.bind(this)}>
+                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
                                                                               <ReactTooltip />
                                                                               <div className="scf_option_icon ripple top_manage_lists">
                                                                                 <a href="#" style={{textDecoration: 'unset'}}>
@@ -576,7 +576,7 @@ class ContactInfo extends Component{
                                                                                   </a>
                                                                                       </div>
                                                                                   </li>
-                                                                      <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} sf_icons`} onClick={this.jumpToSalesforce.bind(this)}>
+                                                                      <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} sf_icons mks_hideRightBorder`} onClick={this.jumpToSalesforce.bind(this)}>
                                                                         <ReactTooltip />
                                                                         <div className="scf_option_icon ripple top_manage_lists">
                                                                           <a href="#" style={{textDecoration: 'unset'}}>

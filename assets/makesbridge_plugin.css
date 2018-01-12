@@ -2185,9 +2185,9 @@ ul.top_manager_ul_wraps.four .sf_icons{
 ul.top_manager_ul_wraps li:last-child div::after {
     width: 0;
 }
-ul.top_manager_ul_wraps.five li:nth-child(5) div::after {
+/* ul.top_manager_ul_wraps.five li:nth-child(5) div::after {
     width: 0;
-}
+} */
 ul.top_manager_ul_wraps.four li:nth-child(4) div::after {
     width: 0;
 }
