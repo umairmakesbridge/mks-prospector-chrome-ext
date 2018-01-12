@@ -303,7 +303,6 @@ class CourseCorrect extends Component{
           return items;
       }
       generateOptions(options,skippedObj,actType){
-
           // let optionArr = [];
           let optionLabel = "";
           let ListItems = "";
@@ -325,23 +324,41 @@ class CourseCorrect extends Component{
                         </div>
                       )
             });
-          }else if(skippedObj=='doNothing'){
+          } else if(skippedObj=='doNothing'){
             ListItems = options.map((list,key) =>{
                       if(key > 0){
                         return;
                       }
                       return(
-                        <div className="cc_step_options_wrap">
-                              <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
-                              </span>
-                              <div className="cc_option_basic_rule_wrap">
-                                {this.generateBasicRules(list.basicRules,list.applyRuleCount,'doNothing')}
+            <div className="cc_step_options_wrap">
+                  <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
+                    {this.checkStateStep(skippedObj.stepSkipped)}
+                    <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                    <span data-tip="Click to skip step" onClick={this.skippWF.bind(this,skippedObj,'skip')}   className={`${this.state.showHideSkip} ${(skippedObj.skipped=="true") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                    <ReactTooltip />
+                </span>
+                  <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
 
-                              </div>
-                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                    <div className="mks_cc_action_wraper">
+                      <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
+                        <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                      </div>
+                      <div className='single_action_wrap'>
+
+                        <div className="cc_act_extra_details">
+                          <div className="cc_option_action_rule_wrap" style={{"padding": "0"}}>
+                            <div className="single_action_wrap" style={{"background": "rgb(255, 255, 255)", "padding": "15px","fontSize": "14px","textTransform": "capitalize"}}>
+                            <h4 style={{"background": "transparent", "width": "100%","position": "relative","top": "-5px"}}>
+                              <i className="mksicon-Prohibition" style={{"marginRight": "4px","color" : "red"}}></i>Do Nothing
+                            </h4>
+
+                          </div>
                         </div>
-
-                      )
+                        </div>
+                      </div>
+                    </div>
+            </div>
+              );
             });
           }
           else{
@@ -363,35 +380,8 @@ class CourseCorrect extends Component{
 
           return ListItems;
       }
-      generateBasicRules(basicRuleObj,ruleCount,doN){
+      generateBasicRules(basicRuleObj,ruleCount){
           //$.each()
-          if(doN){
-          const ListItems = basicRuleObj.map((list,key) =>
-                    <div className="cc_basic_rule_wrap">
-                        <h4 className="cc_basic_rule_title">All of the condition(s) below were met</h4>
-                        <div className="cc_option_action_rule_wrap" style={{"padding": "0","position": "relative","top": "19px"}}>
-                            <div className="single_action_wrap" style={{"background": "rgb(255, 255, 255)", "padding": "15px","fontSize": "14px","textTransform": "capitalize"}}>
-                            <h4 style={{"background": "transparent", "width": "100%","position": "relative","top": "-13px"}}>
-                              <i className="mksicon-Prohibition" style={{"marginRight": "4px","color" : "red"}}></i>Do Nothing
-                            </h4>
-                          </div>
-                        </div>
-                        <span className="cc_basic_rule_head" style={{"marginTop" : "20px"}}>Field:</span>
-                        <span className="cc_basic_rule_value">{this.grabBasicCustomField(list.field)}</span>
-                        <br/>
-                        <span className="cc_basic_rule_head">Match Type:</span>
-                        <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : (list.rule == "!ct") ? "does not contain" : "equals to" }</span>
-
-                        <br/>
-                        <span className="cc_basic_rule_head">Format:</span>
-                        <span className="cc_basic_rule_value">{(list.format) ? list.format : "--" }</span>
-                        <br/>
-                        <span className="cc_basic_rule_head">Match Value(s):</span>
-                        <span className="cc_basic_rule_value">{list.matchValue}</span>
-                    </div>
-          );
-          return ListItems;
-          }
           if(basicRuleObj.length > 0){
             let orAll = (ruleCount == "A") ? "All" : "One";
             const ListItems = basicRuleObj.map((list,key) =>

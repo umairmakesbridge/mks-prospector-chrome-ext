@@ -557,7 +557,7 @@ class ContactInfo extends Component{
                                                                           <a href="#" style={{textDecoration: 'unset'}}>
                                                                             <div className="wrap_scf_o_i">
                                                                               <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
-                                                                                <div className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
+                                                                                <div style={{"paddingTop" : "2px"}} className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
                                                                                 </div>
                                                                                 </div>
                                                                             </a>
@@ -569,7 +569,7 @@ class ContactInfo extends Component{
                                                                                 <a href="#" style={{textDecoration: 'unset'}}>
                                                                                   <div className="wrap_scf_o_i">
                                                                                     <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
-                                                                                      <div className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
+                                                                                      <div style={{"paddingTop" : "0px"}}  className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
 
                                                                                       </div>
                                                                                       </div>
@@ -582,7 +582,7 @@ class ContactInfo extends Component{
                                                                           <a href="#" style={{textDecoration: 'unset'}}>
                                                                             <div className="wrap_scf_o_i">
                                                                               <div className="wrap_scf_o_i_md" >
-                                                                                <div className="scf_o_icon scf_o_edit mksicon-jump_to_salesforce_record mks_manageList_wrap"></div>
+                                                                                <div style={{"paddingTop" : "0px"}} className="scf_o_icon scf_o_edit mksicon-jump_to_salesforce_record mks_manageList_wrap"></div>
                                                                                 </div>
                                                                                 </div>
                                                                             </a>
