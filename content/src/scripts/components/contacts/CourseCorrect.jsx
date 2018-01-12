@@ -236,7 +236,7 @@ class CourseCorrect extends Component{
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
                       <ul className={this.checkFutureDate(item.scheduleDate) } >
-                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
+                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px","display":"none"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
                       </ul>
@@ -429,7 +429,7 @@ class CourseCorrect extends Component{
                             <span className={`act_sent_time_value ${(item.Skipped) ? "show" : "hide"}`}>{this.parseDateToMoment(item.Skipped)} Pacific}</span>
 
                             <ul className={`${(parseInt(item.opens) > 0 || parseInt(item.opens) > 0 || parseInt(item.pageViews) > 0 ) ? "show" : "hide" }` } >
-                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)} )</span></li>
+                              <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px","display":"none"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)} )</span></li>
                               <li><span>Click(s): </span>{item.clicks}</li>
                               <li><span>Page View(s): </span>{item.pageViews}</li>
                             </ul>
@@ -684,6 +684,51 @@ class CourseCorrect extends Component{
           }
 
         }
+        skippNT(skippedObj,actionT,event){
+          console.log(skippedObj);
+          if($(event.currentTarget).hasClass('cc_disabled')){
+            return false;
+          }
+          var r = confirm("Are you sure you want to " + actionT + " workflow for current subscriber?" );
+            if (r == true) {
+              this.setState({showLoading:true,message: actionT + " workflow for current user."});
+              request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
+                 .set('Content-Type', 'application/x-www-form-urlencoded')
+                 .send({
+                          type:'setCourseCorrectForSub'
+                          ,subNum: this.props.contact.subNum
+                          ,workflowId: skippedObj.workflowId
+                          ,stepId : skippedObj.skippedId
+                          ,ukey:this.props.users_details[0].userKey
+                          ,isMobileLogin:'Y'
+                          ,userId:this.props.users_details[0].userId
+                          ,action : actionT
+                        })
+                 .then((res) => {
+                    console.log(res);
+
+                    var jsonResponse =  JSON.parse(res.text);
+                    console.log(jsonResponse);
+                    if(res.status==200 && jsonResponse[0]=="success"){
+                      this.setState({showLoading:false,message:""})
+                      SuccessAlert({message:jsonResponse[1]});
+                      this.getCourseCorrect();
+                      //_this.getSubscriberDetails();
+                    }else{
+                      this.setState({showLoading:false,message:""})
+                      if(jsonResponse[1] == "SESSION_EXPIRED"){
+                        ErrorAlert({message:jsonResponse[1]});
+                        jQuery('.mksph_logout').trigger('click');
+                      }else{
+                        ErrorAlert({message:jsonResponse[1]});
+                      }
+                    }
+                  });
+            } else {
+              return false;
+            }
+
+          }
       /*==============================================*/
       render(){
         if(!this.state.workflows && !this.state.nurtureTracks){
@@ -707,8 +752,8 @@ class CourseCorrect extends Component{
                 <ul>
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
-                  <h3 className={`cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span> Nurture Tracks</h3>
-                  {this.generateNurturetracks()}
+                  <h3 className={`cc_title_h3 hide ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span> Nurture Tracks</h3>
+
                 </ul>
 
             </div>
