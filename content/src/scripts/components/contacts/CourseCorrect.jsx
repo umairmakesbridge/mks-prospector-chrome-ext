@@ -529,7 +529,6 @@ class CourseCorrect extends Component{
 
       /*==================Events=====================*/
       grabBasicCustomField(myval){
-        debugger;
         if(this.state.basicMapFields[myval]){
             return "[Basic] "+this.state.basicMapFields[myval];
           }else{
@@ -621,7 +620,6 @@ class CourseCorrect extends Component{
                   var jsonResponse =  JSON.parse(res.text);
                   console.log(jsonResponse);
                   if(res.status==200){
-                    debugger;
                     this.setState({showLoading:false,message:""})
                     SuccessAlert({message:jsonResponse[1]});
                     this.getCourseCorrect();
@@ -666,7 +664,6 @@ class CourseCorrect extends Component{
                   var jsonResponse =  JSON.parse(res.text);
                   console.log(jsonResponse);
                   if(res.status==200 && jsonResponse[0]=="success"){
-                    debugger;
                     this.setState({showLoading:false,message:""})
                     SuccessAlert({message:jsonResponse[1]});
                     this.getCourseCorrect();
