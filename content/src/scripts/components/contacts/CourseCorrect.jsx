@@ -228,7 +228,7 @@ class CourseCorrect extends Component{
 
                     <li data-tip="Click to play nurturetrack" >
                       <ReactTooltip />
-                      <div className={`scf_option_icon ripple top_manage_lists  ${(ntObj.ntStatus=="Completed") ? "hide" : ""}  ${(ntObj.ntStatus == "play") ? "" : "cc_disabled"}`} onClick={this.playPauseNurtureTrack.bind(this,item['trackId.encode'],'play')}>
+                      <div className={`scf_option_icon ripple top_manage_lists  ${(ntObj.ntStatus=="Completed") ? "hide" : ""}  ${(ntObj.ntStatus == "play") ? "" : "cc_disabled_"}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'play')}>
                               <a href="#" style={{textDecoration: 'unset'}}>
                                 <div className="wrap_scf_o_i">
                                   <div className="wrap_scf_o_i_md">
@@ -240,7 +240,7 @@ class CourseCorrect extends Component{
                           </li>
                     <li data-tip="Click to pause nurturetrack" className="mks_hideRightBorder">
                       <ReactTooltip />
-                              <div className={`scf_option_icon ripple top_manage_lists ${(list.workflowStatus=="Completed") ? "hide" : ""} ${(ntObj.ntStatus =="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,list['trackId.encode'],'pause')}>
+                              <div className={`scf_option_icon ripple top_manage_lists ${(ntObj.ntStatus=="Completed") ? "hide" : ""} ${(ntObj.ntStatus =="paused") ? "cc_disabled_" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'pause')}>
                                     <a href="#" style={{textDecoration: 'unset'}}>
                                       <div className="wrap_scf_o_i">
                                         <div className="wrap_scf_o_i_md">
@@ -661,12 +661,14 @@ class CourseCorrect extends Component{
       }
 
       playPauseWorkFlows(wfId,actiont,event){
-          console.log(wfId);if($(event.currentTarget).hasClass('cc_disabled')){
+          console.log(wfId);
+          if($(event.currentTarget).hasClass('cc_disabled')){
             return false;
           }
           var r = confirm("Are you sure you want to " + actiont + " workflow for current subscriber?");
           if (r == true) {
             this.setState({showLoading:true,message: actiont + " workflow for current user."});
+            debugger;
             //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=HM4r0TmFm6Hx0L0yyAlCQqJBPpBVH2&type=setCourseCorrectForSub
             request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
                .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -703,8 +705,51 @@ class CourseCorrect extends Component{
           }
 
       }
-      playPauseNurtureTrack(){
-        console.log('Time to play n pause nt')
+      playPauseNurtureTrack(ntId,actiont,event){
+        console.log('Time to play n pause nt');
+        if($(event.currentTarget).hasClass('cc_disabled')){
+          return false;
+        }
+        var r = confirm("Are you sure you want to " + actiont + " nurture track for current subscriber?");
+        if (r == true) {
+          this.setState({showLoading:true,message: actiont + " nurture track for current user."});
+          debugger;
+
+          request.post(this.baseUrl+'/io/trigger/saveNurtureData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
+             .set('Content-Type', 'application/x-www-form-urlencoded')
+             .send({
+                      type:'setCourseCorrectForSub'
+                      ,subNum: this.props.contact.subNum
+                      ,trackId: ntId
+                      ,action : actiont
+                      ,ukey:this.props.users_details[0].userKey
+                      ,isMobileLogin:'Y'
+                      ,userId:this.props.users_details[0].userId
+                    })
+             .then((res) => {
+                console.log(res);
+
+                var jsonResponse =  JSON.parse(res.text);
+                console.log(jsonResponse);
+                if(res.status==200 && jsonResponse[0]!="err"){
+                  this.setState({showLoading:false,message:""})
+                  SuccessAlert({message:jsonResponse[1]});
+                  this.getCourseCorrect();
+                  //_this.getSubscriberDetails();
+                }else{
+                  this.setState({showLoading:false,message:""})
+                  if(jsonResponse[1] == "SESSION_EXPIRED"){
+                    ErrorAlert({message:jsonResponse[1]});
+                    jQuery('.mksph_logout').trigger('click');
+                  }else{
+                    ErrorAlert({message:jsonResponse[1]});
+                  }
+                }
+              });
+
+        } else {
+            return false;
+        }
       }
       skippWF(skippedObj,actionT,event){
         console.log(skippedObj);
@@ -820,7 +865,7 @@ class CourseCorrect extends Component{
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
                   <h3 className={`hide cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span>Nurture Tracks</h3>
-
+                  
                 </ul>
 
             </div>
