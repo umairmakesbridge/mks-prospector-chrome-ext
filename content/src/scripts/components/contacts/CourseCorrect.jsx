@@ -221,8 +221,14 @@ class CourseCorrect extends Component{
               <div key={i} className="cc_steps_break_wraps">
                 <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
-                  <span className="cc_steps_break_time"><span style={{"color" : "#fff"}}>Email Sent </span> :{ (ntObj.ntStatus == "Completed" ) ? this.parseDateToMoment(ntObj.completeTime) : (ntObj.ntStatus == "pause" ) ? this.parseDateToMoment(ntObj.pausedTime) :"" } Pacific</span>
-                </div>
+                  <span className={`${(item.emailSent == "Y") ? "show" : "hide"} cc_steps_break_time`}>
+                    <span style={{"color" : "#fff"}}>Email Sent </span> :{  this.parseDateToMoment(item.emailSentTime)  } Pacific
+                  </span>
+                  <span className={`${(item.emailDue == "Y") ? "show" : "hide"} cc_steps_break_time`}>
+                    <span style={{"color" : "#fff"}}>Email Due </span> :{  this.parseDateToMoment(item.emailDueTime)  } Pacific
+                  </span>
+
+              </div>
                 <div className={`scf_o_right cc_action_icons_wrap ${(ntObj.ntStatus != "Completed") ? "show" : "hide"}`}>
                   <ul className="top_manager_ul_wraps five">
 
@@ -269,7 +275,12 @@ class CourseCorrect extends Component{
               </div>
                 <div className="mks_cc_action_wraper">
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
-                    <span className="cc_steps_break_title cc_steps_actions_title">Perform the following action(s):</span>
+                    <span className="cc_steps_break_title cc_steps_actions_title">
+                      Perform the following action(s):
+                      <span style={{"position": "relative","cursor":"pointer","left": "90px","top": "3px"}} data-tip="Click to unskip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'unskip')} className={`${this.state.showHideSkip} ${(item.skipped=="false") ? 'cc_disabled_' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                      <span style={{"position": "relative","cursor":"pointer","left": "40px","top": "3px"}}data-tip="Click to skip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'skip')}   className={`${this.state.showHideSkip} ${(item.skipped=="true") ? 'cc_disabled_' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                      <ReactTooltip />
+                    </span>
                   </div>
                   <div className='single_action_wrap'>
 
@@ -713,7 +724,6 @@ class CourseCorrect extends Component{
         var r = confirm("Are you sure you want to " + actiont + " nurture track for current subscriber?");
         if (r == true) {
           this.setState({showLoading:true,message: actiont + " nurture track for current user."});
-          debugger;
 
           request.post(this.baseUrl+'/io/trigger/saveNurtureData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
              .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -801,20 +811,20 @@ class CourseCorrect extends Component{
           if($(event.currentTarget).hasClass('cc_disabled')){
             return false;
           }
-          var r = confirm("Are you sure you want to " + actionT + " workflow for current subscriber?" );
+          var r = confirm("Are you sure you want to " + actionT + " nurture track for current subscriber?" );
             if (r == true) {
-              this.setState({showLoading:true,message: actionT + " workflow for current user."});
-              request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
+              this.setState({showLoading:true,message: actionT + "  nurture track for current user."});
+              request.post(this.baseUrl+'/io/trigger/saveNurtureData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
                  .set('Content-Type', 'application/x-www-form-urlencoded')
                  .send({
                           type:'setCourseCorrectForSub'
                           ,subNum: this.props.contact.subNum
-                          ,workflowId: skippedObj.workflowId
-                          ,stepId : skippedObj.skippedId
+                          ,trackId: skippedObj.ntid
+                          ,action : actionT
+                          ,messageId : skippedObj.msgid
                           ,ukey:this.props.users_details[0].userKey
                           ,isMobileLogin:'Y'
                           ,userId:this.props.users_details[0].userId
-                          ,action : actionT
                         })
                  .then((res) => {
                     console.log(res);
@@ -864,8 +874,8 @@ class CourseCorrect extends Component{
                 <ul>
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
-                  <h3 className={`hide cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span>Nurture Tracks</h3>
-                  
+                  <h3 className={` cc_title_h3 ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span>Nurture Tracks</h3>
+                  {this.generateNurturetracks()}
                 </ul>
 
             </div>
