@@ -17,7 +17,26 @@ class CourseCorrect extends Component{
       constructor(props){
         super(props);
         this.baseUrl = this.props.baseUrl;
-
+        const basicFields = {
+          "{{EMAIL_ADDR}}" : "Basic Field",
+          "{{FIRSTNAME}}"  : "First Name",
+          "{{LASTNAME}}"   : "Last Name",
+          "{{ADDRESS}}"    : "Address Line 1",
+          "{{ADDRESS2}}"   : "Address Line 2",
+          "{{CITY}}"       : "City",
+          "{{STATE}}"      : "State",
+          "{{ZIP}}"        : "Zip",
+          "{{COUNTRY}}"    : "Country",
+          "{{PHONE}}"      : "Telephone",
+          "{{BIRTH_DATE}}" : "Birth Date",
+          "{{OCCUPATION}}" : "Occupation",
+          "{{INDUSTRY}}"   : "Industry",
+          "{{COMPANY}}"    : "Company",
+          "{{SOURCE}}"     : "Source",
+          "{{SALESREP}}"   : "Sales Rep",
+          "{{SALESSTATUS}}": "Sales Status",
+          "{{SUBSCRIPTION_DATE}}"   : "Subscribe Date"
+        }
         this.state = {
           workflows : null,
           nurtureTracks : null,
@@ -25,7 +44,8 @@ class CourseCorrect extends Component{
           collapseMsg : 'Click to expand',
           collapseExpand : 'expand',
           showLoading  : false,
-          showHideSkip : 'show'
+          showHideSkip : 'show',
+          basicMapFields : basicFields
         }
 
         // preserve the initial state in a new object
@@ -327,7 +347,7 @@ class CourseCorrect extends Component{
                       <div className="cc_basic_rule_wrap">
                           <h4 className="cc_basic_rule_title">{orAll} of the condition(s) below were met</h4>
                           <span className="cc_basic_rule_head">Field:</span>
-                          <span className="cc_basic_rule_value">{(list.field == "{{EMAIL_ADDR}}") ? "[Basic] Email" : list.field.split('_')[1].substring(0, list.field.split('_')[1].length - 2) }</span>
+                          <span className="cc_basic_rule_value">{this.grabBasicCustomField(list.field)}</span>
                           <br/>
                           <span className="cc_basic_rule_head">Match Type:</span>
                           <span className="cc_basic_rule_value">{(list.rule == "ct") ? "contains" : (list.rule == "!ct") ? "does not contain" : "equals to" }</span>
@@ -467,6 +487,15 @@ class CourseCorrect extends Component{
       }
 
       /*==================Events=====================*/
+      grabBasicCustomField(myval){
+        debugger;
+        if(this.state.basicMapFields[myval]){
+            return "[Basic] "+this.state.basicMapFields[myval];
+          }else{
+            return "[Custom] "+myval.split('_')[1].substring(0, myval.split('_')[1].length - 2)
+          }
+      }
+
       checkFutureDate(scheduleDate){
         if(!scheduleDate){
           return;
