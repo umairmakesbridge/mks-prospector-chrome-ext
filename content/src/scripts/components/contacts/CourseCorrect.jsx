@@ -464,6 +464,9 @@ class CourseCorrect extends Component{
                         <div className='single_action_wrap'>
 
                           <div className="cc_act_extra_details">
+                            <h4 style={{"background": "transparent","width": "100%"}}>
+                              <i className="mksicon-Mail" style={{"marginRight" : "4px"}}></i>Email
+                            </h4>
                             <span className="act_subj_title"><i className="mksicon-Mail"></i> Subject: </span>
                             <span className="act_subj_title_value">{item.subject}</span>
                             <br/>
