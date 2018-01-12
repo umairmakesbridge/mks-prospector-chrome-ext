@@ -18,7 +18,7 @@ class CourseCorrect extends Component{
         super(props);
         this.baseUrl = this.props.baseUrl;
         const basicFields = {
-          "{{EMAIL_ADDR}}" : "Basic Field",
+          "{{EMAIL_ADDR}}" : "Email",
           "{{FIRSTNAME}}"  : "First Name",
           "{{LASTNAME}}"   : "Last Name",
           "{{ADDRESS}}"    : "Address Line 1",
@@ -385,8 +385,8 @@ class CourseCorrect extends Component{
           if(basicRuleObj.length > 0){
             let orAll = (ruleCount == "A") ? "All" : "One";
             const ListItems = basicRuleObj.map((list,key) =>
-                      <div className="cc_basic_rule_wrap">
-                          <h4 className="cc_basic_rule_title">{orAll} of the condition(s) below were met</h4>
+                      <div key={key} className="cc_basic_rule_wrap">
+                          <h4 className={`cc_basic_rule_title ${(key > 0) ? 'hide':''}`}>{orAll} of the condition(s) below were met</h4>
                           <span className="cc_basic_rule_head">Field:</span>
                           <span className="cc_basic_rule_value">{this.grabBasicCustomField(list.field)}</span>
                           <br/>
@@ -399,6 +399,7 @@ class CourseCorrect extends Component{
                           <br/>
                           <span className="cc_basic_rule_head">Match Value(s):</span>
                           <span className="cc_basic_rule_value">{list.matchValue}</span>
+                          <br/><br/>
                       </div>
             );
             return ListItems;
