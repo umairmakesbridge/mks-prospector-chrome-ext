@@ -279,7 +279,7 @@ class CourseCorrect extends Component{
                       <span className="cc_steps_break_title">Step {(i+1)}:</span>
                       <span className="cc_steps_break_time"><span style={{"color" : "#13a9ff"}}>Next Action</span> : {this.parseDateToMoment(item.nextAction)} Pacific</span>
                     </div>
-                      <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.stepSkipped},'nextAction')}</div>
+                      <div className="cc_steps_options_wrap">{this.generateOptions(item.options,{workflowId : wfId,skipped: item.skipped,skippedId:item.stepId,stepSkipped:item.nextAction},'nextAction')}</div>
                   </div>
               )
             }else if(item.label == "DO NOTHING"){
@@ -515,16 +515,22 @@ class CourseCorrect extends Component{
 
       checkStateStep(skipTime){
           console.log(skipTime);
+
           if(!skipTime){
             return;
           }
           var skipdate = skipTime.split(" ")[0];
           var skipdateObj = new Date(skipdate);
+          var NewSkippedObj = skipdateObj.getTime();
           var currentDate = new Date();
-          if(currentDate > skipdateObj){
+          var newCurrentDate = currentDate.getTime();
+
+          if(newCurrentDate > NewSkippedObj){
             this.state['showHideSkip'] = 'hide';
+            debugger;
           }else{
-              this.state['showHideSkip'] = 'show';
+            debugger;
+            this.state['showHideSkip'] = 'show';
           }
       }
 
@@ -752,8 +758,7 @@ class CourseCorrect extends Component{
                 <ul>
                   <h3 className={`cc_title_h3 ${(!this.state.workflows || this.state.workflows=="empty") ? 'hide' : '' }`}><span className="mksicon-act_workflow"></span>Workflows</h3>
                   {this.generateWorkflows()}
-                  <h3 className={`cc_title_h3 hide ${(!this.state.nurtureTracks || this.state.nurtureTracks=="empty") ? 'hide' : '' }`}><span className="mksicon-Nurture_Track"></span> Nurture Tracks</h3>
-
+                  
                 </ul>
 
             </div>
