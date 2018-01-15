@@ -101,6 +101,15 @@ class SearchContacts extends Component{
       }
 
     }
+    handleSearchIcon(){
+      if(this.state.searchContact && this.state.cactive){
+        this.setState({searchstat:'load'});
+        this.generateReqObjec("search");
+      }else if(this.state.searchContact && this.state.tactive){
+        this.setState({searchstat:'load'});
+        this.generateReqObjec("searchTag");
+      }
+    }
     generateReqObjec(type){
       console.log(type);
       //https://mks.bridgemailsystem.com/pms/io/subscriber/getData/?BMS_REQ_TK=GX2Syeq1dZlJn8LNQxG18DgSh3uoNV&type=getSAMSubscriberList&offset=0&filterBy=CK&lastXDays=1
@@ -290,8 +299,8 @@ class SearchContacts extends Component{
                       onKeyPress = {this.handleOnKeyPress.bind(this)}
                       onChange = {this.handleOnChange.bind(this)}
                     />
-                  <span className={`${this.state.serachIcon} mksph_icon_search`} aria-hidden="true" data-icon="&#xe903;"></span>
-                  <span className={`${this.state.closeIcon} mksicon-Close`} onClick={this.removeSerachContacts.bind(this)} aria-hidden="true"></span>
+                  <span className={`${this.state.serachIcon} mksph_icon_search`} onClick={this.handleSearchIcon.bind(this)} aria-hidden="true" data-icon="&#xe903;"></span>
+                  <span className={`${this.state.closeIcon} mksicon-Close`}  onClick={this.removeSerachContacts.bind(this)} aria-hidden="true" style={{"cursor" : "pointer"}}></span>
                 </div>
 
                   <SingleContact

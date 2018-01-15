@@ -290,7 +290,7 @@ class CourseCorrect extends Component{
                       <br/>
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
-                      <ul className={this.checkFutureDate(item.scheduleDate) } >
+                      <ul className={`${(item.emailDue == "Y") ? "hide" : "show"}`} >
                         <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px","display":"none"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
