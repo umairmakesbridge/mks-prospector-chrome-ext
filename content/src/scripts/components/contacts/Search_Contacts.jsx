@@ -299,7 +299,7 @@ class SearchContacts extends Component{
                       onKeyPress = {this.handleOnKeyPress.bind(this)}
                       onChange = {this.handleOnChange.bind(this)}
                     />
-                  <span className={`${this.state.serachIcon} mksph_icon_search`} onClick={this.handleSearchIcon.bind(this)} aria-hidden="true" data-icon="&#xe903;"></span>
+                  <span className={`${this.state.serachIcon} mksph_icon_search`} onClick={this.handleSearchIcon.bind(this)} aria-hidden="true" style={{"cursor" : "pointer"}} data-icon="&#xe903;"></span>
                   <span className={`${this.state.closeIcon} mksicon-Close`}  onClick={this.removeSerachContacts.bind(this)} aria-hidden="true" style={{"cursor" : "pointer"}}></span>
                 </div>
 
