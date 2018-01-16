@@ -232,9 +232,9 @@ class CourseCorrect extends Component{
                 <div className={`scf_o_right cc_action_icons_wrap ${(ntObj.ntStatus != "Completed") ? "show" : "hide"}`}>
                   <ul className="top_manager_ul_wraps five">
 
-                    <li data-tip="Click to play nurturetrack" >
+                    <li data-tip="Click to play" >
                       <ReactTooltip />
-                      <div className={`scf_option_icon ripple top_manage_lists  ${(ntObj.ntStatus=="Completed") ? "hide" : ""}  ${(ntObj.ntStatus == "play") ? "" : "cc_disabled_"}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'play')}>
+                      <div className={`scf_option_icon ripple top_manage_lists  ${(ntObj.ntStatus=="Completed") ? "hide" : ""}  ${(ntObj.ntStatus == "play") ? "cc_disabled" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'play')}>
                               <a href="#" style={{textDecoration: 'unset'}}>
                                 <div className="wrap_scf_o_i">
                                   <div className="wrap_scf_o_i_md">
@@ -244,9 +244,9 @@ class CourseCorrect extends Component{
                               </a>
                             </div>
                           </li>
-                    <li data-tip="Click to pause nurturetrack" className="mks_hideRightBorder">
+                    <li data-tip="Click to pause" className="mks_hideRightBorder">
                       <ReactTooltip />
-                              <div className={`scf_option_icon ripple top_manage_lists ${(ntObj.ntStatus=="Completed") ? "hide" : ""} ${(ntObj.ntStatus =="paused") ? "cc_disabled_" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'pause')}>
+                              <div className={`scf_option_icon ripple top_manage_lists ${(ntObj.ntStatus=="Completed") ? "hide" : ""} ${(ntObj.ntStatus =="paused") ? "cc_disabled" : ""}`} onClick={this.playPauseNurtureTrack.bind(this,ntObj['trackId.encode'],'pause')}>
                                     <a href="#" style={{textDecoration: 'unset'}}>
                                       <div className="wrap_scf_o_i">
                                         <div className="wrap_scf_o_i_md">
@@ -277,9 +277,11 @@ class CourseCorrect extends Component{
                   <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                     <span className="cc_steps_break_title cc_steps_actions_title">
                       Perform the following action(s):
-                      <span style={{"position": "relative","cursor":"pointer","left": "90px","top": "3px"}} data-tip="Click to unskip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'unskip')} className={`${this.state.showHideSkip} ${(item.skipped=="false") ? 'cc_disabled_' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
-                      <span style={{"position": "relative","cursor":"pointer","left": "40px","top": "3px"}}data-tip="Click to skip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'skip')}   className={`${this.state.showHideSkip} ${(item.skipped=="true") ? 'cc_disabled_' : ""} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
+                      <span className={`${(ntObj.ntStatus=="Completed") ? "hide" : ""} `}>
+                      <span style={{"position": "relative","cursor":"pointer","left": "90px","top": "3px"}}  data-tip="Click to unskip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'unskip')} className={`${this.state.showHideSkip}  ${(item.emailSkipped=="Y") ? '' : "cc_disabled"} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
+                      <span style={{"position": "relative","cursor":"pointer","left": "40px","top": "3px"}}  data-tip="Click to skip step" onClick={this.skippNT.bind(this,{ntid:ntObj['trackId.encode'],msgid:item['messageId.encode']},'skip')}   className={`${this.state.showHideSkip}   ${(item.emailSkipped=="N") ? '' : "cc_disabled"} scf_o_icon scf_o_edit  mksicon-CPlayNext mks_manageList_wrap`}></span>
                       <ReactTooltip />
+                      </span>
                     </span>
                   </div>
                   <div className='single_action_wrap'>
@@ -367,7 +369,7 @@ class CourseCorrect extends Component{
                         return;
                       }
                       return(
-                        <div className="cc_step_options_wrap">
+                        <div key={key} className="cc_step_options_wrap">
                               <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
                                 {this.checkStateStep(skippedObj.stepSkipped)}
                                 <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
@@ -385,7 +387,7 @@ class CourseCorrect extends Component{
                         return;
                       }
                       return(
-            <div className="cc_step_options_wrap">
+            <div key={key} className="cc_step_options_wrap">
                   <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
                     {this.checkStateStep(skippedObj.stepSkipped)}
                     <span data-tip="Click to unskip step" onClick={this.skippWF.bind(this,skippedObj,'unskip')} className={`${this.state.showHideSkip} ${(skippedObj.skipped=="false") ? 'cc_disabled' : ""} scf_o_icon scf_o_edit mksicon-CPlay mks_manageList_wrap`}></span>
@@ -422,7 +424,7 @@ class CourseCorrect extends Component{
                         return;
                       }
                       return(
-                        <div className="cc_step_options_wrap">
+                        <div key={key} className="cc_step_options_wrap">
                               <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
                               </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
