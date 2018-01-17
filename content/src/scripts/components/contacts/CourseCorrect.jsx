@@ -69,6 +69,7 @@ class CourseCorrect extends Component{
                .then((res) => {
                   if(res.status==200){
                     let jsonResponse =  JSON.parse(res.text);
+                    this.setState({showLoading:false,message:""})
                     if (jsonResponse[0] == "err"){
                         if(jsonResponse[1] == "SESSION_EXPIRED"){
                           ErrorAlert({message:jsonResponse[1]});
@@ -201,7 +202,7 @@ class CourseCorrect extends Component{
               <li key={key} className="mngList_li_wrap ">
                   <div className="mks_mnglist_wrap mks_cc_wf_wrap">
                     <span className="mksicon-Nurture_Track icon-cc"></span>
-                    <h4 className="cc_title_h4" title={decodeHTML(list.name)} onClick={this.triggerToggleOnh4.bind(this)} >{decodeHTML(list.name)}<span>show</span> </h4>
+                    <h4 className="cc_title_h4" title={decodeHTML(list.name)} onClick={this.triggerToggleOnh4.bind(this)} >{decodeHTML(list.name)}</h4>
                       <div className={`${this.state.collapseExpand} collapseable`} onClick={this.showToggle.bind(this)}>
                         <span className="collapseMsg">Click to expand</span>
                         <span className="mksicon-ArrowNext"></span>
@@ -221,11 +222,14 @@ class CourseCorrect extends Component{
               <div key={i} className="cc_steps_break_wraps">
                 <div  className='autocomplete__item cc_steps_break autocomplete__item--disabled'>
                   <span className="cc_steps_break_title"> {item.label+" "+ (i+1)} :</span>
-                  <span className={`${(item.emailSent == "Y") ? "show" : "hide"} cc_steps_break_time`}>
+                  <span className={`${(item.emailSent == "Y" && item.emailSkipped!="Y") ? "show" : "hide"} cc_steps_break_time`}>
                     <span style={{"color" : "#fff"}}>Email Sent </span> :{  this.parseDateToMoment(item.emailSentTime)  } Pacific
                   </span>
                   <span className={`${(item.emailDue == "Y") ? "show" : "hide"} cc_steps_break_time`}>
                     <span style={{"color" : "#fff"}}>Email Due </span> :{  this.parseDateToMoment(item.emailDueTime)  } Pacific
+                  </span>
+                  <span className={`${(item.emailSkipped == "Y") ? "show" : "hide"} cc_steps_break_time`}>
+                    <span style={{"color" : "#fff"}}>Email Skipped </span> :{  this.parseDateToMoment(item.emailSkippedTime)  } Pacific
                   </span>
 
               </div>
@@ -290,6 +294,20 @@ class CourseCorrect extends Component{
                       <span className="act_subj_title"><i className="mksicon-Mail"></i> Subject: </span>
                       <span className="act_subj_title_value">{decodeHTML(item.subject)}</span>
                       <br/>
+                        {item['dispatchType'] == "D"  &&
+                          <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>Dispatch Rule: </span>
+                          <span className="act_sent_time_value">delay dispatch for {item.dayLapse} day(s)</span>  <br/></span>
+
+                        }
+                        {item['dispatchType'] == "S"  &&
+                          <span>
+                            <span className="act_sent_time" style={{"marginLeft": "0px"}}>Dispatch Rule: </span>
+                          <span className="act_sent_time_value">scheduled for { this.parseDateToMoment(item.scheduleDate)} Pacific</span>
+                          <br/>
+                      </span>
+
+                        }
+
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
                       <ul className={`${(item.emailDue == "Y") ? "hide" : "show"}`} >
@@ -702,6 +720,7 @@ class CourseCorrect extends Component{
                   if(res.status==200){
                     this.setState({showLoading:false,message:""})
                     SuccessAlert({message:jsonResponse[1]});
+                    this.setState({showLoading:true,message:"Updating course correct."});
                     this.getCourseCorrect();
                     //_this.getSubscriberDetails();
                   }else{
@@ -746,6 +765,7 @@ class CourseCorrect extends Component{
                 if(res.status==200 && jsonResponse[0]!="err"){
                   this.setState({showLoading:false,message:""})
                   SuccessAlert({message:jsonResponse[1]});
+                  this.setState({showLoading:true,message:"Updating course correct."});
                   this.getCourseCorrect();
                   //_this.getSubscriberDetails();
                 }else{
@@ -791,6 +811,7 @@ class CourseCorrect extends Component{
                   if(res.status==200 && jsonResponse[0]=="success"){
                     this.setState({showLoading:false,message:""})
                     SuccessAlert({message:jsonResponse[1]});
+                    this.setState({showLoading:true,message:"Updating course correct."});
                     this.getCourseCorrect();
                     //_this.getSubscriberDetails();
                   }else{
@@ -836,6 +857,7 @@ class CourseCorrect extends Component{
                     if(res.status==200 && jsonResponse[0]=="success"){
                       this.setState({showLoading:false,message:""})
                       SuccessAlert({message:jsonResponse[1]});
+                        this.setState({showLoading:true,message:"Updating course correct."});
                       this.getCourseCorrect();
                       //_this.getSubscriberDetails();
                     }else{
