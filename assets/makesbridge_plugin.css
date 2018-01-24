@@ -630,6 +630,11 @@ input.hasError {
 .mskLogog_bluetext{
   color : #04aced !important;
 }
+.mkb_elipsis{
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
 /*-----------------------------Alerts---------------------------*/
 .messagebox {
 	color: #784900;

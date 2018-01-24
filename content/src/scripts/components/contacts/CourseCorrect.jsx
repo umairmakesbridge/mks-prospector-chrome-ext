@@ -447,6 +447,7 @@ class CourseCorrect extends Component{
                               </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
                               <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules)}</div>
                         </div>
 
                       )
@@ -560,6 +561,134 @@ class CourseCorrect extends Component{
                     }
                   })
                   return items;
+      }
+      generateAdvanceRules(advRules){
+
+            let items = advRules.map((item, i) => {
+              if(item.type=="E"){
+                return (
+                <div key={i} className="mks_cc_action_wraper">
+                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                  </div>
+                  <div className='single_action_wrap'>
+
+                    <div className="cc_act_extra_details">
+
+                      <span className="act_subj_title">Email Filter: </span>
+                      <span className="act_subj_title_value">{item.campaignName}</span>
+
+                        {(item['filterBy']== "OP")&&
+                          <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>opened: </span>
+                          <span className="act_sent_time_value">{item['frequency']} or more times in last {item['timeSpanInDays']} day(s)</span></span>
+                        }
+
+                    </div>
+                  </div>
+                  </div>
+                )
+              }
+              if(item.type=="S"){
+                return (
+                <div key={i} className="mks_cc_action_wraper">
+                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                  </div>
+                  <div className='single_action_wrap'>
+
+                    <div className="cc_act_extra_details">
+
+                      <span className="act_subj_title">Score {(item.rule=="eq") ? "equals" : "greater"}: </span>
+                      <span className="act_subj_title_value">{item.score}</span>
+
+                    </div>
+                  </div>
+                  </div>
+                )
+              }
+              if(item.type=="W"){
+                return (
+                <div key={i} className="mks_cc_action_wraper">
+                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                  </div>
+                  <div className='single_action_wrap'>
+
+                    <div className="cc_act_extra_details">
+                      <h4 style={{"background": "transparent","width": "100%"}}>
+                        Web visits performed against
+                      </h4>
+                      <span className="act_subj_title"> {(item.filterBy=="PU") ? "Page URL" : "others"}: </span>
+                      <span className="act_subj_title_value mkb_elipsis" style={{"width": "245px","display": "block","wordWrap": "break-word"}}><a href={decodeHTML(item.pageURL)} target="_blank">{decodeHTML(item.pageURL)} </a><br/> {item['frequency']} or more times in last {item['timeSpanInDays']}  day(s)</span>
+
+                    </div>
+                  </div>
+                  </div>
+                )
+              }
+              if(item.type=="F"){
+                return (
+                  <div key={i} className="mks_cc_action_wraper">
+                    <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                      <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                    </div>
+                    <div className='single_action_wrap'>
+
+                      <div className="cc_act_extra_details">
+
+                        <span className="act_subj_title">Sign Up Form `{item.formName}` </span>
+                        <span className="act_subj_title_value">	in last {item.timeSpanInDays} day(s).</span>
+
+                      </div>
+                    </div>
+                    </div>
+                )
+              }
+              if(item.type=="L"){
+                return (
+                <div key={i} className="mks_cc_action_wraper">
+                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
+                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                  </div>
+                  <div className='single_action_wrap'>
+
+                    <div className="cc_act_extra_details">
+                      <h4 style={{"background": "transparent","width": "100%"}}>
+                        List Filter:
+                      </h4>
+                      {(item['matchAll']) &&
+                      <span className="act_subj_title">Subscriber is Member of all of the following list(s):</span>
+                      }
+                      {(item['matchAll']==false) &&
+                      <span className="act_subj_title">Subscriber is Member of any of the following list(s):</span>
+                      }
+
+                      <span className="act_subj_title_value">
+                        <select>
+                        {this.generateListNames(item.listNames)}
+                        </select>
+                      </span>
+
+                    </div>
+                  </div>
+                  </div>
+                )
+              }
+
+
+            });
+
+              return items;
+      }
+      generateListNames(lists){
+        var listName = lists.split(',');
+        const ListItems = listName.map((list,key) =>
+              <option key={key} className="mngList_li_wrap ">
+                  {list}
+              </option>
+        );
+        return ListItems;
+
       }
       generateSingleObjectWF(serverJsonWF){
           let newObject = []
