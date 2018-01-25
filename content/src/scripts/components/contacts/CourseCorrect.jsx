@@ -667,11 +667,11 @@ class CourseCorrect extends Component{
                       <h4 style={{"background": "transparent","width": "100%"}}>
                         List Filter:
                       </h4>
-                      {(item['matchAll']) &&
+                      {(item['matchAll']!="false") &&
                       <span className="act_subj_title">Subscriber is Member of all of the following list(s):</span>
                       }
-                      {(item['matchAll']==false) &&
-                      <span className="act_subj_title">Subscriber is Member of any of the following list(s):</span>
+                      {(item['matchAll']=="false") &&
+                      <span className="act_subj_title">Subscriber is Non Member of any of the following list(s):</span>
                       }
 
                       <span className="act_subj_title_value">
