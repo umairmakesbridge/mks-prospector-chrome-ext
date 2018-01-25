@@ -396,6 +396,7 @@ class CourseCorrect extends Component{
                             </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
                               <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules,list.advanceRuleDetail[0])}</div>
                         </div>
                       )
             });
@@ -447,7 +448,7 @@ class CourseCorrect extends Component{
                               </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
                               <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
-                              <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules)}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules,list.advanceRuleDetail[0])}</div>
                         </div>
 
                       )
@@ -562,14 +563,17 @@ class CourseCorrect extends Component{
                   })
                   return items;
       }
-      generateAdvanceRules(advRules){
-
+      generateAdvanceRules(advRules,baseDetails){
+            let orAll = "";
+            if(!jQuery.isEmptyObject(baseDetails)){
+              orAll = (baseDetails.applyRuleCount == "1") ? "One" : "All";
+            }
             let items = advRules.map((item, i) => {
               if(item.type=="E"){
                 return (
                 <div key={i} className="mks_cc_action_wraper">
                   <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
+                    <span className={`cc_steps_break_title cc_steps_actions_title `}>{orAll} of the advanced filters below were met:</span>
                   </div>
                   <div className='single_action_wrap'>
 
@@ -582,7 +586,14 @@ class CourseCorrect extends Component{
                           <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>opened: </span>
                           <span className="act_sent_time_value">{item['frequency']} or more times in last {item['timeSpanInDays']} day(s)</span></span>
                         }
-
+                        {(item['filterBy']== "CK")&&
+                          <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>clicked on: </span>
+                          <span className="act_sent_time_value">{item['frequency']} or more times in last {item['timeSpanInDays']} day(s)</span></span>
+                        }
+                        {(item['filterBy']== "NC")&&
+                          <span><span className="act_sent_time" style={{"marginLeft": "0px"}}>non-clickers: </span>
+                          <span className="act_sent_time_value">{item['frequency']} or more times in last {item['timeSpanInDays']} day(s)</span></span>
+                        }
                     </div>
                   </div>
                   </div>
@@ -598,7 +609,7 @@ class CourseCorrect extends Component{
 
                     <div className="cc_act_extra_details">
 
-                      <span className="act_subj_title">Score {(item.rule=="eq") ? "equals" : "greater"}: </span>
+                      <span className="act_subj_title">Score {(item.rule=="eq") ? "equals" : (item.rule=="less") ? "less than" : "greater than"}: </span>
                       <span className="act_subj_title_value">{item.score}</span>
 
                     </div>
@@ -618,7 +629,7 @@ class CourseCorrect extends Component{
                       <h4 style={{"background": "transparent","width": "100%"}}>
                         Web visits performed against
                       </h4>
-                      <span className="act_subj_title"> {(item.filterBy=="PU") ? "Page URL" : "others"}: </span>
+                      <span className="act_subj_title"> {(item.filterBy=="PU") ? "Page URL" : ""}: </span>
                       <span className="act_subj_title_value mkb_elipsis" style={{"width": "245px","display": "block","wordWrap": "break-word"}}><a href={decodeHTML(item.pageURL)} target="_blank">{decodeHTML(item.pageURL)} </a><br/> {item['frequency']} or more times in last {item['timeSpanInDays']}  day(s)</span>
 
                     </div>
