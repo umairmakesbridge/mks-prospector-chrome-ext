@@ -2815,6 +2815,9 @@ opacity: 0.2;
 .cc_option_adv_rule_wrap div.mks_cc_action_wraper:last-child .cc_act_adv_details {
     border-bottom: unset;
 }
+.cc_act_adv_details .act_subj_title_value{
+  color: rgb(116, 133, 146);
+}
 /*------------------------------
 Course Correct Ends
 --------------------------------*/

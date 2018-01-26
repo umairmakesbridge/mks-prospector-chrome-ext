@@ -625,7 +625,7 @@ class CourseCorrect extends Component{
                   <div className='single_action_wrap'>
 
                     <div className="cc_act_extra_details cc_act_adv_details">
-                      <h4 style={{"background": "transparent","width": "100%"}}>
+                      <h4 style={{"background": "transparent","width": "100%","color": "rgb(116, 133, 146)"}}>
                         Web visits performed against
                       </h4>
                       <span className="act_subj_title"> {(item.filterBy=="PU") ? "Page URL" : ""}: </span>
@@ -644,7 +644,7 @@ class CourseCorrect extends Component{
                     <div className='single_action_wrap'>
 
                       <div className="cc_act_extra_details cc_act_adv_details">
-                        <h4 style={{"background": "transparent","width": "100%"}}>
+                        <h4 style={{"background": "transparent","width": "100%","color": "rgb(116, 133, 146)"}}>
                           Sign Up Form
                         </h4>
                         <span className="act_subj_title"> {item.formName} </span>
@@ -663,7 +663,7 @@ class CourseCorrect extends Component{
                   <div className='single_action_wrap'>
 
                     <div className="cc_act_extra_details cc_act_adv_details">
-                      <h4 style={{"background": "transparent","width": "100%"}}>
+                      <h4 style={{"background": "transparent","width": "100%","color": "rgb(116, 133, 146)"}}>
                         List Filter:
                       </h4>
                       {(item['matchAll']!="false") &&
