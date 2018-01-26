@@ -2678,6 +2678,17 @@ span.act_subj_title_value {
     padding: 5px 15px;
     margin: 5px 0;
 }
+
+.cc_act_adv_details{
+  background: transparent;
+  padding: 0 0 5px;
+  border-bottom: 1px solid #fff;
+}
+.cc_act_adv_details a{
+  color : rgb(2, 175, 239);
+  line-height: 19px;
+}
+
 .cc_act_extra_details ul li {
     color: rgb(116, 133, 146);
     font-size: 12px;
@@ -2800,6 +2811,9 @@ opacity: 0.2;
     left: 106px;
     font-weight: 100 !important;
     font-size: 11px;
+}
+.cc_option_adv_rule_wrap div.mks_cc_action_wraper:last-child .cc_act_adv_details {
+    border-bottom: unset;
 }
 /*------------------------------
 Course Correct Ends

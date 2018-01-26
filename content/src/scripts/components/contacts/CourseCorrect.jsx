@@ -311,7 +311,7 @@ class CourseCorrect extends Component{
                       <span className="act_sent_time">Time of Day: </span>
                       <span className="act_sent_time_value">{(item.timeOfDay == -1) ? 'Instant' : item.timeOfDay+item.timeOfDayHrs+":"+item.timeOfDayMins+item.timeOfDayMins}</span>
                       <ul className={`${(item.emailDue == "Y") ? "hide" : "show"}`} >
-                        <li><span>Open(s): </span>{item.opens} <span style={{"fontWeight": "100","width": "115px","fontSize": "9px","display":"none"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
+                        <li><span>Open(s): </span>{item.opens} <span style={{"position" : "relative","fontWeight": "100","width": "146px","float": "right","top":"2px","fontSize": "9px"}}>(last opened on {this.parseDateToMoment(item.lastOpenOn)})</span></li>
                         <li><span>Click(s): </span>{item.clicks}</li>
                         <li><span>Page View(s): </span>{item.pageViews}</li>
                       </ul>
@@ -395,8 +395,9 @@ class CourseCorrect extends Component{
                                 <ReactTooltip />
                             </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules)}</div>
+                              <div className="cc_option_action_rule_wrap cc_option_adv_rule_wrap">{this.generateAdvanceRules(list.advanceRules,list.advanceRuleDetail[0])}</div>
                               <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
-                              <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules,list.advanceRuleDetail[0])}</div>
+
                         </div>
                       )
             });
@@ -447,8 +448,9 @@ class CourseCorrect extends Component{
                               <span className="cc_basic_opt_wrap_label">{list.optionLabel ? list.optionLabel : 'Option '+list.optionNumber}
                               </span>
                               <div className="cc_option_basic_rule_wrap">{this.generateBasicRules(list.basicRules,list.applyRuleCount)}</div>
-                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
                               <div className="cc_option_action_rule_wrap">{this.generateAdvanceRules(list.advanceRules,list.advanceRuleDetail[0])}</div>
+                              <div className="cc_option_action_rule_wrap">{this.generateActionRules(list.actions)}</div>
+
                         </div>
 
                       )
@@ -572,12 +574,12 @@ class CourseCorrect extends Component{
               if(item.type=="E"){
                 return (
                 <div key={i} className="mks_cc_action_wraper">
-                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                    <span className={`cc_steps_break_title cc_steps_actions_title `}>{orAll} of the advanced filters below were met:</span>
-                  </div>
+
+                    <span style={{"textTransform": "none","fontSize": "12px","color": "rgb(2, 175, 239)"}} className={`cc_steps_break_title cc_steps_actions_title ${(i > 0) ? 'hide':''}`}>{orAll} of the advanced filters below were met:</span>
+
                   <div className='single_action_wrap'>
 
-                    <div className="cc_act_extra_details">
+                    <div className="cc_act_extra_details cc_act_adv_details">
 
                       <span className="act_subj_title">Email Filter: </span>
                       <span className="act_subj_title_value">{item.campaignName}</span>
@@ -602,12 +604,10 @@ class CourseCorrect extends Component{
               if(item.type=="S"){
                 return (
                 <div key={i} className="mks_cc_action_wraper">
-                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
-                  </div>
+                  <span style={{"textTransform": "none","fontSize": "12px","color": "rgb(2, 175, 239)"}} className={`cc_steps_break_title cc_steps_actions_title ${(i > 0) ? 'hide':''}`}>{orAll} of the advanced filters below were met:</span>
                   <div className='single_action_wrap'>
 
-                    <div className="cc_act_extra_details">
+                    <div className="cc_act_extra_details cc_act_adv_details">
 
                       <span className="act_subj_title">Score {(item.rule=="eq") ? "equals" : (item.rule=="less") ? "less than" : "greater than"}: </span>
                       <span className="act_subj_title_value">{item.score}</span>
@@ -620,12 +620,11 @@ class CourseCorrect extends Component{
               if(item.type=="W"){
                 return (
                 <div key={i} className="mks_cc_action_wraper">
-                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
-                  </div>
+                  <span style={{"textTransform": "none","fontSize": "12px","color": "rgb(2, 175, 239)"}} className={`cc_steps_break_title cc_steps_actions_title ${(i > 0) ? 'hide':''}`}>{orAll} of the advanced filters below were met:</span>
+
                   <div className='single_action_wrap'>
 
-                    <div className="cc_act_extra_details">
+                    <div className="cc_act_extra_details cc_act_adv_details">
                       <h4 style={{"background": "transparent","width": "100%"}}>
                         Web visits performed against
                       </h4>
@@ -640,14 +639,15 @@ class CourseCorrect extends Component{
               if(item.type=="F"){
                 return (
                   <div key={i} className="mks_cc_action_wraper">
-                    <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                      <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
-                    </div>
+                    <span style={{"textTransform": "none","fontSize": "12px","color": "rgb(2, 175, 239)"}} className={`cc_steps_break_title cc_steps_actions_title ${(i > 0) ? 'hide':''}`}>{orAll} of the advanced filters below were met:</span>
+
                     <div className='single_action_wrap'>
 
-                      <div className="cc_act_extra_details">
-
-                        <span className="act_subj_title">Sign Up Form `{item.formName}` </span>
+                      <div className="cc_act_extra_details cc_act_adv_details">
+                        <h4 style={{"background": "transparent","width": "100%"}}>
+                          Sign Up Form
+                        </h4>
+                        <span className="act_subj_title"> {item.formName} </span>
                         <span className="act_subj_title_value">	in last {item.timeSpanInDays} day(s).</span>
 
                       </div>
@@ -658,24 +658,23 @@ class CourseCorrect extends Component{
               if(item.type=="L"){
                 return (
                 <div key={i} className="mks_cc_action_wraper">
-                  <div  className={`autocomplete__item cc_steps_break autocomplete__item--disabled ${(i > 0) ? 'hide':''}`}>
-                    <span className={`cc_steps_break_title cc_steps_actions_title `}>All of the advanced filters below were met:</span>
-                  </div>
+                  <span style={{"textTransform": "none","fontSize": "12px","color": "rgb(2, 175, 239)"}} className={`cc_steps_break_title cc_steps_actions_title ${(i > 0) ? 'hide':''}`}>{orAll} of the advanced filters below were met:</span>
+
                   <div className='single_action_wrap'>
 
-                    <div className="cc_act_extra_details">
+                    <div className="cc_act_extra_details cc_act_adv_details">
                       <h4 style={{"background": "transparent","width": "100%"}}>
                         List Filter:
                       </h4>
                       {(item['matchAll']!="false") &&
-                      <span className="act_subj_title">Subscriber is Member of all of the following list(s):</span>
+                      <span className="act_subj_title" style={{"width": "100%"}} >Subscriber is Member of all of the following list(s):</span>
                       }
                       {(item['matchAll']=="false") &&
-                      <span className="act_subj_title">Subscriber is Non Member of any of the following list(s):</span>
+                      <span className="act_subj_title" style={{"width": "100%"}} >Subscriber is Non Member of any of the following list(s):</span>
                       }
 
                       <span className="act_subj_title_value">
-                        <select>
+                        <select style={{"float": "none","top" : "4px","marginBottom": "5px","width": "96%"}}>
                         {this.generateListNames(item.listNames)}
                         </select>
                       </span>
