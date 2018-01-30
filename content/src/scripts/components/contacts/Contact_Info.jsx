@@ -511,7 +511,7 @@ class ContactInfo extends Component{
                                                   </a>
                                                       </div>
                                                   </li>
-                                              <li data-tip="Manage list">
+                                              <li data-tip="Manage list subscription">
                                                 <ReactTooltip />
                                                 <div className="scf_option_icon ripple top_manage_lists" onClick={this.manageContactToList.bind(this)}>
                                                   <a href="#" style={{textDecoration: 'unset'}}>

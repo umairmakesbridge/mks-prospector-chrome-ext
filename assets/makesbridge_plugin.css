@@ -590,7 +590,7 @@ li.click_default {
   max-height: 103px;
 }
 .heighAuto {
-    max-height: 1500px;
+    max-height: 5000px;
 }
 input.hasError {
     border-color: #e83434 !important;
