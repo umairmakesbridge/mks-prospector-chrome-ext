@@ -64,7 +64,26 @@ const ActivityCard = (props)=>{
           return(
             <WorkflowCard mapping={mapping[activity.activityType]} key={key} activity={activity}  />
           );
-      }else if(activity.botActionType == "A"){
+      }else if (typeof (activity['singleMessageId.encode']) !== "undefined") {
+            if(activity.activityType=="MT"){
+              mapping[activity.activityType]['color'] =  'green';
+            }
+            return(
+              <CampaignCard type={"Single Message"} mapping={mapping[activity.activityType]} key={key} activity={activity} />
+            );
+        }
+      else if( activity.activityType == "MM" || activity.activityType == "A"){
+        if(typeof(activity["botId.encode"]) !== "undefined"){
+                            //triggerType = {name: "Autobot", cssClass: ""};
+                            console.log('Need to handle');
+                        }
+                        else{
+                          return(
+                            <WorkflowCard mapping={mapping["WA"]} key={key} activity={activity}  />
+                          );
+                        }
+      }
+      else if(activity.botActionType == "A"){
           return(
             <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
           );
@@ -72,6 +91,8 @@ const ActivityCard = (props)=>{
         return(
           <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
         );
+      }else if(typeof(activity["botId.encode"])!=="undefined"){
+          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
       }
 
   });
@@ -91,7 +112,7 @@ const ActivityCard = (props)=>{
 
       <div className={`act_row magenda show_signup ${showSignup}`}>
           <span className="icon mksicon-startflag"></span>
-          {format.date}, {format.time}
+          Joined on {format.date}, {format.time}
       </div>
     </div>
   )

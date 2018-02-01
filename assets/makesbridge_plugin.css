@@ -2049,6 +2049,9 @@ position:relative; z-index:9;
 .new_activities .act_row .camp {
     background: url("chrome-extension://__MSG_@@extension_id__/img/act-campaign.png") no-repeat scroll 0 4px rgba(0, 0, 0, 0);
 }
+.new_activities .act_row .wficon {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/act-workflow.png") no-repeat scroll 0 4px rgba(0, 0, 0, 0);
+}
 
 
 /*================================================
