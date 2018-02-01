@@ -3,23 +3,28 @@ import Moment from 'moment';
 import {encodeHTML,decodeHTML} from '../../../common/Encode_Method';
 
 
-const CampaignCard = (props) => {
+const ScoreCard = (props) => {
+      console.log('activity : ',props.mapping);
 
       let displayicon = (props.mapping.icon) ? props.mapping.icon : 'mksicon-Mail';
       let _date = Moment(decodeHTML(props.activity.logTime), 'M/D/YYYY h:m a');
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
-
-    
+      let _subject = (props.activity.pageType);
+      let _subjecLabel = "";
+      let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : "-"+props.activity.score;
+      debugger;
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
-           <h5>
-             <a>{( (props.activity.campaignName) ? decodeHTML(props.activity.campaignName) : decodeHTML(props.activity.subject) ) }</a>
-           </h5>
+           <h5><a>{_score}</a></h5>
            <div className="info-p">
                 <div className="infotxt">
-                    <strong>Subject</strong>
-                    <a>{decodeHTML(props.activity.subject)}</a>
+                    <strong className={_subjecLabel}>Page Type</strong>
+                    <a>{decodeHTML(_subject,true)}</a>
+                </div>
+                <div className="infotxt">
+                    <strong className={_subjecLabel}>Page URL</strong>
+                    <a>{decodeHTML(props.activity.pageURL,true)}</a>
                 </div>
             </div>
             <div className="btm-bar ">
@@ -28,14 +33,10 @@ const CampaignCard = (props) => {
                         {props.mapping.name}
                       </span> at {_formatedDate.time}, {_formatedDate.date}
                 </div>
-                <div className="camp_type">
-                        <span className="showtooltip all-timelineFilter" style={{cursor: "pointer"}} data-original-title="Click to view all Campaigns activities">
-                        <i className="icon camp"></i>
-                        {(props.type) ? props.type : "Campaign"}</span>
-                </div>
+
             </div>
           </div>
       )
 }
 
-export default CampaignCard;
+export default ScoreCard;

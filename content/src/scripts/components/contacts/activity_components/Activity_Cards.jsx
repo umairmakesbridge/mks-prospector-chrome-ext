@@ -9,6 +9,8 @@ import WorkflowCard
        from './cards/Workflow_Card';
 import AlertCard
        from './cards/Alert_Card';
+import ScoreCard
+       from './cards/Score_Card';
 import Moment
        from 'moment';
 import {encodeHTML,decodeHTML} from '../../common/Encode_Method';
@@ -22,14 +24,14 @@ const ActivityCard = (props)=>{
   var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
-                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'blue','icon':'mksicon-act_score_c'}
+                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'grren','icon':'mksicon-act_score'}
                     , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red",'icon' : 'mksicon-act_alert'}
                     , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait", "color":"red", 'icon':'mksicon-act_alert'}
                     , "CS": {"name": "Sent", "action": "Campaign", "cssClass": "sent","color":"green",'icon':'mksicon-ActSent'}
                     , "OP": {"name": "Opened", "action": "Campaign", "cssClass": "open","color":"blue",'icon':'mksicon-OpenMail'}
                     , "CK": {"name": "Clicked", "action": "Campaign", "cssClass": "click","color":"blue",'icon' : 'mksicon-act_click'}
                     , "WV": {"name": "Page Viewed", "action": "Web", "cssClass": "pageview","color":"blue",'icon':'mksicon-act_pageview'}
-                    , "CT": {"name": "Converted", "action": "Campaign", "cssClass": "conversion","color":"blue",'icon':'mksicon-act_conversion'}
+                    , "CT": {"name": "Converted", "action": "Campaign", "cssClass": "conversion","color":"red",'icon':'mksicon-act_conversion'}
                     , "TF": {"name": "Tell a friend", "action": "Campaign", "cssClass": "tellfriend",'color':'blue','icon':'mksicon-act_tellfriend'}
                     , "UN": {"name": "Unsubscribed", "action": "Campaign", "cssClass": "unsubscribe","color":"red",'icon':'mksicon-act_unsubscribe'}
                     , "SP": {"name": "Suppressed", "action": "Campaign", "cssClass": "suppress",'color':'red' ,'icon':'mksicon-act_suppress'}
@@ -72,6 +74,21 @@ const ActivityCard = (props)=>{
               <CampaignCard type={"Single Message"} mapping={mapping[activity.activityType]} key={key} activity={activity} />
             );
         }
+
+      else if(activity.botActionType == "A"){
+        debugger;
+          return(
+            <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
+          );
+      }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
+        return(
+          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
+        );
+      }else if(activity.activityType == "SC"){
+        return(
+            <ScoreCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
+        );
+      }
       else if( activity.activityType == "MM" || activity.activityType == "A"){
         if(typeof(activity["botId.encode"]) !== "undefined"){
                             //triggerType = {name: "Autobot", cssClass: ""};
@@ -83,15 +100,7 @@ const ActivityCard = (props)=>{
                           );
                         }
       }
-      else if(activity.botActionType == "A"){
-          return(
-            <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
-          );
-      }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
-        return(
-          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
-        );
-      }else if(typeof(activity["botId.encode"])!=="undefined"){
+      else if(typeof(activity["botId.encode"])!=="undefined"){
           <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
       }
 
