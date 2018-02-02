@@ -630,6 +630,11 @@ input.hasError {
 .mskLogog_bluetext{
   color : #04aced !important;
 }
+.mkb_text_break{
+  width : "245px";
+  display: "block";
+  wordWrap: "break-word";
+}
 .mkb_elipsis{
 white-space: nowrap;
 overflow: hidden;

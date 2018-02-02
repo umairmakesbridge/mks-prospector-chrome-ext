@@ -11,6 +11,8 @@ import AlertCard
        from './cards/Alert_Card';
 import ScoreCard
        from './cards/Score_Card';
+import SignupCard
+       from './cards/Signup_Card';
 import Moment
        from 'moment';
 import {encodeHTML,decodeHTML} from '../../common/Encode_Method';
@@ -23,7 +25,7 @@ const ActivityCard = (props)=>{
   console.log(_date);
   var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
   const mapping = {
-                      "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
+                      "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form",'icon':'mksicon-act_form','color':'blue'}
                     , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'green','icon':'mksicon-act_score'}
                     , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red",'icon' : 'mksicon-act_alert'}
                     , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait", "color":"red", 'icon':'mksicon-act_alert'}
@@ -54,10 +56,15 @@ const ActivityCard = (props)=>{
       showLoadingButton = 'hide';
   }
   const activityCard= props.activityBatch.activities.map((activity,key) => {
-      if(activity.campaignType == "N"){
+      if(activity.campaignType == "N" || activity.activityType == "WV"){
         return(
             <CampaignCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
         );
+
+      }else if(activity.activityType == "SU"){
+        return(
+          <SignupCard mapping={mapping[activity.activityType]} key={key} activity={activity}  />
+        )
       }else if(activity.campaignType == "T"){
           return(
             <NurturetrackCard mapping={mapping[activity.activityType]} key={key} activity={activity}  />
@@ -74,19 +81,18 @@ const ActivityCard = (props)=>{
               <CampaignCard type={"Single Message"} mapping={mapping[activity.activityType]} key={key} activity={activity} />
             );
         }
-
+        else if(activity.activityType == "SC"){
+          return(
+              <ScoreCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
+          );
+        }
       else if(activity.botActionType == "A"){
-        debugger;
           return(
             <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
           );
       }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
         return(
           <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
-        );
-      }else if(activity.activityType == "SC"){
-        return(
-            <ScoreCard mapping={mapping[activity.activityType]} key={key} activity={activity} />
         );
       }
       else if( activity.activityType == "MM" || activity.activityType == "A"){
