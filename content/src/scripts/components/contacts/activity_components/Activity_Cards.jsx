@@ -24,7 +24,7 @@ const ActivityCard = (props)=>{
   var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
   const mapping = {
                       "SU": {"name": "Signed Up", "action": "Form", "cssClass": "form"}
-                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'grren','icon':'mksicon-act_score'}
+                    , "SC": {"name": "Score Changed", "action": "Score", "cssClass": "score",'color':'green','icon':'mksicon-act_score'}
                     , "A":  {"name": "Alert", "action": "Autobot", "cssClass": "alert","color":"red",'icon' : 'mksicon-act_alert'}
                     , "W":  {"name": "Workflow Wait", "action": "Workflow", "cssClass": "wait", "color":"red", 'icon':'mksicon-act_alert'}
                     , "CS": {"name": "Sent", "action": "Campaign", "cssClass": "sent","color":"green",'icon':'mksicon-ActSent'}

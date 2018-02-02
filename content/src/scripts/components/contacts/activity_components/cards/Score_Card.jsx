@@ -11,8 +11,7 @@ const ScoreCard = (props) => {
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       let _subject = (props.activity.pageType);
       let _subjecLabel = "";
-      let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : "-"+props.activity.score;
-      debugger;
+      let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : (parseInt(props.activity.score) == 0) ? props.activity.score : "-"+props.activity.score;
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
