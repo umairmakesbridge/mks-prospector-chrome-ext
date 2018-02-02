@@ -12,6 +12,9 @@ const ScoreCard = (props) => {
       let _subject = (props.activity.pageType);
       let _subjecLabel = "";
       let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : (parseInt(props.activity.score) == 0) ? props.activity.score : "-"+props.activity.score;
+      if(parseInt(props.activity.score) < 0){
+        props.mapping['color'] = 'red';
+      }
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
