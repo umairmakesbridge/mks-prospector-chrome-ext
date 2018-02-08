@@ -11,7 +11,6 @@ const ScoreCard = (props) => {
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       let _subject = (props.activity.pageType);
       let _subjecLabel = (parseInt(props.activity.score)==0 ) ? "hide"  : "";
-      debugger;
       let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : (parseInt(props.activity.score) == 0) ? props.activity.score : "-"+props.activity.score;
       if(parseInt(props.activity.score) < 0){
         props.mapping['color'] = 'red';

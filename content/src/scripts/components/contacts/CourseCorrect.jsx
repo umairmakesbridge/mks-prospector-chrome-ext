@@ -12,6 +12,8 @@ import LoadingMask
        from '../common/Loading_Mask';
 import ReactTooltip
        from 'react-tooltip';
+import {GetServerDate}
+        from './activity_components/Filter_Api';
 
 class CourseCorrect extends Component{
       constructor(props){
@@ -45,7 +47,8 @@ class CourseCorrect extends Component{
           collapseExpand : 'expand',
           showLoading  : false,
           showHideSkip : 'show',
-          basicMapFields : basicFields
+          basicMapFields : basicFields,
+          serverDate : ""
         }
 
         // preserve the initial state in a new object
@@ -54,7 +57,10 @@ class CourseCorrect extends Component{
       setStateDefault(){
           this.setState(this.baseState);
       }
-
+      setServerDate(_date){
+        var format = _date.format("YYYY-MM-DD H:m");
+        this.state['serverDate']  = format;
+      }
       getCourseCorrect(){
         //https://test.bridgemailsystem.com/pms/io/workflow/getWorkflowData/?BMS_REQ_TK=aGPBLIJRLeLiDGxvIqUOz7Fztd79bv&type=getCourseCorrect&subNum=qcWWk30Vg33Kc26Fg17Ki20Gd21Ui30Uf33qDF&isMobileLogin=Y&userId=umair
         var Url = this.baseUrl
@@ -62,7 +68,7 @@ class CourseCorrect extends Component{
                         + this.props.users_details[0].bmsToken +'&type=getCourseCorrect&isMobileLogin=Y&subNum='+this.props.contact.subNum+'&userId='+this.props.users_details[0].userId
         var workflowObj = null;
         var nurtureTrackObj = [];
-
+        GetServerDate({users_details:this.props.users_details,baseUrl:this.baseUrl,callback:this.setServerDate.bind(this)})
         request
               .get(Url)
                .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -749,11 +755,13 @@ class CourseCorrect extends Component{
           if(!skipTime){
             return;
           }
+
           var skipdate = skipTime.split(" ")[0];
           var skipdateObj = new Date(skipdate);
           var NewSkippedObj = skipdateObj.getTime();
-          var currentDate = new Date();
-          var newCurrentDate = currentDate.getTime();
+          var currentDate = this.state.serverDate.split(" ")[0];
+          var newCurrentObj = new Date(currentDate);
+          var newCurrentDate = newCurrentObj.getTime();
 
           if(newCurrentDate > NewSkippedObj){
             this.state['showHideSkip'] = 'hide';
@@ -838,7 +846,6 @@ class CourseCorrect extends Component{
           var r = confirm("Are you sure you want to " + actiont + " workflow for current subscriber?");
           if (r == true) {
             this.setState({showLoading:true,message: actiont + " workflow for current user."});
-            debugger;
             //https://test.bridgemailsystem.com/pms/io/workflow/saveWorkflowData/?BMS_REQ_TK=HM4r0TmFm6Hx0L0yyAlCQqJBPpBVH2&type=setCourseCorrectForSub
             request.post(this.baseUrl+'/io/workflow/saveWorkflowData/?BMS_REQ_TK='+this.props.users_details[0].bmsToken+'&type=setCourseCorrectForSub')
                .set('Content-Type', 'application/x-www-form-urlencoded')
