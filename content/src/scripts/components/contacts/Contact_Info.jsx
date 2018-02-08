@@ -174,7 +174,9 @@ class ContactInfo extends Component{
                                   contactnotFound : false,
                                   showJumpSF : (jsonResponse.sfUrl) ? 'show' : 'hide',
                                   showAddSf  : (!jsonResponse.sfUrl) ? 'show': 'hide',
-                                  showActionButtons : (this.props.users_details[0].isSalesforceUser) ? "five" : "four"
+                                  showActionButtons : (this.props.users_details[0].isSalesforceUser) ? "six" : "five",
+                                  showSfActionBtn : (this.props.users_details[0].isSalesforceUser) ? "show" : "hide",
+                                  hideRightBorder : (this.props.users_details[0].isSalesforceUser) ? "" : "mks_hideRightBorder"
                                 });
 
                                 console.log('1. Getting Subscriber',jsonResponse);
@@ -542,8 +544,20 @@ class ContactInfo extends Component{
                                                             <div className="scf_option_icon ripple top_manage_lists">
                                                               <a href="#" style={{textDecoration: 'unset'}}>
                                                                 <div className="wrap_scf_o_i">
-                                                                  <div className="wrap_scf_o_i_md" >
+                                                                  <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
                                                                     <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
+                                                                    </div>
+                                                                    </div>
+                                                                </a>
+                                                                    </div>
+                                                                </li>
+                                                          <li data-tip="Course Correct" className={`mks_cc_li_wrap ${this.state.hideRightBorder}`}onClick={this.showCourseCorrect.bind(this)}>
+                                                            <ReactTooltip />
+                                                            <div className="scf_option_icon ripple top_manage_lists">
+                                                              <a href="#" style={{textDecoration: 'unset'}}>
+                                                                <div className="wrap_scf_o_i">
+                                                                  <div className="wrap_scf_o_i_md" >
+                                                                    <div className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
                                                                     </div>
                                                                     </div>
                                                                 </a>
@@ -551,19 +565,8 @@ class ContactInfo extends Component{
                                                                 </li>
 
 
-                                                                      <li data-tip="Course Correct" className={`sf_icons`} onClick={this.showCourseCorrect.bind(this)}>
-                                                                          <ReactTooltip />
-                                                                        <div className="scf_option_icon ripple top_manage_lists">
-                                                                          <a href="#" style={{textDecoration: 'unset'}}>
-                                                                            <div className="wrap_scf_o_i">
-                                                                              <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
-                                                                                <div style={{"paddingTop" : "2px"}} className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
-                                                                                </div>
-                                                                                </div>
-                                                                            </a>
-                                                                                </div>
-                                                                            </li>
-                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
+
+                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
                                                                               <ReactTooltip />
                                                                               <div className="scf_option_icon ripple top_manage_lists">
                                                                                 <a href="#" style={{textDecoration: 'unset'}}>
@@ -576,7 +579,7 @@ class ContactInfo extends Component{
                                                                                   </a>
                                                                                       </div>
                                                                                   </li>
-                                                                      <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} sf_icons mks_hideRightBorder`} onClick={this.jumpToSalesforce.bind(this)}>
+                                                                      <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.jumpToSalesforce.bind(this)}>
                                                                         <ReactTooltip />
                                                                         <div className="scf_option_icon ripple top_manage_lists">
                                                                           <a href="#" style={{textDecoration: 'unset'}}>

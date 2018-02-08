@@ -1119,7 +1119,9 @@ Slider Start
     vertical-align: middle;
     padding: 6px 0 0 0;
 }
-
+.mks_hideRightBorder.mks_cc_li_wrap .wrap_scf_o_i_md{
+  padding: 3px 0;
+}
 .wrap_scf_o_m{
     height: 71px;
     width: 60px;
@@ -2204,11 +2206,14 @@ ul.top_manager_ul_wraps li:last-child div::after {
 ul.top_manager_ul_wraps.four li:nth-child(4) div::after {
     width: 0;
 }
+ul.top_manager_ul_wraps.six .top_manage_lists .wrap_scf_o_i {
 
-ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
-  width: 47px;
+    width: 47px;
 }
-ul.top_manager_ul_wraps.five .scf_o_txt{
+ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
+width: 58px;
+}
+ul.top_manager_ul_wraps.six .scf_o_txt{
     font-size: 7px;
 }
 .SuppressNotify{
