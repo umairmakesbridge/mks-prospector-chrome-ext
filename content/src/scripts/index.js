@@ -43,7 +43,7 @@ class App extends Component {
       islogOut           : 'hide',
       gmail_emails_body: [],
       isLoggedOut      : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
+      baseUrl          : 'https://test.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
