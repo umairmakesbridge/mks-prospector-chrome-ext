@@ -19,6 +19,7 @@ import ContactInfo from './components/contacts/Contact_Info';
 import SearchContacts from './components/contacts/Search_Contacts';
 import Menu from './components/menu/menu';
 import LoadingMask from './components/common/Loading_Mask';
+import AddNewContact from './components/contacts/add_new_contact';
 
 const anchor = document.createElement('div');
 anchor.id = 'rcr-anchor';
@@ -43,7 +44,7 @@ class App extends Component {
       islogOut           : 'hide',
       gmail_emails_body: [],
       isLoggedOut      : false,
-      baseUrl          : 'https://test.bridgemailsystem.com/pms'
+      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
@@ -347,6 +348,13 @@ class App extends Component {
         />
         </ToggleDisplay>
         <ToggleDisplay show={this.state.gmailEmails}>
+        <div className="topbtn_wraps_contact_tasks">
+        <AddNewContact 
+          users_details={this.state.users_details}
+          baseUrl = {this.state.baseUrl}
+          onEmailSelect = {this.onEmailSelect}
+        />
+        </div>
         <GmailEmail
           onEmailSelect = {this.onEmailSelect}
           gmail_email_list={this.state.gmail_email_list}
