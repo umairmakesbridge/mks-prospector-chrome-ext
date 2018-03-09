@@ -12,6 +12,9 @@ import ContactBasicInfo
        from './Contact_Basic_Info';
 import {encodeHTML,decodeHTML}
        from '../common/Encode_Method';
+import LoadingMask
+       from '../common/Loading_Mask';
+
 class AddNewContact extends Component{
   constructor(props) {
       super(props);
@@ -22,7 +25,8 @@ class AddNewContact extends Component{
         showManageListWrap : 'hide',
         email : '',
         lastName : '',
-        firstName : ''
+        firstName : '',
+        showStatus : false
       };
 
       // preserve the initial state in a new object
@@ -36,7 +40,7 @@ class AddNewContact extends Component{
       },500)
   }
   addContactIntoMks(data){
-    alert('Save call needs to be hit');
+
     let isValid = true;
     let els = document.querySelectorAll("div.create_new_contact input");
     els.forEach((element)=>{
@@ -51,7 +55,7 @@ class AddNewContact extends Component{
                 });
     if(isValid){
       jQuery("div.create_new_contact input").removeClass('hasError');
-      this.setState({disabled : true});
+      this.setState({disabled : true,showStatus : true});
       let reqObj = {};
       reqObj['email']=this.state.email
       reqObj['ukey']=this.props.users_details[0].userKey
@@ -85,7 +89,6 @@ class AddNewContact extends Component{
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
             if(jsonResponse[0]=="success"){
-              debugger;
               this.setState({
                 //showContact : true,
                 //editContact : false,
@@ -93,6 +96,7 @@ class AddNewContact extends Component{
                 //statusMessage : 'Contact created successfully.'
               })
               SuccessAlert({message:"Contact created successfully."});
+              this.setState(this.baseState);
               this.props.onEmailSelect(this.state.email);
               this.closeAddContactIntoMks();
               //this.props.contactInfo['subNum'] = jsonResponse[1];
@@ -107,7 +111,7 @@ class AddNewContact extends Component{
             }else{
               let errormsg = (jsonResponse[0]=="err") ? jsonResponse[1] : "Something went wrong.Please try again later.";
               ErrorAlert({message:errormsg});
-              this.setState({showStatus : false});
+              this.setState({showStatus : false,disabled:false});
             }
           });
    }
@@ -120,7 +124,10 @@ class AddNewContact extends Component{
       //this.refs.childSubscriberList.setStateDefault();
   }
   handleOnEnter(event){
-    console.log('Time to handle key');
+    if(event.which==13){
+      this.addContactIntoMks();
+    }
+
   }
   render(){
     return (
@@ -129,16 +136,18 @@ class AddNewContact extends Component{
 
             <Dialog
               saveCallback= {this.addContactIntoMks.bind(this)}
-              showTitle={"Add Contact to List"}
+              showTitle={"Create Contact"}
               ref="dialogSubscriberList1"
               closeCallback = {this.closeAddContactIntoMks.bind(this)}
+              additionalClass = {"mks_add_new_contact_wrap"}
             >
+            <LoadingMask message={"Creating Contact..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
             <div className="s_contact_found_edit_wraper create_new_contact">
                 <div className="s_contact_found_edit">
                     <div className={`scfe_field height90 height100 ${this.state.setFullHeight}`}>
-                        <input placeholder="Email *" className="focusThis" data-required="required"   disabled={this.state.disabled} onChange={event=> { this.setState({email: event.target.value }) } } />
-                        <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this,'create')} />
-                        <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } />
+                        <input placeholder="Email *" className="focusThis" data-required="required"   disabled={this.state.disabled} onChange={event=> { this.setState({email: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
+                        <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
+                        <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)}/>
 
 
                     </div>
@@ -150,7 +159,9 @@ class AddNewContact extends Component{
             <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
         </ToggleDisplay>
         <div className="btn_wrap ripple" >
-            <span className="mksph_login_btn add_new_btn" onClick={this.showCreateDialog.bind(this)}>Create / Add Contact</span>
+            <span className="mksph_login_btn add_new_btn" onClick={this.showCreateDialog.bind(this)}>
+            <i className="scf_o_icon scf_o_edit mksicon-Silhouette mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
+              Create Contact</span>
         </div>
       </div>
     )

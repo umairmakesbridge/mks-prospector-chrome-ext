@@ -2844,11 +2844,18 @@ Add new Contact
 .add_new_btn{
   /* border-radius: 15px 0px 0px 15px; */
   border-radius: 15px;
-  font-size: 14px;
+  font-size: 11px;
   text-transform: capitalize;
 }
 .topbtn_wraps_contact_tasks .btn_wrap{
-  padding: 13px 0px;
+  padding: 11px 0px;
+}
+.mks_add_new_contact_wrap .addBox_input_wrappers .cc_wraps_mks{
+  min-height: 120px !important;
+  position: relative;
+}
+.mks_add_loading_wrapper .spinner{
+  margin: 40px auto auto;
 }
 /*------------------------------
 Salesforce
