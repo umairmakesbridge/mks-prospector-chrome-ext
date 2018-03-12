@@ -34,7 +34,8 @@ class AddNewContact extends Component{
   }
 
   showCreateDialog(event){
-      this.setState({showSubscriberCreate: true});
+
+      this.setState({showSubscriberCreate: true,email:'',lastName : '',firstName:''});
       setTimeout(function(){
           jQuery('.focusThis').focus();
       },500)
@@ -98,11 +99,13 @@ class AddNewContact extends Component{
                 //statusMessage : 'Contact created successfully.'
               })
               SuccessAlert({message:"Contact created successfully."});
+              let email = this.state.email;
+              this.setState(this.baseState);
+              this.props.onEmailSelect(email);
 
-              this.props.onEmailSelect(this.state.email);
               this.closeAddContactIntoMks();
               this.refs.dialogSubscriberCreate.enableSave();
-              this.setState(this.baseState);
+
               //this.props.contactInfo['subNum'] = jsonResponse[1];
               //this.props.contactInfo['checkSum'] = jsonResponse[2];
 
@@ -114,7 +117,9 @@ class AddNewContact extends Component{
 
             }else{
               let errormsg = (jsonResponse[0]=="err") ? jsonResponse[1] : "Something went wrong.Please try again later.";
+
               ErrorAlert({message:errormsg});
+              this.refs.dialogSubscriberCreate.enableSave();
               this.setState({showStatus : false,disabled:false});
             }
           });
@@ -150,9 +155,9 @@ class AddNewContact extends Component{
             <div className="s_contact_found_edit_wraper create_new_contact">
                 <div className="s_contact_found_edit">
                     <div className={`scfe_field height90 height100 ${this.state.setFullHeight}`}>
-                        <input placeholder="Email *" className="focusThis" data-required="required"   disabled={this.state.disabled} onChange={event=> { this.setState({email: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
-                        <input placeholder="First Name" id="firstName" disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
-                        <input placeholder="Last Name"  disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)}/>
+                        <input placeholder="Email *" className="focusThis" value={this.state.email} data-required="required"   disabled={this.state.disabled} onChange={event=> { this.setState({email: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
+                        <input placeholder="First Name" id="firstName" value={this.state.firstName}  disabled={this.state.disabled} onChange={event=> { this.setState({firstName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)} />
+                        <input placeholder="Last Name"  value={this.state.lastName} disabled={this.state.disabled} onChange={event=> { this.setState({lastName: event.target.value }) } } onKeyPress = {this.handleOnEnter.bind(this)}/>
 
 
                     </div>

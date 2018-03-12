@@ -25,7 +25,8 @@ class Dialog extends Component{
    });
  }
  handleSave (){
-   this.props.saveCallback()
+   if(!this.state.disabled)
+      this.props.saveCallback();
  }
  handleCancel(){
    this.props.closeCallback();
@@ -39,7 +40,6 @@ class Dialog extends Component{
 
  }
  disabledSave(){
-   debugger;
    this.setState({
      disabled:true
    });
