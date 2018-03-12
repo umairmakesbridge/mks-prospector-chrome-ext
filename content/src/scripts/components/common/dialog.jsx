@@ -9,7 +9,9 @@ class Dialog extends Component{
     this.state = {
       loadingMessage : '',
       showLoading : false,
-      hideSaveBtn : 'show'
+      hideSaveBtn : 'show',
+      disabled : false,
+      saveBtnTitle : (this.props.saveBtnTitle) ? this.props.saveBtnTitle : "Save"
     };
 
     // preserve the initial state in a new object
@@ -36,6 +38,17 @@ class Dialog extends Component{
    }
 
  }
+ disabledSave(){
+   debugger;
+   this.setState({
+     disabled:true
+   });
+ }
+ enableSave(){
+   this.setState({
+     disabled:false
+   });
+ }
  render(){
     return(
       <div className={`addBox_wrapper_container scfe_field ${this.props.additionalClass}`}>
@@ -60,7 +73,7 @@ class Dialog extends Component{
               <div className={`scfe_save_wrap disable_${this.state.disabled} ${this.state.hideSaveBtn}`} onClick={this.handleSave.bind(this)}>
                   <a className="scfe_ach" href="#">
                       <div className="scfe_save_t">
-                          <span>Save</span>
+                          <span>{this.state.saveBtnTitle}</span>
                       </div>
                       <div className="scfe_save_i_md">
                           <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>

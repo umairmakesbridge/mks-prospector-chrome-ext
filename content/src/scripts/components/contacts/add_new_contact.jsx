@@ -54,8 +54,10 @@ class AddNewContact extends Component{
 
                 });
     if(isValid){
+      this.refs.dialogSubscriberCreate.disabledSave();
       jQuery("div.create_new_contact input").removeClass('hasError');
       this.setState({disabled : true,showStatus : true});
+
       let reqObj = {};
       reqObj['email']=this.state.email
       reqObj['ukey']=this.props.users_details[0].userKey
@@ -96,9 +98,11 @@ class AddNewContact extends Component{
                 //statusMessage : 'Contact created successfully.'
               })
               SuccessAlert({message:"Contact created successfully."});
-              this.setState(this.baseState);
+
               this.props.onEmailSelect(this.state.email);
               this.closeAddContactIntoMks();
+              this.refs.dialogSubscriberCreate.enableSave();
+              this.setState(this.baseState);
               //this.props.contactInfo['subNum'] = jsonResponse[1];
               //this.props.contactInfo['checkSum'] = jsonResponse[2];
 
@@ -137,9 +141,10 @@ class AddNewContact extends Component{
             <Dialog
               saveCallback= {this.addContactIntoMks.bind(this)}
               showTitle={"Create Contact"}
-              ref="dialogSubscriberList1"
+              ref="dialogSubscriberCreate"
               closeCallback = {this.closeAddContactIntoMks.bind(this)}
               additionalClass = {"mks_add_new_contact_wrap"}
+              saveBtnTitle = {"Create"}
             >
             <LoadingMask message={"Creating Contact..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
             <div className="s_contact_found_edit_wraper create_new_contact">
