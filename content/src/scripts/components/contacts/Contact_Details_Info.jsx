@@ -16,7 +16,8 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import Search
        from '../common/Search';
-
+import Tasks
+       from './task/Tasks'
 
 class ContactDetailInfo extends Component{
   constructor(props){
@@ -544,6 +545,14 @@ class ContactDetailInfo extends Component{
                         getSubscriberDetails={this.props.getSubscriberDetails}
                         hideLoadingMask = {this.hideSFMask.bind(this)}
                         />
+                </div>
+
+                <div id="tasks" className="tabcontent mksph_cardbox">
+                      <h3>Task</h3>
+                      <Tasks
+                        users_details={this.users_details}
+                        baseUrl={this.baseUrl}
+                      />
                 </div>
       </div>
     );

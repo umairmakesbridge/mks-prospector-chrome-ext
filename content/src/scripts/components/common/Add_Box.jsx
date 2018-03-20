@@ -1,17 +1,33 @@
 import React,{Component} from 'react';
 import {encodeHTML,decodeHTML}
        from './Encode_Method';
+       import DayPickerInput from 'react-day-picker/DayPickerInput';
+       import MomentLocaleUtils, {
+         formatDate,
+         parseDate,
+       } from 'react-day-picker/moment';
+
 class AddBox extends Component{
     constructor(props){
         super(props);
         console.log('Add Box',this.props.addFieldsObj);
         this.state = {
-          disabled : false
+          disabled : false,
+          selectedDay: undefined
         };
         var _this = this;
         jQuery.each(this.props.addFieldsObj,function(key,value){
-                  _this.state['input'+(key+1)] = "";
-        })
+                  if(value.type=="date"){
+                    _this.state['date'] = "";
+                  }else if(value.type=="li"){
+                    _this.state[value.stateType] = "";
+                  }
+                  else{
+                    _this.state['input'+(key+1)] = "";
+                  }
+
+        });
+        //this.handleDayClick = this.handleDayClick;
         // preserve the initial state in a new object
         this.baseState = this.state
     }
@@ -35,12 +51,13 @@ class AddBox extends Component{
                   console.log(isValid);
                   // If valid Generating Object
                   if(isValid){
-                    jQuery("div.addBox_wrapper_container input").removeClass('hasError');
+                    debugger;
+                    /*jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
                       //setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
-                    }
+                    }*/
 
                   }
     }
@@ -63,26 +80,68 @@ class AddBox extends Component{
       console.log('Show Box Cancel Callback');
       this.props.cancel();
     }
+    clickedLi(stateLi,event){
+      var targetLi = event.currentTarget;
+      $(targetLi).parent().find('li').removeClass('active');
+      $(targetLi).addClass('active');
+      this.setState({
+        [stateLi] : $(targetLi).text()
+      })
+    }
+    handleDayChange(day) {
+      this.setState({ selectedDay: formatDate(day) });
+    }
     generateInputFields(){
 
-     return this.props.addFieldsObj.map((field,key)=>
-                              <input
-                                key={key}
-                                type="text"
-                                name={field.name}
-                                value={this.state['input'+(key+1)]}
-                                onChange={this.handleOnChange.bind(this) }
-                                onKeyPress={this.handleKeyPress.bind(this)}
-                                disabled={this.state.disabled}
-                                id={'input'+(key+1)}
-                                className={field.className}
-                                data-required = {field.required}
-                                data-fieldkey = {field.fieldType}
-                                placeholder = {field.placeholder}
-                              />
-                          );
+     return this.props.addFieldsObj.map((field,key)=>{
+              if(field.type=="date"){
+                return(
+                    <DayPickerInput
+                        key={key}
+                        formatDate={formatDate}
+                        parseDate={parseDate}
+                        placeholder={`${formatDate(new Date())}`}
+                        onDayChange={this.handleDayChange.bind(this)}
+                        value={this.state['input'+(key+1)]}
+                      />
+                )
+              }else if(field.type=="li"){
+                return (
+                  <ul className={field.className}>
+                    {this.generateLi(field.value,field.stateType)}
+                  </ul>
+                )
+              }
+              else{
+                return(
+                  <input
+                    key={key}
+                    type="text"
+                    name={field.name}
+                    value={this.state['input'+(key+1)]}
+                    onChange={this.handleOnChange.bind(this) }
+                    onKeyPress={this.handleKeyPress.bind(this)}
+                    disabled={this.state.disabled}
+                    id={'input'+(key+1)}
+                    className={field.className}
+                    data-required = {field.required}
+                    data-fieldkey = {field.fieldType}
+                    placeholder = {field.placeholder}
+                  />
+                )
+              }
+
+             });
 
                           event => this.setState({tagName : event.target.value})
+    }
+    generateLi(liObj,stateType){
+      let items = liObj.map((obj,key)=>{
+        return(
+          <li className={obj.className} onClick={this.clickedLi.bind(this,stateType)}>{obj.placeholder}</li>
+        )
+      });
+      return items;
     }
     render(){
       if(!this.props.addFieldsObj){
