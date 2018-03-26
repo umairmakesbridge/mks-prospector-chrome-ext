@@ -168,13 +168,13 @@ class AddNewContact extends Component{
             </Dialog>
             <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
         </ToggleDisplay>
-        <div className="btn_wrap ripple" >
-            <span className="mksph_login_btn add_new_btn" onClick={this.showCreateDialog.bind(this)}>
+        <div className="btn_wrap" style={{"width": "180px","textAlign": "center"}}>
+            <span className="mksph_login_btn add_new_btn ripple" onClick={this.showCreateDialog.bind(this)} style={{"display": "inline-block","width": "160px"}}>
             <i className="scf_o_icon scf_o_edit mksicon-Add_Contact mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
               Create Contact</span>
         </div>
-        <div className="btn_wrap ripple" >
-            <span className="mksph_login_btn show_tasks_list ">
+        <div className="btn_wrap" style={{"width": "180px","textAlign": "center"}}>
+            <span className="mksph_login_btn show_tasks_list ripple" style={{"display": "inline-block","width": "160px"}}>
             <i className="scf_o_icon scf_o_edit mksicon-Task_List mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
             Task List</span>
         </div>
