@@ -3071,6 +3071,61 @@ float: right;
   box-shadow: rgb(88, 160, 255) 1px 1px 8px -2px;
 }
 
+/* ==================
+Notes
+=================== */
+.notes_lists_wrap ul{
+  list-style-type: none;
+}
+.notes_lists_wrap ul li._mks_item .cf_silhouette i{
+  color: #fff;
+  line-height: 23px;
+}
+.notes_lists_wrap li._mks_item .cf_silhouette::before {
+    width: 2px;
+    content: "";
+    height: 20px;
+    background: rgb(116, 133, 146);
+    display: block;
+    position: relative;
+    left: 11px;
+    top: -15px;
+}
+.notes_lists_wrap li .cf_silhouette_text{
+    top: -23px;
+    position: relative;
+}
+.notes_lists_wrap li._mks_item .cf_silhouette::after {
+    width: 2px;
+    content: "";
+    height: 13px;
+    background: rgb(116, 133, 146);
+    display: block;
+    position: relative;
+    left: 11px;
+    top: -23px;
+}
+.notes_lists_wrap ul li._mks_item {
+    display: inline-block;
+    position: relative;
+    top: 11px;
+    height: 40px;
+}
+.notes_lists_wrap ul li._mks_item .cf_email{
+  color: rgb(1, 110, 253);
+  font-size: 13px;
+  position: relative;
+  top: -5px;
+}
+.notes_lists_wrap ul li._mks_item .cf_email p{
+  color: rgb(156, 160, 162);
+  clear: both;
+  display: block;
+  font-size: 12px;
+}
+.notes_lists_wrap ul li._mks_item .cf_email p strong{
+  color: rgb(71, 71, 71);
+}
 /* https://github.com/YouCanBookMe/react-datetime*/
 
 .rdt {

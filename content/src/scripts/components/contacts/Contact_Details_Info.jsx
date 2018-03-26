@@ -17,7 +17,9 @@ import {ErrorAlert,SuccessAlert}
 import Search
        from '../common/Search';
 import Tasks
-       from './task/Tasks'
+       from './task/Tasks';
+import Notes
+       from './notes/Notes';
 
 class ContactDetailInfo extends Component{
   constructor(props){
@@ -531,7 +533,17 @@ class ContactDetailInfo extends Component{
                   <span className="mksicon-ArrowNext"></span>
                 </div>
             </div>
-
+            <div id="tasks" className="tabcontent mksph_cardbox">
+                  <h3>Task</h3>
+                  <Tasks
+                    users_details={this.users_details}
+                    baseUrl={this.baseUrl}
+                  />
+            </div>
+            <div id="notes" className="tabcontent mksph_cardbox">
+                <h3>Notes</h3>
+                <Notes />
+            </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>
 
@@ -547,13 +559,7 @@ class ContactDetailInfo extends Component{
                         />
                 </div>
 
-                <div id="tasks" className="tabcontent mksph_cardbox">
-                      <h3>Task</h3>
-                      <Tasks
-                        users_details={this.users_details}
-                        baseUrl={this.baseUrl}
-                      />
-                </div>
+
       </div>
     );
 
