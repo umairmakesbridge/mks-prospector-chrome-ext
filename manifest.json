@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Makesbirdge Sales Assistant",
+  "name": "Makesbridge Sales Assistant",
   "description": "Makesbridge™",
-  "version": "0.0.1.4",
+  "version": "0.0.1.67",
   "background": {
     "scripts": [
       "background.js"
@@ -16,7 +16,7 @@
       "48": "img/icon48.png"
    },
   "browser_action": {
-    "default_title": "Makesbirdge Sales Assistant"
+    "default_title": "Makesbridge Sales Assistant"
   },
   "content_scripts": [
     {

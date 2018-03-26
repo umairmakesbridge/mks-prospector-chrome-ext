@@ -10,6 +10,8 @@ import {GetTimeline,GetServerDate}
        from './activity_components/Filter_Api';
 import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
+import TasksLists
+       from './task/Task_Lists';
 
 class SearchContacts extends Component{
     constructor (props){
@@ -280,6 +282,10 @@ class SearchContacts extends Component{
                   cvstate = {this.state.clickState}
                   serverDate = {this.state.serverDate}
                 />
+            </div>
+
+            <div className="container">
+              <TasksLists />
             </div>
 
               <div className="container">

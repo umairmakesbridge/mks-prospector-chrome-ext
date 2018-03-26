@@ -170,8 +170,13 @@ class AddNewContact extends Component{
         </ToggleDisplay>
         <div className="btn_wrap ripple" >
             <span className="mksph_login_btn add_new_btn" onClick={this.showCreateDialog.bind(this)}>
-            <i className="scf_o_icon scf_o_edit mksicon-Silhouette mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
+            <i className="scf_o_icon scf_o_edit mksicon-Add_Contact mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
               Create Contact</span>
+        </div>
+        <div className="btn_wrap ripple" >
+            <span className="mksph_login_btn show_tasks_list ">
+            <i className="scf_o_icon scf_o_edit mksicon-Task_List mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
+            Task List</span>
         </div>
       </div>
     )

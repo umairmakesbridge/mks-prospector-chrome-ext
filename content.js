@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener(
 
 
           var main = function() {
-            
+
 
             var s = document.createElement('script');
             s.id  = "_mks_main_file";

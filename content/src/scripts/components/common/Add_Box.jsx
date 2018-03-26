@@ -1,11 +1,7 @@
 import React,{Component} from 'react';
 import {encodeHTML,decodeHTML}
        from './Encode_Method';
-       import DayPickerInput from 'react-day-picker/DayPickerInput';
-       import MomentLocaleUtils, {
-         formatDate,
-         parseDate,
-       } from 'react-day-picker/moment';
+var Datetime = require('react-datetime');
 
 class AddBox extends Component{
     constructor(props){
@@ -21,6 +17,8 @@ class AddBox extends Component{
                     _this.state['date'] = "";
                   }else if(value.type=="li"){
                     _this.state[value.stateType] = "";
+                  }else if(value.type=="textarea"){
+                    _this.state[value.id] = "";
                   }
                   else{
                     _this.state['input'+(key+1)] = "";
@@ -88,26 +86,36 @@ class AddBox extends Component{
         [stateLi] : $(targetLi).text()
       })
     }
-    handleDayChange(day) {
-      this.setState({ selectedDay: formatDate(day) });
+    changeDate(momentDate){
+      console.log(momentDate.format('YYYY-MM-DD h:mm:ss'));
+      this.setState({
+        selectedDay : momentDate.format('YYYY-MM-DD h:mm:ss')
+      });
     }
     generateInputFields(){
 
      return this.props.addFieldsObj.map((field,key)=>{
               if(field.type=="date"){
                 return(
-                    <DayPickerInput
-                        key={key}
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date())}`}
-                        onDayChange={this.handleDayChange.bind(this)}
-                        value={this.state['input'+(key+1)]}
-                      />
+                  <Datetime
+                    key={key}
+                    onChange = {this.changeDate.bind(this)}
+                    inputProps = {{placeholder:'Select Date and Time',className:"mks_task_date_time"}}
+                    />
                 )
-              }else if(field.type=="li"){
+              }else if(field.type=="textarea"){
+                  return(
+                    <textarea
+                      key={key}
+                      placeholder = {field.placeholder}
+                      id={field.id}
+                      onChange={this.handleOnChange.bind(this) }
+                    />
+                  )
+              }
+              else if(field.type=="li"){
                 return (
-                  <ul className={field.className}>
+                  <ul key={key} className={field.className}>
                     {this.generateLi(field.value,field.stateType)}
                   </ul>
                 )
@@ -138,7 +146,7 @@ class AddBox extends Component{
     generateLi(liObj,stateType){
       let items = liObj.map((obj,key)=>{
         return(
-          <li className={obj.className} onClick={this.clickedLi.bind(this,stateType)}>{obj.placeholder}</li>
+          <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType)}>{obj.placeholder}</li>
         )
       });
       return items;
