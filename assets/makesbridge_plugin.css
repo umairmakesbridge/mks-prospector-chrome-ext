@@ -3074,6 +3074,9 @@ float: right;
 /* ==================
 Notes
 =================== */
+._mks_NotesWrap{
+  position: relative;
+}
 .notes_lists_wrap ul{
   list-style-type: none;
 }
@@ -3126,6 +3129,17 @@ Notes
 .notes_lists_wrap ul li._mks_item .cf_email p strong{
   color: rgb(71, 71, 71);
 }
+.mks-notestEdit-wrap{
+  cursor: pointer;
+}
+._mks_item:hover .mks-notestEdit-wrap{
+  display: block !important;
+}
+._mks_item:hover .mks-notestNote-wrap{
+  display: none;
+}
+
+
 /* https://github.com/YouCanBookMe/react-datetime*/
 
 .rdt {

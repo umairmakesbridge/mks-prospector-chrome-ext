@@ -66,7 +66,7 @@ this.setState({showAddBox : false});
                               {type:"textarea", className:"",id:"notes" , placeholder:"Add notes about your task here"}
 
                             ] }
-                            boxType={"customFields"}
+                            boxType={"mks_tasksFields"}
                             create={this.createTasks.bind(this)}
                             cancel={this.hideAddCus.bind(this)}
                     />

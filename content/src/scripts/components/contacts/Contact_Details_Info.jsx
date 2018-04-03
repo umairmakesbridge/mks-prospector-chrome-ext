@@ -202,6 +202,15 @@ class ContactDetailInfo extends Component{
               setTimeout(function(){this.setState({loadingMessage:'',showLoading:false})}.bind(this),3000)
               this.props.changeInTagsView();
 
+            }else {
+              ErrorAlert({message : jsonResponse[1]});
+              this.setState({
+                  tagName:'',
+                  showAddBox:false,
+                  tagBtn : '',
+                  loadingMessage:'',showLoading:false
+              })
+
             }
           });
     }.bind(this),3000)
@@ -338,6 +347,7 @@ class ContactDetailInfo extends Component{
       showLoadingSF : false
     })
   }
+
   render(){
     let items = this.props.autoFillTags;
     console.log('Rendering Contact Details');
@@ -538,11 +548,17 @@ class ContactDetailInfo extends Component{
                   <Tasks
                     users_details={this.users_details}
                     baseUrl={this.baseUrl}
+                    contact = {this.props.contact}
                   />
             </div>
             <div id="notes" className="tabcontent mksph_cardbox">
                 <h3>Notes</h3>
-                <Notes />
+                <Notes
+                  users_details={this.users_details}
+                  baseUrl={this.baseUrl}
+                  contact = {this.props.contact}
+                  ref="notesView"
+                  />
             </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>

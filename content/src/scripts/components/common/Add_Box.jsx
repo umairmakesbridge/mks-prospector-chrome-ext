@@ -32,7 +32,8 @@ class AddBox extends Component{
     handleOnSave(){
       console.log('Show Box Save Callback');
 
-      let els = document.querySelectorAll("div.addBox_wrapper_container input");
+      let els = document.querySelectorAll(`div.${this.props.boxType} input`);
+      debugger;
       let requestObj = {};
       let isValid = true;
       console.log(els);
@@ -50,12 +51,12 @@ class AddBox extends Component{
                   // If valid Generating Object
                   if(isValid){
                     debugger;
-                    /*jQuery("div.addBox_wrapper_container input").removeClass('hasError');
+                    jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
                       //setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
-                    }*/
+                    }
 
                   }
     }
@@ -156,7 +157,7 @@ class AddBox extends Component{
         return (<div></div>);
       }
       return (
-        <div className={`addBox_wrapper_container scfe_field`}>
+        <div className={`addBox_wrapper_container scfe_field ${this.props.boxType}`}>
           <h2>{this.props.showTitle}</h2>
           <div className="addBox_input_wrappers">
           {this.generateInputFields()}

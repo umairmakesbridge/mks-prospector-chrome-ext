@@ -396,7 +396,8 @@ class ContactBasicInfo extends Component{
           <ToggleDisplay show={this.state.showAddBox}>
               <AddBox
                 addFieldsObj={ [{name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter field name*"},
-                                {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] } boxType={"customFields"}
+                                {name : "cvlaue", className:"", id: "cvalue",placeholder:"Enter Value"}] }
+                boxType={"customFields"}
                 create={this.addCustomFields.bind(this)}
                 cancel={this.hideAddCus.bind(this)}
                 showTitle={"Add New Custom Field"}

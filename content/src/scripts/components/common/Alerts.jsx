@@ -18,6 +18,7 @@ export const ErrorAlert = (props) => {
 
               var message_box = $('<div class="messagebox messsage_alert messagebox_ ' + cl + '" style=' + inlineStyle + '><span class="alert_icon '+icon+'"></span><h3>' + title + '</h3><p>' + props.message + '</p><a class="alert_close_icon mksicon-Close"></a></div> ');
               $('.mkspanel').append(message_box);
+              setTimeout('$(".messsage_alert").remove()', 4000);
               message_box.find(".alert_close_icon").click(function (e) {
                   message_box.fadeOut("fast", function () {
                       $(this).remove();
