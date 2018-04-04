@@ -127,7 +127,7 @@ class Notes extends Component{
 
 
                   //  this.props.parentProps.toggleLoadingMask();
-                    SuccessAlert({message:jsonResponse.success});
+                    SuccessAlert({message:'Note is added successfully'});
                     this.setState({comment : "",noNotesFound: false});
 
                       this.getNotesLists();
@@ -184,7 +184,7 @@ class Notes extends Component{
 
                   else{
                   //  this.props.parentProps.toggleLoadingMask();
-                    SuccessAlert({message:jsonResponse.success});
+                    SuccessAlert({message:'Note is updated successfully'});
                     this.setState({comment : "",commentId : null,showUpdate : 'hide',showAddBtn : 'show'});
 
                       this.getNotesLists();
@@ -223,7 +223,7 @@ class Notes extends Component{
                   }
 
                   else{
-                    SuccessAlert({message:jsonResponse.success});
+                    SuccessAlert({message:'Note is deleted successfully'});
                     this.setState({comment : "",commentId : null,showUpdate : 'hide',showAddBtn : 'show'});
 
                       this.getNotesLists();
