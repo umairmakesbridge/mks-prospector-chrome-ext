@@ -297,7 +297,7 @@ class Notes extends Component{
                  <textarea
                    value={this.state.comment}
                    onChange={event=> { this.setState({comment: event.target.value }) } }
-                   onKeyPress = {this.handleOnEnter.bind(this)}
+                  
                    placeholder="Add your notes here"
                   />
                 <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>
