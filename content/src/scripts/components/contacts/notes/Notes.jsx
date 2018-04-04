@@ -52,31 +52,36 @@ class Notes extends Component{
                    .set('Content-Type', 'application/x-www-form-urlencoded')
                    .then((res) => {
                       if(res.status==200){
-                        let jsonResponse =  JSON.parse(res.text);
-                        if (jsonResponse[0] == "err"){
-                            if(jsonResponse[1] == "SESSION_EXPIRED"){
-                              ErrorAlert({message:jsonResponse[1]});
-                              jQuery('.mksph_logout').trigger('click');
-                            }
-                          return false;
-                        }
-                        if(parseInt(jsonResponse.totalCount) > 0){
-                          this.setState({
-                            showLoading : false,
-                            loadingMsg : ''
-                          })
-                          jQuery.each(jsonResponse['comments'][0],function(key,list){
-                                  lists.push(list[0]);
-                          });
-                          this.setState({
-                            notesLists : lists,
-                            showCollapse : ''
-                          });
-                        }else{
-                          this.setState({
-                            noNotesFound : true,
-                            showCollapse : 'hide'
-                          })
+                        try{
+                          let jsonResponse =  JSON.parse(res.text);
+                          if (jsonResponse[0] == "err"){
+                              if(jsonResponse[1] == "SESSION_EXPIRED"){
+                                ErrorAlert({message:jsonResponse[1]});
+                                jQuery('.mksph_logout').trigger('click');
+                              }
+                            return false;
+                          }
+                          if(parseInt(jsonResponse.totalCount) > 0){
+                            this.setState({
+                              showLoading : false,
+                              loadingMsg : ''
+                            })
+                            jQuery.each(jsonResponse['comments'][0],function(key,list){
+                                    lists.push(list[0]);
+                            });
+                            this.setState({
+                              notesLists : lists,
+                              showCollapse : ''
+                            });
+                          }else{
+                            this.setState({
+                              noNotesFound : true,
+                              showCollapse : 'hide'
+                            })
+                          }
+                        }catch(e){
+                          console.log(e);
+                          debugger;
                         }
                       }
                     });
@@ -222,25 +227,23 @@ class Notes extends Component{
           }
           generateNotes(){
             console.log(this.state.notesLists);
-
-            if(!this.state.notesLists){
-              return (<div className="contacts-wrap">
-              <div id="NoContact" className="tabcontent mksph_cardbox">
-                    <h3>Notes</h3>
-                      <p className="not-found">Loading...</p>
-                  </div>
-                      </div>);
-            }
             if(this.state.noNotesFound){
               return(
                 <div className="contacts-wrap">
                 <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showCreateCardBox}`}>
-                      <h3>Notes</h3>
                         <p className="not-found">Notes not found on Makesbridge</p>
                     </div>
                         </div>
               )
             }
+            if(!this.state.notesLists){
+              return (<div className="contacts-wrap">
+              <div id="NoContact" className="tabcontent mksph_cardbox">
+                      <p className="not-found">Loading...</p>
+                  </div>
+                      </div>);
+            }
+
             let ListItems = this.state.notesLists.map((list,key) => {
               var _date = Moment(decodeHTML(list.updationDate),'YYYY-M-D H:m');
               var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
