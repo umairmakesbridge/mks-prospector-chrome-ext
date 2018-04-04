@@ -272,7 +272,7 @@ class Notes extends Component{
                     </div>
                     <div className="cf_email_wrap">
                       <div className="cf_email">
-                        <span className="mkb_text_break mkb_elipsis" title={decodeHTML(list.comment)}>{decodeHTML(list.comment)}</span>
+                        <span className="mkb_text_break mkb_elipsis" title={decodeHTML(list.comment,true)}>{decodeHTML(list.comment,true)}</span>
                             <p><strong>You</strong> made a note at {format.time},{format.date}</p>
                       </div>
 
@@ -297,7 +297,7 @@ class Notes extends Component{
                  <textarea
                    value={this.state.comment}
                    onChange={event=> { this.setState({comment: event.target.value }) } }
-                  
+
                    placeholder="Add your notes here"
                   />
                 <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>
