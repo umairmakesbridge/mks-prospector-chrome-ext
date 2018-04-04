@@ -54,6 +54,7 @@ class Notes extends Component{
                       if(res.status==200){
                         try{
                           let jsonResponse =  JSON.parse(res.text);
+                          let collapse = '';
                           if (jsonResponse[0] == "err"){
                               if(jsonResponse[1] == "SESSION_EXPIRED"){
                                 ErrorAlert({message:jsonResponse[1]});
@@ -69,14 +70,17 @@ class Notes extends Component{
                             jQuery.each(jsonResponse['comments'][0],function(key,list){
                                     lists.push(list[0]);
                             });
+                            collapse = (lists.length > 4) ? 'show' : 'hide';
                             this.setState({
                               notesLists : lists,
-                              showCollapse : ''
+                              showCollapse : collapse
                             });
                           }else{
                             this.setState({
                               noNotesFound : true,
-                              showCollapse : 'hide'
+                              showCollapse : 'hide',
+                              showLoading : false,
+                              loadingMsg : ''
                             })
                           }
                         }catch(e){
@@ -124,7 +128,7 @@ class Notes extends Component{
 
                   //  this.props.parentProps.toggleLoadingMask();
                     SuccessAlert({message:jsonResponse.success});
-                    this.setState({comment : ""});
+                    this.setState({comment : "",noNotesFound: false});
 
                       this.getNotesLists();
                     //this.props.addContactToList();
@@ -188,6 +192,12 @@ class Notes extends Component{
                     //this.setState(this.baseState);
                   }
                 });
+          }
+          confirmDelte(commentId){
+            var r = confirm("Are you sure you want to delete this note?");
+            if (r == true) {
+              this.deleteNote(commentId);
+            }
           }
           deleteNote(commentid){
             this.setState({
@@ -253,7 +263,7 @@ class Notes extends Component{
                     <div className="mks-notestEdit-wrap cf_silhouette_text c_txt_s pclr8 hide" onClick={this.editNote.bind(this,list['commentId.encode'],decodeHTML(list.comment))}>
                       <i className="mksicon-Edit mks-task-icons"></i>
                     </div>
-                    <div className="mks-notestDel-wrap cf_silhouette_text c_txt_s pclr12 hide" onClick={this.deleteNote.bind(this,list['commentId.encode'])}>
+                    <div className="mks-notestDel-wrap cf_silhouette_text c_txt_s pclr12 hide" onClick={this.confirmDelte.bind(this,list['commentId.encode'])}>
                       <i className="mksicon-Delete mks-task-icons"></i>
                     </div>
                     <div className="mks-notestNote-wrap cf_silhouette_text c_txt_s pclr15">
@@ -276,6 +286,7 @@ class Notes extends Component{
             return ListItems;
 
           }
+
            render(){
              return(
                <div className="_mks_NotesWrap">
@@ -293,7 +304,6 @@ class Notes extends Component{
                       <ul>
                         {this.generateNotes()}
                       </ul>
-
                   </div>
                   <div className={`${this.state.collapseExpand} ${this.state.showCollapse}`} onClick={this.toggleHeight.bind(this)}>
                     <span>{this.state.collapseMsg}</span>
