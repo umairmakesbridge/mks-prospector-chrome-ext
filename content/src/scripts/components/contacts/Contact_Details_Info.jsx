@@ -543,7 +543,7 @@ class ContactDetailInfo extends Component{
                   <span className="mksicon-ArrowNext"></span>
                 </div>
             </div>
-            <div id="tasks" className="tabcontent mksph_cardbox">
+            <div id="tasks" className="tabcontent mksph_cardbox hide">
                   <h3>Task</h3>
                   <Tasks
                     users_details={this.users_details}

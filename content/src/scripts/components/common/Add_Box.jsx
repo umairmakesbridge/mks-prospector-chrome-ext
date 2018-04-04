@@ -33,7 +33,6 @@ class AddBox extends Component{
       console.log('Show Box Save Callback');
 
       let els = document.querySelectorAll(`div.${this.props.boxType} input`);
-      debugger;
       let requestObj = {};
       let isValid = true;
       console.log(els);
@@ -50,12 +49,11 @@ class AddBox extends Component{
                   console.log(isValid);
                   // If valid Generating Object
                   if(isValid){
-                    debugger;
                     jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
-                      //setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
+                      setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
                     }
 
                   }

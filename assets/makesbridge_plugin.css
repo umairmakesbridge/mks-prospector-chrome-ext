@@ -586,6 +586,9 @@ li.click_default {
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
 }
+.height210{
+  max-height: 210px;
+}
 .height100{
   max-height: 103px;
 }
@@ -631,8 +634,8 @@ input.hasError {
   color : #04aced !important;
 }
 .mkb_text_break{
-  width : "245px";
-  display: "block";
+  width : 245px;
+  display: block;
   wordWrap: "break-word";
 }
 .mkb_elipsis{
@@ -2848,8 +2851,8 @@ Add new Contact
   margin: 5px 0 0px 18px;
 }
 .add_new_btn{
-  border-radius: 15px 0px 0px 15px;
-  /* border-radius: 15px; */
+  /* border-radius: 15px 0px 0px 15px; */
+  border-radius: 15px;
   font-size: 11px;
   text-transform: capitalize;
 }
@@ -3129,16 +3132,20 @@ Notes
 .notes_lists_wrap ul li._mks_item .cf_email p strong{
   color: rgb(71, 71, 71);
 }
-.mks-notestEdit-wrap{
+.mks-notestEdit-wrap,.mks-notestDel-wrap{
   cursor: pointer;
 }
-._mks_item:hover .mks-notestEdit-wrap{
+._mks_item:hover .mks-notestEdit-wrap,._mks_item:hover .mks-notestDel-wrap{
   display: block !important;
 }
 ._mks_item:hover .mks-notestNote-wrap{
   display: none;
 }
-
+.mks-notestDel-wrap{
+    top: -48px !important;
+    left: 26px;
+    z-index: 1;
+}
 
 /* https://github.com/YouCanBookMe/react-datetime*/
 

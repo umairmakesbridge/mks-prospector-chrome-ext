@@ -25,7 +25,9 @@ class Notes extends Component{
                  showUpdate : 'hide',
                  collapseMsg : 'Click to expand',
                  collapseExpand : 'expand',
-                 setFullHeight : ''
+                 setFullHeight : '',
+                 noNotesFound : false,
+                 showCollapse : ''
                }
                this.baseUrl = this.props.baseUrl;
                // preserve the initial state in a new object
@@ -44,7 +46,7 @@ class Notes extends Component{
             var Url = this.baseUrl
                             +'/io/subscriber/comments/?BMS_REQ_TK='
                             + this.props.users_details[0].bmsToken +'&type=getComments&subNum='+this.props.contact.subNum+'&ukey='+this.props.users_details[0].userKey
-                            +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId;
+                            +'&isMobileLogin=Y&orderBy=updationTime&order=desc&userId='+this.props.users_details[0].userId;
             request
                   .get(Url)
                    .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -68,7 +70,13 @@ class Notes extends Component{
                           });
                           this.setState({
                             notesLists : lists,
+                            showCollapse : ''
                           });
+                        }else{
+                          this.setState({
+                            noNotesFound : true,
+                            showCollapse : 'hide'
+                          })
                         }
                       }
                     });
@@ -176,7 +184,7 @@ class Notes extends Component{
                   }
                 });
           }
-          deleteNote(){
+          deleteNote(commentid){
             this.setState({
               showLoading : true,
               loadingMsg : 'deleting note...'
@@ -185,7 +193,7 @@ class Notes extends Component{
                .set('Content-Type', 'application/x-www-form-urlencoded')
                .send({
                          subNum: this.props.contact.subNum
-                        ,commentIds:this.state.commentId
+                        ,commentIds:commentid
                         ,ukey:this.props.users_details[0].userKey
                         ,isMobileLogin:'Y'
                         ,userId:this.props.users_details[0].userId
@@ -209,13 +217,30 @@ class Notes extends Component{
                   }
                 });
           }
+          cancelNote(){
+              this.setState({comment : "",commentId : null,showUpdate : 'hide',showAddBtn : 'show'});
+          }
           generateNotes(){
             console.log(this.state.notesLists);
 
             if(!this.state.notesLists){
-              return (<div></div>);
+              return (<div className="contacts-wrap">
+              <div id="NoContact" className="tabcontent mksph_cardbox">
+                    <h3>Notes</h3>
+                      <p className="not-found">Loading...</p>
+                  </div>
+                      </div>);
             }
-
+            if(this.state.noNotesFound){
+              return(
+                <div className="contacts-wrap">
+                <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showCreateCardBox}`}>
+                      <h3>Notes</h3>
+                        <p className="not-found">Notes not found on Makesbridge</p>
+                    </div>
+                        </div>
+              )
+            }
             let ListItems = this.state.notesLists.map((list,key) => {
               var _date = Moment(decodeHTML(list.updationDate),'YYYY-M-D H:m');
               var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
@@ -225,13 +250,16 @@ class Notes extends Component{
                     <div className="mks-notestEdit-wrap cf_silhouette_text c_txt_s pclr8 hide" onClick={this.editNote.bind(this,list['commentId.encode'],decodeHTML(list.comment))}>
                       <i className="mksicon-Edit mks-task-icons"></i>
                     </div>
+                    <div className="mks-notestDel-wrap cf_silhouette_text c_txt_s pclr12 hide" onClick={this.deleteNote.bind(this,list['commentId.encode'])}>
+                      <i className="mksicon-Delete mks-task-icons"></i>
+                    </div>
                     <div className="mks-notestNote-wrap cf_silhouette_text c_txt_s pclr15">
                       <i className="mksicon-Notepad mks-task-icons"></i>
                       </div>
                     </div>
                     <div className="cf_email_wrap">
                       <div className="cf_email">
-                        <span >{decodeHTML(list.comment)}</span>
+                        <span className="mkb_text_break mkb_elipsis" title={decodeHTML(list.comment)}>{decodeHTML(list.comment)}</span>
                             <p><strong>You</strong> made a note at {format.time},{format.date}</p>
                       </div>
 
@@ -251,20 +279,20 @@ class Notes extends Component{
                  <LoadingMask message={this.state.loadingMsg} showLoading={this.state.showLoading} />
                  <a className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn ${this.state.showAddBtn}`}  onClick={this.addNewNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>save</a>
                  <a className={`mkb_btn mkb_cf_btn pull-right c_txt_s_blue ${this.state.showUpdate}`}  onClick={this.updateNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"56px"}}>update</a>
-                 <a className={`mkb_btn mkb_cf_btn pull-right mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.deleteNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>delete</a>
+                 <a className={`mkb_btn mkb_cf_btn pull-right mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>cancel</a>
                  <textarea
                    value={this.state.comment}
                    onChange={event=> { this.setState({comment: event.target.value }) } }
                    onKeyPress = {this.handleOnEnter.bind(this)}
                    placeholder="Add your notes here"
                   />
-                <div className={`height90 ${this.state.setFullHeight} notes_lists_wrap`}>
+                <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>
                       <ul>
                         {this.generateNotes()}
                       </ul>
 
                   </div>
-                  <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
+                  <div className={`${this.state.collapseExpand} ${this.state.showCollapse}`} onClick={this.toggleHeight.bind(this)}>
                     <span>{this.state.collapseMsg}</span>
                     <span className="mksicon-ArrowNext"></span>
                   </div>

@@ -284,7 +284,7 @@ class SearchContacts extends Component{
                 />
             </div>
 
-            <div className="container">
+            <div className="container hide">
               <TasksLists />
             </div>
 
