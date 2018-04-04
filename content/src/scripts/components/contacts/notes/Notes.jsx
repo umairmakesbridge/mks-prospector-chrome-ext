@@ -295,7 +295,7 @@ class Notes extends Component{
                  <a className={`mkb_btn mkb_cf_btn pull-right c_txt_s_blue ${this.state.showUpdate}`}  onClick={this.updateNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"56px"}}>update</a>
                  <a className={`mkb_btn mkb_cf_btn pull-right mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>cancel</a>
                  <textarea
-                   value={this.state.comment}
+                   value={decodeHTML(this.state.comment,true)}
                    onChange={event=> { this.setState({comment: event.target.value }) } }
 
                    placeholder="Add your notes here"
