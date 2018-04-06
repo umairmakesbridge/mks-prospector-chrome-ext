@@ -3141,6 +3141,7 @@ Notes
   clear: both;
   display: block;
   font-size: 12px;
+  padding-top: 4px;
 }
 .notes_lists_wrap ul li._mks_item .cf_email p strong{
   color: rgb(71, 71, 71);

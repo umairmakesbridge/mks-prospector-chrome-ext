@@ -341,6 +341,7 @@ class ContactInfo extends Component{
 
   }
   openNotes(){
+    this.refs.ContactDetailInfoView.refs.notesView.cancelNote();
     $('.makesbridge_plugin').animate({
         scrollTop: $("._mks_NotesWrap").offset().top - 100
     }, 800);
@@ -568,7 +569,7 @@ class ContactInfo extends Component{
                                                                 </a>
                                                                     </div>
                                                                 </li>
-                                                                <li data-tip="Open Notes" onClick={this.openNotes.bind(this)}>
+                                                                <li data-tip="Add Notes" onClick={this.openNotes.bind(this)}>
                                                                   <ReactTooltip />
                                                                   <div className="scf_option_icon ripple top_manage_lists">
                                                                     <a href="#" style={{textDecoration: 'unset'}}>
@@ -634,6 +635,7 @@ class ContactInfo extends Component{
                                           getSubscriberDetails = {this.getSubscriberDetails.bind(this)}
                                           autoFillTags = {this.state.autoFillTags}
                                           loadingMaskAppear = {this.state.loadingMaskAppear}
+                                          ref="ContactDetailInfoView"
                                           />
                                       </ToggleDisplay>
                                     <ToggleDisplay show={this.state.showActivity}>
