@@ -12,6 +12,9 @@ import LoadingMask
        from '../../common/Loading_Mask';
 import {ErrorAlert,SuccessAlert}
        from '../../common/Alerts';
+       import ReactTooltip
+               from 'react-tooltip';
+
 class Notes extends Component{
            constructor(props){
                super(props);
@@ -272,7 +275,8 @@ class Notes extends Component{
                     </div>
                     <div className="cf_email_wrap">
                       <div className="cf_email">
-                        <span className="mkb_text_break mkb_elipsis" title={decodeHTML(list.comment,true)}>{decodeHTML(list.comment,true)}</span>
+                        <span className="mkb_text_break" title={decodeHTML(list.comment,true)}>  {decodeHTML(list.comment,true)}</span>
+
                             <p><strong>You</strong> made a note at {format.time},{format.date}</p>
                       </div>
 
@@ -292,12 +296,13 @@ class Notes extends Component{
                <div className="_mks_NotesWrap">
                  <LoadingMask message={this.state.loadingMsg} showLoading={this.state.showLoading} />
                  <a className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn ${this.state.showAddBtn}`}  onClick={this.addNewNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>save</a>
+                 <a className={`mkb_btn mkb_cf_btn pull-right mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>close</a>
                  <a className={`mkb_btn mkb_cf_btn pull-right c_txt_s_blue ${this.state.showUpdate}`}  onClick={this.updateNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"56px"}}>update</a>
-                 <a className={`mkb_btn mkb_cf_btn pull-right mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>cancel</a>
+
                  <textarea
                    value={decodeHTML(this.state.comment,true)}
                    onChange={event=> { this.setState({comment: event.target.value }) } }
-
+                   style={{"minHeight":"60px"}}
                    placeholder="Add your notes here"
                   />
                 <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>

@@ -2219,6 +2219,9 @@ ul.top_manager_ul_wraps.six .top_manage_lists .wrap_scf_o_i {
 
     width: 47px;
 }
+ul.top_manager_ul_wraps.seven .top_manage_lists .wrap_scf_o_i {
+    width: 39px;
+}
 ul.top_manager_ul_wraps.five .top_manage_lists .wrap_scf_o_i{
 width: 58px;
 }
@@ -3088,7 +3091,7 @@ Notes
   line-height: 23px;
 }
 .notes_lists_wrap li._mks_item .cf_silhouette::before {
-    width: 2px;
+    width: 0px;
     content: "";
     height: 20px;
     background: rgb(116, 133, 146);
@@ -3102,7 +3105,7 @@ Notes
     position: relative;
 }
 .notes_lists_wrap li._mks_item .cf_silhouette::after {
-    width: 2px;
+    width: 0px;
     content: "";
     height: 13px;
     background: rgb(116, 133, 146);
@@ -3115,7 +3118,17 @@ Notes
     display: inline-block;
     position: relative;
     top: 11px;
-    height: 40px;
+    height: auto;
+}
+.notes_lists_wrap ul li._mks_item .cf_silhouette {
+  position: absolute;
+  z-index: 2;
+}
+.notes_lists_wrap ul li._mks_item .cf_email_wrap{
+  padding-left: 25px;
+  border-left: 2px solid rgb(116, 133, 146);
+  left: 12px;
+  position: relative;
 }
 .notes_lists_wrap ul li._mks_item .cf_email{
   color: rgb(1, 110, 253);

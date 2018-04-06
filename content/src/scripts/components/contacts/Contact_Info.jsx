@@ -174,7 +174,7 @@ class ContactInfo extends Component{
                                   contactnotFound : false,
                                   showJumpSF : (jsonResponse.sfUrl) ? 'show' : 'hide',
                                   showAddSf  : (!jsonResponse.sfUrl) ? 'show': 'hide',
-                                  showActionButtons : (this.props.users_details[0].isSalesforceUser) ? "six" : "five",
+                                  showActionButtons : (this.props.users_details[0].isSalesforceUser) ? "seven" : "five",
                                   showSfActionBtn : (this.props.users_details[0].isSalesforceUser) ? "show" : "hide",
                                   hideRightBorder : (this.props.users_details[0].isSalesforceUser) ? "" : "mks_hideRightBorder"
                                 });
@@ -339,6 +339,11 @@ class ContactInfo extends Component{
       }.bind(this),100);
     }
 
+  }
+  openNotes(){
+    $('.makesbridge_plugin').animate({
+        scrollTop: $("._mks_NotesWrap").offset().top - 100
+    }, 800);
   }
   saveSalesforce(){
     //alert('Call child save function for SF');
@@ -563,7 +568,18 @@ class ContactInfo extends Component{
                                                                 </a>
                                                                     </div>
                                                                 </li>
-
+                                                                <li data-tip="Open Notes" onClick={this.openNotes.bind(this)}>
+                                                                  <ReactTooltip />
+                                                                  <div className="scf_option_icon ripple top_manage_lists">
+                                                                    <a href="#" style={{textDecoration: 'unset'}}>
+                                                                      <div className="wrap_scf_o_i">
+                                                                        <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
+                                                                          <div className="scf_o_icon scf_o_edit mksicon-Notepad mks_manageList_wrap"></div>
+                                                                          </div>
+                                                                          </div>
+                                                                      </a>
+                                                                          </div>
+                                                                      </li>
 
 
                                                                             <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
