@@ -342,9 +342,11 @@ class ContactInfo extends Component{
   }
   openNotes(){
     this.refs.ContactDetailInfoView.refs.notesView.cancelNote();
+
     $('.makesbridge_plugin').animate({
         scrollTop: $("._mks_NotesWrap").offset().top - 100
     }, 800);
+      $('#note_textarea').focus()
   }
   saveSalesforce(){
     //alert('Call child save function for SF');

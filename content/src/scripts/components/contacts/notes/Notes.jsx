@@ -304,6 +304,8 @@ class Notes extends Component{
                    onChange={event=> { this.setState({comment: event.target.value }) } }
                    style={{"minHeight":"60px",'fontSize' : '13px'}}
                    placeholder="Add your notes here"
+                   maxLength="500"
+                   id="note_textarea"
                   />
                 <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>
                       <ul>
