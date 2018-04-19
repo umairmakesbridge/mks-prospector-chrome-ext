@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Makesbridge Sales Assistant",
   "description": "Makesbridge™",
-  "version": "0.0.1.67",
+  "version": "0.0.1.70",
   "background": {
     "scripts": [
       "background.js"

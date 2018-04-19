@@ -244,7 +244,7 @@ class Notes extends Component{
               return(
                 <div className="contacts-wrap">
                 <div id="NoContact" className={`tabcontent mksph_cardbox ${this.state.showCreateCardBox}`}>
-                        <p className="not-found">Notes not found on Makesbridge</p>
+                        <p className="not-found">No Notes found, You can add note any time.</p>
                     </div>
                         </div>
               )
