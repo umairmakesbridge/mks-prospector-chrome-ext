@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import {encodeHTML,decodeHTML}
        from './Encode_Method';
+import DatePicker
+       from 'react-datepicker';
+import Moment
+       from 'moment';
+import TimePicker from 'react-times';
+
 var Datetime = require('react-datetime');
 
 class AddBox extends Component{
@@ -9,8 +15,15 @@ class AddBox extends Component{
         console.log('Add Box',this.props.addFieldsObj);
         this.state = {
           disabled : false,
-          selectedDay: undefined
+          selectedDay: '',
+          startDate : Moment(),
+          times : "13:05",
+          btnText : "Save",
+          extra_btn_class : '',
+          saveType : "create",
+
         };
+
         var _this = this;
         jQuery.each(this.props.addFieldsObj,function(key,value){
                   if(value.type=="date"){
@@ -21,13 +34,14 @@ class AddBox extends Component{
                     _this.state[value.id] = "";
                   }
                   else{
-                    _this.state['input'+(key+1)] = "";
+                     _this.state['input'+(key+1)] = "";
                   }
 
         });
+        this.handleChange = this.handleChange.bind(this);
         //this.handleDayClick = this.handleDayClick;
         // preserve the initial state in a new object
-        this.baseState = this.state
+        this.baseState = _this.state
     }
     handleOnSave(){
       console.log('Show Box Save Callback');
@@ -54,12 +68,51 @@ class AddBox extends Component{
                     if(this.props.boxType=="customFields"){
                       this.props.create("customFields",[els[0].value,els[1].value]);
                       setTimeout(function(){this.setState(this.baseState);}.bind(this),2000);
+                    }else if(this.props.boxType == "mks_tasksFields" && this.state.saveType=="create"){
+                        console.log('Time to tasks');
+                        this.props.create(this.state);
+                    }else if(this.props.boxType == "mks_tasksFields" && this.state.saveType=="update"){
+                        this.props.update(this.state);
                     }
+
 
                   }
     }
+    handleChange(date) {
+       this.setState({
+         startDate: date,
+         selectedDay : date.format("YYYY-MM-DD") + " " + this.state.times
+       });
+     }
+    editTaskForm(editObj){
+      var _date = Moment(decodeHTML(editObj.creationTime),'YYYY-M-D H:m');
+      var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
+      var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm")} //2018-03-13 06:58:00
+      this.setState({
+         selectedDay : selFormat.date + " " + selFormat.time,
+         startDate : _date,
+         times : format.time,
+         input2 : editObj.taskName,
+         notes : editObj.notes,
+         btnText : "Update",
+         extra_btn_class : "mks__update_btn",
+         saveType : 'update'
+      });
+      this.state['taskId'] = editObj.taskId;
+      jQuery('.mks_priorty_wrap li').removeClass('active');
+      jQuery('.mks_ecc_wrap li').removeClass('active');
+      jQuery('.mks_priotiry_'+editObj.priority).addClass('active');
+      jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
+      console.log(this.state);
+    }
+    handleUpdate (){
+
+    }
     setDefaultState(){
+      debugger;
       this.setState(this.baseState);
+      $('.mks_priorty_wrap li').removeClass('active');
+      $('.mks_ecc_wrap li').removeClass('active');
     }
     handleKeyPress(event){
         const code = event.keyCode || event.which;
@@ -77,30 +130,52 @@ class AddBox extends Component{
       console.log('Show Box Cancel Callback');
       this.props.cancel();
     }
-    clickedLi(stateLi,event){
+    clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
       $(targetLi).parent().find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({
-        [stateLi] : $(targetLi).text()
+        [stateLi] : (value) ? value : $(targetLi).text()
       })
     }
-    changeDate(momentDate){
-      console.log(momentDate.format('YYYY-MM-DD h:mm:ss'));
+
+
+    componentDidMount(){
+      console.log(this.state.selectedDay);
+    }
+    onTimeChange(time) {
+      // do something
+      console.log(time);
       this.setState({
-        selectedDay : momentDate.format('YYYY-MM-DD h:mm:ss')
+        times : time,
+        selectedDay : this.state.startDate + " " + time
       });
     }
     generateInputFields(){
-
+      // <Datetime
+      //   key={key}
+      //   onChange = {this.changeDate.bind(this)}
+      //   inputProps = {{placeholder:'Select Date and Time',className:"mks_task_date_time"}}
+      //   defaultValue= {this.state.selectedDay}
+      //   />
      return this.props.addFieldsObj.map((field,key)=>{
               if(field.type=="date"){
                 return(
-                  <Datetime
-                    key={key}
-                    onChange = {this.changeDate.bind(this)}
-                    inputProps = {{placeholder:'Select Date and Time',className:"mks_task_date_time"}}
+                <span className="date_wrapper__mks">
+                  <DatePicker
+                      selected={this.state.startDate}
+                      onChange={this.handleChange}
+                      className={"react-date-wrapper_mks"}
+                  />
+                  <TimePicker
+                      theme="classic"
+                      withoutIcon={true}
+                      time={this.state.times}
+                      onTimeChange={this.onTimeChange.bind(this)}
+
                     />
+
+                </span>
                 )
               }else if(field.type=="textarea"){
                   return(
@@ -109,6 +184,7 @@ class AddBox extends Component{
                       placeholder = {field.placeholder}
                       id={field.id}
                       onChange={this.handleOnChange.bind(this) }
+                      value = {this.state[field.id]}
                     />
                   )
               }
@@ -145,7 +221,7 @@ class AddBox extends Component{
     generateLi(liObj,stateType){
       let items = liObj.map((obj,key)=>{
         return(
-          <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType)}>{obj.placeholder}</li>
+          <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
         )
       });
       return items;
@@ -171,10 +247,10 @@ class AddBox extends Component{
                         </div>
                     </a>
                 </div>
-                <div className={`scfe_save_wrap disable_${this.state.disabled}`} onClick={this.handleOnSave.bind(this)}>
+                <div className={`scfe_save_wrap disable_${this.state.disabled} ${this.state.extra_btn_class}`} onClick={this.handleOnSave.bind(this)}>
                     <a className="scfe_ach" href="#">
                         <div className="scfe_save_t">
-                            <span>Save</span>
+                            <span>{this.state.btnText}</span>
                         </div>
                         <div className="scfe_save_i_md">
                             <div className="scfe_save_i" aria-hidden="true" data-icon="&#xe905;"></div>

@@ -12,7 +12,8 @@ import {ErrorAlert,SuccessAlert}
        from '../common/Alerts';
 import TasksLists
        from './task/Task_Lists';
-
+import ToggleDisplay
+       from 'react-toggle-display';
 class SearchContacts extends Component{
     constructor (props){
       super(props);
@@ -262,7 +263,9 @@ class SearchContacts extends Component{
 
     }
 
-
+    toggleUpTaskList(){
+      console.log('Reached destination from where toggle the tasks lists.');
+    }
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -285,7 +288,9 @@ class SearchContacts extends Component{
             </div>
 
             <div className="container hide">
-              <TasksLists />
+              <TasksLists
+                contact={this.state.subscriber}
+              />
             </div>
 
               <div className="container">

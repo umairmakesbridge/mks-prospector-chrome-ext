@@ -44,7 +44,7 @@ class App extends Component {
       islogOut           : 'hide',
       gmail_emails_body: [],
       isLoggedOut      : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
+      baseUrl          : 'https://test.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
@@ -65,6 +65,7 @@ class App extends Component {
     this.goBack = this.goBack.bind(this);
     this.createNewList = this.createNewList.bind(this);
     this.checkSubscriberList = this.checkSubscriberList.bind(this);
+    //this.ToggleTaskList = this.toggleTaskList.bind(this);
   }
 
   componentWillMount() {
@@ -259,7 +260,9 @@ class App extends Component {
     jQuery("#lists_option").animate({width: 'toggle'})
     event.stopPropagation()
   }
-
+  ToggleTaskList(event){
+    this.refs.gmailemail.showHideTaskList()
+  }
  hideTopMenu (event){
    jQuery("#lists_option").hide();
    event.stopPropagation()
@@ -270,7 +273,7 @@ class App extends Component {
       return { selectedEmail : null, showContacts: false,gmailEmails: true };
   });
  }
-
+ 
  logOut(){
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
@@ -278,6 +281,7 @@ class App extends Component {
    this.setState(this.baseState);
   this.refs.gmailemail.resetGmail();
  }
+ 
 
   render() {
     return (
@@ -349,10 +353,11 @@ class App extends Component {
         </ToggleDisplay>
         <ToggleDisplay show={this.state.gmailEmails}>
         <div className="topbtn_wraps_contact_tasks">
-        <AddNewContact 
+        <AddNewContact
           users_details={this.state.users_details}
           baseUrl = {this.state.baseUrl}
           onEmailSelect = {this.onEmailSelect}
+          onTaskListBtn = {this.ToggleTaskList.bind(this)}
         />
         </div>
         <GmailEmail

@@ -31,6 +31,9 @@ class GmailEmailList extends Component{
           });
         }
       }
+      showHideTaskList(){
+        this.refs.searchcontacts.toggleUpTaskList()
+      }
       render(){
         if(this.props.gmail_email_list && this.props.gmail_email_list.length == 0){
           return (<div>
