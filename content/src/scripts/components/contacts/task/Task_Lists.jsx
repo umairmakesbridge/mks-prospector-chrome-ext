@@ -50,7 +50,6 @@ class TasksLists extends Component{
         order: "desc",
         offset : 0,
         bucket : 20,
-        tasksList : "",
         ukey:this.props.users_details[0].userKey,
         isMobileLogin:'Y',
         userId:this.props.users_details[0].userId
