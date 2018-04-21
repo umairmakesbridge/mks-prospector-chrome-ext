@@ -70,13 +70,15 @@ class Notes extends Component{
                               showLoading : false,
                               loadingMsg : ''
                             })
+                            let lengthOfString = 0;
                             jQuery.each(jsonResponse['comments'][0],function(key,list){
                                     lists.push(list[0]);
+                                    lengthOfString = lengthOfString + list[0].comment.length;
                             });
-                            collapse = (lists.length > 4) ? 'show' : 'hide';
+                            debugger;
+
                             this.setState({
-                              notesLists : lists,
-                              showCollapse : collapse
+                              notesLists : lists
                             });
                           }else{
                             this.setState({
@@ -196,6 +198,20 @@ class Notes extends Component{
                   }
                 });
           }
+          componentDidUpdate(){
+            console.log('Notes Component did updated');
+            let heightofNotes = 0;
+            $.each($('._mks_item'),function(key,val){
+              heightofNotes = heightofNotes + $(val).outerHeight();
+            })
+            if(heightofNotes > 190 && this.state.showCollapse == 'hide'){
+              this.state['showCollapse'] = 'show';
+              this.forceUpdate();
+            }else{
+              this.state['showCollapse'] = 'hide'
+            }
+
+          }
           confirmDelte(commentId){
             var r = confirm("Are you sure you want to delete this note?");
             if (r == true) {
@@ -239,7 +255,7 @@ class Notes extends Component{
               this.setState({comment : "",commentId : null,showUpdate : 'hide',showAddBtn : 'show'});
           }
           generateNotes(){
-            console.log(this.state.notesLists);
+            console.log('Generate Notes : ',this.state.notesLists);
             if(this.state.noNotesFound){
               return(
                 <div className="contacts-wrap">

@@ -25,10 +25,21 @@ class Tasks extends Component{
       showAddBox : false,
       showLoading : false,
       showEditAddBox : false,
+       collapseExpand : 'expand',
+        collapseMsg : 'Click to expand',
+        showCollapse : '',
       tasks : ""
     }
     this.mapicons ={
-      "email" : "mksicon-Mail"
+      "email" : "mksicon-Mail",
+      "Lunch" : "mksicon-Lunch",
+      "Discovery" : "mksicon-Discovery",
+      "call" : "mksicon-Phone",
+      "email" : "mksicon-Mail",
+      "Breakfast" : "mksicon-Breakfast",
+      "Meeting" : "mksicon-Meeting",
+      "Proposal" : "mksicon-Proposal",
+      "Demo"  : "mksicon-Demo"
     }
     this.priorityIcons = {
       "low" : {"topClass":"mks_priority_low pclr9","icon" : "mksicon-Triangle_Down"},
@@ -96,8 +107,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "getTasks",
       subNum: this.props.contact.subNum,
-      fromDate: "03-06-2018",
-      toDate:"04-21-2018",
+      fromDate: "2018-04-01",
+      toDate:"2018-04-30",
       orderBy : "updationTime",
       order: "desc",
       offset : 0,
@@ -237,6 +248,14 @@ class Tasks extends Component{
             }
           });
   }
+  toggleHeight(){
+    if(this.state.setFullHeight){
+      this.setState({setFullHeight : '',collapseMsg: 'Click to expand',collapseExpand:'expand'});
+    }else{
+      this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
+    }
+  }
+
   render(){
     if(!this.state.tasks){
       return (<div style={{position: "relative"}}>
@@ -288,10 +307,8 @@ class Tasks extends Component{
               </ToggleDisplay>
                   <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
                   <p className="not-found">No tasks found.</p>
-
                   </div>)
     }
-
 
     return (
       <div style={{position: "relative"}}>
@@ -341,10 +358,13 @@ class Tasks extends Component{
 
     </ToggleDisplay>
     <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
-    <div className="content-wrapper" >
+    <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`} >
           {this.generateTasksList()}
     </div>
-
+    <div className={`${this.state.collapseExpand} ${this.state.showCollapse}`} onClick={this.toggleHeight.bind(this)}>
+      <span>{this.state.collapseMsg}</span>
+      <span className="mksicon-ArrowNext"></span>
+    </div>
 
 
   </div>

@@ -943,6 +943,7 @@ START contact found page
 .cf_email{
  height: 25px;
  display: table;
+ position: relative;
 }
 
 .cf_email p{
@@ -971,6 +972,46 @@ START contact found page
   margin-right: 5px;
 }
 .contact_found:hover > .cf_email p,.contact_found:hover .ckvwicon{color: #fff;}
+
+.c_txt_s_empty{
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ddd;
+    background: transparent !important;
+    top: 6px;
+    position: relative;
+    left: 5px;
+}
+.c_txt_s_completed{
+  width: 18px;
+  height: 18px;
+  background: rgb(35, 206, 140) !important;
+  top: 6px;
+  position: relative;
+  left: 5px;
+}
+._mks_completed_tasks .c_txt_s_completed > i{
+  line-height: 12px !important;
+  font-size: 10px;
+}
+._mks_task-lists_silhouette_text{
+    position: relative;
+    top: -21px;
+    right: 20px;
+    background: transparent !important;
+}
+._mks_task-lists_silhouette_text i{
+  color: rgb(88, 160, 255) !important;
+  font-size: 22px;
+}
+._mks_completed_tasks .contact_found:hover{
+  cursor:default;
+  background: rgb(255, 255, 255);
+  color:#000;
+}
+._mks_completed_tasks .contact_found:hover .ckvwicon {
+    color: rgb(79, 135, 171);;
+}
 /* END contact found page*/
 
 /*=============================================
@@ -3060,30 +3101,46 @@ color: rgb(79, 135, 171);
 float: right;
 }
 ._mks_lists_tasks .mks_task_time{
-  top: -14px;
   position: relative;
-  font-size: 11px;
+  display: inline-block;
+    float: unset;
+    top: 0;
+    left: 0px;
 }
 ._mks_lists_tasks .mks_task_time i{
   position: relative;
     top: 2px;
     font-size: 12px;
 }
-._mks_lists_tasks .mks_priority_high{
-  width: 14px;
-  height: 14px;
-  top: -14px;
-  right: 117px;
+
+._mks_lists_tasks .mks_priority_icon{
+  width: 19px;
+    height: 19px;
+    right: 85px;
+    top: -16px;
 }
+._mks_lists_tasks .mks_priority_icon i{
+  left:5px;
+}
+
 ._mks_lists_tasks .mks_priority_high i{
   font-size: 10px;
     line-height: 0px;
     top: -2px;
     position: relative;
 }
+._mks_lists_tasks .cf_email_wrap{
+  position: relative;
+}
+._mks_lists_tasks .mks_priority_medium i{
+  font-size: 12px;
+  top: 1px;
+left: 3px;
+}
 ._mks_lists_tasks .mks_priority_high i.mksicon-Triangle_Up{
   font-size: 8px;
-  top: -4px;
+  top: -2px;
+  left: 4px
 }
 .show_tasks_list{
   font-size: 11px;

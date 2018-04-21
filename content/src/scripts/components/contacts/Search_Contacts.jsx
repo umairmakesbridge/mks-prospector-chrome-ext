@@ -44,7 +44,8 @@ class SearchContacts extends Component{
                     clickState  : '',
                     serverDate  : '',
                     serachIcon  : 'show',
-                    closeIcon   : 'hide'
+                    closeIcon   : 'hide',
+                    showTasks : false
                   }
     }
 
@@ -264,8 +265,14 @@ class SearchContacts extends Component{
     }
 
     toggleUpTaskList(){
+      this.setState({
+        showTasks : !this.state.showTasks
+      });
+      debugger;
+      this.refs.tasklists.getTaskListofUser();
       console.log('Reached destination from where toggle the tasks lists.');
     }
+
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -286,12 +293,16 @@ class SearchContacts extends Component{
                   serverDate = {this.state.serverDate}
                 />
             </div>
-
-            <div className="container hide">
+            <ToggleDisplay show={this.state.showTasks}>
+            <div className="container">
               <TasksLists
-                contact={this.state.subscriber}
+                users_details={this.props.users_details}
+                baseUrl = {this.props.baseUrl}
+                onEmailSelect={this.props.onEmailSelect}
+                ref="tasklists"
               />
             </div>
+            </ToggleDisplay>
 
               <div className="container">
                 <div className='searchBar'>

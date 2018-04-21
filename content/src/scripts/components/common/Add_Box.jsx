@@ -5,8 +5,10 @@ import DatePicker
        from 'react-datepicker';
 import Moment
        from 'moment';
-import TimePicker from 'react-times';
-
+import TimePicker
+       from 'react-times';
+import ReactTooltip
+       from 'react-tooltip';
 var Datetime = require('react-datetime');
 
 class AddBox extends Component{
@@ -218,11 +220,23 @@ class AddBox extends Component{
 
                           event => this.setState({tagName : event.target.value})
     }
+    /*return(
+      {(obj.tooltip &&
+        <span>
+          <li key={key} className={obj.className} data-tip={obj.id} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
+          <ReactTooltip />
+        </span>
+      )}
+
+    )*/
     generateLi(liObj,stateType){
       let items = liObj.map((obj,key)=>{
-        return(
-          <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
-        )
+        return (obj.tooltip) ?
+              (<span>
+                <li key={key} className={obj.className} data-tip={obj.id} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
+                <ReactTooltip />
+              </span>) :
+              (  <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />)
       });
       return items;
     }
