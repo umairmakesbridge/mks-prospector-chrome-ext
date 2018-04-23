@@ -23,7 +23,7 @@ class AddBox extends Component{
           btnText : "Save",
           extra_btn_class : '',
           saveType : "create",
-
+          showUpdateTitle : ''
         };
 
         var _this = this;
@@ -44,6 +44,9 @@ class AddBox extends Component{
         //this.handleDayClick = this.handleDayClick;
         // preserve the initial state in a new object
         this.baseState = _this.state
+    }
+    setDisableFalse(){
+      this.setState({disabled : false})
     }
     handleOnSave(){
       console.log('Show Box Save Callback');
@@ -90,6 +93,7 @@ class AddBox extends Component{
       var _date = Moment(decodeHTML(editObj.creationTime),'YYYY-M-D H:m');
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm")} //2018-03-13 06:58:00
+      debugger;
       this.setState({
          selectedDay : selFormat.date + " " + selFormat.time,
          startDate : _date,
@@ -98,7 +102,9 @@ class AddBox extends Component{
          notes : editObj.notes,
          btnText : "Update",
          extra_btn_class : "mks__update_btn",
-         saveType : 'update'
+         saveType : 'update',
+         showUpdateTitle : 'Update task',
+         priority : editObj.priority
       });
       this.state['taskId'] = editObj.taskId;
       jQuery('.mks_priorty_wrap li').removeClass('active');
@@ -130,11 +136,12 @@ class AddBox extends Component{
     }
     handleOnCancel(){
       console.log('Show Box Cancel Callback');
+      this.setDefaultState();
       this.props.cancel();
     }
     clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
-      $(targetLi).parent().find('li').removeClass('active');
+      $(targetLi).parents('ul').find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({
         [stateLi] : (value) ? value : $(targetLi).text()
@@ -246,7 +253,7 @@ class AddBox extends Component{
       }
       return (
         <div className={`addBox_wrapper_container scfe_field ${this.props.boxType}`}>
-          <h2>{this.props.showTitle}</h2>
+          <h2>{(this.state.showUpdateTitle) ? this.state.showUpdateTitle : this.props.showTitle}</h2>
           <div className="addBox_input_wrappers">
           {this.generateInputFields()}
 

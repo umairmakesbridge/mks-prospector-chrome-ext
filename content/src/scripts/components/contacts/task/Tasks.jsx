@@ -28,7 +28,10 @@ class Tasks extends Component{
        collapseExpand : 'expand',
         collapseMsg : 'Click to expand',
         showCollapse : '',
-      tasks : ""
+      tasks : "",
+      loadingMessage : "",
+      showLoading : false,
+      showExpandCollapse : 'hide'
     }
     this.mapicons ={
       "email" : "mksicon-Mail",
@@ -92,6 +95,7 @@ class Tasks extends Component{
             this.getTaskList()
             this.hideAddCus()
           }else{
+            this.refs.addboxView.setDisableFalse()
             ErrorAlert({message : jsonResponse[1]});
           }
         });
@@ -102,12 +106,53 @@ class Tasks extends Component{
   hideAddCus(){
       this.setState({showAddBox : false});
   }
+  deleteTask(obj){
+    var r = confirm('Are you sure you want to delete this task?');
+    if(r){
+      /*https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST
+
+        Request Params
+        subNum: “jbGs21Ru30Yy33Jq26Cs17Ly20Jv21jd"
+        type: “delete”
+        taskId : "encodedtaskid1,encodedtaskid2, encodedtaskid3"
+        */
+        this.setState({
+          showLoading : true,
+          loadingMessage : 'Deleting Task...'
+        });
+        var reqObj = {
+          type: "delete",
+          subNum: this.props.contact.subNum,
+          taskId : obj.taskId
+        }
+        request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
+           .set('Content-Type', 'application/x-www-form-urlencoded')
+           .send(reqObj)
+           .then((res) => {
+              console.log(res.status);
+              var jsonResponse =  JSON.parse(res.text);
+              console.log(jsonResponse);
+
+              if(jsonResponse[0] == "err"){
+                if(jsonResponse[1]=="SESSION_EXPIRED"){
+                    ErrorAlert({message:jsonResponse[1]});
+                    jQuery('.mksph_logout').trigger('click');
+                }else{
+                    ErrorAlert({message:jsonResponse[1]});
+                }
+
+                return false;
+              }
+              SuccessAlert({message:"Task deleted successfully."});
+            });
+    }
+  }
   getTaskList(){
     // https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getTasks&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
     var reqObj = {
       type: "getTasks",
       subNum: this.props.contact.subNum,
-      fromDate: "2018-04-01",
+      fromDate: Moment().format("MM-DD-YYYY") //"2018-04-01", 
       toDate:"2018-04-30",
       orderBy : "updationTime",
       order: "desc",
@@ -117,10 +162,7 @@ class Tasks extends Component{
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
-    this.setState({
-      showLoading : true
-    })
-    debugger;
+
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send(reqObj)
@@ -152,6 +194,9 @@ class Tasks extends Component{
   }
   generateTasksList(){
   return this.state.tasks.map((task,key) => {
+      if(key == 3){
+        this.state['showExpandCollapse'] = 'show';
+      }
       return (
       <div key={key} className={`contact_found mks_tasks_lists_user task_status_${task.status}`} style={{padding : "10px 12px 0"}}>
         <div className="cf_silhouette">
@@ -184,6 +229,13 @@ class Tasks extends Component{
             <div className="cf_silhouette">
               <div className="cf_silhouette_text c_txt_s c_txt_s_blue">
                 <i className="mksicon-Edit mks-task-icons"></i>
+            </div>
+          </div>
+        </div>
+        <div className="mks_task_edit_delete_wrap" onClick={this.deleteTask.bind(this,task)} style={{"left": "37px","width": "8%","background": "transparent"}}>
+            <div className="cf_silhouette">
+              <div className="cf_silhouette_text c_txt_s c_txt_s_blue">
+                <i className="mksicon-Delete mks-task-icons"></i>
             </div>
           </div>
         </div>
@@ -244,6 +296,7 @@ class Tasks extends Component{
               this.getTaskList()
 
             }else{
+              this.refs.addboxView.setDisableFalse()
               ErrorAlert({message : jsonResponse[1]});
             }
           });
@@ -358,10 +411,12 @@ class Tasks extends Component{
 
     </ToggleDisplay>
     <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
-    <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`} >
+    <div style={{"position" : "relative"}} className={`content-wrapper height90 height210 ${this.state.setFullHeight}`} >
+          <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
     </div>
-    <div className={`${this.state.collapseExpand} ${this.state.showCollapse}`} onClick={this.toggleHeight.bind(this)}>
+    <div className={`${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
+
       <span>{this.state.collapseMsg}</span>
       <span className="mksicon-ArrowNext"></span>
     </div>

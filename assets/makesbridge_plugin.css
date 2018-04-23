@@ -3022,6 +3022,9 @@ ul.mks_ecc_wrap li {
 ul.mks_ecc_wrap li.active {
     color: #006ffd;
 }
+ul.mks_ecc_wrap span:last-child li {
+    border-right: 1px solid #Ddd;
+}
 #tasks .mks-task-icons,i.mks-tasklists-icons{
   color: #fff;
   line-height: 24px !important;
