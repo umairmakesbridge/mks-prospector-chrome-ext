@@ -4502,9 +4502,16 @@ color: rgb(1, 110, 253);
 .task_status_C .mks_task_edit_delete_wrap{
   display: none;
 }
+
 .task_status_C .cf_email p{
   text-decoration: line-through;
 }
 .task_status_C:hover{
   color:#000;
+}
+.task_status_C ._mks_task_delete_task{
+  left: 1px !important;
+    width: 65% !important;
+    background:rgba(255, 255, 255, 0.8) !important;
+    display: block !important;
 }

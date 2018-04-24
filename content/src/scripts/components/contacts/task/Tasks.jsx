@@ -39,10 +39,11 @@ class Tasks extends Component{
       "Discovery" : "mksicon-Discovery",
       "call" : "mksicon-Phone",
       "email" : "mksicon-Mail",
-      "Breakfast" : "mksicon-Breakfast",
+      "breakfast" : "mksicon-Breakfast",
       "Meeting" : "mksicon-Meeting",
       "Proposal" : "mksicon-Proposal",
-      "Demo"  : "mksicon-Demo"
+      "Demo"  : "mksicon-Demo",
+      "first_touch":"mksicon-First-Touch"
     }
     this.priorityIcons = {
       "low" : {"topClass":"mks_priority_low pclr9","icon" : "mksicon-Triangle_Down"},
@@ -65,7 +66,7 @@ class Tasks extends Component{
       name: object.input2,
       taskDate: object.startDate.format("MM-DD-YYYY") + " " + object.times+":00",
       priority: object.priority.toLowerCase(),
-      notes: object.tasktype,
+      notes: object.notes,
       ukey:this.props.users_details[0].userKey,
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
@@ -150,6 +151,7 @@ class Tasks extends Component{
                 return false;
               }
               SuccessAlert({message:"Task deleted successfully."});
+              this.getTaskList()
             });
     }
   }
@@ -158,8 +160,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "getTasks",
       subNum: this.props.contact.subNum,
-      fromDate: Moment().format("MM-DD-YYYY"), //"2018-04-01",
-      toDate:"04-30-2018",
+      fromDate: "03-01-2018", //"2018-04-01",
+      toDate: Moment().format("MM-DD-YYYY"),
       orderBy : "updationTime",
       order: "desc",
       offset : 0,
@@ -238,7 +240,7 @@ class Tasks extends Component{
             </div>
           </div>
         </div>
-        <div className="mks_task_edit_delete_wrap" onClick={this.deleteTask.bind(this,task)} style={{"left": "37px","width": "8%","background": "transparent"}}>
+        <div className="mks_task_edit_delete_wrap _mks_task_delete_task" onClick={this.deleteTask.bind(this,task)} style={{"left": "37px","width": "8%","background": "transparent"}}>
             <div className="cf_silhouette">
               <div className="cf_silhouette_text c_txt_s c_txt_s_blue">
                 <i className="mksicon-Delete mks-task-icons"></i>
@@ -330,7 +332,7 @@ class Tasks extends Component{
                                 stateType : "tasktype",
                                 defaultValue : "call",
                                 value : [
-                                  {name : "ecc", className:"mks_ecc_firsttouch", id: "FirstTouch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_firsttouch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
                                   {name : "ecc", className:"mks_ecc_demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
                                   {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
                                   {name : "ecc", className:"mks_ecc_call active", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
@@ -384,7 +386,7 @@ class Tasks extends Component{
                       stateType : "tasktype",
                       defaultValue : "call",
                       value : [
-                        {name : "ecc", className:"mks_ecc_firsttouch", id: "FirstTouch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_firsttouch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
                         {name : "ecc", className:"mks_ecc_demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
                         {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
                         {name : "ecc", className:"mks_ecc_call active", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},

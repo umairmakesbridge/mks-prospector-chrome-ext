@@ -33,10 +33,11 @@ class TasksLists extends Component{
           "Discovery" : "mksicon-Discovery",
           "call" : "mksicon-Phone",
           "email" : "mksicon-Mail",
-          "Breakfast" : "mksicon-Breakfast",
+          "breakfast" : "mksicon-Breakfast",
           "Meeting" : "mksicon-Meeting",
           "Proposal" : "mksicon-Proposal",
-          "Demo"  : "mksicon-Demo"
+          "Demo"  : "mksicon-Demo",
+          "first_touch":"mksicon-First-Touch"
         }
         this.priorityIcons = {
           "low" : {"topClass":"mks_priority_low pclr9","icon" : "mksicon-Triangle_Down"},
@@ -49,8 +50,8 @@ class TasksLists extends Component{
 
       var reqObj = {
         type: "getAllTask",
-        fromDate: "04-01-2018",
-        toDate:"04-30-2018",
+        fromDate: Moment().format("MM-DD-YYYY"),
+        toDate: Moment().add('days', 1).format('MM-DD-YYYY'), // Day +1
         orderBy : "updationTime",
         order: "desc",
         offset : 0,
