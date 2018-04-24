@@ -31,7 +31,7 @@ class AddBox extends Component{
                   if(value.type=="date"){
                     _this.state['date'] = "";
                   }else if(value.type=="li"){
-                    _this.state[value.stateType] = "";
+                    _this.state[value.stateType] = (value.defaultValue) ? value.defaultValue : "";
                   }else if(value.type=="textarea"){
                     _this.state[value.id] = "";
                   }
@@ -67,6 +67,7 @@ class AddBox extends Component{
                   });
                   console.log(isValid);
                   // If valid Generating Object
+                  debugger;
                   if(isValid){
                     jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
@@ -106,10 +107,10 @@ class AddBox extends Component{
          showUpdateTitle : 'Update task',
          priority : editObj.priority
       });
-      this.state['taskId'] = editObj.taskId;
+      this.state['taskId'] = editObj['taskId.encode'];
       jQuery('.mks_priorty_wrap li').removeClass('active');
       jQuery('.mks_ecc_wrap li').removeClass('active');
-      jQuery('.mks_priotiry_'+editObj.priority).addClass('active');
+      jQuery('.mks_priotiry_'+editObj.priority.toLowerCase()).addClass('active');
       jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
       console.log(this.state);
     }
@@ -141,6 +142,7 @@ class AddBox extends Component{
     }
     clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
+      debugger;
       $(targetLi).parents('ul').find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({
@@ -240,10 +242,10 @@ class AddBox extends Component{
       let items = liObj.map((obj,key)=>{
         return (obj.tooltip) ?
               (<span>
-                <li key={key} className={obj.className} data-tip={obj.id} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
+                <li key={key} className={obj.className} data-tip={obj.value} onClick={this.clickedLi.bind(this,stateType,obj.value)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
                 <ReactTooltip />
               </span>) :
-              (  <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.id)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />)
+              (  <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.value)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />)
       });
       return items;
     }

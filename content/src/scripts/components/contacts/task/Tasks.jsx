@@ -58,21 +58,20 @@ class Tasks extends Component{
     },500)
   }
   createTasks(object){
-    this.setState({
-      showLoading : true
-    })
     var reqObj = {
       type: "add",
       subNum: this.props.contact.subNum,
       tasktype: object.tasktype,
       name: object.input2,
-      taskDate: object.selectedDay,
-      priority: object.priority,
+      taskDate: object.startDate.format("MM-DD-YYYY") + " " + object.times+":00",
+      priority: object.priority.toLowerCase(),
       notes: object.tasktype,
       ukey:this.props.users_details[0].userKey,
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
+
+      debugger;
     //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -116,6 +115,7 @@ class Tasks extends Component{
         type: “delete”
         taskId : "encodedtaskid1,encodedtaskid2, encodedtaskid3"
         */
+        debugger;
         this.setState({
           showLoading : true,
           loadingMessage : 'Deleting Task...'
@@ -123,7 +123,10 @@ class Tasks extends Component{
         var reqObj = {
           type: "delete",
           subNum: this.props.contact.subNum,
-          taskId : obj.taskId
+          taskId : obj['taskId.encode'],
+          ukey:this.props.users_details[0].userKey,
+          isMobileLogin:'Y',
+          userId:this.props.users_details[0].userId
         }
         request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
            .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -132,11 +135,14 @@ class Tasks extends Component{
               console.log(res.status);
               var jsonResponse =  JSON.parse(res.text);
               console.log(jsonResponse);
-
+              this.setState({
+                showLoading : false
+              });
               if(jsonResponse[0] == "err"){
                 if(jsonResponse[1]=="SESSION_EXPIRED"){
                     ErrorAlert({message:jsonResponse[1]});
                     jQuery('.mksph_logout').trigger('click');
+
                 }else{
                     ErrorAlert({message:jsonResponse[1]});
                 }
@@ -208,7 +214,7 @@ class Tasks extends Component{
         <div className="cf_email">
           <p>{task.taskName}</p>
           <span className="ckvwicon">
-            {this.generateDate(task.updationTime)}
+            {this.generateDate(task.taskDate)}
           </span>
         </div>
         <div className="cf_task_right">
@@ -259,7 +265,7 @@ class Tasks extends Component{
       var reqObj = {
         type: (isComplete) ? "complete" : "update",
         subNum: this.props.contact.subNum,
-        taskId :  taskObj.taskId,
+        taskId :  (taskObj.taskId) ? taskObj.taskId : taskObj['taskId.encode'],
         tasktype: taskObj.tasktype,
         name: taskObj.input2,
         taskDate: taskObj.selectedDay,
@@ -322,16 +328,17 @@ class Tasks extends Component{
                                 type:"li",
                                 className:"mks_ecc_wrap",
                                 stateType : "tasktype",
+                                defaultValue : "call",
                                 value : [
-                                  {name : "ecc", className:"mks_ecc_firsttouch", id: "FirstTouch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_demo", id:"Demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_call", id: "call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_email", id: "email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_lunch", id: "Lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_breakfast", id: "Breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_meeting", id: "Meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_proposal", id: "Proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
+                                  {name : "ecc", className:"mks_ecc_firsttouch", id: "FirstTouch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_call active", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_email", id: "email",value:"email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_lunch", id: "Lunch",value:"lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
+                                  {name : "ecc", className:"mks_ecc_proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
                                 ]
                               },
                               {name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter task subject *"},
@@ -340,9 +347,10 @@ class Tasks extends Component{
                                 type:"li",
                                 className:"mks_priorty_wrap",
                                 stateType : "priority",
+                                defaultValue : "medium",
                                 value : [
                                   {name : "priority", className:"mks_priotiry_low", id: "low",placeholder:"Low"},
-                                  {name : "priority", className:"mks_priotiry_normal", id: "medium",placeholder:"Medium"},
+                                  {name : "priority", className:"mks_priotiry_medium active", id: "medium",placeholder:"Medium"},
                                   {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
                                 ]
                               },
@@ -374,16 +382,17 @@ class Tasks extends Component{
                       type:"li",
                       className:"mks_ecc_wrap",
                       stateType : "tasktype",
+                      defaultValue : "call",
                       value : [
-                        {name : "ecc", className:"mks_ecc_firsttouch",  id: "FirstTouch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_demo",   id:"Demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_call", id: "call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_email", id: "email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_lunch", id: "Lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_breakfast", id: "Breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_meeting", id: "Meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_proposal", id: "Proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
+                        {name : "ecc", className:"mks_ecc_firsttouch", id: "FirstTouch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_call active", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_email", id: "email",value:"email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_lunch", id: "Lunch",value:"lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
+                        {name : "ecc", className:"mks_ecc_proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
                       ]
                     },
                     {name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter task subject *"},
@@ -394,7 +403,7 @@ class Tasks extends Component{
                       stateType : "priority",
                       value : [
                         {name : "priority", className:"mks_priotiry_low", id: "low",placeholder:"Low"},
-                        {name : "priority", className:"mks_priotiry_normal", id: "medium",placeholder:"Medium"},
+                        {name : "priority", className:"mks_priotiry_medium active", id: "medium",placeholder:"Medium"},
                         {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
                       ]
                     },
@@ -416,7 +425,6 @@ class Tasks extends Component{
           {this.generateTasksList()}
     </div>
     <div className={`${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
-
       <span>{this.state.collapseMsg}</span>
       <span className="mksicon-ArrowNext"></span>
     </div>
