@@ -152,8 +152,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "getTasks",
       subNum: this.props.contact.subNum,
-      fromDate: Moment().format("MM-DD-YYYY") //"2018-04-01", 
-      toDate:"2018-04-30",
+      fromDate: Moment().format("MM-DD-YYYY"), //"2018-04-01",
+      toDate:"04-30-2018",
       orderBy : "updationTime",
       order: "desc",
       offset : 0,
