@@ -67,7 +67,6 @@ class AddBox extends Component{
                   });
                   console.log(isValid);
                   // If valid Generating Object
-                  debugger;
                   if(isValid){
                     jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
@@ -94,7 +93,6 @@ class AddBox extends Component{
       var _date = Moment(decodeHTML(editObj.creationTime),'YYYY-M-D H:m');
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm")} //2018-03-13 06:58:00
-      debugger;
       this.setState({
          selectedDay : selFormat.date + " " + selFormat.time,
          startDate : _date,
@@ -118,7 +116,6 @@ class AddBox extends Component{
 
     }
     setDefaultState(){
-      debugger;
       this.setState(this.baseState);
       $('.mks_priorty_wrap li').removeClass('active');
       $('.mks_ecc_wrap li').removeClass('active');
@@ -142,7 +139,6 @@ class AddBox extends Component{
     }
     clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
-      debugger;
       $(targetLi).parents('ul').find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({

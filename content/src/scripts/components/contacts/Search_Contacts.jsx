@@ -268,7 +268,6 @@ class SearchContacts extends Component{
       this.setState({
         showTasks : !this.state.showTasks
       });
-      debugger;
       this.refs.tasklists.getTaskListofUser();
       console.log('Reached destination from where toggle the tasks lists.');
     }

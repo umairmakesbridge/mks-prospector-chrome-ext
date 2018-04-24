@@ -75,7 +75,6 @@ class Notes extends Component{
                                     lists.push(list[0]);
                                     lengthOfString = lengthOfString + list[0].comment.length;
                             });
-                            debugger;
 
                             this.setState({
                               notesLists : lists
@@ -90,7 +89,6 @@ class Notes extends Component{
                           }
                         }catch(e){
                           console.log(e);
-                          debugger;
                         }
                       }
                     });

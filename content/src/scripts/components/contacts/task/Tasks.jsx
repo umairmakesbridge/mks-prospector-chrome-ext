@@ -71,8 +71,6 @@ class Tasks extends Component{
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
-
-      debugger;
     //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -81,7 +79,6 @@ class Tasks extends Component{
           console.log(res.status);
           var jsonResponse =  JSON.parse(res.text);
           console.log(jsonResponse);
-          debugger;
           if(jsonResponse.success){
             this.setState({
               disabled    : false,
@@ -116,7 +113,6 @@ class Tasks extends Component{
         type: “delete”
         taskId : "encodedtaskid1,encodedtaskid2, encodedtaskid3"
         */
-        debugger;
         this.setState({
           showLoading : true,
           loadingMessage : 'Deleting Task...'
@@ -254,8 +250,7 @@ class Tasks extends Component{
     this.setState({
       showAddBox : true
     });
-    this.refs.addboxView.editTaskForm(task)
-    debugger;
+    this.refs.addboxView.editTaskForm(task);
   }
   updateTasks(taskObj,isComplete){
       console.log(taskObj);
@@ -284,7 +279,6 @@ class Tasks extends Component{
             console.log(res.status);
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
-            debugger;
             if(jsonResponse.success){
               this.setState({
                 disabled    : false,
