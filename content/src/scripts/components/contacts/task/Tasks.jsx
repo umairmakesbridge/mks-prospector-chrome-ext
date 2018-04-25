@@ -328,7 +328,7 @@ class Tasks extends Component{
                 <ToggleDisplay show={this.state.showAddBox}>
                   <LoadingMask message={'Creating new task...'} showLoading={this.state.showLoading} />
                     <AddBox ref="addboxView"
-                            showTitle={"Add New Custom Field"}
+                            showTitle={"Create New Task"}
                             addFieldsObj={ [
                               {
                                 type:"li",
