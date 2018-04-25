@@ -4156,6 +4156,9 @@ td.rdtYear:hover {
 .preview_container.without_icon {
   padding-right: 0px;
 }
+._mks_complete_tasks .cf_email p{
+  text-decoration: line-through;
+}
 
 .preview_container svg {
   width: 25px;

@@ -162,7 +162,7 @@ class TasksLists extends Component{
     generateCompletedTasks(){
       return this.state.completeTask.map((task,key) => {
             return(
-              <div key={key} className={`contact_found _mks_lists_tasks`} style={{padding : "10px 12px 0"}}>
+              <div key={key} className={`contact_found _mks_lists_tasks _mks_complete_tasks`} style={{padding : "10px 12px 0"}}>
                 <div className="cf_silhouette">
                   <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed ">
                     <i className="mksicon-Check mks-tasklists-icons"></i>
