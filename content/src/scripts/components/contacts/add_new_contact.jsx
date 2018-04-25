@@ -176,7 +176,7 @@ class AddNewContact extends Component{
         <div className="btn_wrap" style={{"width": "170px","textAlign": "center"}}>
             <span className="mksph_login_btn show_tasks_list ripple" onClick={this.props.onTaskListBtn} style={{"display": "inline-block","width": "160px"}}>
             <i className="scf_o_icon scf_o_edit mksicon-Task_List mks_manageList_wrap" style={{"fontSize" : "12px","marginRight" : "4px"}}></i>
-            Task List</span>
+            Tasks for today</span>
         </div>
       </div>
     )
