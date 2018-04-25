@@ -19,13 +19,13 @@ class AddBox extends Component{
           disabled : false,
           selectedDay: '',
           startDate : Moment(),
-          times : Moment().format("HH:mm"),
+          times : Moment().format("hh:mm A"),
           btnText : "Save",
           extra_btn_class : '',
           saveType : "create",
-          showUpdateTitle : ''
+          showUpdateTitle : '',
+          ampm : Moment().format("hh:mm A").split(" ")[1]
         };
-
         var _this = this;
         jQuery.each(this.props.addFieldsObj,function(key,value){
                   if(value.type=="date"){
@@ -92,11 +92,11 @@ class AddBox extends Component{
     editTaskForm(editObj){
       var _date = Moment(decodeHTML(editObj.taskDate),'YYYY-M-D H:m');
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
-      var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm")} //2018-03-13 06:58:00
+      var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm A")} //2018-03-13 06:58:00
       this.setState({
          selectedDay : selFormat.date + " " + selFormat.time,
          startDate : _date,
-         times : format.time,
+         times : selFormat.time,
          input2 : editObj.taskName,
          notes : editObj.notes,
          btnText : "Update",
@@ -157,12 +157,17 @@ class AddBox extends Component{
     }
     onTimeChange(time) {
       // do something
+      let AmPm = this.state.ampm
       console.log(time);
       this.setState({
-        times : time,
+        times : time + " " + AmPm,
         selectedDay : this.state.startDate + " " + time
       });
     }
+    onMeridiemChange(meridiem) {
+    this.setState({ ampm : meridiem });
+    }
+
     generateInputFields(){
       // <Datetime
       //   key={key}
@@ -184,7 +189,8 @@ class AddBox extends Component{
                       withoutIcon={true}
                       time={this.state.times}
                       onTimeChange={this.onTimeChange.bind(this)}
-
+                      onMeridiemChange={this.onMeridiemChange.bind(this)}
+                      timeMode="12"
                     />
 
                 </span>
@@ -243,7 +249,7 @@ class AddBox extends Component{
       let items = liObj.map((obj,key)=>{
         return (obj.tooltip) ?
               (<span>
-                <li key={key} className={obj.className} data-tip={obj.value} onClick={this.clickedLi.bind(this,stateType,obj.value)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
+                <li key={key} className={obj.className} data-tip={obj.tipName} onClick={this.clickedLi.bind(this,stateType,obj.value)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />
                 <ReactTooltip />
               </span>) :
               (  <li key={key} className={obj.className} onClick={this.clickedLi.bind(this,stateType,obj.value)} dangerouslySetInnerHTML={{__html: obj.placeholder }} />)

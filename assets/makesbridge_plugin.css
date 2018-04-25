@@ -4154,7 +4154,7 @@ td.rdtYear:hover {
 }
 
 .preview_container.without_icon {
-  padding-right: 30px;
+  padding-right: 0px;
 }
 
 .preview_container svg {
