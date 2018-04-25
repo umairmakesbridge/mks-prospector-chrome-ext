@@ -114,16 +114,16 @@ class AddBox extends Component{
     }
     defaultAddTaskDialog (){
 
+          $('.mks_priotiry_medium').addClass('active');
+          $('.mks_ecc_call').addClass('active');
+          this.state['priority'] = 'medium';
+        debugger;
     }
     setDefaultState(){
       this.setState(this.baseState);
       $('.mks_priorty_wrap li').removeClass('active');
       $('.mks_ecc_wrap li').removeClass('active');
-      if(this.props.boxType == "mks_tasksFields"){
-        $('.mks_priotiry_medium').addClass('active');
-        $('.mks_ecc_call').addClass('active');
-        this.state['priority'] = 'medium';
-      }
+
     }
     handleKeyPress(event){
         const code = event.keyCode || event.which;
