@@ -271,7 +271,15 @@ class SearchContacts extends Component{
       this.refs.tasklists.getTaskListofUser();
       console.log('Reached destination from where toggle the tasks lists.');
     }
-
+    hideUpTaskList(){
+      this.setState({
+        showTasks : false
+      });
+    }
+    selectedEmail(selectedEmail){
+      this.hideUpTaskList();
+      this.props.onEmailSelect(selectedEmail)
+    }
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -286,10 +294,11 @@ class SearchContacts extends Component{
             <div className="container">
                 <SingleContact
                   contact={this.state.vcsubscribers}
-                  onEmailSelect={this.props.onEmailSelect}
+                  onEmailSelect={this.selectedEmail.bind(this)}
                   type = {this.state.type}
                   cvstate = {this.state.clickState}
                   serverDate = {this.state.serverDate}
+
                 />
             </div>
             <ToggleDisplay show={this.state.showTasks}>
@@ -298,6 +307,7 @@ class SearchContacts extends Component{
                 users_details={this.props.users_details}
                 baseUrl = {this.props.baseUrl}
                 onEmailSelect={this.props.onEmailSelect}
+                hideUpTaskList = {this.hideUpTaskList.bind(this)}
                 ref="tasklists"
               />
             </div>
@@ -327,7 +337,7 @@ class SearchContacts extends Component{
                   <SingleContact
                     contact={this.state.subscriber}
                     stat={this.state.searchstat}
-                    onEmailSelect={this.props.onEmailSelect}
+                    onEmailSelect={this.selectedEmail.bind(this)}
                     searchtype = {this.state.searchtype}
                     searchContact = {this.state.searchContact}
 

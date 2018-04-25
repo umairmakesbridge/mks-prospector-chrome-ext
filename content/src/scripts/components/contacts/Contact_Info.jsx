@@ -180,7 +180,11 @@ class ContactInfo extends Component{
                                 });
 
                                 console.log('1. Getting Subscriber',jsonResponse);
-
+                                if(this.props.isTaskClicked){
+                                  setTimeout(function(){
+                                    _this.scrollToTask()
+                                  },1000)
+                                }
                               }else{
                                 ErrorAlert({ message : jsonResponse[1] })
                               }
@@ -342,11 +346,15 @@ class ContactInfo extends Component{
   }
   openNotes(){
     this.refs.ContactDetailInfoView.refs.notesView.cancelNote();
-
     $('.makesbridge_plugin').animate({
         scrollTop: $("._mks_NotesWrap").offset().top - 100
     }, 800);
       $('#note_textarea').focus()
+  }
+  scrollToTask(){
+    $('.makesbridge_plugin').animate({
+        scrollTop: $("#tasks").offset().top - 80
+    }, 800);
   }
   saveSalesforce(){
     //alert('Call child save function for SF');
@@ -379,8 +387,6 @@ class ContactInfo extends Component{
     this.setState({showCCDialog: false});
   }
   render(){
-
-
         if(!this.props.contact_email){
           return <div>Loading...</div>
         }

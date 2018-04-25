@@ -39,7 +39,7 @@ const SingleContact = (props) => {
     return(<div className="plc_marginbottom30 mksph_cardbox"> <p className="not-found">Loading...</p></div>)
   }
   else if(!props.contact){
-    return <div className="plc_marginbottom30"></div>;
+    return <div className="plc_marginbottom20"></div>;
   }
 
   const contactSubItems = props.contact.map((contactItem) =>

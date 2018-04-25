@@ -44,7 +44,8 @@ class App extends Component {
       islogOut           : 'hide',
       gmail_emails_body: [],
       isLoggedOut      : false,
-      baseUrl          : 'https://test.bridgemailsystem.com/pms'
+      isTaskClicked    : false,
+      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
@@ -154,11 +155,13 @@ class App extends Component {
           gmail_email_list : uniqueEmails
         })
   }
-  onEmailSelect(selectedEmailC){
+  onEmailSelect(selectedEmailC,isTaskClick){
     console.log('Selected email from child : '+selectedEmailC);
+    let isTask = (isTaskClick) ? isTaskClick : false;
+    
     //this.setState({selectedEmail : selectedEmailC});
      this.setState(() => {
-                return { selectedEmail : selectedEmailC,showContacts: true,gmailEmails: false };
+                return { selectedEmail : selectedEmailC,showContacts: true,gmailEmails: false,isTaskClicked: isTask };
                 });
   }
 
@@ -375,6 +378,7 @@ class App extends Component {
           baseUrl = {this.state.baseUrl}
           users_details={this.state.users_details}
           contact_email = {this.state.selectedEmail}
+          isTaskClicked = {this.state.isTaskClicked}
         />
         </ToggleDisplay>
         </div>

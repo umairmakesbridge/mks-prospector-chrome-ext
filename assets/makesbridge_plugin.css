@@ -2365,6 +2365,9 @@ font-weight: lighter;
     margin-bottom: 5px;
     position: relative;
 }
+.plc_marginbottom20{
+    margin-bottom : 20px;
+}
 .plc_marginbottom30{
     margin-bottom : 30px;
 }

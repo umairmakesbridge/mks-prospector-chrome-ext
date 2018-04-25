@@ -35,14 +35,14 @@ class Tasks extends Component{
     }
     this.mapicons ={
       "email" : "mksicon-Mail",
-      "Lunch" : "mksicon-Lunch",
-      "Discovery" : "mksicon-Discovery",
+      "lunch" : "mksicon-Lunch",
+      "discovery" : "mksicon-Discovery",
       "call" : "mksicon-Phone",
       "email" : "mksicon-Mail",
       "breakfast" : "mksicon-Breakfast",
-      "Meeting" : "mksicon-Meeting",
-      "Proposal" : "mksicon-Proposal",
-      "Demo"  : "mksicon-Demo",
+      "meeting" : "mksicon-Meeting",
+      "proposal" : "mksicon-Proposal",
+      "demo"  : "mksicon-Demo",
       "first_touch":"mksicon-First-Touch"
     }
     this.priorityIcons = {
@@ -157,7 +157,7 @@ class Tasks extends Component{
       type: "getTasks",
       subNum: this.props.contact.subNum,
       fromDate: "03-01-2018", //"2018-04-01",
-      toDate: Moment().format("MM-DD-YYYY"),
+      toDate: Moment().add('days', 30).format('MM-DD-YYYY'),
       orderBy : "updationTime",
       order: "desc",
       offset : 0,
@@ -187,6 +187,9 @@ class Tasks extends Component{
             //this.props.getSubscriberDetails();
             //this.hideAddCus()
           }else{
+            this.setState({
+              tasks : -1
+            })
             console.log("No Tasks found");
           }
         });
@@ -198,7 +201,7 @@ class Tasks extends Component{
   }
   generateTasksList(){
   return this.state.tasks.map((task,key) => {
-      if(key == 3){
+      if(key > 2){
         this.state['showExpandCollapse'] = 'show';
       }
       return (
@@ -313,6 +316,12 @@ class Tasks extends Component{
 
   render(){
     if(!this.state.tasks){
+      return (  <div style={{position: "relative"}}>
+      <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
+      <p className="not-found">Loading Tasks...</p>
+      </div>)
+    }
+    if(this.state.tasks == -1){
       return (<div style={{position: "relative"}}>
 
                 <ToggleDisplay show={this.state.showAddBox}>

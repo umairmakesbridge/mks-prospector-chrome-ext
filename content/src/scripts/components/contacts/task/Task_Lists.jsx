@@ -29,14 +29,14 @@ class TasksLists extends Component{
         }
         this.mapicons ={
           "email" : "mksicon-Mail",
-          "Lunch" : "mksicon-Lunch",
-          "Discovery" : "mksicon-Discovery",
+          "lunch" : "mksicon-Lunch",
+          "discovery" : "mksicon-Discovery",
           "call" : "mksicon-Phone",
           "email" : "mksicon-Mail",
           "breakfast" : "mksicon-Breakfast",
-          "Meeting" : "mksicon-Meeting",
-          "Proposal" : "mksicon-Proposal",
-          "Demo"  : "mksicon-Demo",
+          "meeting" : "mksicon-Meeting",
+          "proposal" : "mksicon-Proposal",
+          "demo"  : "mksicon-Demo",
           "first_touch":"mksicon-First-Touch"
         }
         this.priorityIcons = {
@@ -51,7 +51,7 @@ class TasksLists extends Component{
       var reqObj = {
         type: "getAllTask",
         fromDate: Moment().format("MM-DD-YYYY"),
-        toDate: Moment().add('days', 1).format('MM-DD-YYYY'), // Day +1
+        toDate: Moment().format("MM-DD-YYYY"), // Day +1
         orderBy : "updationTime",
         order: "desc",
         offset : 0,
@@ -103,7 +103,10 @@ class TasksLists extends Component{
           });
     }
     loadSubscriber(subscriber){
-      this.props.onEmailSelect(subscriber.email)
+
+      this.props.hideUpTaskList();
+      this.props.onEmailSelect(subscriber.email,true);
+
     }
     generateDate(dateString){
       var _date = Moment(decodeHTML(dateString),'YYYY-M-D H:m');
@@ -195,17 +198,17 @@ class TasksLists extends Component{
     render(){
       if(this.state.assignTask == -1){
         return(
-          <div className="contacts-wrap">
-          <div id="NoContact" className={` mksph_cardbox`}>
-                  <p className="not-found">No Tasks found</p>
+          <div className="contacts-wrap plc_marginbottom20">
+          <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
+                  <p className="not-found">No Tasks found for today</p>
               </div>
                   </div>
         )
       }
       if(!this.state.assignTask){
           return(
-            <div className="contacts-wrap">
-            <div id="NoContact" className={` mksph_cardbox`}>
+            <div className="contacts-wrap plc_marginbottom20">
+            <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
                     <p className="not-found">Loading Tasks....</p>
                 </div>
                     </div>
@@ -213,7 +216,7 @@ class TasksLists extends Component{
       }
 
       return(
-        <div className="D">
+        <div className="D plc_marginbottom20">
           <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`}>
             <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks for today</span></h2>
             {this.generateTasksList()}
