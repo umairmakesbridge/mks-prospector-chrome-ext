@@ -26,11 +26,17 @@ class GmailEmailList extends Component{
            return (<EmailItem
                         item = {item}
                         key={item}
-                        onEmailSelect = {this.props.onEmailSelect}
+                        onEmailSelect = {this.gmailEmailSelected.bind(this)}
                   />);
           });
         }
       }
+
+      gmailEmailSelected(email){
+        this.refs.searchcontacts.hideUpTaskList();
+        this.props.onEmailSelect(email);
+      }
+      
       showHideTaskList(){
         this.refs.searchcontacts.toggleUpTaskList()
       }

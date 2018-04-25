@@ -54,6 +54,7 @@ class Tasks extends Component{
   showAddTasks(){
     let height = jQuery('.makesbridge_plugin').height();
     this.setState({showAddBox : true,overlayHeight:height});
+    this.refs.addboxView.defaultAddTaskDialog();
     setTimeout(function(){
         jQuery('.focusThis').focus();
     },500)
@@ -268,9 +269,9 @@ class Tasks extends Component{
         taskId :  (taskObj.taskId) ? taskObj.taskId : taskObj['taskId.encode'],
         tasktype: taskObj.tasktype,
         name: taskObj.input2,
-        taskDate: taskObj.selectedDay,
+        taskDate: taskObj.startDate.format("MM-DD-YYYY") + " " + taskObj.times+":00",
         priority: taskObj.priority,
-        notes: taskObj.tasktype,
+        notes: taskObj.notes,
         ukey:this.props.users_details[0].userKey,
         isMobileLogin:'Y',
         userId:this.props.users_details[0].userId

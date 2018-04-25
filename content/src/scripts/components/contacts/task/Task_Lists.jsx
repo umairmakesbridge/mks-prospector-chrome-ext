@@ -47,7 +47,9 @@ class TasksLists extends Component{
     }
     getTaskListofUser(){
       //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getAllTask&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
-
+      this.setState({
+          assignTask : ''
+      })
       var reqObj = {
         type: "getAllTask",
         fromDate: Moment().format("MM-DD-YYYY"),

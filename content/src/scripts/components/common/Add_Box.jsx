@@ -19,7 +19,7 @@ class AddBox extends Component{
           disabled : false,
           selectedDay: '',
           startDate : Moment(),
-          times : "13:05",
+          times : Moment().format("HH:mm"),
           btnText : "Save",
           extra_btn_class : '',
           saveType : "create",
@@ -90,7 +90,7 @@ class AddBox extends Component{
        });
      }
     editTaskForm(editObj){
-      var _date = Moment(decodeHTML(editObj.creationTime),'YYYY-M-D H:m');
+      var _date = Moment(decodeHTML(editObj.taskDate),'YYYY-M-D H:m');
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm")} //2018-03-13 06:58:00
       this.setState({
@@ -112,13 +112,18 @@ class AddBox extends Component{
       jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
       console.log(this.state);
     }
-    handleUpdate (){
+    defaultAddTaskDialog (){
 
     }
     setDefaultState(){
       this.setState(this.baseState);
       $('.mks_priorty_wrap li').removeClass('active');
       $('.mks_ecc_wrap li').removeClass('active');
+      if(this.props.boxType == "mks_tasksFields"){
+        $('.mks_priotiry_medium').addClass('active');
+        $('.mks_ecc_call').addClass('active');
+        this.state['priority'] = 'medium';
+      }
     }
     handleKeyPress(event){
         const code = event.keyCode || event.which;
