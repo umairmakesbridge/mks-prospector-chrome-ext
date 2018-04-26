@@ -44,6 +44,17 @@ class TasksLists extends Component{
           "high" : {"topClass":"mks_priority_high pclr12","icon" : "mksicon-Triangle_Up"},
           "medium" : {"topClass":"mks_priority_medium pclr19","icon" : "mksicon-More"}
         }
+        this.maptooltip = {
+          "email" : "Email",
+          "lunch" : "Lunch",
+          "discovery" : "Discovery",
+          "call" : "Phone",
+          "breakfast" : "Breakfast",
+          "meeting" : "Meeting",
+          "proposal" : "Proposal",
+          "demo"  : "Demo",
+          "first_touch":"First Touch"
+        }
     }
     getTaskListofUser(){
       //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getAllTask&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
@@ -139,8 +150,9 @@ class TasksLists extends Component{
                     </span>
 
                     <div className="cf_silhouette">
-                        <div className="cf_silhouette_text c_txt_s c_txt_s_blue _mks_task-lists_silhouette_text">
+                        <div data-tip={this.maptooltip[task.taskType]} className="cf_silhouette_text c_txt_s c_txt_s_blue _mks_task-lists_silhouette_text">
                             <i className={`${this.mapicons[task.taskType]} mks-tasklists-icons`} ></i>
+                            <ReactTooltip/>
                         </div>
                       </div>
                 </div>

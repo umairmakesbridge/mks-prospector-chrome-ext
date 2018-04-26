@@ -589,6 +589,9 @@ li.click_default {
 .height210{
   max-height: 210px;
 }
+.height230{
+  max-height: 230px;
+}
 .height100{
   max-height: 103px;
 }
@@ -743,6 +746,10 @@ span.alert_icon{
 */}
 /*.messagebox.info:after {background: url("../img/info.png") no-repeat scroll center center #73d2f5;  }*/
 .messagebox.info h3, .messagebox.info p { color:#00739e; }
+
+.scfe_save_wrap.disable_true .scfe_ach:hover > .scfe_save_t {
+    background: rgb(186, 194, 202);
+}
 /*-------------------------Add Box-------------------------*/
 .addBox_wrapper_container{
   position: fixed;
@@ -2476,6 +2483,9 @@ font-weight: lighter;
 .__react_component_tooltip.type-dark.place-left:after{
   border-left-color: #23cd8c !important;
 }
+.__react_component_tooltip{
+  text-transform: capitalize !important;
+}
 /*-----------------------*/
 /* Makesbridge Workflows
 ----------------------------------- */
@@ -3058,6 +3068,9 @@ ul.mks_ecc_wrap span:last-child li {
   left: 3px;
   top: 1px;
 
+}
+.mks_priority_icon .cf_silhouette_text{
+  text-transform: capitalize !important;
 }
 .mks_priority_high i{
   top:-2px;

@@ -36,7 +36,7 @@ class AddBox extends Component{
                     _this.state[value.id] = "";
                   }
                   else{
-                     _this.state['input'+(key+1)] = "";
+                     _this.state['input'+(key+1)] = (value.defaultValue) ? value.defaultValue : "";
                   }
 
         });
@@ -67,7 +67,7 @@ class AddBox extends Component{
                   });
                   console.log(isValid);
                   // If valid Generating Object
-                  if(isValid){
+                  if(isValid && !this.state.disabled){
                     jQuery("div.addBox_wrapper_container input").removeClass('hasError');
                     this.setState({disabled : true});
                     if(this.props.boxType=="customFields"){
@@ -117,7 +117,6 @@ class AddBox extends Component{
           $('.mks_priotiry_medium').addClass('active');
           $('.mks_ecc_call').addClass('active');
           this.state['priority'] = 'medium';
-        debugger;
     }
     setDefaultState(){
       this.setState(this.baseState);
@@ -144,6 +143,14 @@ class AddBox extends Component{
     }
     clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
+      if(stateLi == "tasktype"){
+        var o_state_value = $(targetLi).parents('ul').find('li.active').attr('data-tip');
+        if(o_state_value.toLowerCase() == this.state.input2.toLowerCase().trim()){
+          this.setState({
+            input2 : this.capitalize($(targetLi).attr('data-tip'))
+          })
+        }
+      }
       $(targetLi).parents('ul').find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({
@@ -151,7 +158,9 @@ class AddBox extends Component{
       })
     }
 
-
+    capitalize(value) {
+          return value.charAt(0).toUpperCase() + value.slice(1);
+      }
     componentDidMount(){
       console.log(this.state.selectedDay);
     }
@@ -166,6 +175,18 @@ class AddBox extends Component{
     }
     onMeridiemChange(meridiem) {
     this.setState({ ampm : meridiem });
+    }
+    onFocusChange(focusvalue){
+      // console.log('Focus value' , focusvalue);
+      if(focusvalue){
+        $('.classic_theme_container').animate({
+          scrollTop: $('.classic_theme_container .classic_time.active').offset().top - 50
+        }, 100);
+      }else{
+        $('.classic_theme_container').animate({
+          scrollTop: 0
+        }, 100);
+      }
     }
 
     generateInputFields(){
@@ -191,6 +212,7 @@ class AddBox extends Component{
                       onTimeChange={this.onTimeChange.bind(this)}
                       onMeridiemChange={this.onMeridiemChange.bind(this)}
                       timeMode="12"
+                      onFocusChange={this.onFocusChange.bind(this)}
                     />
 
                 </span>

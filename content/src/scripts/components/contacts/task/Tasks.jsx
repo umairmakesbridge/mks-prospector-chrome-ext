@@ -51,6 +51,7 @@ class Tasks extends Component{
       "high" : {"topClass":"mks_priority_high pclr12","icon" : "mksicon-Triangle_Up"},
       "medium" : {"topClass":"mks_priority_medium pclr19","icon" : "mksicon-More"}
     }
+
   }
   showAddTasks(){
     let height = jQuery('.makesbridge_plugin').height();
@@ -61,6 +62,7 @@ class Tasks extends Component{
     },500)
   }
   createTasks(object){
+
     var reqObj = {
       type: "add",
       subNum: this.props.contact.subNum,
@@ -205,6 +207,8 @@ class Tasks extends Component{
   return this.state.tasks.map((task,key) => {
       if(key > 3){
         this.state['showExpandCollapse'] = 'show';
+      }else{
+          this.state['showExpandCollapse'] = 'hide';
       }
       return (
       <div key={key} className={`contact_found mks_tasks_lists_user task_status_${task.status}`} style={{padding : "10px 12px"}}>
@@ -402,7 +406,7 @@ class Tasks extends Component{
                         {name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
                       ]
                     },
-                    {name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter task name *"},
+                    {name : "ckey", className:"focusThis", required:'required',defaultValue:'Call' , id: "ckey",placeholder:"Enter task name *"},
                     {type:"date",name : "cvlaue", className:"", id: "cvalue",placeholder:"Select date"},
                     {
                       type:"li",
@@ -414,7 +418,7 @@ class Tasks extends Component{
                         {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
                       ]
                     },
-                    {type:"textarea", className:"",id:"notes" , placeholder:"Add notes about your task here"}
+                    {type:"textarea", className:"",id:"notes", placeholder:"Add notes about your task here"}
 
                   ] }
                   boxType={"mks_tasksFields"}
@@ -427,7 +431,7 @@ class Tasks extends Component{
 
     </ToggleDisplay>
     <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
-    <div style={{"position" : "relative"}} className={`content-wrapper height90 height210 ${this.state.setFullHeight}`} >
+    <div style={{"position" : "relative"}} className={`content-wrapper height90 height230 ${this.state.setFullHeight}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
     </div>
