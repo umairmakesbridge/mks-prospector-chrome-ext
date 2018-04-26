@@ -214,7 +214,7 @@ class Tasks extends Component{
       </div>
       <div className="cf_email_wrap">
         <div className="cf_email">
-          <p>{task.taskName}</p>
+          <p className="mkb_elipsis mkb_text_break" style={{"width" : "145px"}} title={task.taskName}>{task.taskName}</p>
           <span className="ckvwicon">
             {this.generateDate(task.taskDate)}
           </span>

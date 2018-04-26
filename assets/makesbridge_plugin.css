@@ -635,7 +635,7 @@ input.hasError {
 }
 .mkb_text_break{
   width : 245px;
-  display: block;
+  display: block !important;
   wordWrap: "break-word";
 }
 .mkb_elipsis{

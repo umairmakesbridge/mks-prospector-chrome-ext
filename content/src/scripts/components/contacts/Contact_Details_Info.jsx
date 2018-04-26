@@ -544,7 +544,7 @@ class ContactDetailInfo extends Component{
                 </div>
             </div>
             <div id="tasks" className="tabcontent mksph_cardbox">
-                  <h3>Task</h3>
+                  <h3>Tasks</h3>
                   <Tasks
                     users_details={this.users_details}
                     baseUrl={this.baseUrl}

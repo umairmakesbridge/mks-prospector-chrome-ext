@@ -74,9 +74,10 @@ class TasksLists extends Component{
             let completedTask=[]
 
             if(parseInt(jsonResponse.totalCount) > 0){
-              if(jsonResponse.totalCount > 2) {
+              if(jsonResponse.taskList.length > 2) {
                 this.state['showExpandCollapse'] = 'show';
               }
+              debugger;
               $.each(jsonResponse.taskList,(key,value)=>{
                 if(value.status=="C"){
                   completedTask.push(value);
@@ -119,12 +120,9 @@ class TasksLists extends Component{
       return this.state.assignTask.map((task,key) => {
             return(
               <div key={key} className={`contact_found _mks_lists_tasks  task_status_${task.status}`} onClick={this.loadSubscriber.bind(this,task.subscriberInfo)} style={{padding : "10px 12px 0"}}>
-                <div className="cf_silhouette">
-                  <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_empty"></div>
-              </div>
-              <div className="cf_email_wrap">
+              <div className="cf_email_wrap" style={{"paddingLeft":"0","width": "360px"}}>
                 <div className="cf_email">
-                  <p>{task.taskName}</p>
+                  <p title={task.taskName} className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
                        {this.generateDate(task.updationTime)}
