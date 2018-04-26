@@ -203,11 +203,11 @@ class Tasks extends Component{
   }
   generateTasksList(){
   return this.state.tasks.map((task,key) => {
-      if(key > 2){
+      if(key > 3){
         this.state['showExpandCollapse'] = 'show';
       }
       return (
-      <div key={key} className={`contact_found mks_tasks_lists_user task_status_${task.status}`} style={{padding : "10px 12px 0"}}>
+      <div key={key} className={`contact_found mks_tasks_lists_user task_status_${task.status}`} style={{padding : "10px 12px"}}>
         <div className="cf_silhouette">
           <div className="cf_silhouette_text c_txt_s c_txt_s_blue">
             <i className={`${this.mapicons[task.taskType]} mks-task-icons`}></i>
@@ -234,7 +234,6 @@ class Tasks extends Component{
 
         </div>
       </div>
-      <div className="clr"></div>
         <div className="mks_task_edit_delete_wrap" onClick={this.editTask.bind(this,task)}>
             <div className="cf_silhouette">
               <div className="cf_silhouette_text c_txt_s c_txt_s_blue">

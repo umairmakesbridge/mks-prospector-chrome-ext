@@ -74,7 +74,7 @@ class TasksLists extends Component{
             let completedTask=[]
 
             if(parseInt(jsonResponse.totalCount) > 0){
-              if(jsonResponse.taskList.length > 2) {
+              if(jsonResponse.taskList.length > 3) {
                 this.state['showExpandCollapse'] = 'show';
               }
               debugger;
