@@ -158,7 +158,7 @@ class App extends Component {
   onEmailSelect(selectedEmailC,isTaskClick){
     console.log('Selected email from child : '+selectedEmailC);
     let isTask = (isTaskClick) ? isTaskClick : false;
-    
+
     //this.setState({selectedEmail : selectedEmailC});
      this.setState(() => {
                 return { selectedEmail : selectedEmailC,showContacts: true,gmailEmails: false,isTaskClicked: isTask };
@@ -276,15 +276,16 @@ class App extends Component {
       return { selectedEmail : null, showContacts: false,gmailEmails: true };
   });
  }
- 
+
  logOut(){
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
-
    this.setState(this.baseState);
+   debugger;
+     this.refs.gmailemail.refs.searchcontacts.hideUpTaskList()
   this.refs.gmailemail.resetGmail();
  }
- 
+
 
   render() {
     return (

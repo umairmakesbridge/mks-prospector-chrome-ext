@@ -3068,7 +3068,7 @@ ul.mks_ecc_wrap span:last-child li {
 .mks_tasks_lists_user:hover{
   background: #fff;
   cursor: default;
-  color: rgb(185, 194, 201);
+  color: #000;
 
 }
 .mks_tasks_lists_user:hover > .cf_email p,.mks_tasks_lists_user:hover .ckvwicon{color: rgb(79, 135, 171);}
@@ -3086,9 +3086,10 @@ ul.mks_ecc_wrap span:last-child li {
     position: absolute;
     top: 6px;
     left:0;
-    background-color: rgba(255,255,255,0.8);
-    width: 64%;
+    /* background-color: rgba(255,255,255,0.8); */
+    width: 20%;
     padding: 5px 12px 10px;
+    color:#000;
 }
 .mks_task_edit_delete_wrap .cf_silhouette{
     cursor: pointer;
@@ -3105,6 +3106,7 @@ color: rgb(79, 135, 171);
 ._mks_lists_tasks .cf_task_right{
   display: table-cell;
 float: right;
+height: 15px;
 }
 ._mks_lists_tasks .mks_task_time{
   position: relative;
@@ -3120,13 +3122,13 @@ float: right;
     font-size: 12px;
 }
 ._mks_lists_tasks .ckvwicon{
-  width: 70px;
+  width: 140px;
 }
 ._mks_lists_tasks .mks_priority_icon{
   width: 19px;
     height: 19px;
     right: 85px;
-    top: -16px;
+    top: -18px;
 }
 ._mks_lists_tasks .mks_priority_icon i{
   left:5px;

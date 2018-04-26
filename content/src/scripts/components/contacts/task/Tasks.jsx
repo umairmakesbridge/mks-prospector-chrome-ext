@@ -14,7 +14,8 @@ import {ErrorAlert,SuccessAlert}
       from '../../common/Alerts';
 import Moment
        from 'moment';
-
+import ReactTooltip
+       from 'react-tooltip';
 class Tasks extends Component{
   constructor(props){
     super(props);
@@ -220,8 +221,9 @@ class Tasks extends Component{
           </span>
         </div>
         <div className="cf_task_right">
-            <span className={`mks_priority_icon ${this.priorityIcons[task.priority]["topClass"]}`}>
+            <span data-tip={task.priority} className={`mks_priority_icon ${this.priorityIcons[task.priority]["topClass"]}`}>
                   <i className={`${this.priorityIcons[task.priority]["icon"]}`}></i>
+                  <ReactTooltip />
             </span>
             <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn" onClick={this.updateTasks.bind(this,task,true)} style={{"top": "13px","right": "0"}}>
               <i className="mksicon-Check"></i>
