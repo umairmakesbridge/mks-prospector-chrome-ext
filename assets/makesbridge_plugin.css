@@ -3191,7 +3191,7 @@ left: 3px;
   box-shadow: rgb(88, 160, 255) 1px 1px 8px -2px;
 }
 .mks_task_lists_dash_wrapper h2{
-  clear: both;
+  margin-right: 40px;
 }
 .mks_task_lists_dash_wrapper .searchBar h3 {
     display: inline-block;
@@ -3203,8 +3203,9 @@ left: 3px;
     margin: 9px 0px;
     font-size: 11px;
 }
-.mks_task_lists_dash_wrapper .contacts-switch .status_tgl a {
-
+.mks_task_lists_dash_wrapper{
+    padding: 5px 6px 0;
+    background: #fff;
 }
 .mks_task_lists_dash_wrapper .contacts-switch .status_tgl a.published.active,.mks_task_lists_dash_wrapper .contacts-switch .status_tgl a.draft.active {
     padding-left: 10px;
@@ -3212,10 +3213,18 @@ left: 3px;
 }
 .mks_task_lists_dash_wrapper .contacts-select-by{
   right: 3px;
-  top: 7px;
+  top: 10px;
 }
 .mks_task_lists_dash_wrapper .contacts-select-by select {
     width: 120px;
+}
+.mks_task_lists_dash_wrapper .contacts-switch{
+    clear: both;
+    display: block;
+    float: left;
+}
+.mks_task_lists_dash_wrapper .searchBar{
+  clear: both;
 }
 /* ==================
 Notes

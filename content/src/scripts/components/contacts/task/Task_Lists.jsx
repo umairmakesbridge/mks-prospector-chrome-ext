@@ -234,14 +234,16 @@ class TasksLists extends Component{
       return(
         <div className="D plc_marginbottom20 mks_task_lists_dash_wrapper">
           <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`}>
-            <div className="searchBar">
-              <h3>Sort By</h3>
             <div className="contacts-switch">
                 <div className="status_tgl">
                   <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:''}) }>Todays Tasks</a>
                     <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:''}) }>All Tasks</a>
               </div>
             </div>
+            <div className="searchBar">
+              <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks for today</span></h2>
+              <h3>Sort By</h3>
+
             <div className="contacts-select-by">
               <select onChange={this.sortTaskBy.bind(this)}>
                 <optgroup label="Priority">
@@ -257,7 +259,6 @@ class TasksLists extends Component{
               </select>
             </div>
             </div>
-            <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks for today</span></h2>
             {this.generateTasksList()}
 
           </div>
