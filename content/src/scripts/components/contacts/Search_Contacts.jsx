@@ -280,6 +280,10 @@ class SearchContacts extends Component{
       this.hideUpTaskList();
       this.props.onEmailSelect(selectedEmail)
     }
+    searchedBy(event){
+      console.log(event.currentTarget.value);
+      debugger;
+    }
     render(){
         return (
           <div className="s_contact_found_wraper">
@@ -317,11 +321,18 @@ class SearchContacts extends Component{
                 <div className='searchBar'>
                     <p>Open an email or search for a contact on Makesbridge</p>
                     <h2>Search</h2>
+
                       <div className="contacts-switch">
                           <div className="status_tgl">
                             <a className={`published toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',placeholder:'Enter name or email'}) }><i className="togglecontact-icon"></i>Contacts</a>
                               <a className={`draft toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',placeholder:'Enter tag'}) }><i className="toggletag-icon"></i>Tags</a>
                         </div>
+                      </div>
+                      <div className="contacts-select-by">
+                        <select onChange={this.searchedBy.bind(this)}>
+                          <option value="contacts">My Contacts</option>
+                            <option value="shared">Shared Contacts</option>
+                        </select>
                       </div>
                     <input
                       type="text"

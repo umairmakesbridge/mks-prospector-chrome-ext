@@ -179,8 +179,33 @@ class AddBox extends Component{
     onFocusChange(focusvalue){
       // console.log('Focus value' , focusvalue);
       if(focusvalue){
+        this.setState({
+          times : Moment().format("hh:mm A")
+        })
+        var selectedHr = this.state.times.split(" ");
+        var selectedAP = selectedHr[1];
+        var selectMin  = selectedHr[0].split(":");
+        var selectedHrs = selectedHr[0]
+        //var changeHr = ( parseInt(selectMin[0]) > 9 ) ? selectMin[0].charAt(1) : selectMin[0];
+        var changMin = "";
+        if(parseInt(selectMin[1]) <= 30 ){
+          changMin = (parseInt(selectMin[1]) > 15 ) ? "30" : "00";
+        }else if(parseInt(selectMin[1]) >= 30 ){
+          changMin = (parseInt(selectMin[1]) > 45 ) ? "00" : "30";
+          selectedHrs = (parseInt(selectMin[1]) > 45 ) ? (parseInt(selectedHrs) + 1) : selectedHrs;
+        }
+        var indexOfTime = ""
+        var timeS = parseInt(selectedHrs)+":"+changMin + " " +  selectedAP;
+        $.each($('.classic_theme_container .classic_time'),function(key,val){
+          if($(val).text().replace(/\xA0/g,"")==timeS.replace(" ",'')){
+            $(val).addClass('active');
+            indexOfTime = key;
+            debugger;
+          }
+        });
+
         $('.classic_theme_container').animate({
-          scrollTop: $('.classic_theme_container .classic_time.active').offset().top - 50
+          scrollTop: (indexOfTime * 41) - 50
         }, 100);
       }else{
         $('.classic_theme_container').animate({

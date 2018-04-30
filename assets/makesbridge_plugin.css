@@ -835,7 +835,7 @@ Search Bar Styling
 }
 .searchBar h2{
    font-weight: 100;
-   font-size: 18px;
+   font-size: 14px;
    line-height: 28px;
    display: inline-block;
 }
@@ -857,7 +857,17 @@ Search Bar Styling
     cursor: pointer;
 }
 
-
+.contacts-select-by{
+    display: inline;
+    position: relative;
+    float: right;
+    top: 5px;
+    right: -4px;
+}
+.contacts-select-by select{
+  width: 124px;
+font-size: 13px;
+}
 /*===========================================
 START contact found page
 ============================================*/
@@ -2437,7 +2447,7 @@ font-weight: lighter;
     float: left;
     color: #fff;
     display: block;
-    padding: 4px 20px;
+    padding: 4px 15px;
     border-radius: 20px;
     cursor: pointer;
 }
@@ -2445,14 +2455,16 @@ font-weight: lighter;
     background: #fff;
     border-radius: 20px;
     color: #41ce20;
-    padding-left: 35px;
+    padding-left: 30px;
     position: relative;
+    padding-right: 15px;
+    padding-left: 22px;
 }
 .contacts-switch .status_tgl a.published.active .togglecontact-icon {
     background: url("chrome-extension://__MSG_@@extension_id__/img/18x18_icon_map.png") no-repeat scroll -36px -33px;
     display: block;
     height: 18px;
-    left: 10px;
+    left: 3px;
     position: absolute;
     top: 0px;
     width: 18px;
@@ -2460,19 +2472,24 @@ font-weight: lighter;
 .contacts-switch .status_tgl a.draft.active {
     background: #fff;
     color: #2a99f8;
-    padding-left: 35px;
+    padding-left: 30px;
     border-radius: 20px;
     position: relative;
+    padding-right: 15px;
+    padding-left: 22px;
 }
 .contacts-switch .status_tgl a.draft.active .toggletag-icon {
     background: url("chrome-extension://__MSG_@@extension_id__/img/18x18_icon_map.png") no-repeat scroll -20px -53px;
     display: block;
     height: 18px;
-    left: 10px;
+    left: 5px;
     position: absolute;
     top: 2px;
     width: 18px;
 }
+/* a.toggletags.active {
+    padding-left: 15px !important;
+} */
 .__react_component_tooltip.type-dark{
   background-color: #23cd8c !important;
   max-width: 300px;
@@ -3173,7 +3190,33 @@ left: 3px;
   background: rgb(88, 160, 255);
   box-shadow: rgb(88, 160, 255) 1px 1px 8px -2px;
 }
+.mks_task_lists_dash_wrapper h2{
+  clear: both;
+}
+.mks_task_lists_dash_wrapper .searchBar h3 {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 100;
+    line-height: 31px;
+}
+.mks_task_lists_dash_wrapper .status_tgl {
+    margin: 9px 0px;
+    font-size: 11px;
+}
+.mks_task_lists_dash_wrapper .contacts-switch .status_tgl a {
 
+}
+.mks_task_lists_dash_wrapper .contacts-switch .status_tgl a.published.active,.mks_task_lists_dash_wrapper .contacts-switch .status_tgl a.draft.active {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.mks_task_lists_dash_wrapper .contacts-select-by{
+  right: 3px;
+  top: 7px;
+}
+.mks_task_lists_dash_wrapper .contacts-select-by select {
+    width: 120px;
+}
 /* ==================
 Notes
 =================== */

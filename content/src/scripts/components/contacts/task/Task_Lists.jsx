@@ -25,7 +25,8 @@ class TasksLists extends Component{
           collapseExpand : 'expand',
           collapseMsg : 'Click to expand',
           showCollapse : '',
-          showExpandCollapse : 'hide'
+          showExpandCollapse : 'hide',
+          cactive : 'active'
         }
         this.mapicons ={
           "email" : "mksicon-Mail",
@@ -207,6 +208,9 @@ class TasksLists extends Component{
             )
       });
     }
+    sortTaskBy(event){
+      debugger;
+    }
     render(){
       if(this.state.assignTask == -1){
         return(
@@ -228,8 +232,31 @@ class TasksLists extends Component{
       }
 
       return(
-        <div className="D plc_marginbottom20">
+        <div className="D plc_marginbottom20 mks_task_lists_dash_wrapper">
           <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`}>
+            <div className="searchBar">
+              <h3>Sort By</h3>
+            <div className="contacts-switch">
+                <div className="status_tgl">
+                  <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:''}) }>Todays Tasks</a>
+                    <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:''}) }>All Tasks</a>
+              </div>
+            </div>
+            <div className="contacts-select-by">
+              <select onChange={this.sortTaskBy.bind(this)}>
+                <optgroup label="Priority">
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                 </optgroup>
+                 <optgroup label="Tasks Types">
+                  <option value="mercedes">Call</option>
+                  <option value="mail">Email</option>
+                  <option value="discovery">Discovery</option>
+                </optgroup>
+              </select>
+            </div>
+            </div>
             <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks for today</span></h2>
             {this.generateTasksList()}
 
