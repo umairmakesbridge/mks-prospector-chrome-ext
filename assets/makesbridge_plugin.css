@@ -991,8 +991,9 @@ START contact found page
 .contact_found:hover > .cf_email p,.contact_found:hover .ckvwicon{color: #fff;}
 
 .c_txt_s_empty{
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
+    line-height: 0;
     border: 2px solid #ddd;
     background: transparent !important;
     top: 6px;
@@ -3193,6 +3194,9 @@ left: 3px;
 .mks_task_lists_dash_wrapper h2{
   margin-right: 40px;
 }
+.mks_task_lists_dash_wrapper .contacts-switch{
+  top:-4px;
+}
 .mks_task_lists_dash_wrapper .searchBar h3 {
     display: inline-block;
     font-size: 13px;
@@ -3200,7 +3204,7 @@ left: 3px;
     line-height: 31px;
 }
 .mks_task_lists_dash_wrapper .status_tgl {
-    margin: 9px 0px;
+    margin: 9px 0px 0px;
     font-size: 11px;
 }
 .mks_task_lists_dash_wrapper{
@@ -3225,6 +3229,22 @@ left: 3px;
 }
 .mks_task_lists_dash_wrapper .searchBar{
   clear: both;
+}
+
+.mks_tasks_lists_empty_icon{
+  float: right;
+    right: 16px;
+    position: relative;
+    top: 3px;
+}
+.mks_tasks_lists_empty_icon:hover .c_txt_s_empty {
+    background: #23ce8c !important;
+    border-color: #23ce8c;
+}
+.mks_tasks_lists_empty_icon:hover .c_txt_s_empty i.mksicon-Check{
+    font-size: 12px;
+    line-height: 14px !important;
+    display:block !important;
 }
 /* ==================
 Notes

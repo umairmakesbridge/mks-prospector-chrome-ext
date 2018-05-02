@@ -86,10 +86,7 @@ class TasksLists extends Component{
             let completedTask=[]
 
             if(parseInt(jsonResponse.totalCount) > 0){
-              if(jsonResponse.taskList.length > 3) {
-                this.state['showExpandCollapse'] = 'show';
-              }
-              debugger;
+
               $.each(jsonResponse.taskList,(key,value)=>{
                 if(value.status=="C"){
                   completedTask.push(value);
@@ -97,7 +94,15 @@ class TasksLists extends Component{
                 }else{
                   taskAssign.push(value)
                 }
-              })
+              });
+
+              if(taskAssign.length > 2) {
+                this.state['showExpandCollapse'] = 'show';
+              }else{
+                this.state['showExpandCollapse'] = 'hide';
+              }
+              debugger;
+
               this.setState({
                 assignTask : taskAssign,
                 totalCount : taskAssign.length,
@@ -128,12 +133,73 @@ class TasksLists extends Component{
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       return format.time;
     }
+    markComplete(task,event){
+      event.preventDefault();
+      console.log('Mark Compelte Click');
+      this.updateTasks(task);
+      event.stopPropagation();
+      return false;
+    }
+    updateTasks(taskObj,isComplete){
+        console.log(taskObj);
+        this.setState({
+          showLoading : true
+        })
+        var reqObj = {
+          type: "complete",
+          subNum: taskObj.subscriberInfo['subscriberNumber.encode'],
+          taskId :  taskObj['taskId.encode'],
+          tasktype: taskObj.tasktype,
+          name: taskObj.input2,
+          taskDate: (taskObj.startDate) ? taskObj.startDate.format("MM-DD-YYYY") + " " + Moment(taskObj.times, ["h:mm A"]).format("HH:mm")+":00" : "",
+          priority: (taskObj.priority) ? taskObj.priority.toLowerCase() : "",
+          notes: taskObj.notes,
+          ukey:this.props.users_details[0].userKey,
+          isMobileLogin:'Y',
+          userId:this.props.users_details[0].userId
+        };
+        request.post(this.props.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.props.users_details[0].bmsToken)
+           .set('Content-Type', 'application/x-www-form-urlencoded')
+           .send(reqObj)
+           .then((res) => {
+              console.log(res.status);
+              var jsonResponse =  JSON.parse(res.text);
+              console.log(jsonResponse);
+              if(jsonResponse.success){
+                this.setState({
+                  disabled    : false,
+                  showLoading : false
+                })
+                  if(isComplete){
+                    SuccessAlert({message:"Task mark completed successfully."});
+                  }else{
+                    SuccessAlert({message:"Task updated successfully."});
+                  }
+
+                //this.props.contact['company'] = this.state.company;
+                //this.props.updateContactHappened();
+                //this.props.getSubscriberDetails();
+                this.getTaskListofUser()
+
+              }else{
+                ErrorAlert({message : jsonResponse[1]});
+              }
+            });
+    }
     generateTasksList(){
       return this.state.assignTask.map((task,key) => {
             return(
               <div key={key} className={`contact_found _mks_lists_tasks  task_status_${task.status}`} onClick={this.loadSubscriber.bind(this,task.subscriberInfo)} style={{padding : "10px 12px 0"}}>
+
               <div className="cf_email_wrap" style={{"paddingLeft":"0","width": "360px"}}>
+
                 <div className="cf_email">
+                  <div data-tip="Click to complete" className="cf_silhouette mks_tasks_lists_empty_icon" onClick={this.markComplete.bind(this,task)}>
+                    <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_empty">
+                      <i className="mksicon-Check mks-tasklists-icons" style={{"display" : "none"}}></i>
+                    </div>
+                  </div>
+                    <ReactTooltip />
                   <p title={task.taskName} className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
@@ -173,7 +239,7 @@ class TasksLists extends Component{
     generateCompletedTasks(){
       return this.state.completeTask.map((task,key) => {
             return(
-              <div key={key} className={`contact_found _mks_lists_tasks _mks_complete_tasks`} style={{padding : "10px 12px 0"}}>
+              <div key={key} className={`contact_found _mks_lists_tasks _mks_complete_tasks`} onClick={this.loadSubscriber.bind(this,task.subscriberInfo)} style={{padding : "10px 12px 0"}}>
                 <div className="cf_silhouette">
                   <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed ">
                     <i className="mksicon-Check mks-tasklists-icons"></i>
@@ -214,7 +280,32 @@ class TasksLists extends Component{
     render(){
       if(this.state.assignTask == -1){
         return(
-          <div className="contacts-wrap plc_marginbottom20">
+          <div className="contacts-wrap plc_marginbottom20 mks_task_lists_dash_wrapper">
+            <div className="contacts-switch" style={{"display" : "inline"}}>
+                <div className="status_tgl">
+                  <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:''}) }>Todays Tasks</a>
+                    <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:''}) }>All Tasks</a>
+              </div>
+            </div>
+            <div className="searchBar" style={{    "width": "168px","display": "inline","left": "5px","top": "4px"}}>
+
+              <h3 style={{"fontSize": "12px","left": "-2px","position": "relative"}}>Sort By</h3>
+
+            <div className="contacts-select-by">
+              <select onChange={this.sortTaskBy.bind(this)}>
+                <optgroup label="Priority">
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                 </optgroup>
+                 <optgroup label="Tasks Types">
+                  <option value="mercedes">Call</option>
+                  <option value="mail">Email</option>
+                  <option value="discovery">Discovery</option>
+                </optgroup>
+              </select>
+            </div>
+            </div>
           <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
                   <p className="not-found">No Tasks found for today</p>
               </div>
@@ -223,7 +314,8 @@ class TasksLists extends Component{
       }
       if(!this.state.assignTask){
           return(
-            <div className="contacts-wrap plc_marginbottom20">
+            <div className="contacts-wrap plc_marginbottom20 ">
+
             <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
                     <p className="not-found">Loading Tasks....</p>
                 </div>

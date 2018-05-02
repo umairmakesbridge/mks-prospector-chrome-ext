@@ -281,7 +281,6 @@ class App extends Component {
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
    this.setState(this.baseState);
-   debugger;
      this.refs.gmailemail.refs.searchcontacts.hideUpTaskList()
   this.refs.gmailemail.resetGmail();
  }

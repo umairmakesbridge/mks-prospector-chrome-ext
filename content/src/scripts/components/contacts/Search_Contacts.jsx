@@ -282,7 +282,6 @@ class SearchContacts extends Component{
     }
     searchedBy(event){
       console.log(event.currentTarget.value);
-      debugger;
     }
     render(){
         return (

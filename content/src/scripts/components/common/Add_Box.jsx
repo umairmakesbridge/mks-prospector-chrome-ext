@@ -179,9 +179,12 @@ class AddBox extends Component{
     onFocusChange(focusvalue){
       // console.log('Focus value' , focusvalue);
       if(focusvalue){
-        this.setState({
-          times : Moment().format("hh:mm A")
-        })
+        if(this.state.saveType=="create"){
+          this.setState({
+            times : Moment().format("hh:mm A")
+          })
+        }
+
         var selectedHr = this.state.times.split(" ");
         var selectedAP = selectedHr[1];
         var selectMin  = selectedHr[0].split(":");
@@ -196,11 +199,11 @@ class AddBox extends Component{
         }
         var indexOfTime = ""
         var timeS = parseInt(selectedHrs)+":"+changMin + " " +  selectedAP;
+        $('.classic_theme_container .classic_time').removeClass('active');
         $.each($('.classic_theme_container .classic_time'),function(key,val){
           if($(val).text().replace(/\xA0/g,"")==timeS.replace(" ",'')){
             $(val).addClass('active');
             indexOfTime = key;
-            debugger;
           }
         });
 
