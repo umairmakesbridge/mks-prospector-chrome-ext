@@ -996,7 +996,7 @@ START contact found page
     line-height: 0;
     border: 2px solid #ddd;
     background: transparent !important;
-    top: 6px;
+    top: 5px;
     position: relative;
     left: 5px;
 }
@@ -1004,7 +1004,7 @@ START contact found page
   width: 18px;
   height: 18px;
   background: rgb(35, 206, 140) !important;
-  top: 6px;
+  top: 5px;
   position: relative;
   left: 5px;
 }
@@ -3233,7 +3233,7 @@ left: 3px;
 
 .mks_tasks_lists_empty_icon{
   float: right;
-    right: 16px;
+    right: 20px;
     position: relative;
     top: 3px;
 }
