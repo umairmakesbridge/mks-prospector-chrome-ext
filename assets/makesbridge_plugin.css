@@ -1746,7 +1746,7 @@ span.mksph_contact_value {
 }
 div#custom-fields ul li {
    list-style-type: none;
-   padding-left: 2px;
+   padding-left: 10px;
 }
 .customField_ul_wraps{
   position: relative;
@@ -3043,7 +3043,7 @@ ul.mks_ecc_wrap li {
     display: inline-block;
     text-align: center;
     margin: 0px;
-    padding: 6px 10px;
+    padding: 6px 4px;
     background-color: transparent;
     border: 1px solid rgb(221, 221, 221);
     color: rgb(186, 194, 203);
