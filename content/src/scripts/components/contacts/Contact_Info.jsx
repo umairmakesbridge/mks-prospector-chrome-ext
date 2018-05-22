@@ -143,11 +143,7 @@ class ContactInfo extends Component{
 
                 }else{
 
-                  this.setState({
-                    contactnotFound : true,
-                    diffEmail: false,
-                    showScore : 'hide'
-                  });
+                this.searchEmailInMksShared(email);
 
                 }
               }

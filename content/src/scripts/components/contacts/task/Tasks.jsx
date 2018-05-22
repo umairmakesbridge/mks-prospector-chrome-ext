@@ -209,10 +209,15 @@ class Tasks extends Component{
           }
         });
   }
-  generateDate(dateString){
-    var _date = Moment(decodeHTML(dateString),'YYYY-M-D H:m');
+  generateDate(task){
+    var _date = Moment(decodeHTML(task.taskDate),'YYYY-M-D H:m');
     var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
-    return format.date +" "+ format.time;
+
+    return " created task at "+format.time +", "+format.date ;
+  }
+  generateUserID(task){
+    var taskowner = this.props.users_details[0].userId==task.taskAddedBy ? "You":task.taskAddedBy;
+    return taskowner;
   }
   generateTasksList(){
   return this.state.tasks.map((task,key) => {
@@ -231,20 +236,20 @@ class Tasks extends Component{
       <div className="cf_email_wrap">
         <div className="cf_email">
           <p className="mkb_elipsis mkb_text_break" style={{"width" : "145px"}} title={task.taskName}>{task.taskName}</p>
-          <span className="ckvwicon">
-            {this.generateDate(task.taskDate)}
+          <span className="ckvwicon ckwicontext">
+            <strong>{this.generateUserID(task)}</strong>{this.generateDate(task)}
           </span>
         </div>
         <div className="cf_task_right">
-            <span data-tip={task.priority} className={`mks_priority_icon ${this.priorityIcons[task.priority]["topClass"]}`}>
+            <span data-tip={task.priority} className={`mks_priority_icon ${this.priorityIcons[task.priority]["topClass"]}`} style={{"top": "-42px","right": "112px"}}>
                   <i className={`${this.priorityIcons[task.priority]["icon"]}`}></i>
                   <ReactTooltip />
             </span>
-            <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn" onClick={this.updateTasks.bind(this,task,true)} style={{"top": "13px","right": "0"}}>
+            <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn" onClick={this.updateTasks.bind(this,task,true)} style={{"top": "6px","right": "0","font-size":"10px"}}>
               <i className="mksicon-Check"></i>
               Complete</span>
 
-            <span className="mkb_tast_completed_btn mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF mkb_task_compBtn" style={{"top": "13px","right": "0"}}>
+            <span className="mkb_tast_completed_btn mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF mkb_task_compBtn" style={{"top": "3px","right": "3px","font-size":"10px"}}>
                 Completed</span>
 
         </div>
