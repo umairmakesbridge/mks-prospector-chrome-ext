@@ -274,6 +274,7 @@ class Notes extends Component{
             let ListItems = this.state.notesLists.map((list,key) => {
               var _date = Moment(decodeHTML(list.updationDate),'YYYY-M-D H:m');
               var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
+              var noteowner = this.props.users_details[0].userId==list.commentAddedBy ? "You":list.commentAddedBy;
               return (
                 <li className="_mks_item" key={key}>
                   <div className="cf_silhouette">
@@ -291,7 +292,7 @@ class Notes extends Component{
                       <div className="cf_email">
                         <span className="mkb_text_break" title={decodeHTML(list.comment,true)}>  {decodeHTML(list.comment,true)}</span>
 
-                            <p><strong>You</strong> made a note at {format.time},{format.date}</p>
+                            <p><strong>{noteowner}</strong> made a note at {format.time},{format.date}</p>
                       </div>
 
                     </div>

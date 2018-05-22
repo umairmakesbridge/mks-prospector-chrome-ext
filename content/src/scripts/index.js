@@ -45,7 +45,7 @@ class App extends Component {
       gmail_emails_body: [],
       isLoggedOut      : false,
       isTaskClicked    : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
+      baseUrl          : 'https://test.bridgemailsystem.com/pms'
     };
 
     //// preserve the initial state in a new object
@@ -155,13 +155,13 @@ class App extends Component {
           gmail_email_list : uniqueEmails
         })
   }
-  onEmailSelect(selectedEmailC,isTaskClick){
+  onEmailSelect(selectedEmailC,isTaskClick,shareSearch){
     console.log('Selected email from child : '+selectedEmailC);
     let isTask = (isTaskClick) ? isTaskClick : false;
-
+    let isShareSearch = shareSearch=="Y" ? "Y" : "N" ;
     //this.setState({selectedEmail : selectedEmailC});
      this.setState(() => {
-                return { selectedEmail : selectedEmailC,showContacts: true,gmailEmails: false,isTaskClicked: isTask };
+                return { selectedEmail : selectedEmailC,showContacts: true,gmailEmails: false,isTaskClicked: isTask, isShareSearch: isShareSearch};
                 });
   }
 
@@ -281,8 +281,9 @@ class App extends Component {
    console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
    this.setState(this.baseState);
-     this.refs.gmailemail.refs.searchcontacts.hideUpTaskList()
-  this.refs.gmailemail.resetGmail();
+   this.refs.gmailemail.refs.searchcontacts.hideUpTaskList();
+   this.refs.gmailemail.refs.searchcontacts.resetSearchSelectBox();
+   this.refs.gmailemail.resetGmail();
  }
 
 
@@ -379,6 +380,7 @@ class App extends Component {
           users_details={this.state.users_details}
           contact_email = {this.state.selectedEmail}
           isTaskClicked = {this.state.isTaskClicked}
+          isShareSearch = {this.state.isShareSearch}
         />
         </ToggleDisplay>
         </div>

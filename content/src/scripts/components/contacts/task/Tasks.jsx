@@ -32,7 +32,8 @@ class Tasks extends Component{
       tasks : "",
       loadingMessage : "",
       showLoading : false,
-      showExpandCollapse : 'hide'
+      showExpandCollapse : 'hide',
+      sortTasks:'-1'
     }
     this.mapicons ={
       "email" : "mksicon-Mail",
@@ -160,8 +161,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "getTasks",
       subNum: this.props.contact.subNum,
-      fromDate: "03-01-2018", //"2018-04-01",
-      toDate: Moment().add('days', 30).format('MM-DD-YYYY'),
+      //fromDate: "03-01-2018", //"2018-04-01",
+      //toDate: Moment().add('days', 30).format('MM-DD-YYYY'),
       orderBy : "updationTime",
       order: "desc",
       offset : 0,
@@ -170,6 +171,16 @@ class Tasks extends Component{
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
+    if(this.state.sortTasks!=="-1"){
+      if(this.state.sortTasks=='low' || this.state.sortTasks=='medium' || this.state.sortTasks=='high'){
+        reqObj["sortType"] = 'priority';
+        reqObj["sortBy"] = this.state.sortTasks;
+      }
+      else{
+        reqObj["sortType"] = 'taskTypeSingle';
+        reqObj["sortBy"] = this.state.sortTasks;
+      }
+    }
 
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -319,6 +330,11 @@ class Tasks extends Component{
       this.setState({setFullHeight : 'heighAuto',collapseMsg: 'Click to collapse',collapseExpand:'collapse'});
     }
   }
+  sortTaskBy(event){
+    this.setState({sortTasks: event.target.value},() => {
+      this.getTaskList();
+    });
+  }
 
   render(){
     if(!this.state.tasks){
@@ -327,110 +343,89 @@ class Tasks extends Component{
       <p className="not-found">Loading Tasks...</p>
       </div>)
     }
+    const tasks_header1 = <ToggleDisplay show={this.state.showAddBox}>
+    <LoadingMask message={'Creating new task...'} showLoading={this.state.showLoading} />
+      <AddBox ref="addboxView"
+              showTitle={"Create New Task"}
+              addFieldsObj={ [
+                {
+                  type:"li",
+                  className:"mks_ecc_wrap",
+                  stateType : "tasktype",
+                  defaultValue : "call",
+                  value :[
+                    {name : "ecc", className:"mks_ecc_firsttouch",tipName:"First Touch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_demo",tipName:"Demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_discovery",tipName:"Discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_call active",tipName:"Call", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_email",tipName:"Email", id: "email",value:"email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_lunch",tipName:"Lunch", id: "Lunch",value:"lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_breakfast",tipName:"Breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_meeting",tipName:"Meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
+                  ]
+                },
+                {name : "ckey", className:"focusThis", required:'required',defaultValue:'Call' , id: "ckey",placeholder:"Enter task name *"},
+                {type:"date",name : "cvlaue", className:"", id: "cvalue",placeholder:"Select date"},
+                {
+                  type:"li",
+                  className:"mks_priorty_wrap",
+                  stateType : "priority",
+                  value : [
+                    {name : "priority", className:"mks_priotiry_low", id: "low",placeholder:"Low"},
+                    {name : "priority", className:"mks_priotiry_medium active", id: "medium",placeholder:"Medium"},
+                    {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
+                  ]
+                },
+                {type:"textarea", className:"",id:"notes", placeholder:"Add notes about your task here"}
+
+              ] }
+              boxType={"mks_tasksFields"}
+              create={this.createTasks.bind(this)}
+              update={this.updateTasks.bind(this)}
+              cancel={this.hideAddCus.bind(this)}
+      />
+
+      <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
+
+</ToggleDisplay>
+const tasks_header2 = <select style={{left : "60px","top" : "-36px","position":"absolute"}} onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
+
+  <option value="-1">All</option>
+
+  <optgroup label="Priority">
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+   </optgroup>
+   <optgroup label="Tasks Types">
+     <option value="first_touch">First Touch</option>
+     <option value="demo">Demo</option>
+     <option value="discovery">Discovery</option>
+     <option value="call">Call</option>
+     <option value="email">Email</option>
+     <option value="lunch">Lunch</option>
+     <option value="breakfast">Breakfast</option>
+     <option value="meeting">Meeting</option>
+     <option value="proposal">Proposal</option>
+  </optgroup>
+</select>
+const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
     if(this.state.tasks == -1){
       return (<div style={{position: "relative"}}>
 
-                <ToggleDisplay show={this.state.showAddBox}>
-                  <LoadingMask message={'Creating new task...'} showLoading={this.state.showLoading} />
-                    <AddBox ref="addboxView"
-                            showTitle={"Create New Task"}
-                            addFieldsObj={ [
-                              {
-                                type:"li",
-                                className:"mks_ecc_wrap",
-                                stateType : "tasktype",
-                                defaultValue : "call",
-                                value : [
-                                  {name : "ecc", className:"mks_ecc_firsttouch",tipName:"First Touch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_demo",tipName:"Demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_discovery",tipName:"Discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_call active",tipName:"Call", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_email",tipName:"Email", id: "email",value:"email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_lunch",tipName:"Lunch", id: "Lunch",value:"lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_breakfast",tipName:"Breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_meeting",tipName:"Meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
-                                  {name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
-                                ]
-                              },
-                              {name : "ckey", className:"focusThis", required:'required', id: "ckey",placeholder:"Enter task subject *"},
-                              {type:"date",name : "cvlaue", className:"", id: "cvalue",placeholder:"Select date"},
-                              {
-                                type:"li",
-                                className:"mks_priorty_wrap",
-                                stateType : "priority",
-                                defaultValue : "medium",
-                                value : [
-                                  {name : "priority", className:"mks_priotiry_low", id: "low",placeholder:"Low"},
-                                  {name : "priority", className:"mks_priotiry_medium active", id: "medium",placeholder:"Medium"},
-                                  {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
-                                ]
-                              },
-                              {type:"textarea", className:"",id:"notes" , placeholder:"Add notes about your task here"}
-
-                            ] }
-                            boxType={"mks_tasksFields"}
-                            create={this.createTasks.bind(this)}
-
-                            cancel={this.hideAddCus.bind(this)}
-                    />
-
-                    <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
-
-              </ToggleDisplay>
-                  <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
+        {tasks_header1}
+        {tasks_header2}
+        {tasks_header3}
                   <p className="not-found">No tasks found.</p>
                   </div>)
     }
 
     return (
       <div style={{position: "relative"}}>
-        <ToggleDisplay show={this.state.showAddBox}>
-        <LoadingMask message={'Creating new task...'} showLoading={this.state.showLoading} />
-          <AddBox ref="addboxView"
-                  showTitle={"Create New Task"}
-                  addFieldsObj={ [
-                    {
-                      type:"li",
-                      className:"mks_ecc_wrap",
-                      stateType : "tasktype",
-                      defaultValue : "call",
-                      value :[
-                        {name : "ecc", className:"mks_ecc_firsttouch",tipName:"First Touch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_demo",tipName:"Demo", id:"Demo",value:"demo",placeholder:"<span class='mksicon-Demo'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_discovery",tipName:"Discovery", id: "Discovery",value:"discovery",placeholder:"<span class='mksicon-Discovery'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_call active",tipName:"Call", id: "call",value:"call",placeholder:"<span class='mksicon-Phone'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_email",tipName:"Email", id: "email",value:"email",placeholder:"<span class='mksicon-Mail'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_lunch",tipName:"Lunch", id: "Lunch",value:"lunch",placeholder:"<span class='mksicon-Lunch'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_breakfast",tipName:"Breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_meeting",tipName:"Meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
-                        {name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
-                      ]
-                    },
-                    {name : "ckey", className:"focusThis", required:'required',defaultValue:'Call' , id: "ckey",placeholder:"Enter task name *"},
-                    {type:"date",name : "cvlaue", className:"", id: "cvalue",placeholder:"Select date"},
-                    {
-                      type:"li",
-                      className:"mks_priorty_wrap",
-                      stateType : "priority",
-                      value : [
-                        {name : "priority", className:"mks_priotiry_low", id: "low",placeholder:"Low"},
-                        {name : "priority", className:"mks_priotiry_medium active", id: "medium",placeholder:"Medium"},
-                        {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
-                      ]
-                    },
-                    {type:"textarea", className:"",id:"notes", placeholder:"Add notes about your task here"}
-
-                  ] }
-                  boxType={"mks_tasksFields"}
-                  create={this.createTasks.bind(this)}
-                  update={this.updateTasks.bind(this)}
-                  cancel={this.hideAddCus.bind(this)}
-          />
-
-          <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
-
-    </ToggleDisplay>
-    <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
+        {tasks_header1}
+        {tasks_header2}
+        {tasks_header3}
     <div style={{"position" : "relative"}} className={`content-wrapper height90 height230 ${this.state.setFullHeight}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}

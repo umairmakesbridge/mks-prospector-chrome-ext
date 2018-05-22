@@ -26,7 +26,9 @@ class TasksLists extends Component{
           collapseMsg : 'Click to expand',
           showCollapse : '',
           showExpandCollapse : 'hide',
-          cactive : 'active'
+          cactive : 'active',
+          sortTasks : '-1',
+          isTodayTask: 1
         }
         this.mapicons ={
           "email" : "mksicon-Mail",
@@ -62,11 +64,10 @@ class TasksLists extends Component{
       this.setState({
           assignTask : ''
       })
+
       var reqObj = {
         type: "getAllTask",
-        fromDate: Moment().format("MM-DD-YYYY"),
-        toDate: Moment().format("MM-DD-YYYY"), // Day +1
-        orderBy : "updationTime",
+        orderBy : 'updationTime',
         order: "desc",
         offset : 0,
         bucket : 20,
@@ -74,6 +75,20 @@ class TasksLists extends Component{
         isMobileLogin:'Y',
         userId:this.props.users_details[0].userId
       };
+      if(this.state.isTodayTask){
+        reqObj["fromDate"]=  Moment().format("MM-DD-YYYY");
+        reqObj["toDate"]= Moment().format("MM-DD-YYYY"); // Day +1]
+      }
+      if(this.state.sortTasks!=="-1"){
+        if(this.state.sortTasks=='low' || this.state.sortTasks=='medium' || this.state.sortTasks=='high'){
+          reqObj["sortType"] = 'priority';
+          reqObj["sortBy"] = this.state.sortTasks;
+        }
+        else{
+          reqObj["sortType"] = 'taskTypeSingle';
+          reqObj["sortBy"] = this.state.sortTasks;
+        }
+      }
       request.post(this.props.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.props.users_details[0].bmsToken)
          .set('Content-Type', 'application/x-www-form-urlencoded')
          .send(reqObj)
@@ -101,7 +116,6 @@ class TasksLists extends Component{
               }else{
                 this.state['showExpandCollapse'] = 'hide';
               }
-              debugger;
 
               this.setState({
                 assignTask : taskAssign,
@@ -117,7 +131,8 @@ class TasksLists extends Component{
               //this.hideAddCus()
             }else{
               this.setState({
-                assignTask : -1
+                assignTask : -1,
+                totalCount:0
               })
             }
           });
@@ -131,7 +146,8 @@ class TasksLists extends Component{
     generateDate(dateString){
       var _date = Moment(decodeHTML(dateString),'YYYY-M-D H:m');
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
-      return format.time;
+      var returnVal = this.state.isTodayTask ? format.time: format.date +" "+ format.time;
+      return returnVal;
     }
     markComplete(task,event){
       event.preventDefault();
@@ -202,10 +218,10 @@ class TasksLists extends Component{
                     <ReactTooltip />
                   <p title={task.taskName} className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
-                    <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
+                    <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px","left":"40px"}}>
                        {this.generateDate(task.updationTime)}
                     </span>
-                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": "63px"}}>
+                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'100px':'160px'}}>
                     {(task.subscriberInfo.firstName) ? task.subscriberInfo.firstName : ""}   {task.subscriberInfo.lastName}
                   </span>
 
@@ -252,7 +268,7 @@ class TasksLists extends Component{
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
                        {this.generateDate(task.updationTime)}
                     </span>
-                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": "63px"}}>
+                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'63px':'126px'}}>
                     {task.subscriberInfo.firstName}   {task.subscriberInfo.lastName}
                   </span>
 
@@ -275,82 +291,86 @@ class TasksLists extends Component{
       });
     }
     sortTaskBy(event){
-      debugger;
+      this.setState({sortTasks: event.target.value},() => {
+        this.getTaskListofUser();
+      });
+    }
+    getTodayTasks(event){
+      this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',isTodayTask:1},() => {
+        this.getTaskListofUser();
+      });
+
+    }
+    getAllTasks(event){
+       this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',isTodayTask:0},() => {
+         this.getTaskListofUser();
+       });
+
     }
     render(){
+      const slider_button = <div className="contacts-switch">
+          <div className="status_tgl">
+            <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={this.getTodayTasks.bind(this) }>Todays Tasks</a>
+              <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={this.getAllTasks.bind(this) }>All Tasks</a>
+        </div>
+      </div>
+      const taskTodayText = this.state.isTodayTask==1?" for today":"";
+      const search_bar = <div className="searchBar">
+        <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks {taskTodayText}</span></h2>
+        <h3>Show</h3>
+
+      <div className="contacts-select-by">
+        <select onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
+
+          <option value="-1">All</option>
+
+          <optgroup label="Priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+           </optgroup>
+           <optgroup label="Tasks Types">
+             <option value="first_touch">First Touch</option>
+             <option value="demo">Demo</option>
+             <option value="discovery">Discovery</option>
+             <option value="call">Call</option>
+             <option value="email">Email</option>
+             <option value="lunch">Lunch</option>
+             <option value="breakfast">Breakfast</option>
+             <option value="meeting">Meeting</option>
+             <option value="proposal">Proposal</option>
+          </optgroup>
+        </select>
+      </div>
+      </div>
       if(this.state.assignTask == -1){
         return(
           <div className="contacts-wrap plc_marginbottom20 mks_task_lists_dash_wrapper">
-            <div className="contacts-switch" style={{"display" : "inline"}}>
-                <div className="status_tgl">
-                  <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:''}) }>Todays Tasks</a>
-                    <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:''}) }>All Tasks</a>
-              </div>
+            {slider_button}
+            {search_bar}
+            <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
+              <p className="not-found">No Tasks found</p>
             </div>
-            <div className="searchBar" style={{    "width": "168px","display": "inline","left": "5px","top": "4px"}}>
-
-              <h3 style={{"fontSize": "12px","left": "-2px","position": "relative"}}>Sort By</h3>
-
-            <div className="contacts-select-by">
-              <select onChange={this.sortTaskBy.bind(this)}>
-                <optgroup label="Priority">
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                 </optgroup>
-                 <optgroup label="Tasks Types">
-                  <option value="mercedes">Call</option>
-                  <option value="mail">Email</option>
-                  <option value="discovery">Discovery</option>
-                </optgroup>
-              </select>
-            </div>
-            </div>
-          <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
-                  <p className="not-found">No Tasks found for today</p>
-              </div>
-                  </div>
+          </div>
         )
       }
       if(!this.state.assignTask){
           return(
-            <div className="contacts-wrap plc_marginbottom20 ">
-
-            <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
-                    <p className="not-found">Loading Tasks....</p>
-                </div>
-                    </div>
+            <div className="contacts-wrap plc_marginbottom20 mks_task_lists_dash_wrapper ">
+            {slider_button}
+            {search_bar}
+              <div id="NoContact" className={` mksph_cardbox`} style={{"paddingTop": "8px"}}>
+                  <p className="not-found">Loading Tasks....</p>
+              </div>
+            </div>
           )
       }
 
       return(
         <div className="D plc_marginbottom20 mks_task_lists_dash_wrapper">
           <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`}>
-            <div className="contacts-switch">
-                <div className="status_tgl">
-                  <a className={`published toggletasks toggletags ${this.state.cactive} showtooltip`} onClick={switchActive => this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:''}) }>Todays Tasks</a>
-                    <a className={`draft toggletasks toggletags ${this.state.tactive} showtooltip`} onClick={switchActive => this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:''}) }>All Tasks</a>
-              </div>
-            </div>
-            <div className="searchBar">
-              <h2 className="total-count-head"><strong className="badge total-count">{this.state.totalCount}</strong><span className="total-text">tasks for today</span></h2>
-              <h3>Sort By</h3>
-
-            <div className="contacts-select-by">
-              <select onChange={this.sortTaskBy.bind(this)}>
-                <optgroup label="Priority">
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                 </optgroup>
-                 <optgroup label="Tasks Types">
-                  <option value="mercedes">Call</option>
-                  <option value="mail">Email</option>
-                  <option value="discovery">Discovery</option>
-                </optgroup>
-              </select>
-            </div>
-            </div>
+            {slider_button}
+            {search_bar}
             {this.generateTasksList()}
 
           </div>
@@ -359,7 +379,7 @@ class TasksLists extends Component{
             <span className="mksicon-ArrowNext"></span>
           </div>
           <span className={`${this.state.showCompleted} _mks_completed_tasks`}>
-            <h2 className="total-count-head"><strong className="badge total-count">{this.state.completedCount}</strong><span className="total-text">Completed tasks of today</span></h2>
+            <h2 className="total-count-head"><strong className="badge total-count">{this.state.completedCount}</strong><span className="total-text">Completed</span></h2>
             {this.generateCompletedTasks()}
           </span>
         </div>

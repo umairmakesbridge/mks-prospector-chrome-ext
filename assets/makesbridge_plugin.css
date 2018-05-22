@@ -969,6 +969,7 @@ START contact found page
    display: table-cell;
    vertical-align: middle;
    padding-bottom: 4px;
+   padding-left: 0px;
 }
 .contact_found:hover{
    background: #006eff;
@@ -998,7 +999,7 @@ START contact found page
     background: transparent !important;
     top: 6px;
     position: relative;
-    left: 5px;
+    left: 15px;
 }
 .c_txt_s_completed{
   width: 18px;
@@ -3193,6 +3194,7 @@ left: 3px;
 }
 .mks_task_lists_dash_wrapper h2{
   margin-right: 40px;
+  width:120px;
 }
 .mks_task_lists_dash_wrapper .contacts-switch{
   top:-4px;
@@ -3232,8 +3234,8 @@ left: 3px;
 }
 
 .mks_tasks_lists_empty_icon{
-  float: right;
-    right: 16px;
+    float: left;
+    right: 10px;
     position: relative;
     top: 3px;
 }

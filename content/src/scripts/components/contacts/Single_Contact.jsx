@@ -43,7 +43,7 @@ const SingleContact = (props) => {
   }
 
   const contactSubItems = props.contact.map((contactItem) =>
-                <div className="contact_found ripple" key={contactItem.email} onClick={() =>  onEmailSelect(contactItem.email)}>
+                <div className="contact_found ripple" key={contactItem.email} onClick={() =>  onEmailSelect(contactItem.email,contactItem.isSharedContact)}>
                       <div className="cf_silhouette">
                           <div className="cf_silhouette_text c_txt_s">
                               <p>{contactItem.email.substring(0, 2)}</p>

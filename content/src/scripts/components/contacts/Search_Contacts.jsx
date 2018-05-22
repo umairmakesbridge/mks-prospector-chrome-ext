@@ -45,7 +45,8 @@ class SearchContacts extends Component{
                     serverDate  : '',
                     serachIcon  : 'show',
                     closeIcon   : 'hide',
-                    showTasks : false
+                    showTasks : false,
+                    isShareSearch: "N"
                   }
     }
 
@@ -79,7 +80,8 @@ class SearchContacts extends Component{
                           ckactive    : '',
                           clickState  : '',
                           serverDate  : '',
-                          isLoggodOut : true
+                          isLoggodOut : true,
+                          isShareSearch: "N"
                       };
                  });
     }
@@ -138,13 +140,13 @@ class SearchContacts extends Component{
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
                         +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
-                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId+'&isShareSearch='+this.state.isShareSearch
       }else if(type=="searchTag"){
         //https://mks.bridgemailsystem.com/pms/io/subscriber/getData/?BMS_REQ_TK=PpYb22mrbT7MLY9B2SmVQQNSozbnJd&type=getSAMSubscriberList&offset=0&searchTag=mks&orderBy=lastActivityDate
         var searchUrl = this.baseUrl+'/io/subscriber/getData/?BMS_REQ_TK='
                         + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchTag='
                         +this.state.searchContact+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
-                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+                        +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId+'&isShareSearch='+this.state.isShareSearch
       }
       this.getConactDetails(searchUrl,type);
     }
@@ -165,7 +167,10 @@ class SearchContacts extends Component{
                   }
                   else {
                     let subscriberEmails = [];
+                    let isSharedContact = this.state.isShareSearch;
                     jQuery.each(jsonResponse.subscriberList[0],function(key,value){
+
+                        value[0].isSharedContact = isSharedContact;
                         subscriberEmails.push(value[0]);
                     });
                     console.log(subscriberEmails);
@@ -276,12 +281,19 @@ class SearchContacts extends Component{
         showTasks : false
       });
     }
-    selectedEmail(selectedEmail){
-      this.hideUpTaskList();
-      this.props.onEmailSelect(selectedEmail)
+    resetSearchSelectBox(){
+      this.setState({
+        isShareSearch: 'N'
+      });
+    }
+    selectedEmail(selectedEmail, isSharedContact){
+      this.hideUpTaskList();      
+      this.props.onEmailSelect(selectedEmail,false,isSharedContact)
     }
     searchedBy(event){
       console.log(event.currentTarget.value);
+      //this.state.isShareSearch = event.currentTarget.value;
+      this.setState({isShareSearch: event.target.value});
     }
     render(){
         return (
@@ -328,9 +340,9 @@ class SearchContacts extends Component{
                         </div>
                       </div>
                       <div className="contacts-select-by">
-                        <select onChange={this.searchedBy.bind(this)}>
-                          <option value="contacts">My Contacts</option>
-                            <option value="shared">Shared Contacts</option>
+                        <select onChange={this.searchedBy.bind(this)} value={this.state.isShareSearch}>
+                          <option value="N">My Contacts</option>
+                            <option value="Y">Shared Contacts</option>
                         </select>
                       </div>
                     <input

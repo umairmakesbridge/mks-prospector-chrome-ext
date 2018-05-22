@@ -84,9 +84,9 @@ class ContactInfo extends Component{
       return;
     }
 
-
+    console.log("Is user shared ="+  this.props.isShareSearch);
     if(this.state.diffEmail){
-      this.searchEmailInMks(this.props.contact_email);
+      this.searchEmailInMks(this.props.contact_email,this.props.isShareSearch);
 
     }else if(this.state.changeInTagsView || this.state.changeInContactBasic){
       this.getSubscriberDetails();
@@ -102,12 +102,17 @@ class ContactInfo extends Component{
         this.setState({diffEmail : false,contactActive : 'active',showContacts : true,showActivity  : false})
     }
   }
-  searchEmailInMks(email){
+  searchEmailInMks(email,isShared){
+    let sharedFlag = "";
+    if(isShared=="Y"){
+        sharedFlag ="&isShareSearch=Y";
+    }
     var searchUrl = this.baseUrl
                     +'/io/subscriber/getData/?BMS_REQ_TK='
                     + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
                     +email+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
-                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId
+                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId+sharedFlag;
+
 
     request
           .get(searchUrl)
@@ -137,6 +142,54 @@ class ContactInfo extends Component{
                     //this.forceUpdate()
 
                 }else{
+
+                  this.setState({
+                    contactnotFound : true,
+                    diffEmail: false,
+                    showScore : 'hide'
+                  });
+
+                }
+              }
+            });
+  }
+
+  searchEmailInMksShared(email){
+    var searchUrl = this.baseUrl
+                    +'/io/subscriber/getData/?BMS_REQ_TK='
+                    + this.props.users_details[0].bmsToken +'&type=getSAMSubscriberList&offset=0&searchValue='
+                    +email+'&orderBy=lastActivityDate&ukey='+this.props.users_details[0].userKey
+                    +'&isMobileLogin=Y&userId='+this.props.users_details[0].userId+'&isShareSearch=Y'
+
+    request
+          .get(searchUrl)
+           .set('Content-Type', 'application/x-www-form-urlencoded')
+           .then((res) => {
+              if(res.status==200){
+                let jsonResponse =  JSON.parse(res.text);
+
+                if (jsonResponse[0] == "err"){
+                    if(jsonResponse[1] == "SESSION_EXPIRED"){
+                      ErrorAlert({message:jsonResponse[1]});
+                      jQuery('.mksph_logout').trigger('click');
+                    }
+                  return false;
+                }
+
+                if(parseInt(jsonResponse.totalCount) > 0){
+
+                    this.setState({
+                                  subNum   : jsonResponse.subscriberList[0].subscriber1[0].subNum,
+                                  checkSum : jsonResponse.subscriberList[0].subscriber1[0].checkSum,
+                                  email    : jsonResponse.subscriberList[0].subscriber1[0].email,
+                                  score    : jsonResponse.subscriberList[0].subscriber1[0].score,
+                                  diffEmail: false,
+                                });
+                    this.getSubscriberDetails();
+                    //this.forceUpdate()
+
+                }else{
+
                   this.setState({
                     contactnotFound : true,
                     diffEmail: false,
@@ -146,6 +199,8 @@ class ContactInfo extends Component{
               }
             });
   }
+
+
 
 
   getSubscriberDetails(){
