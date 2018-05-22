@@ -259,17 +259,17 @@ class TasksLists extends Component{
 
               <div className="cf_email_wrap" style={{"paddingLeft":"0","width": "360px"}}>
                 <div className="cf_email">
-                  <div className="cf_silhouette mks_tasks_lists_empty_icon" style={{"float": "right"}}>
+                  <div className="cf_silhouette mks_tasks_lists_empty_icon" >
                     <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed ">
                       <i className="mksicon-Check mks-tasklists-icons"></i>
                     </div>
                 </div>
                   <p className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
-                    <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
+                    <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px","left":"40px"}}>
                        {this.generateDate(task.updationTime)}
                     </span>
-                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'63px':'126px'}}>
+                  <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'100px':'160px'}}>
                     {task.subscriberInfo.firstName}   {task.subscriberInfo.lastName}
                   </span>
 

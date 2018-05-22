@@ -1007,7 +1007,7 @@ START contact found page
   background: rgb(35, 206, 140) !important;
   top: 5px;
   position: relative;
-  left: 5px;
+  left: 15px;
 }
 ._mks_completed_tasks .c_txt_s_completed > i{
   line-height: 12px !important;
