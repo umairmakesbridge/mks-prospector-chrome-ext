@@ -997,7 +997,7 @@ START contact found page
     line-height: 0;
     border: 2px solid #ddd;
     background: transparent !important;
-    top: 6px;
+    top: 5px;
     position: relative;
     left: 15px;
 }
@@ -1005,7 +1005,7 @@ START contact found page
   width: 18px;
   height: 18px;
   background: rgb(35, 206, 140) !important;
-  top: 6px;
+  top: 5px;
   position: relative;
   left: 5px;
 }
@@ -1747,7 +1747,7 @@ span.mksph_contact_value {
 }
 div#custom-fields ul li {
    list-style-type: none;
-   padding-left: 2px;
+   padding-left: 10px;
 }
 .customField_ul_wraps{
   position: relative;
@@ -3044,7 +3044,7 @@ ul.mks_ecc_wrap li {
     display: inline-block;
     text-align: center;
     margin: 0px;
-    padding: 6px 10px;
+    padding: 6px 4px;
     background-color: transparent;
     border: 1px solid rgb(221, 221, 221);
     color: rgb(186, 194, 203);

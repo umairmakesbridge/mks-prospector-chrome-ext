@@ -256,14 +256,15 @@ class TasksLists extends Component{
       return this.state.completeTask.map((task,key) => {
             return(
               <div key={key} className={`contact_found _mks_lists_tasks _mks_complete_tasks`} onClick={this.loadSubscriber.bind(this,task.subscriberInfo)} style={{padding : "10px 12px 0"}}>
-                <div className="cf_silhouette">
-                  <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed ">
-                    <i className="mksicon-Check mks-tasklists-icons"></i>
-                  </div>
-              </div>
-              <div className="cf_email_wrap">
+
+              <div className="cf_email_wrap" style={{"paddingLeft":"0","width": "360px"}}>
                 <div className="cf_email">
-                  <p>{task.taskName}</p>
+                  <div className="cf_silhouette mks_tasks_lists_empty_icon" style={{"float": "right"}}>
+                    <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed ">
+                      <i className="mksicon-Check mks-tasklists-icons"></i>
+                    </div>
+                </div>
+                  <p className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px"}}>
                        {this.generateDate(task.updationTime)}
@@ -278,7 +279,7 @@ class TasksLists extends Component{
                           <i className={`${this.priorityIcons[task.priority]["icon"]}`}></i>
                     </span>
 
-                    <div className="cf_silhouette">
+                    <div className="cf_silhouette" >
                         <div className="cf_silhouette_text c_txt_s c_txt_s_blue _mks_task-lists_silhouette_text">
                             <i className={`${this.mapicons[task.taskType]} mks-tasklists-icons`} ></i>
                         </div>
