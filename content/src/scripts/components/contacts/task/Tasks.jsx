@@ -213,7 +213,7 @@ class Tasks extends Component{
     var _date = Moment(decodeHTML(task.taskDate),'YYYY-M-D H:m');
     var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
 
-    return " created task at "+format.time +", "+format.date ;
+    return "at "+format.time +", "+format.date ;
   }
   generateUserID(task){
     var taskowner = this.props.users_details[0].userId==task.taskAddedBy ? "You":task.taskAddedBy;
@@ -237,7 +237,7 @@ class Tasks extends Component{
         <div className="cf_email">
           <p className="mkb_elipsis mkb_text_break" style={{"width" : "145px"}} title={task.taskName}>{task.taskName}</p>
           <span className="ckvwicon ckwicontext">
-            <strong>{this.generateUserID(task)}</strong>{this.generateDate(task)}
+            {this.generateDate(task)} | created by <strong>{this.generateUserID(task)}</strong>
           </span>
         </div>
         <div className="cf_task_right">

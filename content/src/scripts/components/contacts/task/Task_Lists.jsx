@@ -12,6 +12,7 @@ import {ErrorAlert,SuccessAlert}
        from '../../common/Alerts';
 import ReactTooltip
               from 'react-tooltip';
+import {CustomScrollBar} from 'react-custom-scrollbar';
 class TasksLists extends Component{
     constructor(props){
         super(props);
@@ -369,7 +370,7 @@ class TasksLists extends Component{
 
       return(
         <div className="D plc_marginbottom20 mks_task_lists_dash_wrapper">
-          <div className={`content-wrapper height90 height210 ${this.state.setFullHeight}`}>
+          <div className={`content-wrapper height90 height245 ${this.state.setFullHeight}`}>
             {slider_button}
             {search_bar}
             {this.generateTasksList()}
@@ -381,7 +382,17 @@ class TasksLists extends Component{
           </div>
           <span className={`${this.state.showCompleted} _mks_completed_tasks`}>
             <h2 className="total-count-head"><strong className="badge total-count">{this.state.completedCount}</strong><span className="total-text">Completed</span></h2>
+            <CustomScrollBar
+              allowOuterScroll={false}
+              heightRelativeToParent={`188`}
+              onScroll={() => {console.log('Scrolling')}}
+              addScrolledClass={true}
+              freezePosition={false}
+              handleClass="inner-handle"
+              minScrollHandleHeight={38}
+          >
             {this.generateCompletedTasks()}
+            </CustomScrollBar>
           </span>
         </div>
       )

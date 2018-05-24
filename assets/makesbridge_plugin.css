@@ -589,6 +589,9 @@ li.click_default {
 .height210{
   max-height: 210px;
 }
+.height245{
+  max-height: 245px;
+}
 .height230{
   max-height: 230px;
 }
@@ -3054,7 +3057,7 @@ ul.mks_ecc_wrap li {
     display: inline-block;
     text-align: center;
     margin: 0px;
-    padding: 6px 4px;
+    padding: 6px 10px;
     background-color: transparent;
     border: 1px solid rgb(221, 221, 221);
     color: rgb(186, 194, 203);
