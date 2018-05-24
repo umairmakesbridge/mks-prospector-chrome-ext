@@ -13,6 +13,8 @@ import {ErrorAlert,SuccessAlert}
 import ReactTooltip
               from 'react-tooltip';
 import {CustomScrollBar} from 'react-custom-scrollbar';
+import LoadingMask
+       from '../../common/Loading_Mask';
 class TasksLists extends Component{
     constructor(props){
         super(props);
@@ -29,6 +31,7 @@ class TasksLists extends Component{
           showExpandCollapse : 'hide',
           cactive : 'active',
           sortTasks : '-1',
+          showStatus : false,
           isTodayTask: 1
         }
         this.mapicons ={
@@ -160,7 +163,7 @@ class TasksLists extends Component{
     updateTasks(taskObj,isComplete){
         console.log(taskObj);
         this.setState({
-          showLoading : true
+          showStatus : true
         })
         var reqObj = {
           type: "complete",
@@ -185,7 +188,8 @@ class TasksLists extends Component{
               if(jsonResponse.success){
                 this.setState({
                   disabled    : false,
-                  showLoading : false
+                  showLoading : false,
+                  showStatus : false
                 })
                   if(isComplete){
                     SuccessAlert({message:"Task mark completed successfully."});
@@ -370,6 +374,7 @@ class TasksLists extends Component{
 
       return(
         <div className="D plc_marginbottom20 mks_task_lists_dash_wrapper">
+          <LoadingMask message={"Marking task completed..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
           <div className={`content-wrapper height90 height245 ${this.state.setFullHeight}`}>
             {slider_button}
             {search_bar}

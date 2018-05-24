@@ -443,6 +443,117 @@ class ContactInfo extends Component{
         }
         return (
                    <div className={`s_contact_found_wraper new_contact_${this.state.contactnotFound} suppress_${(this.state.subscriber) ? this.state.subscriber.supress : ""}`}>
+                     <div className="top-header contact_found top_managerLists_wrappers">
+                               <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
+                               <div className="scf_o_right">
+                                   <ul className={`top_manager_ul_wraps ${this.state.showActionButtons}`}>
+                                     <li data-tip="Add to Sequence">
+                                       <ReactTooltip />
+                                       <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
+                                         <a href="#" style={{textDecoration: 'unset'}}>
+                                           <div className="wrap_scf_o_i">
+                                             <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
+
+                                               <div  className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
+
+                                               </div>
+                                               </div>
+                                           </a>
+                                               </div>
+                                           </li>
+                                       <li data-tip="Manage list subscription">
+                                         <ReactTooltip />
+                                         <div className="scf_option_icon ripple top_manage_lists" onClick={this.manageContactToList.bind(this)}>
+                                           <a href="#" style={{textDecoration: 'unset'}}>
+                                             <div className="wrap_scf_o_i">
+                                               <div className="wrap_scf_o_i_md">
+                                                 <div className="scf_o_icon scf_o_edit mksicon-ManageLists mks_manageList_wrap"></div>
+
+                                                 </div>
+                                                 </div>
+                                             </a>
+                                                 </div>
+                                             </li>
+                                             <li data-tip="Add to list">
+                                               <ReactTooltip />
+                                               <div className="scf_option_icon ripple top_manage_lists" onClick={this.addContactToList.bind(this)}>
+                                                       <a href="#" style={{textDecoration: 'unset'}}>
+                                                         <div className="wrap_scf_o_i">
+                                                           <div className="wrap_scf_o_i_md">
+                                                             <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
+
+                                                             </div>
+                                                             </div>
+                                                         </a>
+                                                       </div>
+                                                   </li>
+                                                   <li data-tip="Suppress contact" onClick={this.suppressContact.bind(this)}>
+                                                     <ReactTooltip />
+                                                     <div className="scf_option_icon ripple top_manage_lists">
+                                                       <a href="#" style={{textDecoration: 'unset'}}>
+                                                         <div className="wrap_scf_o_i">
+                                                           <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
+                                                             <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
+                                                             </div>
+                                                             </div>
+                                                         </a>
+                                                             </div>
+                                                         </li>
+                                                   <li data-tip="Course Correct" className={`mks_cc_li_wrap ${this.state.hideRightBorder}`}onClick={this.showCourseCorrect.bind(this)}>
+                                                     <ReactTooltip />
+                                                     <div className="scf_option_icon ripple top_manage_lists">
+                                                       <a href="#" style={{textDecoration: 'unset'}}>
+                                                         <div className="wrap_scf_o_i">
+                                                           <div className="wrap_scf_o_i_md" >
+                                                             <div className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
+                                                             </div>
+                                                             </div>
+                                                         </a>
+                                                             </div>
+                                                         </li>
+                                                         <li data-tip="Add Notes" onClick={this.openNotes.bind(this)}>
+                                                           <ReactTooltip />
+                                                           <div className="scf_option_icon ripple top_manage_lists">
+                                                             <a href="#" style={{textDecoration: 'unset'}}>
+                                                               <div className="wrap_scf_o_i">
+                                                                 <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
+                                                                   <div className="scf_o_icon scf_o_edit mksicon-Notepad mks_manageList_wrap"></div>
+                                                                   </div>
+                                                                   </div>
+                                                               </a>
+                                                                   </div>
+                                                               </li>
+
+
+                                                                     <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
+                                                                       <ReactTooltip />
+                                                                       <div className="scf_option_icon ripple top_manage_lists">
+                                                                         <a href="#" style={{textDecoration: 'unset'}}>
+                                                                           <div className="wrap_scf_o_i">
+                                                                             <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
+                                                                               <div style={{"paddingTop" : "0px"}}  className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
+
+                                                                               </div>
+                                                                               </div>
+                                                                           </a>
+                                                                               </div>
+                                                                           </li>
+                                                               <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.jumpToSalesforce.bind(this)}>
+                                                                 <ReactTooltip />
+                                                                 <div className="scf_option_icon ripple top_manage_lists">
+                                                                   <a href="#" style={{textDecoration: 'unset'}}>
+                                                                     <div className="wrap_scf_o_i">
+                                                                       <div className="wrap_scf_o_i_md" >
+                                                                         <div style={{"paddingTop" : "0px"}} className="scf_o_icon scf_o_edit mksicon-jump_to_salesforce_record mks_manageList_wrap"></div>
+                                                                         </div>
+                                                                         </div>
+                                                                     </a>
+                                                                         </div>
+                                                                     </li>
+
+                                         </ul>
+                                     </div>
+                               </div>
                              <ContactBasicInfo
                                contactInfo={this.state}
                                contact={this.state.subscriber}
@@ -560,117 +671,7 @@ class ContactInfo extends Component{
                                 <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
 
                                 </ToggleDisplay>
-                            <div className="top-header contact_found top_managerLists_wrappers">
-                                      <LoadingMask message={this.state.message} showLoading={this.state.showLoading}/>
-                                      <div className="scf_o_right">
-                                          <ul className={`top_manager_ul_wraps ${this.state.showActionButtons}`}>
-                                            <li data-tip="Add to Sequence">
-                                              <ReactTooltip />
-                                              <div className="scf_option_icon ripple top_manage_lists" onClick={this.showToWorkFlow.bind(this)}>
-                                                <a href="#" style={{textDecoration: 'unset'}}>
-                                                  <div className="wrap_scf_o_i">
-                                                    <div className="wrap_scf_o_i_md" style={{padding: '3px 0 0'}}>
 
-                                                      <div  className="scf_o_icon scf_o_edit mksicon-act_workflow mks_manageList_wrap"></div>
-
-                                                      </div>
-                                                      </div>
-                                                  </a>
-                                                      </div>
-                                                  </li>
-                                              <li data-tip="Manage list subscription">
-                                                <ReactTooltip />
-                                                <div className="scf_option_icon ripple top_manage_lists" onClick={this.manageContactToList.bind(this)}>
-                                                  <a href="#" style={{textDecoration: 'unset'}}>
-                                                    <div className="wrap_scf_o_i">
-                                                      <div className="wrap_scf_o_i_md">
-                                                        <div className="scf_o_icon scf_o_edit mksicon-ManageLists mks_manageList_wrap"></div>
-
-                                                        </div>
-                                                        </div>
-                                                    </a>
-                                                        </div>
-                                                    </li>
-                                                    <li data-tip="Add to list">
-                                                      <ReactTooltip />
-                                                      <div className="scf_option_icon ripple top_manage_lists" onClick={this.addContactToList.bind(this)}>
-                                                              <a href="#" style={{textDecoration: 'unset'}}>
-                                                                <div className="wrap_scf_o_i">
-                                                                  <div className="wrap_scf_o_i_md">
-                                                                    <div className="scf_o_icon scf_o_edit  mksicon-Addlist mks_manageList_wrap"></div>
-
-                                                                    </div>
-                                                                    </div>
-                                                                </a>
-                                                              </div>
-                                                          </li>
-                                                          <li data-tip="Suppress contact" onClick={this.suppressContact.bind(this)}>
-                                                            <ReactTooltip />
-                                                            <div className="scf_option_icon ripple top_manage_lists">
-                                                              <a href="#" style={{textDecoration: 'unset'}}>
-                                                                <div className="wrap_scf_o_i">
-                                                                  <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
-                                                                    <div className="scf_o_icon scf_o_edit mksicon-User1 mks_manageList_wrap"></div>
-                                                                    </div>
-                                                                    </div>
-                                                                </a>
-                                                                    </div>
-                                                                </li>
-                                                          <li data-tip="Course Correct" className={`mks_cc_li_wrap ${this.state.hideRightBorder}`}onClick={this.showCourseCorrect.bind(this)}>
-                                                            <ReactTooltip />
-                                                            <div className="scf_option_icon ripple top_manage_lists">
-                                                              <a href="#" style={{textDecoration: 'unset'}}>
-                                                                <div className="wrap_scf_o_i">
-                                                                  <div className="wrap_scf_o_i_md" >
-                                                                    <div className="scf_o_icon scf_o_edit mksicon-course_correct mks_manageList_wrap"></div>
-                                                                    </div>
-                                                                    </div>
-                                                                </a>
-                                                                    </div>
-                                                                </li>
-                                                                <li data-tip="Add Notes" onClick={this.openNotes.bind(this)}>
-                                                                  <ReactTooltip />
-                                                                  <div className="scf_option_icon ripple top_manage_lists">
-                                                                    <a href="#" style={{textDecoration: 'unset'}}>
-                                                                      <div className="wrap_scf_o_i">
-                                                                        <div className="wrap_scf_o_i_md" style={{"padding" : "3px 0px 0px"}}>
-                                                                          <div className="scf_o_icon scf_o_edit mksicon-Notepad mks_manageList_wrap"></div>
-                                                                          </div>
-                                                                          </div>
-                                                                      </a>
-                                                                          </div>
-                                                                      </li>
-
-
-                                                                            <li data-tip="Add to Salesforce" className={`${this.state.showAddSf} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.showAddToSalesforce.bind(this)}>
-                                                                              <ReactTooltip />
-                                                                              <div className="scf_option_icon ripple top_manage_lists">
-                                                                                <a href="#" style={{textDecoration: 'unset'}}>
-                                                                                  <div className="wrap_scf_o_i">
-                                                                                    <div className="wrap_scf_o_i_md" style={{padding : "3px 0 0 0"}}>
-                                                                                      <div style={{"paddingTop" : "0px"}}  className="scf_o_icon scf_o_edit mksicon-add_to_salesforce mks_manageList_wrap"></div>
-
-                                                                                      </div>
-                                                                                      </div>
-                                                                                  </a>
-                                                                                      </div>
-                                                                                  </li>
-                                                                      <li data-tip="Jump Salesforce" className={`${this.state.showJumpSF} ${this.state.showSfActionBtn} sf_icons mks_hideRightBorder`} onClick={this.jumpToSalesforce.bind(this)}>
-                                                                        <ReactTooltip />
-                                                                        <div className="scf_option_icon ripple top_manage_lists">
-                                                                          <a href="#" style={{textDecoration: 'unset'}}>
-                                                                            <div className="wrap_scf_o_i">
-                                                                              <div className="wrap_scf_o_i_md" >
-                                                                                <div style={{"paddingTop" : "0px"}} className="scf_o_icon scf_o_edit mksicon-jump_to_salesforce_record mks_manageList_wrap"></div>
-                                                                                </div>
-                                                                                </div>
-                                                                            </a>
-                                                                                </div>
-                                                                            </li>
-
-                                                </ul>
-                                            </div>
-                                      </div>
                           <div className="scf_tab_wrap">
                               <div className="scf_tab">
                                   <div className="tab">

@@ -426,19 +426,24 @@ class ContactDetailInfo extends Component{
                 <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
               </div>
             </div>
-        <div id="SalesForce" className={`${this.state.showSfUpdate} tabcontent mkb_basicField_wrap mksph_cardbox`}>
-          <span style={{display:"none"}} className={`mkb_btn pull-left mkb_basic_edit mkb_sf_btn`}>Update fields to Salesforce</span>
-            <div className="scfe_save_wrap disable_false" onClick={this.updateDataSalesforce.bind(this)} style={{float: "none",width: "200px",margin: "0 auto"}}>
-              <a className="scfe_ach" href="#">
-                <div className="scfe_save_t">
-                  <span>Update fields to Salesforce</span>
-                  </div>
-                  <div className="scfe_save_i_md" >
-                    <div className="scfe_save_i mksicon-jump_to_salesforce_record" aria-hidden="true"></div>
-                    </div>
-                  </a>
-              </div>
-        </div>
+            <div id="tasks" className="tabcontent mksph_cardbox">
+                  <h3>Tasks</h3>
+                  <Tasks
+                    users_details={this.users_details}
+                    baseUrl={this.baseUrl}
+                    contact = {this.props.contact}
+                  />
+            </div>
+            <div id="notes" className="tabcontent mksph_cardbox">
+                <h3>Notes</h3>
+                <Notes
+                  users_details={this.users_details}
+                  baseUrl={this.baseUrl}
+                  contact = {this.props.contact}
+                  ref="notesView"
+                  />
+            </div>
+
         <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
               <h3 style={{marginBottom: "15px"}}>Basic Fields</h3>
                 <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={ this.showInputB.bind(this) }>Edit</span>
@@ -543,22 +548,18 @@ class ContactDetailInfo extends Component{
                   <span className="mksicon-ArrowNext"></span>
                 </div>
             </div>
-            <div id="tasks" className="tabcontent mksph_cardbox">
-                  <h3>Tasks</h3>
-                  <Tasks
-                    users_details={this.users_details}
-                    baseUrl={this.baseUrl}
-                    contact = {this.props.contact}
-                  />
-            </div>
-            <div id="notes" className="tabcontent mksph_cardbox">
-                <h3>Notes</h3>
-                <Notes
-                  users_details={this.users_details}
-                  baseUrl={this.baseUrl}
-                  contact = {this.props.contact}
-                  ref="notesView"
-                  />
+            <div id="SalesForce" className={`${this.state.showSfUpdate} tabcontent mkb_basicField_wrap mksph_cardbox`}>
+              <span style={{display:"none"}} className={`mkb_btn pull-left mkb_basic_edit mkb_sf_btn`}>Update fields to Salesforce</span>
+                <div className="scfe_save_wrap disable_false" onClick={this.updateDataSalesforce.bind(this)} style={{float: "none",width: "200px",margin: "0 auto"}}>
+                  <a className="scfe_ach" href="#">
+                    <div className="scfe_save_t">
+                      <span>Update fields to Salesforce</span>
+                      </div>
+                      <div className="scfe_save_i_md" >
+                        <div className="scfe_save_i mksicon-jump_to_salesforce_record" aria-hidden="true"></div>
+                        </div>
+                      </a>
+                  </div>
             </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
                       <h3>Custom Fields</h3>
