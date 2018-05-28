@@ -12,6 +12,7 @@ const ScoreCard = (props) => {
       let _subject = (props.activity.pageType);
       let _subjecLabel = (parseInt(props.activity.score)==0 ) ? "hide"  : "";
       let _score = (parseInt(props.activity.score) > 0) ? "+"+props.activity.score : (parseInt(props.activity.score) == 0) ? props.activity.score : "-"+props.activity.score;
+      let isFuture = (props.isFuture) ? "to be "+props.mapping.name.toLowerCase() : "";
       if(parseInt(props.activity.score) < 0){
         props.mapping['color'] = 'red';
       }
@@ -45,7 +46,7 @@ const ScoreCard = (props) => {
             <div className="btm-bar ">
                 <div className="datetime">
                       <span className="this-event-type showtooltip" style={{cursor: "pointer"}} data-original-title="Click to view this event type only">
-                        {props.mapping.name}
+                        {(isFuture) ? isFuture : props.mapping.name}
                       </span> at {_formatedDate.time}, {_formatedDate.date}
                 </div>
 

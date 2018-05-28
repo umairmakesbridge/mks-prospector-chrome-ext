@@ -9,7 +9,7 @@ const CampaignCard = (props) => {
       let _date = Moment(decodeHTML(props.activity.logTime), 'M/D/YYYY h:m a');
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       let _hide = (props.activity.pageTitle) ? "hide" : "";
-
+      let isFuture = (props.isFuture) ? "to be "+props.mapping.name.toLowerCase() : "";
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
@@ -30,7 +30,7 @@ const CampaignCard = (props) => {
             <div className="btm-bar ">
                 <div className="datetime">
                       <span className="this-event-type showtooltip" style={{cursor: "pointer"}} data-original-title="Click to view this event type only">
-                        {props.mapping.name}
+                        {(isFuture) ? isFuture : props.mapping.name}
                       </span> at {_formatedDate.time}, {_formatedDate.date}
                 </div>
                 <div className="camp_type">

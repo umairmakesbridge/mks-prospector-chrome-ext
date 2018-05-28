@@ -2141,8 +2141,19 @@ position:relative; z-index:9;
 .new_activities .act_row .wficon {
     background: url("chrome-extension://__MSG_@@extension_id__/img/act-workflow.png") no-repeat scroll 0 4px rgba(0, 0, 0, 0);
 }
-
-
+.futureTimeCard{
+  position: relative;
+}
+.futureTimeCard::before {
+    content: "";
+    /* width: 3px; */
+    height: 100%;
+    background: #fff;
+    display: block;
+    position: absolute;
+    left: 30px;
+    border: 2px dashed #b7d6e3;
+}
 /*================================================
         Color Pallete
 =================================================*/

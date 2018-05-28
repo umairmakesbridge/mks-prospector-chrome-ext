@@ -53,6 +53,50 @@ export const GetTimeline = (props)=>{
           }
         });
 }
+export const GetFutureTimeline = (props)=>{
+  //'/pms/io/subscriber/getData/?BMS_REQ_TK=' + app.get('bms_token') + '&type=timeline&isFuture=Y'
+  var searchUrl = props.baseUrl
+                  + '/io/subscriber/getData/?BMS_REQ_TK='
+                  + props.users_details[0].bmsToken +'&type=timeline&isFuture=Y&offset=0&subNum='
+                  + props.contact.subNum+'&ukey='+props.users_details[0].userKey
+                  + '&isMobileLogin=Y&userId='+props.users_details[0].userId
+      request
+        .get(searchUrl)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .then((res) => {
+          if(res.status==200){
+            let jsonResponse =  JSON.parse(res.text);
+            if(jsonResponse[0] == "err"){
+              if(jsonResponse[1]=="SESSION_EXPIRED"){
+                  ErrorAlert({message:jsonResponse[1]});
+                  jQuery('.mksph_logout').trigger('click');
+              }
+
+              return false;
+            }
+            if(parseInt(jsonResponse.totalCount) > 0){
+                    console.log(jsonResponse);
+                  
+                    let jsonActivityArray ={
+                                    batchCount : jsonResponse.batchCount,
+                                    nextOffset : jsonResponse.nextOffset,
+                                    totalCount : jsonResponse.totalCount,
+                                    activities : []
+                                  };
+                    jQuery.each(jsonResponse.activities[0],function(key,value){
+                      jsonActivityArray['activities'].push(value[0]);
+                    })
+                    props.callback(jsonActivityArray)
+            }else{
+                    props.callback(parseInt(jsonResponse.totalCount));
+            }
+
+            return false;
+          }else{
+              ErrorAlert({message:res[1]});
+          }
+        });
+}
 
 
 export const GetServerDate = (props) => {

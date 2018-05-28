@@ -1,6 +1,6 @@
 import React, {Component}
        from 'react';
-import {GetTimeline,GetServerDate}
+import {GetTimeline,GetServerDate,GetFutureTimeline}
        from './activity_components/Filter_Api'
 import ActivityCard
        from './activity_components/Activity_Cards'
@@ -13,6 +13,7 @@ class ActivityTimeline extends Component{
     this.contact = this.props.contact;
     this.state   = {
                       activitytimeline : '',
+                      futureActivity   : [],
                       nextOffset       : 0,
                       showLoadingMsg   : false,
                       serverDate       : null,
@@ -51,7 +52,15 @@ class ActivityTimeline extends Component{
                  offset       :this.state.nextOffset,
                  loadMore     :loadMore
                });
+
+    GetFutureTimeline({
+      users_details:this.users_details,
+      baseUrl      :this.baseUrl,
+      contact      :this.contact,
+      callback     :this.setActivityFuture.bind(this)
+    })
   }
+
   setServerDate(responseDate){
       let _formatDate = {date: responseDate.format("DD MMM YYYY"), time: responseDate.format("hh:mm A")}
       this.setState({
@@ -82,7 +91,13 @@ class ActivityTimeline extends Component{
     }
 
   }
-
+  setActivityFuture(activity){
+    var _this = this;
+    jQuery.each(activity.activities,function(key,value){
+        _this.state.futureActivity.push(value);
+    });
+    debugger;
+  }
   render(){
     if(this.props.contactnotFound){
       return (<div className="contacts-wrap">
@@ -150,6 +165,7 @@ class ActivityTimeline extends Component{
                         nextOffset  = {this.state.nextOffset}
                         showLoadingMsg = {this.state.showLoadingMsg}
                         serverDate  = {this.state.serverDate}
+                        futureActivity = {this.state.futureActivity}
                       />
 
                 </div>

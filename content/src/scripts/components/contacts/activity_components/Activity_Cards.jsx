@@ -111,8 +111,70 @@ const ActivityCard = (props)=>{
       }
 
   });
+  const activityFutureCard= props.futureActivity.map((activity,key) => {
+      console.log(activity);
+      if(activity.campaignType == "N" || activity.activityType == "WV"){
+        return(
+            <CampaignCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+        );
+
+      }else if(activity.activityType == "SU"){
+        return(
+          <SignupCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"}  />
+        )
+      }else if(activity.campaignType == "T"){
+          return(
+            <NurturetrackCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"}  />
+            );
+      }else if(activity.campaignType =="W"){
+          return(
+            <WorkflowCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"}  />
+          );
+      }else if (typeof (activity['singleMessageId.encode']) !== "undefined") {
+            if(activity.activityType=="MT"){
+              mapping[activity.activityType]['color'] =  'green';
+            }
+            return(
+              <CampaignCard type={"Single Message"} mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+            );
+        }
+        else if(activity.activityType == "SC"){
+          return(
+              <ScoreCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+          );
+        }
+      else if(activity.botActionType == "A"){
+          return(
+            <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+          );
+      }else if(activity.campaignType == "B" || typeof(activity["botId.encode"])!=="undefined"){
+        return(
+          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+        );
+      }
+      else if( activity.activityType == "MM" || activity.activityType == "A"){
+        if(typeof(activity["botId.encode"]) !== "undefined"){
+                            //triggerType = {name: "Autobot", cssClass: ""};
+                            console.log('Need to handle');
+                        }
+                        else{
+                          return(
+                            <WorkflowCard mapping={mapping["WA"]} key={key} activity={activity} isFuture={"isFuture"}  />
+                          );
+                        }
+      }
+      else if(typeof(activity["botId.encode"])!=="undefined"){
+          <AlertCard mapping={mapping[activity.activityType]} key={key} activity={activity} isFuture={"isFuture"} />
+      }
+
+  });
   return (
     <div className="act_row_wrapper">
+      <div className="futureTimeCard">
+        {props.futureActivity.length &&
+          activityFutureCard
+        }
+      </div>
       <div className="timestop now"><span>{props.serverDate.date} ,{props.serverDate.time}  </span> </div>
       {activityCard}
 
