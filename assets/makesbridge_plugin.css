@@ -4653,3 +4653,11 @@ color: rgb(1, 110, 253);
 .task_status_C .mks_task_complete_icon {
     display: none;
 }
+.mks_task_complete_icon .c_txt_s_empty{
+  cursor: pointer;
+}
+.mks_task_complete_icon:hover .c_txt_s_empty i.mksicon-Check{
+  line-height: 16px !important;
+  top: 1px;
+  position: relative;
+}
