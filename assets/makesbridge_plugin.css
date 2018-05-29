@@ -4634,3 +4634,22 @@ color: rgb(1, 110, 253);
     background:rgba(255, 255, 255, 0.8) !important;
     display: block !important;
 }
+.mks_task_complete_icon{
+  right: 0px;
+  float: right;
+  right: 29px;
+  top: -48px;
+}
+.mks_task_complete_icon .c_txt_s_empty{
+  width: 16px;
+  height: 16px;
+}
+.mks_tasks_completed i.mksicon-Check.mks-tasklists-icons{
+  line-height: 16px !important;
+}
+.task_status_P .mks_tasks_completed {
+    display: none;
+}
+.task_status_C .mks_task_complete_icon {
+    display: none;
+}
