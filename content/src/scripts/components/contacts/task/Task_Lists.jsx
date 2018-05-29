@@ -224,7 +224,7 @@ class TasksLists extends Component{
                   <p title={task.taskName} className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px","left":"40px"}}>
-                       {this.generateDate(task.updationTime)}
+                       {this.generateDate(task.taskDate)}
                     </span>
                   <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'100px':'160px'}}>
                     {(task.subscriberInfo.firstName) ? task.subscriberInfo.firstName : ""}   {task.subscriberInfo.lastName}
@@ -272,7 +272,7 @@ class TasksLists extends Component{
                   <p className="mkb_elipsis mkb_text_break">{task.taskName}</p>
 
                     <span className="ckvwicon mks_task_time" style={{"display" : "inline","position": "absolute","top": "22px","left":"40px"}}>
-                       {this.generateDate(task.updationTime)}
+                       {this.generateDate(task.taskDate)}
                     </span>
                   <span className="ckvwicon" style={{"position": "absolute","top": "22px","display": "inherit","left": this.state.isTodayTask?'100px':'160px'}}>
                     {task.subscriberInfo.firstName}   {task.subscriberInfo.lastName}
