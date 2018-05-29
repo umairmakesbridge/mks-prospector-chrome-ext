@@ -938,7 +938,9 @@ START contact found page
 .c_txt_s_blue{
  background: #58a0ff ! important;
 }
-
+.c_txt_s_red{
+  background: #fb4c2f !important;
+}
 .cf_silhouette_text p{
    display: table-cell;
    vertical-align: middle;

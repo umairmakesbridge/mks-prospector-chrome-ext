@@ -253,10 +253,11 @@ class Tasks extends Component{
             <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn hide" style={{"top": "6px","right": "0","font-size":"10px"}}>
               <i className="mksicon-Check"></i>
               Complete</span>
-            <div className="cf_silhouette mks_tasks_lists_empty_icon mks_tasks_completed" style={{float: "right","top": "-47px","width": "16px","height": "16px","right": "52px"}}>
+            <div data-tip="Completed"  className="cf_silhouette mks_tasks_lists_empty_icon mks_tasks_completed" style={{float: "right","top": "-47px","width": "16px","height": "16px","right": "52px"}}>
               <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_completed " style={{top: "6px",width: "19px",height: "19px"}}>
                 <i className="mksicon-Check mks-tasklists-icons" style={{top: "1px","position": "relative",fontSize: "12px"}}></i>
               </div>
+                <ReactTooltip />
             </div>
 
 
@@ -271,7 +272,7 @@ class Tasks extends Component{
         </div>
         <div className="mks_task_edit_delete_wrap _mks_task_delete_task" onClick={this.deleteTask.bind(this,task)} style={{"left": "37px","width": "8%","background": "transparent"}}>
             <div className="cf_silhouette">
-              <div className="cf_silhouette_text c_txt_s c_txt_s_blue">
+              <div className="cf_silhouette_text c_txt_s c_txt_s_blue c_txt_s_red">
                 <i className="mksicon-Delete mks-task-icons"></i>
             </div>
           </div>
