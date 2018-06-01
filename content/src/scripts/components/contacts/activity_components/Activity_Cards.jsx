@@ -171,7 +171,7 @@ const ActivityCard = (props)=>{
   return (
     <div className="act_row_wrapper">
       <div className="futureTimeCard">
-        {props.futureActivity.length &&
+        {(props.futureActivity.length > 0) &&
           activityFutureCard
         }
       </div>
