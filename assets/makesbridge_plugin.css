@@ -2926,8 +2926,8 @@ h3.cc_title_h3 span {
 .cc_disabled{
 opacity: 0.2;
 }
-.mks_hideRightBorder .top_manage_lists .mks_manageList_wrap::after {
-  width: 0px;
+.mks_hiderightborder .mks_manageList_wrap::after {
+    width: 0;
 }
 .cc_last_opened{
   width: 155px !important;

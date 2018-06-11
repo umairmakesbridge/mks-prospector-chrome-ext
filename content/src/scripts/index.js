@@ -71,6 +71,7 @@ class App extends Component {
 
   componentWillMount() {
     let _this = this;
+    console.log('i1. Index component is mounting.');
     gmail.observe.on("load", function() {
       console.log('check position : ', gmail.check.is_inside_email());
       // if email is open
@@ -96,8 +97,26 @@ class App extends Component {
 
 
       //on open of email
+      gmail.observe.on('view_thread',(obj) =>{
+        console.log('view_thread', obj);
+        //debugger;
+      });
+      
+      gmail.observe.on('view_email',(obj) =>{
+        console.log('view_email', obj);
+        var emailDetails = gmail.get.email_data(obj.id);
+        console.log(emailDetails);
+        
+        var email = new gmail.dom.email($(obj.$el[0]));
+        var body = email.body();
+        var id = email.id;
+        console.log(body);
+        _this.state.gmail_emails_body = [];
+        _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
+        _this.setEmailsUniquely(emailDetails.people_involved);
+      });
       gmail.observe.on("open_email", (id, url, body, xhr) => {
-        console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+        console.log("Open Email","id:", id, "url:", url, 'body', body, 'xhr', xhr);
         var emailDetails = gmail.get.email_data(id);
         console.log(emailDetails);
         //_this.state['gmail_email_list'] = emailDetails.people_involved;
@@ -120,7 +139,9 @@ class App extends Component {
     });
 
   }
+
   componentDidMount(){
+      console.log('i2. Index componentDidMount is mounting.');
     if(localStorage.getItem('pmks_userpass')){
       let username = localStorage.getItem('pmks_userpass').split("__")[0];
       let password = localStorage.getItem('pmks_userpass').split("__")[1];
