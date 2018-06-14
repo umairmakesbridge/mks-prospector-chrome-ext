@@ -33,7 +33,11 @@ class Tasks extends Component{
       loadingMessage : "",
       showLoading : false,
       showExpandCollapse : 'hide',
-      sortTasks:'-1'
+      sortTasks:'-1',
+      showLoadingMsg : 'false',
+      showLoadingButton : 'false',
+      nextOffset : 0,
+      taskAssign : []
     }
     this.mapicons ={
       "email" : "mksicon-Mail",
@@ -156,7 +160,13 @@ class Tasks extends Component{
             });
     }
   }
-  getTaskList(){
+  getTaskList(loadMore){
+    if(loadMore){
+      this.setState({
+        showLoadingMsg : true,
+        showLoadingButton : 'hide'
+      })
+    }
     // https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getTasks&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
     var reqObj = {
       type: "getTasks",
@@ -165,7 +175,7 @@ class Tasks extends Component{
       //toDate: Moment().add('days', 30).format('MM-DD-YYYY'),
       orderBy : "updationTime",
       order: "desc",
-      offset : 0,
+      offset : this.state.nextOffset,
       bucket : 20,
       ukey:this.props.users_details[0].userKey,
       isMobileLogin:'Y',
@@ -191,9 +201,17 @@ class Tasks extends Component{
           console.log(jsonResponse);
 
           if(parseInt(jsonResponse.totalCount) > 0){
+            debugger;
+            let taskAssign=(loadMore) ? this.state.taskAssign : [];
+            $.each(jsonResponse.taskList,function(key,value){
+              taskAssign.push(value);
+            })
             this.setState({
-              tasks : jsonResponse.taskList
-
+              tasks : taskAssign,
+              taskAssign : taskAssign,
+              showLoadingButton : (jsonResponse.nextOffset == "-1") ? 'hide' : 'show',
+              nextOffset :  jsonResponse.nextOffset,
+              showLoadingMsg : false
             })
               //this.refs.addboxView.setDefaultState();
               //SuccessAlert({message:"Task created successfully."});
@@ -443,6 +461,13 @@ const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`
     <div style={{"position" : "relative"}} className={`content-wrapper height90 height230 ${this.state.setFullHeight}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
+          <div className={`LoadMore-wrapper loading_${this.state.showLoadingMsg}`}>
+              <div  className={`LoadMore loading_${this.state.showLoadingMsg}`} >Loading more...</div>
+          </div>
+          <div onClick={ ()=>this.getTaskList(true) } className={`LoadMore-wrapper ${this.state.showLoadingButton}` }>
+            <div  className="LoadMore" > <span className="mksicon-Add"></span> Show more tasks</div>
+
+          </div>
     </div>
     <div className={`${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
       <span>{this.state.collapseMsg}</span>

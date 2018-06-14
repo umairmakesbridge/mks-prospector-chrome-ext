@@ -101,12 +101,12 @@ class App extends Component {
         console.log('view_thread', obj);
         //debugger;
       });
-      
+
       gmail.observe.on('view_email',(obj) =>{
         console.log('view_email', obj);
         var emailDetails = gmail.get.email_data(obj.id);
         console.log(emailDetails);
-        
+
         var email = new gmail.dom.email($(obj.$el[0]));
         var body = email.body();
         var id = email.id;

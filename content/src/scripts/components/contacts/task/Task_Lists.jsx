@@ -32,7 +32,12 @@ class TasksLists extends Component{
           cactive : 'active',
           sortTasks : '-1',
           showStatus : false,
-          isTodayTask: 1
+          isTodayTask: 1,
+          showLoadingMsg : 'false',
+          showLoadingButton : 'hide',
+          nextOffset : 0,
+          taskAssign : [],
+          completedTask : []
         }
         this.mapicons ={
           "email" : "mksicon-Mail",
@@ -63,17 +68,26 @@ class TasksLists extends Component{
           "first_touch":"First Touch"
         }
     }
-    getTaskListofUser(){
+    getTaskListofUser(loadMore){
       //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getAllTask&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
-      this.setState({
-          assignTask : ''
-      })
+      if(loadMore){
+        this.setState({
+          showLoadingMsg : true,
+          showLoadingButton : 'hide'
+        })
+      }else{
+        this.setState({
+            assignTask : '',
+            nextOffset : 0
+        })
+      }
+
 
       var reqObj = {
         type: "getAllTask",
         orderBy : 'updationTime',
         order: "desc",
-        offset : 0,
+        offset : this.state.nextOffset,
         bucket : 20,
         ukey:this.props.users_details[0].userKey,
         isMobileLogin:'Y',
@@ -100,9 +114,10 @@ class TasksLists extends Component{
             console.log(res.status);
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
+            debugger;
+            let taskAssign=(loadMore) ? this.state.taskAssign : [];
+            let completedTask=(loadMore) ? this.state.completedTask : []
 
-            let taskAssign=[];
-            let completedTask=[]
 
             if(parseInt(jsonResponse.totalCount) > 0){
 
@@ -114,18 +129,22 @@ class TasksLists extends Component{
                   taskAssign.push(value)
                 }
               });
-
+              this.state.completedTask = completedTask;
+              this.state.taskAssign = taskAssign;
               if(taskAssign.length > 2) {
                 this.state['showExpandCollapse'] = 'show';
               }else{
                 this.state['showExpandCollapse'] = 'hide';
               }
-
+              debugger;
               this.setState({
                 assignTask : taskAssign,
                 totalCount : taskAssign.length,
                 completedCount : completedTask.length,
-                completeTask : completedTask
+                completeTask : completedTask,
+                showLoadingMsg : false,
+                showLoadingButton : (jsonResponse.nextOffset == "-1") ? 'hide' : 'show',
+                nextOffset :  jsonResponse.nextOffset
               });
                 //this.refs.addboxView.setDefaultState();
                 //SuccessAlert({message:"Task created successfully."});
@@ -379,7 +398,13 @@ class TasksLists extends Component{
             {slider_button}
             {search_bar}
             {this.generateTasksList()}
+            <div className={`LoadMore-wrapper loading_${this.state.showLoadingMsg}`}>
+                <div  className={`LoadMore loading_${this.state.showLoadingMsg}`} >Loading more...</div>
+            </div>
+            <div onClick={ ()=>this.getTaskListofUser(true) } className={`LoadMore-wrapper ${this.state.showLoadingButton}` }>
+              <div  className="LoadMore" > <span className="mksicon-Add"></span> Show more tasks</div>
 
+            </div>
           </div>
           <div style={{"background": "#fff","margin": "5px 0","padding": "5px 0"}} className={`${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
             <span>{this.state.collapseMsg}</span>
