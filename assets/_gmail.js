@@ -6,7 +6,7 @@
 
 /*eslint-env es6*/
 
-var Gmail = function(localJQuery) {
+var Gmail_ = function(localJQuery) {
 
     /*
       Use the provided "jQuery" if possible, in order to avoid conflicts with
@@ -30,7 +30,7 @@ var Gmail = function(localJQuery) {
     var api = {
         get : {},
         observe : {},
-        check : { data: {}},
+        check : {},
         tools : {},
         tracker : {},
         dom : {},
@@ -38,7 +38,6 @@ var Gmail = function(localJQuery) {
         compose : {},
         helper : {get: {}}
     };
-
     api.version           = "0.6.4";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
@@ -142,115 +141,29 @@ var Gmail = function(localJQuery) {
             return false;
         }
 
-        if (locale.match(/[0-9]/)) {
-            return false;
-        }
-
         var localePrefix = locale.slice(0, 2);
         return localePrefix.toLowerCase() === localePrefix ||
             localePrefix.toUpperCase() === localePrefix;
     };
 
-    api.helper.filter_locale = function(locale) {
-        if (!api.helper.get.is_locale(locale)) {
-            return null;
-        }
-
-        // strip region-denominator
-        return locale.substring(0,2).toLowerCase();
-    };
-
-    api.helper.array_starts_with = function(list, item) {
-        if (list && list.length > 0 && list[0] === item) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    api.helper.get.array_sublist = function(nestedArray, itemKey) {
-        if (nestedArray) {
-            for(var i=0; i<nestedArray.length; i++) {
-                var list = nestedArray[i];
-                if (api.helper.array_starts_with(list, itemKey)) {
-                    return list;
-                }
-            }
-        }
-
-        return null;
-    };
-
-    api.helper.get.locale_from_url_params = function(value) {
-        // check if is URL
-        if (value && value.indexOf && (value.indexOf("https://") === 0 || value.indexOf("http://") === 0)) {
-            var urlParts = value.split("?");
-            if (urlParts.length > 1) {
-                var hash = urlParts[1];
-                var hashParts = hash.split("&");
-                for (var i=0; i < hashParts.length; i++)
-                {
-                    var kvp = hashParts[i].split("=");
-                    if (kvp.length === 2 && kvp[0] === "hl") {
-                        return kvp[1];
-                    }
-                }
-            }
-        }
-
-        return null;
-    };
-
-    api.helper.get.locale_from_globals_item = function(list) {
-        if (!list) {
-            return null;
-        }
-
-        for (var i=0; i<list.length; i++) {
-            var item = list[i];
-            var locale = api.helper.get.locale_from_url_params(item);
-            if (locale) {
-                return locale;
-            }
-        }
-
-        // fallback to user-locale
-        return list[8];
-    };
-
     api.get.localization = function() {
         var globals = api.tracker.globals;
 
-        // candidate is globals[17]-subarray which starts with "ui"
-        // has historically been observed as [7], [8] and [9]!
-        var localeList = api.helper.get.array_sublist(globals[17], "ui");
-        if (localeList !== null && localeList.length > 8) {
-            let locale = api.helper.get.locale_from_globals_item(localeList);
-            locale = api.helper.filter_locale(locale);
-            if (locale) {
-                return locale;
-            }
+        // First candidate.
+        var locale = globals[17] && globals[17][8] && globals[17][8][8];
+        if (api.helper.get.is_locale(locale)) {
+            return locale.toLowerCase();
         }
 
-        // in new gmail, globals[12] may contain a link to an help-article, with a hl= language-code
-        if (globals[12] !== null) {
-            let locale = api.helper.get.locale_from_url_params(globals[12]);
-            locale = api.helper.filter_locale(locale);
-            if (locale) {
-                return locale;
-            }
+        // Second candidate.
+        locale = globals[17] && globals[17][9] && globals[17][9][8];
+        if (api.helper.get.is_locale(locale)) {
+            return locale.toLowerCase();
         }
 
         return null;
     };
 
-    api.check.is_new_data_layer = function () {
-        return window["GM_SPT_ENABLED"] === "true";
-    };
-
-    api.check.is_new_gui = function () {
-        return window.GM_RFT_ENABLED === "true";
-    };
 
     api.check.is_thread = function() {
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
@@ -313,7 +226,6 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.should_compose_fullscreen = function(){
-        console.warn("gmail.js: This function is known to be unreliable, and may be deprecated in a future release.");
         var bx_scfs = [];
         try {
             bx_scfs = api.tracker.globals[17][4][1][32];
@@ -459,22 +371,38 @@ var Gmail = function(localJQuery) {
         return ret;
     };
 
-    api.get.thread_id = function() {
-        // multiple elements contains this attribute, but only the visible header of the visible email is a H2!
-        const elem = document.querySelector("h2[data-legacy-thread-id]");
-        if (elem !== null) {
-            return elem.dataset.legacyThreadId;
-        }
-        else {
-            // URL-based analysis is unreliable!
-            return undefined;
-        }
-    };
 
     api.get.email_id = function() {
-        console.warn("GmailJS: api.get.email_id() invoked. Please note this function actually returns thread-id, and that email-id and thread-id may not always be used interchangably! Use api.get.thread_id() instead to silence this warning.");
-        return api.get.thread_id();
+        var hash = null;
+
+        if(api.check.is_inside_email()) {
+            if(api.check.is_preview_pane()) {
+                var items = api.dom.email_contents();
+                var text = [];
+
+                for(var i=0; i<items.length; i++) {
+                    var mail_id = items[i].className.split(" ")[2] || items[i].children[0].className.split(" ")[2];
+                    var is_editable = items[i].getAttribute("contenteditable");
+                    var is_visible = items[i].offsetWidth > 0 && items[i].offsetHeight > 0;
+                    if(mail_id !== "undefined" && mail_id !== undefined && is_visible) {
+                        if(is_editable !== "true") {
+                            text.push(mail_id);
+                        }
+                    }
+                }
+
+                hash = text[0].substring(1, text[0].length);
+            } else {
+                hash = window.location.hash.split("/").pop().replace(/#/, "").split("?")[0];
+            }
+        }
+        else {
+            hash = api.tools.parse_url(window.location.href).th;
+        }
+
+        return hash;
     };
+
 
     api.check.is_priority_inbox = function() {
         return $(".qh").length > 0;
@@ -780,12 +708,6 @@ var Gmail = function(localJQuery) {
         return obj;
     };
 
-    api.tools.get_pathname_from_url = function(url) {
-        const a = document.createElement("a");
-        a.href = url;
-        return a.pathname;
-    };
-
     api.tools.parse_actions = function(params, xhr) {
 
         // upload_attachment event - if found, don"t check other observers. See issue #22
@@ -955,278 +877,15 @@ var Gmail = function(localJQuery) {
             triggered.http_event = [params]; // send every event and all data
         }
 
-        // handle new data-format introduced with new gmail 2018.
-        if (api.check.is_new_data_layer()) {
-            const pathname = api.tools.get_pathname_from_url(params.url_raw);
-            if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
-                api.tools.parse_request_payload(params, triggered);
-            }
-        }
-
         return triggered;
     };
 
-    api.check.data.is_thread_id = function(id) {
-        return id
-            && typeof id === "string"
-            && /^thread-[a|f]:/.test(id);
-    };
-
-    api.check.data.is_thread = function(obj) {
-        return obj
-            && typeof obj === "object"
-            && obj["1"]
-            && api.check.data.is_thread_id(obj["1"]);
-    };
-
-    api.check.data.is_email_id = function(id) {
-        return id
-            && typeof id === "string"
-            && /^msg-[a|f]:/.test(id);
-    };
-
-    api.check.data.is_email = function(obj) {
-        return obj
-            && typeof obj === "object"
-            && obj["1"]
-            && api.check.data.is_email_id(obj["1"]);
-    };
-
-    api.check.data.is_action = function(obj) {
-        return api.check.data.is_first_type_action(obj)
-            || api.check.data.is_second_type_action(obj);
-    };
-
-    api.check.data.is_first_type_action = function(obj) {
-        return obj
-            && obj["1"]
-            && Array.isArray(obj["1"])
-            && obj["1"].length === 1
-            && typeof obj["1"]["0"] === 'string';
-    };
-
-    api.check.data.is_second_type_action = function(obj) {
-        return obj
-            && obj["2"]
-            && Array.isArray(obj["2"])
-            && obj["2"].length
-            && typeof obj["2"]["0"] === 'string';
-    };
-
-    api.check.data.is_smartlabels_array = function(obj) {
-        const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;
-        if (isNotArray) {
-            return false;
-        }
-
-        for (let item of obj) {
-            if (typeof item !== "string") {
-                return false;
-            }
-
-            if (!/^\^[a-z]+/.test(item)) {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
-    /**
-       A lightweight check to see if a object (most likely) is a JSON-string.
-    */
-    api.check.data.is_json_string = function(obj) {
-        if (!obj || typeof obj !== "string") {
-            return false;
-        }
-
-        let str = obj.trim();
-        return ((str.startsWith("{") && str.endsWith("}"))
-            || (str.startsWith("[") && str.endsWith("]")));
-    };
-
-    api.tools.get_thread_id = function(obj) {
-        return api.check.data.is_thread(obj)
-            && obj["1"];
-    };
-
-    api.tools.get_thread_data = function(obj) {
-        return obj
-            && obj["2"]
-            && typeof obj["2"] === "object"
-            && obj["2"]["7"]
-            && typeof obj["2"]["7"] === "object"
-            && obj["2"]["7"];
-    };
-
-    api.tools.get_action = function(obj) {
-        return api.tools.get_first_type_action(obj)
-            || api.tools.get_second_type_action(obj);
-    };
-
-    api.tools.get_first_type_action = function(obj) {
-        return obj
-            && obj[1]
-            && obj[1].join('');
-    };
-
-    api.tools.get_second_type_action = function(obj) {
-        return obj
-            && obj[2]
-            && obj[2].join('');
-    };
-
-    api.tools.get_message_ids = function(obj) {
-        return obj
-            && obj["3"]
-            && Array.isArray(obj["3"])
-            && obj["3"];
-    };
-
-    api.tools.extract_from_graph = function(obj, predicate) {
-        const result = [];
-
-        const safePredicate = function(item) {
-            try {
-                return predicate(item);
-            }
-            catch (err) {
-                return false;
-            }
-        };
-
-        const forEachGraph = function(obj) {
-            // check root-node too!
-            if (safePredicate(obj)) {
-                result.push(obj);
-                return;
-            }
-
-            for (let key in obj) {
-                let item = obj[key];
-
-                if (safePredicate(item)) {
-                    result.push(item);
-                    continue;
-                }
-
-                // special-case digging for arrays!
-                if (Array.isArray(item)) {
-                    for (let listItem of item) {
-                        forEachGraph(listItem, obj);
-                    }
-                } else if (typeof item === "object") {
-                    // keep on digging.
-                    forEachGraph(item);
-                }
-            }
-        };
-
-        forEachGraph(obj);
-        return result;
-    };
-
-    api.tools.check_event_type = function(threadObj) {
-        const action_map = {
-            // ""            : "add_to_tasks",
-            "^a": "archive",
-            "^k": "delete",
-            // ""            : "delete_message_in_thread",
-            // ""            : "delete_forever",
-            // ""            : "delete_label",
-            // ""            : "discard_draft",
-            // ""            : "expand_categories",
-            // ""            : "filter_messages_like_these",
-            // ""            : "label",
-            // "^io_im^imi": "mark_as_important",
-            // "^imn": "mark_as_not_important",
-            // ""            : "mark_as_not_spam",
-            // ""            : "mark_as_spam",
-            // ""            : "move_label",
-            // ""            : "move_to_inbox",
-            // ""            : "mute",
-            "^u^us": "read",
-            // ""            : "save_draft",
-            // ""            : "send_message",
-            // ""            : "show_newly_arrived_message",
-            // "^t^ss_sy": "star",
-            // ""            : "undo_send",
-            // ""            : "unmute",
-            "^u"            : "unread",
-            // "^t^ss_sy^ss_so^ss_sr^ss_sp^ss_sb^ss_sg^ss_cr^ss_co^ss_cy^ss_cg^ss_cb^ss_cp": "unstar",
-            // ""            : "new_email",
-            // ""            : "poll",
-            // ""            : "refresh",
-            // ""            : "restore_message_in_thread",
-            "^o": "open_email",
-            // ""            : "toggle_threads"
-        };
-        const threadData = api.tools.get_thread_data(threadObj);
-
-        if (threadData && api.check.data.is_action(threadData)) {
-            const action = api.tools.get_action(threadData);
-
-            return action_map[action];
-        } else {
-            return null;
-        }
-    };
-
-    api.tools.parse_request_payload = function(params, events) {
-        const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
-        // console.log("Threads:");
-        // console.log(threads);
-        const emails = api.tools.extract_from_graph(params, api.check.data.is_email);
-        // console.log("Emails:");
-        // console.log(emails);
-
-        for (let email of emails) {
-            // console.log("Email:");
-            // console.log(email);
-            for (let key in email) {
-                let prop = email[key];
-                if (api.check.data.is_smartlabels_array(prop)) {
-                    if (prop.indexOf("^pfg") !== -1) {
-                        // TODO: parse `email` for contents, and provide a better strucutred
-                        // object
-                        events.send_message = [params.url, params.body, email];
-                    }
-                }
-            }
-        }
-
-        try {
-            if (Array.isArray(threads) && api.check.data.is_thread(threads[0])) {
-                const actionType = api.tools.check_event_type(threads[0]);
-
-                if (actionType) {
-                    // console.log(threads[0]);
-                    const threadsData = threads.map(thread => api.tools.get_thread_data(thread));
-
-                    const new_thread_ids = threads.map(thread => api.tools.get_thread_id(thread));
-                    const new_email_ids = threadsData.map(threadData => api.tools.get_message_ids(threadData)).reduce((a, b) => a.concat(b), []);
-                    events[actionType] = [null, params.url, params.body, new_email_ids, new_thread_ids];
-                }
-            }
-        } catch (e) {
-            console.error('Error: ', e);
-        }
-    };
-
     api.tools.parse_response = function(response) {
-        // first try parse as pure json!
-        if (api.check.data.is_json_string(response)) {
-            try {
-                let json = JSON.parse(response);
-                return json;
-            } catch(err) {
-                // ignore, and fallback to old implementation!
-            }
-        }
+        var parsedResponse = [],
+            data, dataLength, endIndex, realData;
 
-        let parsedResponse = [];
-        let originalResponse = response;
         try {
+
             // gmail post response structure
             // )}]"\n<datalength><rawData>\n<dataLength><rawData>...
 
@@ -1237,13 +896,13 @@ var Gmail = function(localJQuery) {
             while(response.replace(/\s/g, "").length > 1) {
 
                 // how long is the data to get
-                let dataLength = response.substring(0, response.indexOf("[")).replace(/\s/g, "");
+                dataLength = response.substring(0, response.indexOf("[")).replace(/\s/g, "");
                 if (!dataLength) {dataLength = response.length;}
 
-                let endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf("[");
-                let data = response.substring(response.indexOf("["), endIndex);
+                endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf("[");
+                data = response.substring(response.indexOf("["), endIndex);
 
-                let json = JSON.parse(data);
+                var json = JSON.parse(data);
                 parsedResponse.push(json);
 
                 // prepare response for next loop
@@ -1251,7 +910,7 @@ var Gmail = function(localJQuery) {
                 response = response.substring(data.length, response.length);
             }
         } catch (e) {
-            console.log("GmailJS post response-parsing failed.", e, originalResponse);
+            console.log("Gmail post response parsing failed.", e);
         }
 
         return parsedResponse;
@@ -1301,12 +960,8 @@ var Gmail = function(localJQuery) {
         if(typeof params.body === "object") {
             params.body_params = params.body;
             params.body_is_object = true;
-        } else if (api.check.data.is_json_string(params.body)) {
-            params.body_params = JSON.parse(params.body);
-        } else if (params.body !== undefined) {
-            params.body_params = api.tools.deparam(params.body);
         } else {
-            params.body_params = {};
+            params.body_params = api.tools.deparam(params.body);
         }
 
         if(typeof api.tracker.events !== "object" && typeof api.tracker.actions !== "object") {
@@ -1331,31 +986,38 @@ var Gmail = function(localJQuery) {
         return events;
     };
 
-    api.tools.patch = function(patchee, patch) {
-        patch(patchee);
-    };
 
     api.tools.xhr_watcher = function () {
-        if (api.tracker.xhr_init) {
-            return;
-        }
+        if (!api.tracker.xhr_init) {
+            api.tracker.xhr_init = true;
+            var js_frame = null;
+            if (top.document.getElementById("js_frame")){
+                js_frame = top.document.getElementById("js_frame");
+            } else if (window.opener) {
+                js_frame = window.opener.top.document.getElementById("js_frame");
+            }
+            if (!js_frame){
+                throw "Cannot register the xhr watcher as mail.google.com is not fully loaded yet. Please wrap your code in `gmail.observe.on(\"load\")`";
+            }
+            var win = js_frame.contentDocument.defaultView;
 
-        api.tracker.xhr_init = true;
+            if (!win.gjs_XMLHttpRequest_open) {
+                win.gjs_XMLHttpRequest_open = win.XMLHttpRequest.prototype.open;
+            }
 
-        const win = api.helper.get_xhr_window();
-
-        api.tools.patch(win.XMLHttpRequest.prototype.open, (orig) => {
             win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-                var out = orig.apply(this, arguments);
+                var out = win.gjs_XMLHttpRequest_open.apply(this, arguments);
                 this.xhrParams = {
                     method: method.toString(),
                     url: url.toString()
                 };
                 return out;
             };
-        });
 
-        api.tools.patch(win.XMLHttpRequest.prototype.send, (orig) => {
+            if (!win.gjs_XMLHttpRequest_send) {
+                win.gjs_XMLHttpRequest_send = win.XMLHttpRequest.prototype.send;
+            }
+
             win.XMLHttpRequest.prototype.send = function (body) {
                 // parse the xhr request to determine if any events should be triggered
                 var events = false;
@@ -1369,15 +1031,11 @@ var Gmail = function(localJQuery) {
 
                     // if before events were fired, rebuild arguments[0]/body strings
                     // TODO: recreate the url if we want to support manipulating url args (is there a use case where this would be needed?)
-                    if (api.check.is_new_data_layer()) {
-                        body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : JSON.stringify(this.xhrParams.body_params);
-                    } else {
-                        body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
-                    }
+                    body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
                 }
 
                 // if any matching after events, bind onreadystatechange callback
-                if(api.observe.bound(events, "after")) {
+                if(api.observe.bound(events,"after")) {
                     var curr_onreadystatechange = this.onreadystatechange;
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
@@ -1392,37 +1050,13 @@ var Gmail = function(localJQuery) {
                 }
 
                 // send the original request
-                var out = orig.apply(this, arguments);
+                var out = win.gjs_XMLHttpRequest_send.apply(this, arguments);
 
                 // fire on events
                 api.observe.trigger("on", events, this);
                 return out;
             };
-        });
-    };
-
-    api.helper.get_xhr_window = function() {
-        var js_frame = null;
-
-        if (top.document.getElementById("js_frame")){
-            js_frame = top.document.getElementById("js_frame");
-        } else if (window.opener) {
-            js_frame = window.opener.top.document.getElementById("js_frame");
         }
-        if (!js_frame){
-            if (window.opener) {
-                js_frame = window.opener.top;
-            } else {
-                js_frame = top;
-            }
-        }
-        var win;
-        if (js_frame.contentDocument) {
-            win = js_frame.contentDocument.defaultView;
-        } else {
-            win = js_frame;
-        }
-        return win;
     };
 
 
@@ -1455,7 +1089,7 @@ var Gmail = function(localJQuery) {
         }
 
         // ensure we are watching xhr requests
-        if(type !== "dom") {
+        if(type !== "dom" && !api.tracker.xhr_init) {
             api.tools.xhr_watcher();
         }
 
@@ -1877,7 +1511,7 @@ var Gmail = function(localJQuery) {
 
         // loop through each of the inserted elements classes & check for a defined observer on that class
         var cn = target.className || "";
-        var classes = cn.trim ? cn.trim().split(/\s+/) : [];
+        var classes = cn.trim().split(/\s+/);
         if(!classes.length) classes.push(""); // if no class, then check for anything observing nodes with no class
         $.each(classes, function(idx, className) {
             var observer = dom_observer_map[className];
@@ -1932,7 +1566,7 @@ var Gmail = function(localJQuery) {
         method  = method || "GET";
 
         link = encodeURI(link).replace(/#-#-#/gi, "%23");
-        var config = {type: method, url: link, async: false, dataType:"text"};
+        var config = {type: method, url: link, async: false};
         if (disable_cache) {
             config.cache = false;
         }
@@ -2054,18 +1688,18 @@ var Gmail = function(localJQuery) {
 
 
     api.helper.get.is_delegated_inbox = function() {
-        return $(".identityUserDelegatedAccount").length === 1;
+        return api.tracker.globals[17][5][0] === "fwd";
     };
 
 
-    api.helper.get.visible_emails_pre = function(customInboxQuery) {
+    api.helper.get.visible_emails_pre = function() {
         var page = api.get.current_page();
         var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&num=120&rt=1";
-        var start = $(".aqK:visible .Dj").find("span:first").text().replace(",", "").replace(".", "").split('–')[0];
+        var start = $(".aqK:visible .Dj").find("span:first").text().replace(",", "").replace(".", "");
         if (start) {
             start = parseInt(start - 1);
             url += "&start=" + start +
-                "&sstart=" + start;
+                   "&sstart=" + start;
         } else {
             url += "&start=0";
         }
@@ -2102,16 +1736,7 @@ var Gmail = function(localJQuery) {
                 cat_label = "group";
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
-                // control the behaviour with a given parameter
-                if (customInboxQuery) {
-                    url += "&search=" + customInboxQuery;
-                }
-                // tentative fix for https://github.com/KartikTalwar/gmail.js/issues/417
-                else if (api.check.is_google_apps_user()) {
-                    url += "&search=" + "inbox";
-                } else {
-                    url += "&search=" + "mbox";
-                }
+                url += "&search=" + "inbox";
             }
         }else {
             url += "&search=" + page;
@@ -2162,8 +1787,8 @@ var Gmail = function(localJQuery) {
         return false;
     };
 
-    api.get.visible_emails = function(customInboxQuery) {
-        var url = api.helper.get.visible_emails_pre(customInboxQuery);
+    api.get.visible_emails = function() {
+        var url = api.helper.get.visible_emails_pre();
         var get_data = api.tools.make_request(url);
         var emails = api.helper.get.visible_emails_post(get_data);
 
@@ -2171,8 +1796,8 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.visible_emails_async = function(callback, customInboxQuery) {
-        var url = api.helper.get.visible_emails_pre(customInboxQuery);
+    api.get.visible_emails_async = function(callback) {
+        var url = api.helper.get.visible_emails_pre();
         api.tools.make_request_async(url, "GET", function(get_data) {
             var emails = api.helper.get.visible_emails_post(get_data);
             callback(emails);
@@ -2180,12 +1805,12 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.selected_emails_data = function(customInboxQuery) {
+    api.get.selected_emails_data = function(){
         var selected_emails = [];
         if(!api.check.is_inside_email()){
             if($("[gh='tl'] div[role='checkbox'][aria-checked='true']").length){
                 var email = null;
-                var emails = api.get.visible_emails(customInboxQuery);
+                var emails = api.get.visible_emails();
                 $("[gh='tl'] div[role='checkbox']").each(function(index){
                     if($(this).attr("aria-checked") === "true"){
                         email = api.get.email_data(emails[index].id);
@@ -2205,7 +1830,7 @@ var Gmail = function(localJQuery) {
 
         var hashPart  = hash.split("#").pop().split("?").shift() || "inbox";
 
-        if(hashPart.match(/\/[0-9a-zA-Z]{16,}$/gi)) {
+        if(hashPart.match(/\/[0-9a-f]{16,}$/gi)) {
             return "email";
         }
 
@@ -2390,14 +2015,14 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.helper.get.email_data_pre = function(thread_id) {
-        if(api.check.is_inside_email() && thread_id === undefined) {
-            thread_id = api.get.thread_id();
+    api.helper.get.email_data_pre = function(email_id) {
+        if(api.check.is_inside_email() && email_id === undefined) {
+            email_id = api.get.email_id();
         }
 
         var url = null;
-        if(thread_id !== undefined) {
-            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + thread_id + "&msgs=&mb=0&rt=1&search=inbox";
+        if(email_id !== undefined) {
+            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + email_id + "&msgs=&mb=0&rt=1&search=inbox";
         }
         return url;
     };
@@ -2415,8 +2040,8 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.email_data = function(thread_id) {
-        var url = api.helper.get.email_data_pre(thread_id);
+    api.get.email_data = function(email_id) {
+        var url = api.helper.get.email_data_pre(email_id);
 
         if (url !== null) {
             var get_data = api.tools.make_request(url);
@@ -2567,24 +2192,24 @@ var Gmail = function(localJQuery) {
 
 
     api.check.is_conversation_view = function() {
-        if( window.gmail.check.is_new_gui() ) {
-            var conversation_flag = undefined;
-            conversation_flag = api.tracker.globals[69];
-            return conversation_flag === 1 || conversation_flag === undefined;
-        } else {	//To handle classic gmail UI
-            var flag_name = "bx_vmb";
-            var flag_value = undefined;
-            var array_with_flag = api.tracker.globals[17][4][1];
-            for (var i = 0; i < array_with_flag.length; i++) {
-                var current = array_with_flag[i];
-                if (current[0] === flag_name) {
-                    flag_value = current[1];
-                    break;
-                }
+        var flag_name = "bx_vmb";
+        var flag_value = undefined;
+
+        var array_with_flag = api.tracker.globals[17][4][1];
+
+        for (var i = 0; i < array_with_flag.length; i++) {
+            var current = array_with_flag[i];
+
+            if (current[0] === flag_name) {
+                flag_value = current[1];
+
+                break;
             }
-            return flag_value === "0" || flag_value === undefined;
         }
+
+        return flag_value === "0" || flag_value === undefined;
     };
+
 
     api.tools.extract_email_address = function(str) {
         var regex = /[\+a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+/gi;
@@ -2655,8 +2280,8 @@ var Gmail = function(localJQuery) {
         var button = $(document.createElement("div"));
         var buttonClasses = "T-I J-J5-Ji ";
         if(styleClass !== undefined &&
-            styleClass !== null &&
-            styleClass !== ""){
+           styleClass !== null &&
+           styleClass !== ""){
             buttonClasses += basicStyle+styleClass;
         }else{
             buttonClasses += basicStyle+defaultStyle;
@@ -2692,12 +2317,11 @@ var Gmail = function(localJQuery) {
 
     api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
         var button = $(document.createElement("div"));
-        var buttonClasses = "T-I J-J5-Ji aoO T-I-atl L3 gmailjscomposebutton ";
+        var buttonClasses = "T-I J-J5-Ji aoO L3 ";
         if(styleClass !== undefined){
             buttonClasses += styleClass;
         }
         button.attr("class", buttonClasses);
-        button.attr("style", "margin-left: 8px; max-width: 500px;");
         button.html(content_html);
         button.click(onClickFunction);
 
@@ -3041,7 +2665,7 @@ var Gmail = function(localJQuery) {
                 reply: "M9",
                 forward: "M9",
                 from: "input[name=from]",
-                send_button: "div.T-I.T-I-atl:not(.gmailjscomposebutton)"
+                send_button: "div.T-I.T-I-atl"
             };
             if(!config[lookup]) api.tools.error("Dom lookup failed. Unable to find config for \"" + lookup + "\"",config,lookup,config[lookup]);
             return this.$el.find(config[lookup]);
@@ -3062,18 +2686,26 @@ var Gmail = function(localJQuery) {
 
         if (typeof element === "string") {
             this.id = element;
-            element = $("div.adn[data-legacy-message-id='" + this.id + "']");
+            var message_class_id = "m" + this.id;
+            this.id_element = $("div.ii.gt div.a3s.aXjCH." + message_class_id);
+            element = this.id_element.closest("div.adn");
         } else {
             element = $(element);
         }
-
         if (!element || (!element.hasClass("adn"))) api.tools.error("api.dom.email called with invalid element/id");
 
-        this.$el = element;
+        // if no id specified, extract from the body wrapper class (starts with "m" followed by the id)
         if (!this.id) {
-            this.id = this.$el.data("legacyMessageId");
+            this.id_element = element.find("div.ii.gt div.a3s.aXjCH");
+            var classValue = this.id_element.attr("class");
+            if (classValue !== null) {
+                var matches = classValue.match(/(^|\s)m([\S]*)/);
+                if (matches !== null) {
+                    this.id = matches.pop();
+                }
+            }
         }
-
+        this.$el = element;
         return this;
     };
 
@@ -3295,7 +2927,24 @@ var Gmail = function(localJQuery) {
     return api;
 };
 
+function initializeOnce(fn) {
+    var result;
+    return function() {
+        if (fn) {
+            result = fn.apply(this, arguments);
+        }
+        fn = null;
+        return result;
+    };
+}
+
+// required to avoid error in NodeJS.
+var GmailClass = initializeOnce(Gmail_);
+if (typeof(window) !== "undefined" && !window.Gmail) {
+    window.Gmail = GmailClass;
+}
+
 // make class accessible to require()-users.
 if (typeof(exports) !== "undefined") {
-    exports.Gmail = Gmail;
+    exports.Gmail = GmailClass;
 }
