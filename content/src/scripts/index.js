@@ -11,6 +11,7 @@ import request
 import ToggleDisplay
        from 'react-toggle-display';
 
+
 const gmail = new Gmail();
 //import App       from './components/app/App';
 import LoginForm   from './components/loginform/LoginForm';
@@ -45,6 +46,7 @@ class App extends Component {
       gmail_emails_body: [],
       isLoggedOut      : false,
       isTaskClicked    : false,
+      showStatus       : false,
       baseUrl          : 'https://mks.bridgemailsystem.com/pms'
     };
 
@@ -99,7 +101,29 @@ class App extends Component {
       //on open of email
       gmail.observe.on('view_thread',(obj) =>{
         console.log('view_thread', obj);
-        //debugger;
+
+        // var email = new gmail.dom.email();
+        // var email = new gmail.dom.email(gmail.get.email_id());
+        // //console.log(email);
+        // var body = $('div.adn[data-message-id="'+email.id+'"]');
+        // var id = email.id;
+        //
+        // console.log(body);
+        _this.setState({
+          showStatus : true
+        });
+        setTimeout(function(){
+          console.log('Trying to render data');
+          //var email = new gmail.dom.email(gmail.get.email_id());
+          var email = new gmail.dom.email($('div.adn')); // optionally can pass relevant $('div.adn');
+
+          var body = email.body();
+          //var body = $('div.adn')
+          var emailDetails = gmail.get.email_data(gmail.get.email_id());
+          _this.state.gmail_emails_body = [];
+          _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
+          _this.setEmailsUniquely(emailDetails.people_involved);
+        },2000);
       });
 
       gmail.observe.on('view_email',(obj) =>{
@@ -115,6 +139,7 @@ class App extends Component {
         _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
         _this.setEmailsUniquely(emailDetails.people_involved);
       });
+
       gmail.observe.on("open_email", (id, url, body, xhr) => {
         console.log("Open Email","id:", id, "url:", url, 'body', body, 'xhr', xhr);
         var emailDetails = gmail.get.email_data(id);
@@ -173,7 +198,8 @@ class App extends Component {
 
         console.log(uniqueEmails);
         this.setState({
-          gmail_email_list : uniqueEmails
+          gmail_email_list : uniqueEmails,
+          showStatus : false
         })
   }
   onEmailSelect(selectedEmailC,isTaskClick,shareSearch){
@@ -376,6 +402,7 @@ class App extends Component {
                 ref="loginform"
         />
         </ToggleDisplay>
+        <LoadingMask message={"Generating Emails..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
         <ToggleDisplay show={this.state.gmailEmails}>
         <div className="topbtn_wraps_contact_tasks">
         <AddNewContact
