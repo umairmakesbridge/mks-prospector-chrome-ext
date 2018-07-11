@@ -205,7 +205,7 @@ class Tasks extends Component{
             let taskAssign=(loadMore) ? this.state.taskAssign : [];
             $.each(jsonResponse.taskList,function(key,value){
               taskAssign.push(value);
-            })
+            });
             this.setState({
               tasks : taskAssign,
               taskAssign : taskAssign,
@@ -253,7 +253,7 @@ class Tasks extends Component{
       </div>
       <div className="cf_email_wrap">
         <div className="cf_email">
-          <p className="mkb_elipsis mkb_text_break" style={{"width" : "145px"}} title={task.taskName}>{task.taskName}</p>
+          <p className="mkb_elipsis mkb_text_break" style={{"width" : "145px"}} title={decodeHTML(task.taskName)}>{decodeHTML(task.taskName)}</p>
           <span className="ckvwicon ckwicontext">
             {this.generateDate(task)} | created by <strong>{this.generateUserID(task)}</strong>
           </span>
