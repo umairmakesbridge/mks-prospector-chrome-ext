@@ -402,7 +402,7 @@ class App extends Component {
                 ref="loginform"
         />
         </ToggleDisplay>
-        <LoadingMask message={"Generating Emails..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
+        <LoadingMask message={"Fetching emails from email thread..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
         <ToggleDisplay show={this.state.gmailEmails}>
         <div className="topbtn_wraps_contact_tasks">
         <AddNewContact
