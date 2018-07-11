@@ -91,8 +91,13 @@ class Tasks extends Component{
           if(jsonResponse.success){
             this.setState({
               disabled    : false,
-              showLoading : false
-            })
+              showLoading : false,
+              nextOffset  : 0,
+              taskAssign  : []
+            });
+            if(this.state.setFullHeight){
+              this.toggleHeight();
+            }
               this.refs.addboxView.setDefaultState();
               SuccessAlert({message:"Task created successfully."});
             //this.props.contact['company'] = this.state.company;
@@ -209,8 +214,8 @@ class Tasks extends Component{
             this.setState({
               tasks : taskAssign,
               taskAssign : taskAssign,
-              showLoadingButton : (jsonResponse.nextOffset == "-1") ? 'hide' : 'show',
-              nextOffset :  jsonResponse.nextOffset,
+              showLoadingButton : (parseInt(jsonResponse.nextOffset) == -1) ? 'hide' : 'show',
+              nextOffset :  (parseInt(jsonResponse.nextOffset) == -1) ? 0 : jsonResponse.nextOffset,
               showLoadingMsg : false
             })
               //this.refs.addboxView.setDefaultState();
