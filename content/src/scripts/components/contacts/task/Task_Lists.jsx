@@ -49,7 +49,15 @@ class TasksLists extends Component{
           "meeting" : "mksicon-Meeting",
           "proposal" : "mksicon-Proposal",
           "demo"  : "mksicon-Demo",
-          "first_touch":"mksicon-First-Touch"
+          "first_touch":"mksicon-First-Touch",
+          "webSeminarInvite" : "mksicon-Web_Seminar_Invite",
+          "connect" : "mksicon-Connect",
+          "introduction" : "mksicon-Shake_hands",
+          "firstMessage" : "mksicon-First_Message",
+          "secondMessage" : "mksicon-Second_Message",
+          "thirdMessage"  : "mksicon-Third_Messag",
+          "pdf" : "mksicon-PDF",
+          "inviteToGroup" : "mksicon-Invite_to_Group"
         }
         this.priorityIcons = {
           "low" : {"topClass":"mks_priority_low pclr9","icon" : "mksicon-Triangle_Down"},

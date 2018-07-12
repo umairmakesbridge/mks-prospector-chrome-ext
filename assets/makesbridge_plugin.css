@@ -2969,6 +2969,16 @@ Add new Contact
 .mks_add_loading_wrapper .spinner{
   margin: 40px auto auto;
 }
+.ecc_linkdin .mks_ecc_connect {
+    padding: 6px 13px;
+}
+.mks_ecc_wrap label {
+    clear: both;
+    display: block;
+    padding-bottom: 4px;
+    font-size: 13px;
+    color: #616060;
+}
 /*------------------------------
 Salesforce
 --------------------------------*/

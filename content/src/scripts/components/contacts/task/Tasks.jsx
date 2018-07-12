@@ -49,7 +49,15 @@ class Tasks extends Component{
       "meeting" : "mksicon-Meeting",
       "proposal" : "mksicon-Proposal",
       "demo"  : "mksicon-Demo",
-      "first_touch":"mksicon-First-Touch"
+      "first_touch":"mksicon-First-Touch",
+      "webSeminarInvite" : "mksicon-Web_Seminar_Invite",
+      "connect" : "mksicon-Connect",
+      "introduction" : "mksicon-Shake_hands",
+      "firstMessage" : "mksicon-First_Message",
+      "secondMessage" : "mksicon-Second_Message",
+      "thirdMessage"  : "mksicon-Third_Messag",
+      "pdf" : "mksicon-PDF",
+      "inviteToGroup" : "mksicon-Invite_to_Group"
     }
     this.priorityIcons = {
       "low" : {"topClass":"mks_priority_low pclr9","icon" : "mksicon-Triangle_Down"},
@@ -273,7 +281,7 @@ class Tasks extends Component{
                 <i className="mksicon-Check mks-tasklists-icons" style={{"display": "none","lineHeight" : "16px !important"}}></i>
               </div>
             </div>
-            <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn hide" style={{"top": "6px","right": "0","font-size":"10px"}}>
+            <span className="mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF show mkb_task_compBtn hide" style={{"top": "6px","right": "0","fontSize":"10px"}}>
               <i className="mksicon-Check"></i>
               Complete</span>
             <div data-tip="Completed"  className="cf_silhouette mks_tasks_lists_empty_icon mks_tasks_completed" style={{float: "right","top": "-47px","width": "16px","height": "16px","right": "52px"}}>
@@ -389,6 +397,7 @@ class Tasks extends Component{
                   type:"li",
                   className:"mks_ecc_wrap",
                   stateType : "tasktype",
+                  extraTitle : "Basic Tasks",
                   defaultValue : "call",
                   value :[
                     {name : "ecc", className:"mks_ecc_firsttouch",tipName:"First Touch", id: "first_touch",value:"first_touch",placeholder:"<span class='mksicon-First-Touch'></span>",tooltip : true},
@@ -400,6 +409,24 @@ class Tasks extends Component{
                     {name : "ecc", className:"mks_ecc_breakfast",tipName:"Breakfast", id: "Breakfast",value:"breakfast",placeholder:"<span class='mksicon-Breakfast'></span>",tooltip : true},
                     {name : "ecc", className:"mks_ecc_meeting",tipName:"Meeting", id: "Meeting",value:"meeting",placeholder:"<span class='mksicon-Meeting'></span>",tooltip : true},
                     {name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
+                  ]
+                },
+                {
+                  type:"li",
+                  className:"mks_ecc_wrap ecc_linkdin",
+                  stateType : "tasktype",
+                  defaultValue : "",
+                  extraTitle : "LinkedIn Tasks",
+                  value :[
+                    {name : "ecc", className:"mks_ecc_connect",tipName:"Connect", id: "connect",value:"connect",placeholder:"<span class='mksicon-Connect'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_introduction",tipName:"Introduction", id:"introduction",value:"introduction",placeholder:"<span class='mksicon-Shake_hands'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_firstMessage",tipName:"First Message", id: "firstMessage",value:"firstMessage",placeholder:"<span class='mksicon-First_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_secondMessage",tipName:"Second Message", id: "secondMessage",value:"secondMessage",placeholder:"<span class='mksicon-Second_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_thirdMessage",tipName:"Third Message", id: "thirdMessage",value:"thirdMessage",placeholder:"<span class='mksicon-Third_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_pdf",tipName:"PDF", id: "pdf",value:"pdf",placeholder:"<span class='mksicon-PDF'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_webSeminarInvite",tipName:"Web Seminar Invite", id: "webSeminarInvite",value:"webSeminarInvite",placeholder:"<span class='mksicon-Web_Seminar_Invite'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_inviteToGroup",tipName:"Invite to Group", id: "inviteToGroup",value:"inviteToGroup",placeholder:"<span class='mksicon-Invite_to_Group'></span>",tooltip : true},
+                    //{name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
                   ]
                 },
                 {name : "ckey", className:"focusThis", required:'required',defaultValue:'Call' , id: "ckey",placeholder:"Enter task name *"},
