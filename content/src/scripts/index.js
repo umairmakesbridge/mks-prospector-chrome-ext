@@ -140,7 +140,7 @@ class App extends Component {
         _this.setEmailsUniquely(emailDetails.people_involved);
       });
 
-      gmail.observe.on("open_email", (id, url, body, xhr) => {
+      /*gmail.observe.on("open_email", (id, url, body, xhr) => {
         console.log("Open Email","id:", id, "url:", url, 'body', body, 'xhr', xhr);
         var emailDetails = gmail.get.email_data(id);
         console.log(emailDetails);
@@ -159,7 +159,7 @@ class App extends Component {
         _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
         _this.setEmailsUniquely(emailDetails.people_involved);
 
-      });
+      });*/
 
     });
 
@@ -404,7 +404,6 @@ class App extends Component {
         </ToggleDisplay>
         
         <ToggleDisplay show={this.state.gmailEmails}>
-        <LoadingMask message={"Fetching emails from email thread..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
         <div className="topbtn_wraps_contact_tasks">
         <AddNewContact
           users_details={this.state.users_details}
