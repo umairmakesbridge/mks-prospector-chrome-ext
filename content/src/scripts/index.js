@@ -123,7 +123,7 @@ class App extends Component {
           _this.state.gmail_emails_body = [];
           _this.state.gmail_emails_body.push(_this.extractEmailsFromBody(body));
           _this.setEmailsUniquely(emailDetails.people_involved);
-        },2000);
+        },300);
       });
 
       gmail.observe.on('view_email',(obj) =>{
@@ -402,8 +402,9 @@ class App extends Component {
                 ref="loginform"
         />
         </ToggleDisplay>
-        <LoadingMask message={"Fetching emails from email thread..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
+        
         <ToggleDisplay show={this.state.gmailEmails}>
+        <LoadingMask message={"Fetching emails from email thread..."} showLoading={this.state.showStatus} extraClass={"alignloadingClass mks_add_loading_wrapper"}/>
         <div className="topbtn_wraps_contact_tasks">
         <AddNewContact
           users_details={this.state.users_details}
