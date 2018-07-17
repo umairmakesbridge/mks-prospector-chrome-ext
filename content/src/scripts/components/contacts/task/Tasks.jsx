@@ -55,7 +55,7 @@ class Tasks extends Component{
       "introduction" : "mksicon-Shake_hands",
       "firstMessage" : "mksicon-First_Message",
       "secondMessage" : "mksicon-Second_Message",
-      "thirdMessage"  : "mksicon-Third_Messag",
+      "thirdMessage"  : "mksicon-Third_Message",
       "pdf" : "mksicon-PDF",
       "inviteToGroup" : "mksicon-Invite_to_Group"
     }

@@ -143,7 +143,6 @@ class AddBox extends Component{
     }
     clickedLi(stateLi,value,event){
       var targetLi = event.currentTarget;
-      debugger;
       if(stateLi == "tasktype"){
         var o_state_value = $(targetLi).parents('ul').find('li.active').attr('data-tip');
         if(o_state_value && o_state_value.toLowerCase() == this.state.input2.toLowerCase().trim()){
@@ -157,8 +156,10 @@ class AddBox extends Component{
             input3 : this.capitalize($(targetLi).attr('data-tip'))
           })
         }
+        $('ul.mks_ecc_wrap').find('li').removeClass('active');
+      }else if(stateLi == 'priority'){
+        $(targetLi).parents('ul').find('li').removeClass('active');
       }
-      $('ul.mks_ecc_wrap').find('li').removeClass('active');
       $(targetLi).addClass('active');
       this.setState({
         [stateLi] : (value) ? value : $(targetLi).text()
