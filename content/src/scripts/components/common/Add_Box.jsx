@@ -18,7 +18,7 @@ class AddBox extends Component{
         this.state = {
           disabled : false,
           selectedDay: '',
-          startDate : Moment(),
+          startDate : Moment().add('hours', 1).minute(0),
           times : Moment().format("hh:mm A"),
           btnText : "Save",
           extra_btn_class : '',
@@ -50,7 +50,6 @@ class AddBox extends Component{
     }
     handleOnSave(){
       console.log('Show Box Save Callback');
-
       let els = document.querySelectorAll(`div.${this.props.boxType} input`);
       let requestObj = {};
       let isValid = true;
@@ -77,6 +76,7 @@ class AddBox extends Component{
                         console.log('Time to tasks');
                         this.props.create(this.state);
                     }else if(this.props.boxType == "mks_tasksFields" && this.state.saveType=="update"){
+                      debugger;
                         this.props.update(this.state);
                     }
 
@@ -91,18 +91,20 @@ class AddBox extends Component{
      }
     editTaskForm(editObj){
       var _date = Moment(decodeHTML(editObj.taskDate),'YYYY-M-D H:m');
+      debugger;
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm A")} //2018-03-13 06:58:00
       this.setState({
          selectedDay : selFormat.date + " " + selFormat.time,
          startDate : _date,
          times : selFormat.time,
-         input2 : editObj.taskName,
+         input3 : editObj.taskName,
          notes : editObj.notes,
          btnText : "Update",
          extra_btn_class : "mks__update_btn",
          saveType : 'update',
          showUpdateTitle : 'Update task',
+         tasktype : editObj.taskType,
          priority : editObj.priority
       });
       this.state['taskId'] = editObj['taskId.encode'];
@@ -110,6 +112,7 @@ class AddBox extends Component{
       jQuery('.mks_ecc_wrap li').removeClass('active');
       jQuery('.mks_priotiry_'+editObj.priority.toLowerCase()).addClass('active');
       jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
+      debugger;
       console.log(this.state);
     }
     defaultAddTaskDialog (){
@@ -145,14 +148,14 @@ class AddBox extends Component{
       var targetLi = event.currentTarget;
       if(stateLi == "tasktype"){
         var o_state_value = $(targetLi).parents('ul').find('li.active').attr('data-tip');
-        if(o_state_value && o_state_value.toLowerCase() == this.state.input2.toLowerCase().trim()){
+        if(o_state_value && o_state_value.toLowerCase() == this.state.input3.toLowerCase().trim()){
           this.setState({
-            input2 : this.capitalize($(targetLi).attr('data-tip')),
+            //input2 : this.capitalize($(targetLi).attr('data-tip')),
             input3 : this.capitalize($(targetLi).attr('data-tip'))
           })
         }else{
           this.setState({
-            input2 : this.capitalize($(targetLi).attr('data-tip')),
+            //input2 : this.capitalize($(targetLi).attr('data-tip')),
             input3 : this.capitalize($(targetLi).attr('data-tip'))
           })
         }
@@ -235,7 +238,7 @@ class AddBox extends Component{
      return this.props.addFieldsObj.map((field,key)=>{
               if(field.type=="date"){
                 return(
-                <span className="date_wrapper__mks">
+                <span className="date_wrapper__mks" key={key}>
                   <DatePicker
                       selected={this.state.startDate}
                       onChange={this.handleChange}

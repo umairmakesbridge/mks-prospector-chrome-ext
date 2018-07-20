@@ -79,8 +79,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "add",
       subNum: this.props.contact.subNum,
-      tasktype: (object.tasktype) ? (object.tasktype) : "call",
-      name: (object.input2) ? object.input2 : 'Call',
+      tasktype: object.tasktype,
+      name: object.input3,
       taskDate: object.startDate.format("MM-DD-YYYY") + " " +  Moment(object.times, ["h:mm A"]).format("HH:mm")+":00",
       priority: object.priority.toLowerCase(),
       notes: object.notes,
@@ -169,6 +169,7 @@ class Tasks extends Component{
                 return false;
               }
               SuccessAlert({message:"Task deleted successfully."});
+              this.setState({nextOffset : 0})
               this.getTaskList()
             });
     }
@@ -329,7 +330,7 @@ class Tasks extends Component{
         subNum: this.props.contact.subNum,
         taskId :  (taskObj.taskId) ? taskObj.taskId : taskObj['taskId.encode'],
         tasktype: taskObj.tasktype,
-        name: taskObj.input2,
+        name: taskObj.input3,
         taskDate: (taskObj.startDate) ? taskObj.startDate.format("MM-DD-YYYY") + " " + Moment(taskObj.times, ["h:mm A"]).format("HH:mm")+":00" : "",
         priority: (taskObj.priority) ? taskObj.priority.toLowerCase() : "",
         notes: taskObj.notes,
@@ -360,6 +361,7 @@ class Tasks extends Component{
               //this.props.contact['company'] = this.state.company;
               //this.props.updateContactHappened();
               //this.props.getSubscriberDetails();
+              this.setState({nextOffset : 0})
               this.getTaskList()
 
             }else{
@@ -415,17 +417,17 @@ class Tasks extends Component{
                   type:"li",
                   className:"mks_ecc_wrap ecc_linkdin",
                   stateType : "tasktype",
-                  defaultValue : "",
+                  defaultValue : "call",
                   extraTitle : "LinkedIn Tasks",
                   value :[
                     {name : "ecc", className:"mks_ecc_connect",tipName:"Connect", id: "connect",value:"connect",placeholder:"<span class='mksicon-Connect'></span>",tooltip : true},
                     {name : "ecc", className:"mks_ecc_introduction",tipName:"Introduction", id:"introduction",value:"introduction",placeholder:"<span class='mksicon-Shake_hands'></span>",tooltip : true},
-                    {name : "ecc", className:"mks_ecc_firstMessage",tipName:"First Message", id: "firstMessage",value:"firstMessage",placeholder:"<span class='mksicon-First_Message'></span>",tooltip : true},
-                    {name : "ecc", className:"mks_ecc_secondMessage",tipName:"Second Message", id: "secondMessage",value:"secondMessage",placeholder:"<span class='mksicon-Second_Message'></span>",tooltip : true},
-                    {name : "ecc", className:"mks_ecc_thirdMessage",tipName:"Third Message", id: "thirdMessage",value:"thirdMessage",placeholder:"<span class='mksicon-Third_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_firstmessage",tipName:"First Message", id: "firstMessage",value:"firstMessage",placeholder:"<span class='mksicon-First_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_secondmessage",tipName:"Second Message", id: "secondMessage",value:"secondMessage",placeholder:"<span class='mksicon-Second_Message'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_thirdmessage",tipName:"Third Message", id: "thirdMessage",value:"thirdMessage",placeholder:"<span class='mksicon-Third_Message'></span>",tooltip : true},
                     {name : "ecc", className:"mks_ecc_pdf",tipName:"PDF", id: "pdf",value:"pdf",placeholder:"<span class='mksicon-PDF'></span>",tooltip : true},
-                    {name : "ecc", className:"mks_ecc_webSeminarInvite",tipName:"Web Seminar Invite", id: "webSeminarInvite",value:"webSeminarInvite",placeholder:"<span class='mksicon-Web_Seminar_Invite'></span>",tooltip : true},
-                    {name : "ecc", className:"mks_ecc_inviteToGroup",tipName:"Invite to Group", id: "inviteToGroup",value:"inviteToGroup",placeholder:"<span class='mksicon-Invite_to_Group'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_webseminarinvite",tipName:"Web Seminar Invite", id: "webSeminarInvite",value:"webSeminarInvite",placeholder:"<span class='mksicon-Web_Seminar_Invite'></span>",tooltip : true},
+                    {name : "ecc", className:"mks_ecc_invitetogroup",tipName:"Invite to Group", id: "inviteToGroup",value:"inviteToGroup",placeholder:"<span class='mksicon-Invite_to_Group'></span>",tooltip : true},
                     //{name : "ecc", className:"mks_ecc_proposal",tipName:"Proposal", id: "Proposal",value:"proposal",placeholder:"<span class='mksicon-Proposal'></span>",tooltip : true}
                   ]
                 },
