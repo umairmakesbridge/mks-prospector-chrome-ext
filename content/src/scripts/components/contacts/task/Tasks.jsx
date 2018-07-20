@@ -79,8 +79,8 @@ class Tasks extends Component{
     var reqObj = {
       type: "add",
       subNum: this.props.contact.subNum,
-      tasktype: object.tasktype,
-      name: object.input2,
+      tasktype: (object.tasktype) ? (object.tasktype) : "call",
+      name: (object.input2) ? object.input2 : 'Call',
       taskDate: object.startDate.format("MM-DD-YYYY") + " " +  Moment(object.times, ["h:mm A"]).format("HH:mm")+":00",
       priority: object.priority.toLowerCase(),
       notes: object.notes,
