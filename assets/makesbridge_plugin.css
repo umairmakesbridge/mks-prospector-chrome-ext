@@ -1705,6 +1705,45 @@ span.mksph_contact_value {
  overflow-x: hidden;
  padding: 15px 0 0px;
  position: relative;
+ -webkit-transition: all 0.5s ease-in-out;
+ -moz-transition: all 0.5s ease-in-out;
+ -o-transition: all 0.5s ease-in-out;
+}
+
+div#Tags,div#tasks,div#notes,div#custom-fields{
+  position: relative;
+}
+#Tags span.mksicon-ArrowNext, #tasks span.mksicon-ArrowNext.mks-left-arrowNext, #notes span.mksicon-ArrowNext.mks-left-arrowNext,#Contact span.mksicon-ArrowNext.mks-left-arrowNext,#custom-fields span.mksicon-ArrowNext.mks-left-arrowNext{
+  font-size: 12px;
+  left: 8px;
+  top: 19px;
+  color: #738591;
+  position: absolute;
+  cursor: pointer;
+}
+#Tags h3,#tasks h3,#notes h3,#Contact h3,#custom-fields h3{
+      padding-left: 5px;
+}
+#Tags span.mksicon-ArrowNext.arrow_make_left::before{
+  -ms-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+}
+span.mksicon-ArrowNext.arrow_make_down::before,span.arrow_tasks_make_down::before {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    display: inline-block;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+.tags-contents-hide{
+  min-height: 0;
+  height: 0;
 }
 .csfields-contents {
   overflow-x: hidden;
@@ -1715,7 +1754,7 @@ span.mksph_contact_value {
 .addTag{
    position: relative;
    float: right;
-   top: -19px;
+   top: -37px;
    text-decoration: underline;
    cursor:pointer;
    background: rgb(0, 111, 253);
@@ -3284,11 +3323,25 @@ left: 3px;
     line-height: 14px !important;
     display:block !important;
 }
+.content-tasks-wrapper {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+}
+.tasks-content-hide,.notes-content-hide,.basic-content-hide,.cf-content-hide{
+  max-height: 0;
+}
 /* ==================
 Notes
 =================== */
+
 ._mks_NotesWrap{
   position: relative;
+}
+.notes_lists_wrap{
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
 }
 .notes_lists_wrap ul{
   list-style-type: none;

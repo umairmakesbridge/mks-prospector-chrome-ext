@@ -28,7 +28,8 @@ class CustomFields extends Component{
       collapseExpand:'expand',
       addedNewField : false,
       overlayHeight : 0,
-      showAddBox : false
+      showAddBox : false,
+      toggleCFContent : ''
     }
     if(this.props.custom_fields){
     const Fields = this.props.custom_fields;
@@ -171,6 +172,19 @@ class CustomFields extends Component{
         collapseExpand:'expand'
       })
   }
+  toggleCF(){
+    if(this.state.toggleCFContent){
+      this.setState({
+        toggleCFContent : '',
+        toggleHideCFBtn :''
+      })
+    }else{
+      this.setState({
+        toggleCFContent : 'cf-content-hide',
+        toggleHideCFBtn :'hide'
+      })
+    }
+  }
   ChangeHandler(objKey,event){
     this.state[objKey] = event.target.value;
     this.forceUpdate();
@@ -240,21 +254,21 @@ class CustomFields extends Component{
             <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
         </ToggleDisplay>
         <ToggleDisplay show={!this.state.showAddBox}>
-        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel}`} onClick={this.showInputCF.bind(this)}>Edit</span>
+        <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showLabel} ${this.state.toggleHideCFBtn}`} onClick={this.showInputCF.bind(this)}>Edit</span>
 
-        <span className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
+        <span className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel} ${this.state.toggleHideCFBtn}`} onClick={this.showAddCusFocus.bind(this) }>Add New</span>
 
         </ToggleDisplay >
         <span className={`mkb_btn mkb_cf_btn pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
         <span className={`addTag mkb_btn mkb_cf_btn mkb_greenbtn mkb_done pull-right ${this.state.showInput}`} onClick={ this.updateCustomFields.bind(this) }>Done</span>
 
 
-        <div className={`csfields-contents scfe_field height90 ${this.state.setFullHeight}`}>
+        <div className={`csfields-contents scfe_field height90 ${this.state.toggleCFContent} ${this.state.setFullHeight}`}>
 
         <ul className="customFields_ul">{this.generateCustomFields()}</ul>
 
         </div>
-        <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
+        <div className={`${this.state.collapseExpand}  ${this.state.toggleHideCFBtn}`} onClick={this.toggleHeight.bind(this)}>
           <span>{this.state.collapseMsg}</span>
           <span className="mksicon-ArrowNext"></span>
         </div>

@@ -36,7 +36,9 @@ class Tasks extends Component{
       sortTasks:'-1',
       showLoadingMsg : 'false',
       showLoadingButton : 'false',
+      showHideCollapse : '',
       nextOffset : 0,
+      toggleDDandAddBtn: '',
       taskAssign : []
     }
     this.mapicons ={
@@ -124,6 +126,22 @@ class Tasks extends Component{
   }
   hideAddCus(){
       this.setState({showAddBox : false});
+  }
+  toggleTasksContent(){
+    if(this.state.toggleTasks){
+      this.setState({
+        toggleTasks : '',
+        showHideCollapse : '',
+        toggleDDandAddBtn : ''
+      })
+    }else{
+      this.setState({
+        toggleTasks : 'tasks-content-hide',
+        showHideCollapse : 'hide',
+        toggleDDandAddBtn : 'hide'
+      })
+    }
+
   }
   deleteTask(obj){
     var r = confirm('Are you sure you want to delete this task?');
@@ -215,7 +233,6 @@ class Tasks extends Component{
           console.log(jsonResponse);
 
           if(parseInt(jsonResponse.totalCount) > 0){
-            debugger;
             let taskAssign=(loadMore) ? this.state.taskAssign : [];
             $.each(jsonResponse.taskList,function(key,value){
               taskAssign.push(value);
@@ -386,7 +403,7 @@ class Tasks extends Component{
   render(){
     if(!this.state.tasks){
       return (  <div style={{position: "relative"}}>
-      <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
+      <span style={{right : "0px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel} ${this.state.toggleDDandAddBtn}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
       <p className="not-found">Loading Tasks...</p>
       </div>)
     }
@@ -455,7 +472,7 @@ class Tasks extends Component{
       <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
 
 </ToggleDisplay>
-const tasks_header2 = <select style={{left : "60px","top" : "-36px","position":"absolute"}} onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
+const tasks_header2 = <select className={`${this.state.toggleDDandAddBtn}`} style={{left : "60px","top" : "-36px","position":"absolute"}} onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
 
   <option value="-1">All</option>
 
@@ -476,7 +493,7 @@ const tasks_header2 = <select style={{left : "60px","top" : "-36px","position":"
      <option value="proposal">Proposal</option>
   </optgroup>
 </select>
-const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
+const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel} ${this.state.toggleDDandAddBtn}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
     if(this.state.tasks == -1){
       return (<div style={{position: "relative"}}>
 
@@ -492,7 +509,7 @@ const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`
         {tasks_header1}
         {tasks_header2}
         {tasks_header3}
-    <div style={{"position" : "relative"}} className={`content-wrapper height90 height230 ${this.state.setFullHeight}`}  >
+    <div style={{"position" : "relative"}} className={`content-tasks-wrapper content-wrapper height90 height230 ${this.state.setFullHeight} ${this.state.toggleTasks}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
           <div className={`LoadMore-wrapper loading_${this.state.showLoadingMsg}`}>
@@ -503,7 +520,7 @@ const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`
 
           </div>
     </div>
-    <div className={`${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
+    <div className={`${this.state.showHideCollapse} ${this.state.collapseExpand} ${this.state.showCollapse} ${this.state.showExpandCollapse}`} onClick={this.toggleHeight.bind(this)}>
       <span>{this.state.collapseMsg}</span>
       <span className="mksicon-ArrowNext"></span>
     </div>

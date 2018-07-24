@@ -30,7 +30,8 @@ class Notes extends Component{
                  collapseExpand : 'expand',
                  setFullHeight : '',
                  noNotesFound : false,
-                 showCollapse : ''
+                 showCollapse : '',
+                 toggleNoteBtnTextarea : ''
                }
                this.baseUrl = this.props.baseUrl;
                // preserve the initial state in a new object
@@ -98,6 +99,20 @@ class Notes extends Component{
           }
           setStateDefault(){
               this.setState(this.baseState);
+          }
+          toggleNotesContent(){
+            debugger;
+            if(this.state.toggleNoteState){
+              this.setState({
+                toggleNoteState : '',
+                toggleNoteBtnTextarea : ''
+              })
+            }else{
+              this.setState({
+                toggleNoteState : 'notes-content-hide',
+                toggleNoteBtnTextarea : 'hide'
+              })
+            }
           }
           addNewNote(){
             if(!this.state.comment){
@@ -310,9 +325,9 @@ class Notes extends Component{
              return(
                <div className="_mks_NotesWrap">
                  <LoadingMask message={this.state.loadingMsg} showLoading={this.state.showLoading} />
-                 <a className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn ${this.state.showAddBtn}`}  onClick={this.addNewNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>save</a>
-                 <a className={`mkb_btn mkb_cf_btn pull-right mkb_notes-close mks_cc_action_gray ${this.state.showUpdate}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>close</a>
-                 <a className={`mkb_btn mkb_cf_btn pull-right c_txt_s_blue ${this.state.showUpdate}`}  onClick={this.updateNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"56px"}}>update</a>
+                 <a className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn ${this.state.showAddBtn} ${this.state.toggleNoteBtnTextarea}`}  onClick={this.addNewNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>save</a>
+                 <a className={`mkb_btn mkb_cf_btn pull-right mkb_notes-close mks_cc_action_gray ${this.state.showUpdate} ${this.state.toggleNoteBtnTextarea}`}  onClick={this.cancelNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"-1px"}}>close</a>
+                 <a className={`mkb_btn mkb_cf_btn pull-right c_txt_s_blue ${this.state.showUpdate} ${this.state.toggleNoteBtnTextarea}`}  onClick={this.updateNote.bind(this) } style={{"color" : "#fff","top" : "-38px","right":"56px"}}>update</a>
 
                  <textarea
                    value={decodeHTML(this.state.comment,true)}
@@ -321,8 +336,9 @@ class Notes extends Component{
                    placeholder="Add your notes here"
                    maxLength="500"
                    id="note_textarea"
+                   className={`${this.state.toggleNoteBtnTextarea}`}
                   />
-                <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap`}>
+                <div className={`height90 height210 ${this.state.setFullHeight} notes_lists_wrap ${this.state.toggleNoteState}`}>
                       <ul>
                         {this.generateNotes()}
                       </ul>

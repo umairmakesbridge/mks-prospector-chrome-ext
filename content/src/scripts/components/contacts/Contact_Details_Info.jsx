@@ -61,7 +61,15 @@ class ContactDetailInfo extends Component{
       showCreateCardBox : 'show',
       conLeadId : '',
       showSfUpdate : 'hide',
-      showLoadingSF : false
+      showLoadingSF : false,
+      arrowTagChange : 'arrow_make_down',
+      toggleTagAddBtn : '',
+      arrowTaskChange : 'arrow_tasks_make_down',
+      arrowNoteChange : 'arrow_tasks_make_down',
+      toggleBasicContent : '',
+      arrowBasicChange : 'arrow_make_down',
+      toogleBasicBtn : '',
+      arrowCFChange : 'arrow_tasks_make_down'
     }
   };
   updateBasicField(reqtype){
@@ -348,6 +356,75 @@ class ContactDetailInfo extends Component{
     })
   }
 
+  toggleTagsContent(){
+    if(this.state.toggleTagClass){
+      this.setState({
+        toggleTagClass : '',
+        arrowTagChange : 'arrow_make_down',
+        toggleTagAddBtn : ''
+      })
+    }else{
+      this.setState({
+        toggleTagClass : 'tags-contents-hide',
+          arrowTagChange : 'arrow_make_left',
+          toggleTagAddBtn : 'hide'
+      })
+    }
+  }
+  toggleTasksContent(){
+    if(this.state.arrowTaskChange){
+      this.setState({
+        arrowTaskChange : ''
+      })
+    }else{
+      this.setState({
+          arrowTaskChange : 'arrow_tasks_make_down'
+      })
+    }
+    this.refs.tasks.toggleTasksContent()
+  }
+  toggleNotesContent(){
+    if(this.state.arrowNoteChange){
+      this.setState({
+        arrowNoteChange : ''
+      })
+    }else{
+      this.setState({
+          arrowNoteChange : 'arrow_tasks_make_down'
+      })
+    }
+    this.refs.notesView.toggleNotesContent()
+  }
+
+  toggleBasicsContent(){
+    if(this.state.toggleBasicContent){
+      this.setState({
+        arrowBasicChange : 'arrow_make_down',
+        toggleBasicContent : '',
+          toogleBasicBtn : ''
+        })
+    }else{
+      this.setState({
+          arrowBasicChange : '',
+          toggleBasicContent : 'basic-content-hide',
+          toogleBasicBtn : 'hide'
+      })
+    }
+  }
+
+  toggleCFContent(){
+    if(this.state.arrowCFChange){
+      this.setState({
+        arrowCFChange : ''
+      })
+    }else{
+      this.setState({
+          arrowCFChange : 'arrow_tasks_make_down'
+      })
+    }
+    this.refs.CustomFieldsComponent.toggleCF();
+  }
+
   render(){
     let items = this.props.autoFillTags;
     console.log('Rendering Contact Details');
@@ -373,8 +450,9 @@ class ContactDetailInfo extends Component{
       <div className="contacts-wrap">
         <LoadingMask message={'Updating Fields to Salesforce'} showLoading={this.state.showLoadingSF} />
         <div id="Tags" className="tabcontent mksph_cardbox">
+          <span onClick={this.toggleTagsContent.bind(this)} className={`mksicon-ArrowNext ${this.state.arrowTagChange}`}></span>
               <h3>Tags</h3>
-              <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
+              <a className={`addTag mkb_btn mkb_greenbtn ${this.state.tagBtn} ${this.state.toggleTagAddBtn}`} onClick={this.showAddTagFocus.bind(this) } >Add Tag</a>
               <ToggleDisplay show={this.state.showAddBox}>
                 <Search items={items}
                 placeholder='add or apply a tag to this contact...'
@@ -421,20 +499,23 @@ class ContactDetailInfo extends Component{
 
                 </div>
               </ToggleDisplay>
-              <div className="tags-contents">
+              <div className={`tags-contents ${this.state.toggleTagClass}`} >
                 <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading} />
                 <ContactTags tags={this.props.contact.tags} deleteTag={this.deleteTagName.bind(this)} />
               </div>
             </div>
             <div id="tasks" className="tabcontent mksph_cardbox">
+              <span onClick={this.toggleTasksContent.bind(this)} className={`mksicon-ArrowNext mks-left-arrowNext ${this.state.arrowTaskChange}`}></span>
                   <h3>Tasks</h3>
                   <Tasks
                     users_details={this.users_details}
                     baseUrl={this.baseUrl}
                     contact = {this.props.contact}
+                    ref="tasks"
                   />
             </div>
             <div id="notes" className="tabcontent mksph_cardbox">
+              <span onClick={this.toggleNotesContent.bind(this)} className={`mksicon-ArrowNext mks-left-arrowNext ${this.state.arrowNoteChange}`}></span>
                 <h3>Notes</h3>
                 <Notes
                   users_details={this.users_details}
@@ -445,11 +526,12 @@ class ContactDetailInfo extends Component{
             </div>
 
         <div id="Contact" className={`tabcontent mkb_basicField_wrap mksph_cardbox`}>
+          <span onClick={this.toggleBasicsContent.bind(this)} className={`mksicon-ArrowNext mks-left-arrowNext ${this.state.arrowBasicChange}`}></span>
               <h3 style={{marginBottom: "15px"}}>Basic Fields</h3>
-                <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel}`} onClick={ this.showInputB.bind(this) }>Edit</span>
-                <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput}`} onClick={this.cancelField.bind(this)}>Cancel</span>
-                <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
-              <div className={`height90 ${this.state.setFullHeight} scfe_field`}>
+                <span className={`mkb_btn mkb_basic_edit pull-right ${this.state.showLabel} ${this.state.toogleBasicBtn}`} onClick={ this.showInputB.bind(this) }>Edit</span>
+                <span className={`mkb_btn mkb_basic_cancel pull-right ${this.state.showInput} ${this.state.toogleBasicBtn}`} onClick={this.cancelField.bind(this)}>Cancel</span>
+                <span className={`mkb_btn mkb_basic_done mkb_done mkb_greenbtn pull-right ${this.state.showInput} ${this.state.toogleBasicBtn}`} onClick={ this.updateBasicField.bind(this) }>Done</span>
+              <div className={`height90 ${this.state.setFullHeight} scfe_field ${this.state.toggleBasicContent}`}>
                 <div className="mksph_contact_data">
                     <span className="mksph_contact_title">First Name : </span>
                     <span className={`mksph_contact_value ${this.state.showLabel}`}> {decodeHTML(this.state.firstName)}</span>
@@ -543,7 +625,7 @@ class ContactDetailInfo extends Component{
 
 
                 </div>
-                <div className={`${this.state.collapseExpand}`} onClick={this.toggleHeight.bind(this)}>
+                <div className={`${this.state.collapseExpand} ${this.state.toogleBasicBtn}`} onClick={this.toggleHeight.bind(this)}>
                   <span>{this.state.collapseMsg}</span>
                   <span className="mksicon-ArrowNext"></span>
                 </div>
@@ -562,6 +644,7 @@ class ContactDetailInfo extends Component{
                   </div>
             </div>
                 <div id="custom-fields" className="tabcontent mksph_cardbox">
+                    <span onClick={this.toggleCFContent.bind(this)} className={`mksicon-ArrowNext mks-left-arrowNext ${this.state.arrowCFChange}`}></span>
                       <h3>Custom Fields</h3>
 
                       <CustomFields
