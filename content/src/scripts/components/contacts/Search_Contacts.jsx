@@ -14,6 +14,9 @@ import TasksLists
        from './task/Task_Lists';
 import ToggleDisplay
        from 'react-toggle-display';
+import {encodeHTML,decodeHTML}
+       from './Encode_Method';
+       
 class SearchContacts extends Component{
     constructor (props){
       super(props);
@@ -287,7 +290,7 @@ class SearchContacts extends Component{
       });
     }
     selectedEmail(selectedEmail, isSharedContact){
-      this.hideUpTaskList();      
+      this.hideUpTaskList();
       this.props.onEmailSelect(selectedEmail,false,isSharedContact)
     }
     searchedBy(event){

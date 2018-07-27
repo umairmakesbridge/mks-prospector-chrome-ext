@@ -1714,9 +1714,9 @@ div#Tags,div#tasks,div#notes,div#custom-fields{
   position: relative;
 }
 #Tags span.mksicon-ArrowNext, #tasks span.mksicon-ArrowNext.mks-left-arrowNext, #notes span.mksicon-ArrowNext.mks-left-arrowNext,#Contact span.mksicon-ArrowNext.mks-left-arrowNext,#custom-fields span.mksicon-ArrowNext.mks-left-arrowNext{
-  font-size: 12px;
+  font-size: 10px;
   left: 8px;
-  top: 19px;
+  top: 22px;
   color: #738591;
   position: absolute;
   cursor: pointer;
@@ -1744,6 +1744,7 @@ span.mksicon-ArrowNext.arrow_make_down::before,span.arrow_tasks_make_down::befor
 .tags-contents-hide{
   min-height: 0;
   height: 0;
+  padding: 0;
 }
 .csfields-contents {
   overflow-x: hidden;
@@ -3330,6 +3331,10 @@ left: 3px;
 }
 .tasks-content-hide,.notes-content-hide,.basic-content-hide,.cf-content-hide{
   max-height: 0;
+}
+.cf-content-hide {
+    padding: 0;
+    margin: 0;
 }
 /* ==================
 Notes
