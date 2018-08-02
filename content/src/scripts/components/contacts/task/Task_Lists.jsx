@@ -397,28 +397,33 @@ class TasksLists extends Component{
       });
     }
     getTodayTasks(event){
-      //setTimeout(() => {
+      if (!this.state.cactive) {
         if(this.req)
           {
             this.req.abort();
           }
-      //}, 100);
-      this.state.offset=0;
-      this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',isTodayTask:1},() => {
-        this.getTaskListofUser();
-      });
+        this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',isTodayTask:1},() => {
+          this.getTaskListofUser();
+        });
+      }
+
 
     }
     getAllTasks(event){
-      if(this.req)
-        {
-          this.req.abort();
-        }
-      this.state.offset=0;
+      if (!this.state.tactive) {
+        if(this.req)
+          {
+            this.req.abort();
+          }
+        this.state.offset=0;
 
-       this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',isTodayTask:0},() => {
-         this.getTaskListofUser();
-       });
+         this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',isTodayTask:0},() => {
+           this.getTaskListofUser();
+         });
+      }else{
+        console.log('all tasks already active');
+      }
+
 
     }
     render(){
