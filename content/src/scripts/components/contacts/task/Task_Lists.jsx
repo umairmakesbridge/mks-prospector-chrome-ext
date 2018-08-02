@@ -18,7 +18,7 @@ import LoadingMask
 class TasksLists extends Component{
     constructor(props){
         super(props);
-
+        this.req=null;
         this.state = {
           assignTask : '',
           completedTask : '',
@@ -77,6 +77,8 @@ class TasksLists extends Component{
         }
     }
     getTaskListofUser(loadMore){
+      let nextOffset = (loadMore) ? this.state.nextOffset : 0;
+
       //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST&type=getAllTask&subNum=qcWRf30Sd33Ph26Fg17Db20If21Pd30Sd33qDF&fromDate=2018-04-01&toDate=2018-04-13&orderBy=creationTime&order=asc&offset=0&bucket=20
       if(loadMore){
         this.setState({
@@ -95,7 +97,7 @@ class TasksLists extends Component{
         type: "getAllTask",
         orderBy : 'updationTime',
         order: "desc",
-        offset : this.state.nextOffset,
+        offset : nextOffset,
         bucket : 20,
         ukey:this.props.users_details[0].userKey,
         isMobileLogin:'Y',
@@ -115,14 +117,80 @@ class TasksLists extends Component{
           reqObj["sortBy"] = this.state.sortTasks;
         }
       }
-      request.post(this.props.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.props.users_details[0].bmsToken)
+
+
+      this.req = request
+      .post(this.props.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.props.users_details[0].bmsToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send(reqObj)
+      this.req.end((err, res) => {
+        try {
+        console.log(false, 'should not complete the request');
+      } catch(e) { console.log(e); }
+      console.log('response of api : ', res);
+      var jsonResponse =  JSON.parse(res.text);
+      console.log(jsonResponse);
+      let taskAssign=(loadMore) ? this.state.taskAssign : [];
+      let completedTask=(loadMore) ? this.state.completedTask : []
+
+
+      if(parseInt(jsonResponse.totalCount) > 0){
+
+        $.each(jsonResponse.taskList,(key,value)=>{
+          if(value.status=="C"){
+            completedTask.push(value);
+            this.state['showCompleted'] = 'show'
+          }else{
+            taskAssign.push(value)
+          }
+        });
+        this.state.completedTask = completedTask;
+        this.state.taskAssign = taskAssign;
+        if(taskAssign.length > 2) {
+          this.state['showExpandCollapse'] = 'show';
+        }else{
+          this.state['showExpandCollapse'] = 'hide';
+        }
+        this.setState({
+          assignTask : taskAssign,
+          totalCount : taskAssign.length,
+          completedCount : completedTask.length,
+          completeTask : completedTask,
+          showLoadingMsg : false,
+          showLoadingButton : (jsonResponse.nextOffset == "-1") ? 'hide' : 'show',
+          nextOffset :  jsonResponse.nextOffset
+        });
+          //this.refs.addboxView.setDefaultState();
+          //SuccessAlert({message:"Task created successfully."});
+        //this.props.contact['company'] = this.state.company;
+        //this.props.updateContactHappened();
+        //this.props.getSubscriberDetails();
+        //this.hideAddCus()
+      }else{
+        this.setState({
+          assignTask : -1,
+          totalCount:0
+        })
+      }
+      });
+      this.req.on('error', error => {
+        done(error);
+      });
+      this.req.on('abort', (e) => {
+        console.log('abort ',e);
+      });
+
+
+    /*request.post(this.props.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.props.users_details[0].bmsToken)
          .set('Content-Type', 'application/x-www-form-urlencoded')
          .send(reqObj)
+         .on('progress', function(e) {
+           console.log('Percentage done: ', e.percent);
+         })
          .then((res) => {
             console.log(res.status);
             var jsonResponse =  JSON.parse(res.text);
             console.log(jsonResponse);
-            debugger;
             let taskAssign=(loadMore) ? this.state.taskAssign : [];
             let completedTask=(loadMore) ? this.state.completedTask : []
 
@@ -144,7 +212,6 @@ class TasksLists extends Component{
               }else{
                 this.state['showExpandCollapse'] = 'hide';
               }
-              debugger;
               this.setState({
                 assignTask : taskAssign,
                 totalCount : taskAssign.length,
@@ -166,7 +233,8 @@ class TasksLists extends Component{
                 totalCount:0
               })
             }
-          });
+          });*/
+
     }
     loadSubscriber(subscriber){
 
@@ -329,12 +397,25 @@ class TasksLists extends Component{
       });
     }
     getTodayTasks(event){
+      //setTimeout(() => {
+        if(this.req)
+          {
+            this.req.abort();
+          }
+      //}, 100);
+      this.state.offset=0;
       this.setState({tactive:'',searchContact:'',cactive:'active',subscriber:'',isTodayTask:1},() => {
         this.getTaskListofUser();
       });
 
     }
     getAllTasks(event){
+      if(this.req)
+        {
+          this.req.abort();
+        }
+      this.state.offset=0;
+
        this.setState({tactive:'active',searchContact:'',subscriber:'',cactive:'',isTodayTask:0},() => {
          this.getTaskListofUser();
        });
