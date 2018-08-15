@@ -69,7 +69,7 @@ html, body{ height:100%;}
    -webkit-box-sizing: border-box;
    -moz-box-sizing: border-box;
    box-sizing: border-box;
-   z-index: 1;
+   z-index: 98;
 }
 .mksiconplugin:hover{
    margin: 0 7px 0 0;
