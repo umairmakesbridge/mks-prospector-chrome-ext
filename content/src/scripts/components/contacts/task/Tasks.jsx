@@ -492,6 +492,16 @@ const tasks_header2 = <select className={`${this.state.toggleDDandAddBtn}`} styl
      <option value="meeting">Meeting</option>
      <option value="proposal">Proposal</option>
   </optgroup>
+  <optgroup label="Linkedin Tasks">
+    <option value="webSeminarInvite">Web Seminar Invite</option>
+    <option value="connect">Connect</option>
+    <option value="introduction">Introduction</option>
+    <option value="firstMessage">First Message</option>
+    <option value="secondMessage">Second Message</option>
+    <option value="thirdMessage">Third Message</option>
+    <option value="pdf">PDF</option>
+    <option value="inviteToGroup">Invite to Group</option>
+  </optgroup>
 </select>
 const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`mkb_btn mkb_cf_btn pull-right mkb_greenbtn addCF ${this.state.showLabel} ${this.state.toggleDDandAddBtn}`} onClick={this.showAddTasks.bind(this) }>Add New</span>
     if(this.state.tasks == -1){

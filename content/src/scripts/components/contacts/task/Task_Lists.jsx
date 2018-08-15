@@ -458,6 +458,17 @@ class TasksLists extends Component{
              <option value="breakfast">Breakfast</option>
              <option value="meeting">Meeting</option>
              <option value="proposal">Proposal</option>
+
+          </optgroup>
+          <optgroup label="Linkedin Tasks">
+            <option value="webSeminarInvite">Web Seminar Invite</option>
+            <option value="connect">Connect</option>
+            <option value="introduction">Introduction</option>
+            <option value="firstMessage">First Message</option>
+            <option value="secondMessage">Second Message</option>
+            <option value="thirdMessage">Third Message</option>
+            <option value="pdf">PDF</option>
+            <option value="inviteToGroup">Invite to Group</option>
           </optgroup>
         </select>
       </div>

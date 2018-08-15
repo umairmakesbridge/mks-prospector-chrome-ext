@@ -10,6 +10,7 @@ const CampaignCard = (props) => {
       let _formatedDate = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm A")};
       let _hide = (props.activity.pageTitle) ? "hide" : "";
       let isFuture = (props.isFuture) ? "to be "+props.mapping.name.toLowerCase() : "";
+
       return (
         <div className={`act_row ${props.mapping.color}`}>
           <span className={`icon ${displayicon}`}></span>
@@ -25,6 +26,15 @@ const CampaignCard = (props) => {
                   <div className={`infotxt mkb_elipsis mkb_text_break`}>
                       <a style={{"color":"#5c9bb5"}} href={decodeHTML(props.activity.pageURL)} target="_blank">{decodeHTML(props.activity.pageURL)}</a>
                   </div>
+                }
+
+                {(props.activity.url) &&
+                  <span className="infotxt " style={{margin:"0",padding:"0"}}>
+                    <strong>Url :</strong>
+                      <a className="mkb_elipsis" target="_blank" title={decodeHTML(props.activity.url)} href={decodeHTML(props.activity.url)} style={{color: "#5C9BB5",width: "227px",display: "block"}}>
+                        {decodeHTML(props.activity.url)}
+                      </a>
+                    </span>
                 }
             </div>
             <div className="btm-bar ">
