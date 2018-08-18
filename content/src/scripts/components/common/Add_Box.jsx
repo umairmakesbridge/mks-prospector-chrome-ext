@@ -76,7 +76,6 @@ class AddBox extends Component{
                         console.log('Time to tasks');
                         this.props.create(this.state);
                     }else if(this.props.boxType == "mks_tasksFields" && this.state.saveType=="update"){
-                      debugger;
                         this.props.update(this.state);
                     }
 
@@ -91,7 +90,6 @@ class AddBox extends Component{
      }
     editTaskForm(editObj){
       var _date = Moment(decodeHTML(editObj.taskDate),'YYYY-M-D H:m');
-      debugger;
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm A")} //2018-03-13 06:58:00
       this.setState({
@@ -112,7 +110,6 @@ class AddBox extends Component{
       jQuery('.mks_ecc_wrap li').removeClass('active');
       jQuery('.mks_priotiry_'+editObj.priority.toLowerCase()).addClass('active');
       jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
-      debugger;
       console.log(this.state);
     }
     defaultAddTaskDialog (){
@@ -185,7 +182,8 @@ class AddBox extends Component{
       });
     }
     onMeridiemChange(meridiem) {
-    this.setState({ ampm : meridiem });
+    //this.setState({ ampm : meridiem });
+    this.state['ampm'] = meridiem;
     }
     onFocusChange(focusvalue){
       // console.log('Focus value' , focusvalue);
