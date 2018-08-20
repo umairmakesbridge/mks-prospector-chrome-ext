@@ -31,11 +31,17 @@ chrome.runtime.onMessage.addListener(
 
           var main = function() {
 
-
+            console.log(request.accesstoken);
             var s = document.createElement('script');
             s.id  = "_mks_main_file";
             s.src = chrome.extension.getURL('main.js');
             (document.head || document.documentElement).appendChild(s);
+
+            var t = document.createElement('script');
+            t.id = '_mks_static_script';
+            t.innerHTML = "var _mks_access_token= '"+request.accesstoken+"'";
+            (document.head || document.documentElement).appendChild(t);
+
           }
 
 

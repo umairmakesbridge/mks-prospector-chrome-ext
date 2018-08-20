@@ -108,21 +108,53 @@ class Tasks extends Component{
             if(this.state.setFullHeight){
               this.toggleHeight();
             }
+              this.createTaskOnGoogleCalender(object);
               this.refs.addboxView.setDefaultState();
               SuccessAlert({message:"Task created successfully."});
-            //this.props.contact['company'] = this.state.company;
-            //this.props.updateContactHappened();
-            //this.props.getSubscriberDetails();
-            this.getTaskList()
-            this.hideAddCus()
+              this.getTaskList()
+              this.hideAddCus()
+
           }else{
             this.refs.addboxView.setDisableFalse()
             ErrorAlert({message : jsonResponse[1]});
           }
         });
   }
+  createTaskOnGoogleCalender(object){
+      console.log("=======is google sync======="+object.isGoogleSync + "======"+ _mks_access_token)
+      if(object.isGoogleSync){
+        var timezone = Moment().format("Z");
+        var reqObj = {
+              'summary': object.input3,
+              'description': object.notes,
+              'start': {
+                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).format("HH:mm")+":00"+timezone
+              },
+              'end': {
+                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).add(2, 'hours').format("HH:mm")+":00"+timezone
+              },
+              'attendees': [
+              ],
+              'reminders': {
+                'useDefault': false
+              }
+            }
+            request.post("https://www.googleapis.com/calendar/v3/calendars/primary/events")
+           .set('Content-Type', 'application/json')
+           .set('Authorization','Bearer ' + _mks_access_token)
+           .send(reqObj)
+           .then((res) => {
+              console.log(res);
+
+            });
+      }
+  }
   componentWillMount(){
     this.getTaskList();
+
+  }
+  componentDidMount(){
+
   }
   hideAddCus(){
       this.setState({showAddBox : false});
@@ -460,6 +492,7 @@ class Tasks extends Component{
                     {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
                   ]
                 },
+                {type:"checkbox", className:"",id:"syncongooglecalender", placeholder:"Create/Update task on google calender"},
                 {type:"textarea", className:"",id:"notes", placeholder:"Add notes about your task here"}
 
               ] }

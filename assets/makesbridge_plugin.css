@@ -4731,3 +4731,11 @@ color: rgb(1, 110, 253);
   top: 1px;
   position: relative;
 }
+.mks-googlesync-text{
+  font-size:12px;
+  font-weight: bold;
+  padding-left:5px;
+}
+.googlecalndersync{
+  margin-bottom:10px;
+}

@@ -9,7 +9,10 @@ import TimePicker
        from 'react-times';
 import ReactTooltip
        from 'react-tooltip';
+import {Checkbox}
+        from 'react-icheck';
 var Datetime = require('react-datetime');
+
 
 class AddBox extends Component{
     constructor(props){
@@ -24,7 +27,8 @@ class AddBox extends Component{
           extra_btn_class : '',
           saveType : "create",
           showUpdateTitle : '',
-          ampm : Moment().format("hh:mm A").split(" ")[1]
+          ampm : Moment().format("hh:mm A").split(" ")[1],
+          isGoogleSync: false
         };
         var _this = this;
         jQuery.each(this.props.addFieldsObj,function(key,value){
@@ -184,6 +188,12 @@ class AddBox extends Component{
         selectedDay : this.state.startDate + " " + time
       });
     }
+
+    handleCheck(e,checked){
+      this.setState({"isGoogleSync":checked});
+      console.log("Checkbox checked="+ checked);
+    }
+
     onMeridiemChange(meridiem) {
     this.setState({ ampm : meridiem });
     }
@@ -275,6 +285,22 @@ class AddBox extends Component{
                     }
                     {this.generateLi(field.value,field.stateType)}
                   </ul>
+                )
+              }
+              if(field.type=="checkbox"){
+                return (
+                  <div className="googlecalndersync">
+                  <Checkbox
+                    key={key}
+                    name="syncgooglecalender"
+                    checkboxClass="iradio_square-blue"
+                    checked = {this.state.isGoogleSync}
+                    increaseArea="20%"
+                    onChange = {this.handleCheck.bind(this)}
+                    value="googlecalender"
+                    label={`<span class='mks-googlesync-text'>${field.placeholder} </span>`}
+                  />
+                  </div>
                 )
               }
               else{

@@ -7,7 +7,7 @@
     "scripts": [
       "background.js"
     ],
-    "persistent": true
+    "persistent": false
   },
   "icons":
    {
@@ -32,5 +32,17 @@
     "main.js",
     "img/*",
     "fonts/plugin_icon/*"
-  ]
+  ],
+  "permissions": [
+    "identity"
+  ],
+  "oauth2": {
+      "client_id": "508252128097-rcvu2693lfpiobo33lrnr117bhvkhjs9.apps.googleusercontent.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/calendar",
+        "https://www.googleapis.com/auth/calendar.readonly"
+      ]
+    },
+	"key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJFSzmwHfvfpEZyaGRFBNLOb3DMVpFvT8ul/gIl+n/W1fvnZfADWuUB72US2wLK5b54WL5ffNfbhFHZi939XF164CcmyJqxExp+dKoJObVZ8XbOhvYavCXh2I9XH0xO/jqrtNoEOUO1PUOgs0du5rqpAej3snUC737vy7hUrbUdVYLTGvXQhaqijlyZ/KtyB0LtMZqQCYC9mDjvouUxunoQwEdpsKAna0tW/fyWUSkN8Ur5RNylzGJdGJHrM545Sj41EK1HCjEz5Forg6BAbcCaVRTjz+QfQWJQ0k9tNsguN6MkkDwld1Gm8/pjqzUwvVboDMKcIXKNeWNMA61kK2wIDAQAB"
+
 }

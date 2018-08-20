@@ -47,7 +47,8 @@ class App extends Component {
       isLoggedOut      : false,
       isTaskClicked    : false,
       showStatus       : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms'
+      baseUrl          : 'https://mks.bridgemailsystem.com/pms',
+      googleAccessToken: _mks_access_token
     };
 
     //// preserve the initial state in a new object
@@ -174,6 +175,45 @@ class App extends Component {
       this.state.showLogin = false;
       this.state.showLoading = true;
     }
+    console.log("--------in did mout"+ _mks_access_token);
+    /*const headers = new Headers({
+        'Authorization' : 'Bearer ' + _mks_access_token,
+        'Content-Type': 'application/json'
+    })
+
+    const queryParams = { headers };
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', queryParams)
+    .then((response) => response.json())
+    .then(function(data) {
+        console.log(data);
+      })*/
+      /*var reqObj = {
+            'summary': 'Update Task to new',
+            'description': 'A chance to hear more about Google Calender',
+            'start': {
+              'dateTime': '2018-08-16T04:00:00-07:00'
+            },
+            'end': {
+              'dateTime': '2018-08-16T05:00:00-07:00',
+            },
+            'attendees': [
+              {'email': 'theumairshahid@gmail.com'},
+            ],
+            'reminders': {
+              'useDefault': false
+            }
+          }
+          //request.post("https://www.googleapis.com/calendar/v3/calendars/primary/events")
+          request.put("https://www.googleapis.com/calendar/v3/calendars/primary/events/3644a684f98ea8fe223c713b77189a77")
+         .set('Content-Type', 'application/json')
+         .set('Authorization','Bearer ' + _mks_access_token)
+         .send(reqObj)
+         .then((res) => {
+            console.log(res);
+
+          });*/
+
   }
 
   extractEmailsFromBody(text){
@@ -308,6 +348,7 @@ class App extends Component {
   }
   toggleTopMenu (event){
     jQuery("#lists_option").animate({width: 'toggle'})
+
     event.stopPropagation()
   }
   ToggleTaskList(event){
@@ -326,11 +367,14 @@ class App extends Component {
 
  logOut(){
    console.log('1. Logout is triggered');
-   localStorage.removeItem('pmks_userpass');
+   chrome.identity.getAuthToken({interactive: true}, function(token) {
+     alert(token);
+   });
+   /*localStorage.removeItem('pmks_userpass');
    this.setState(this.baseState);
    this.refs.gmailemail.refs.searchcontacts.hideUpTaskList();
    this.refs.gmailemail.refs.searchcontacts.resetSearchSelectBox();
-   this.refs.gmailemail.resetGmail();
+   this.refs.gmailemail.resetGmail();*/
  }
 
 
@@ -402,7 +446,7 @@ class App extends Component {
                 ref="loginform"
         />
         </ToggleDisplay>
-        
+
         <ToggleDisplay show={this.state.gmailEmails}>
         <div className="topbtn_wraps_contact_tasks">
         <AddNewContact

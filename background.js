@@ -1,4 +1,5 @@
 
+var accesstoken = "";
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function(tab) {
   // Send a message to the active tab
@@ -12,7 +13,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
    if(changeInfo.status == 'complete'){
      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
        var activeTab = tabs[0];
-       chrome.tabs.sendMessage(activeTab.id, {"message": "browser_loaded"});
+       chrome.tabs.sendMessage(activeTab.id, {"message": "browser_loaded","accesstoken":accesstoken});
      });
    }
+});
+
+chrome.identity.getAuthToken({interactive: true}, function(token) {
+        accesstoken = token;
 });

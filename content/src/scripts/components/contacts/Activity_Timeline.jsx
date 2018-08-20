@@ -95,8 +95,7 @@ class ActivityTimeline extends Component{
     var _this = this;
     jQuery.each(activity.activities,function(key,value){
         _this.state.futureActivity.push(value);
-    });
-    debugger;
+    });    
   }
   render(){
     if(this.props.contactnotFound){
