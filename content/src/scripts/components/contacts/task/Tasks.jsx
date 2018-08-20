@@ -1,3 +1,4 @@
+
 import React,{Component}
        from 'react';
 import request
@@ -519,7 +520,7 @@ const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`
         {tasks_header1}
         {tasks_header2}
         {tasks_header3}
-    <div style={{"position" : "relative"}} className={`content-tasks-wrapper content-wrapper height90 height230 ${this.state.setFullHeight} ${this.state.toggleTasks}`}  >
+    <div style={{"position" : "relative"}} className={`content-tasks-wrapper content-wrapper height90 height245 ${this.state.setFullHeight} ${this.state.toggleTasks}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
           <div className={`LoadMore-wrapper loading_${this.state.showLoadingMsg}`}>
