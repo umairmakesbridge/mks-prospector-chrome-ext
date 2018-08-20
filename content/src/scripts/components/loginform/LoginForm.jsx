@@ -26,6 +26,11 @@ class LoginForm extends Component {
                     <input name="password" type="password" disabled={this.state.disabled} placeholder="Enter your password" value={this.state.password} onChange = {event => this.setState({password : event.target.value})} onKeyPress={this.handleKeyPress.bind(this)} />
                     <button name="submit" type="button" disabled={this.state.disabled} className="mksph_login_btn mksph-pull-right ripple" onClick = {this.onClickOfButton.bind(this)} id="submitForm">Login</button>
                 </form>
+                <ul style={{"list-style":"none","marginTop": "20px","fontSize": "13px","fontFamily": "sans-serif","color": "#424141","fontWeight": "100"}}>
+                  <li style={{"margin-top":"5px"}}>Makesbridge sales assistant helps sales professionals quickly interact and manage prospects.</li>
+                  <li style={{"margin-top":"10px"}}>Use Makesbridge Username and Password to login.</li>
+                  <li style={{"margin-top":"10px"}}>If you are not user of Makesbridge.<br/><a href="https://www.makesbridge.com/signup" target="_blank">Signup</a> here.</li>
+                </ul>
             </div>
           </div>
           );
