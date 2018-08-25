@@ -6,6 +6,7 @@ This project was generated with the [react-chrome-redux-examples by tshaddix](ht
 
 ### Commands for style guide
 
+- [Node Version] (`>= 8.2.1`)
 - [Initialization] (`docsify init ./docs`)
 - [Generate HTML from .md] (`docsify serve ./docs`)
 
