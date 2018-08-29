@@ -566,7 +566,7 @@ class Tasks extends Component{
       <div className="OverLay" style={{height : (this.state.overlayHeight+"px" )}}></div>
 
 </ToggleDisplay>
-const tasks_header2 = <select className={`${this.state.toggleDDandAddBtn}`} style={{left : "60px","top" : "-36px","position":"absolute"}} onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
+const tasks_header2 = <select className={`${this.state.toggleDDandAddBtn}`} style={{left : "60px","top" : "-35px","position":"absolute","width" : "160px","fontSize" : "13px"}} onChange={this.sortTaskBy.bind(this)} value={this.state.sortTasks}>
 
   <option value="-1">All</option>
 
