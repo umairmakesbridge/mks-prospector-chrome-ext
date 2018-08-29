@@ -21,6 +21,7 @@ class Tasks extends Component{
     super(props);
     this.users_details = this.props.users_details;
     this.baseUrl = this.props.baseUrl;
+    this.eventId = null;
     this.state = {
       showLabel : true,
       showAddBox : false,
@@ -78,6 +79,10 @@ class Tasks extends Component{
   }
   createTasks(object){
 
+    this.createTaskOnGoogleCalender(object);
+
+  }
+  createTaskLocal(object,eventId){
     var reqObj = {
       type: "add",
       subNum: this.props.contact.subNum,
@@ -90,7 +95,9 @@ class Tasks extends Component{
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
-    //https://test.bridgemailsystem.com/pms/io/subscriber/subscriberTasks/?BMS_REQ_TK=teJfgUi3XxStW71TjoC59TptuQRwST
+    if(eventId){
+      reqObj["googleCalendar"] = eventId;
+    }
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send(reqObj)
@@ -108,7 +115,6 @@ class Tasks extends Component{
             if(this.state.setFullHeight){
               this.toggleHeight();
             }
-              this.createTaskOnGoogleCalender(object);
               this.refs.addboxView.setDefaultState();
               SuccessAlert({message:"Task created successfully."});
               this.getTaskList()
@@ -121,6 +127,7 @@ class Tasks extends Component{
         });
   }
   createTaskOnGoogleCalender(object){
+     var self = this;
       console.log("=======is google sync======="+object.isGoogleSync + "======"+ _mks_access_token)
       if(object.isGoogleSync){
         var timezone = Moment().format("Z");
@@ -145,10 +152,17 @@ class Tasks extends Component{
            .send(reqObj)
            .then((res) => {
               console.log(res);
-
+              var result = JSON.parse(res.xhr.response);
+              var eventId = result.id;
+              self.createTaskLocal(object,eventId);
             });
       }
+      else{
+        this.createTaskLocal(object);
+      }
+
   }
+
   componentWillMount(){
     this.getTaskList();
 
@@ -189,6 +203,7 @@ class Tasks extends Component{
           showLoading : true,
           loadingMessage : 'Deleting Task...'
         });
+
         var reqObj = {
           type: "delete",
           subNum: this.props.contact.subNum,
@@ -215,13 +230,23 @@ class Tasks extends Component{
                 }else{
                     ErrorAlert({message:jsonResponse[1]});
                 }
-
                 return false;
               }
+              this.deleteGoogleCalenderTask(obj);
               SuccessAlert({message:"Task deleted successfully."});
               this.setState({nextOffset : 0})
               this.getTaskList()
             });
+    }
+  }
+  deleteGoogleCalenderTask(task){
+    if(task.googleCalendar){
+      request.del("https://www.googleapis.com/calendar/v3/calendars/primary/events/"+task.googleCalendar)
+     .set('Content-Type', 'application/json')
+     .set('Authorization','Bearer ' + _mks_access_token)
+     .then((res) => {
+        console.log(res);
+      });
     }
   }
   getTaskList(loadMore){
@@ -362,6 +387,7 @@ class Tasks extends Component{
     });
   }
   editTask (task){
+    this.eventId = task.googleCalendar;
     this.setState({
       showAddBox : true
     });
@@ -374,50 +400,85 @@ class Tasks extends Component{
           showLoading : true
         })
       }
-      var reqObj = {
-        type: (isComplete) ? "complete" : "update",
-        subNum: this.props.contact.subNum,
-        taskId :  (taskObj.taskId) ? taskObj.taskId : taskObj['taskId.encode'],
-        tasktype: taskObj.tasktype,
-        name: taskObj.input3,
-        taskDate: (taskObj.startDate) ? taskObj.startDate.format("MM-DD-YYYY") + " " + Moment(taskObj.times, ["h:mm A"]).format("HH:mm")+":00" : "",
-        priority: (taskObj.priority) ? taskObj.priority.toLowerCase() : "",
-        notes: taskObj.notes,
-        ukey:this.props.users_details[0].userKey,
-        isMobileLogin:'Y',
-        userId:this.props.users_details[0].userId
-      };
-      request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
-         .set('Content-Type', 'application/x-www-form-urlencoded')
-         .send(reqObj)
-         .then((res) => {
-            console.log(res.status);
-            var jsonResponse =  JSON.parse(res.text);
-            console.log(jsonResponse);
-            if(jsonResponse.success){
-              this.setState({
-                disabled    : false,
-                showLoading : false
-              })
-                if(isComplete){
-                  SuccessAlert({message:"Task mark completed successfully."});
-                }else{
-                  this.refs.addboxView.setDefaultState();
-                  SuccessAlert({message:"Task updated successfully."});
-                  this.hideAddCus()
-                }
-
-              //this.props.contact['company'] = this.state.company;
-              //this.props.updateContactHappened();
-              //this.props.getSubscriberDetails();
-              this.setState({nextOffset : 0})
-              this.getTaskList()
-
-            }else{
-              this.refs.addboxView.setDisableFalse()
-              ErrorAlert({message : jsonResponse[1]});
+      this.updateTaskOnGoogleCalender(taskObj,isComplete)
+  }
+  updateTaskOnGoogleCalender(object,isComplete){
+      var self = this;
+      console.log("=======is google sync======="+object.isGoogleSync + "======"+ _mks_access_token)
+      if(object.isGoogleSync){
+        var timezone = Moment().format("Z");
+        var reqObj = {
+              'summary': object.input3,
+              'description': object.notes,
+              'start': {
+                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).format("HH:mm")+":00"+timezone
+              },
+              'end': {
+                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).add(2, 'hours').format("HH:mm")+":00"+timezone
+              },
+              'attendees': [
+              ],
+              'reminders': {
+                'useDefault': false
+              }
             }
-          });
+            request.put("https://www.googleapis.com/calendar/v3/calendars/primary/events/"+this.eventId)
+           .set('Content-Type', 'application/json')
+           .set('Authorization','Bearer ' + _mks_access_token)
+           .send(reqObj)
+           .then((res) => {
+              console.log(res);
+              var result = JSON.parse(res.xhr.response);
+              var eventId = result.id;
+              self.updateTaskLocal(object,isComplete);
+            });
+      }
+      else{
+        this.updateTaskLocal(object,isComplete);
+      }
+
+  }
+  updateTaskLocal(taskObj,isComplete){
+    var reqObj = {
+      type: (isComplete) ? "complete" : "update",
+      subNum: this.props.contact.subNum,
+      taskId :  (taskObj.taskId) ? taskObj.taskId : taskObj['taskId.encode'],
+      tasktype: taskObj.tasktype,
+      name: taskObj.input3,
+      taskDate: (taskObj.startDate) ? taskObj.startDate.format("MM-DD-YYYY") + " " + Moment(taskObj.times, ["h:mm A"]).format("HH:mm")+":00" : "",
+      priority: (taskObj.priority) ? taskObj.priority.toLowerCase() : "",
+      notes: taskObj.notes,
+      ukey:this.props.users_details[0].userKey,
+      isMobileLogin:'Y',
+      userId:this.props.users_details[0].userId
+    };
+    request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
+       .set('Content-Type', 'application/x-www-form-urlencoded')
+       .send(reqObj)
+       .then((res) => {
+          console.log(res.status);
+          var jsonResponse =  JSON.parse(res.text);
+          console.log(jsonResponse);
+          if(jsonResponse.success){
+            this.setState({
+              disabled    : false,
+              showLoading : false
+            })
+              if(isComplete){
+                SuccessAlert({message:"Task mark completed successfully."});
+              }else{
+                this.refs.addboxView.setDefaultState();
+                SuccessAlert({message:"Task updated successfully."});
+                this.hideAddCus()
+              }
+            this.setState({nextOffset : 0})
+            this.getTaskList()
+
+          }else{
+            this.refs.addboxView.setDisableFalse()
+            ErrorAlert({message : jsonResponse[1]});
+          }
+        });
   }
   toggleHeight(){
     if(this.state.setFullHeight){

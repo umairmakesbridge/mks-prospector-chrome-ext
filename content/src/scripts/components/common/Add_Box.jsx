@@ -109,7 +109,8 @@ class AddBox extends Component{
          saveType : 'update',
          showUpdateTitle : 'Update task',
          tasktype : editObj.taskType,
-         priority : editObj.priority
+         priority : editObj.priority,
+         isGoogleSync: editObj.googleCalendar?true:false
       });
       this.state['taskId'] = editObj['taskId.encode'];
       jQuery('.mks_priorty_wrap li').removeClass('active');
@@ -195,7 +196,8 @@ class AddBox extends Component{
     }
 
     onMeridiemChange(meridiem) {
-    this.setState({ ampm : meridiem });
+    //this.setState({ ampm : meridiem });
+    this.state['ampm'] = meridiem;
     }
     onFocusChange(focusvalue){
       // console.log('Focus value' , focusvalue);

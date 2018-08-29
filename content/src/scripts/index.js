@@ -47,7 +47,7 @@ class App extends Component {
       isLoggedOut      : false,
       isTaskClicked    : false,
       showStatus       : false,
-      baseUrl          : 'https://mks.bridgemailsystem.com/pms',
+      baseUrl          : 'https://test.bridgemailsystem.com/pms',
       googleAccessToken: _mks_access_token
     };
 
@@ -366,15 +366,12 @@ class App extends Component {
  }
 
  logOut(){
-   console.log('1. Logout is triggered');
-   chrome.identity.getAuthToken({interactive: true}, function(token) {
-     alert(token);
-   });
-   /*localStorage.removeItem('pmks_userpass');
+   console.log('1. Logout is triggered');   
+   localStorage.removeItem('pmks_userpass');
    this.setState(this.baseState);
    this.refs.gmailemail.refs.searchcontacts.hideUpTaskList();
    this.refs.gmailemail.refs.searchcontacts.resetSearchSelectBox();
-   this.refs.gmailemail.resetGmail();*/
+   this.refs.gmailemail.resetGmail();
  }
 
 
