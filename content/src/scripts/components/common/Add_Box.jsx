@@ -11,6 +11,8 @@ import ReactTooltip
        from 'react-tooltip';
 import {Checkbox}
         from 'react-icheck';
+import {ErrorAlert}
+      from './Alerts';        
 var Datetime = require('react-datetime');
 
 
@@ -26,6 +28,7 @@ class AddBox extends Component{
           btnText : "Save",
           extra_btn_class : '',
           saveType : "create",
+          input_duration: 30,
           showUpdateTitle : '',
           ampm : Moment().format("hh:mm A").split(" ")[1],
           isGoogleSync: false
@@ -69,6 +72,13 @@ class AddBox extends Component{
 
                   });
                   console.log(isValid);
+                  if(this.state.isGoogleSync){
+                      if(parseInt(jQuery("#input_duration").val())<5){
+                          isValid = false;
+                          ErrorAlert({message : "Task duration must be greater than 5 minutes"});
+                          jQuery("#input_duration").focus();
+                      }
+                  }
                   // If valid Generating Object
                   if(isValid && !this.state.disabled){
                     jQuery("div.addBox_wrapper_container input").removeClass('hasError');
@@ -80,7 +90,7 @@ class AddBox extends Component{
                         console.log('Time to tasks');
                         this.props.create(this.state);
                     }else if(this.props.boxType == "mks_tasksFields" && this.state.saveType=="update"){
-                      debugger;
+                      //debugger;
                         this.props.update(this.state);
                     }
 
@@ -93,9 +103,12 @@ class AddBox extends Component{
          selectedDay : date.format("YYYY-MM-DD") + " " + this.state.times
        });
      }
+    updateDuration(min){
+        this.setState({input_duration:min});
+    } 
     editTaskForm(editObj){
       var _date = Moment(decodeHTML(editObj.taskDate),'YYYY-M-D H:m');
-      debugger;
+      //debugger;
       var format = {date: _date.format("DD MMM YYYY"), time: _date.format("hh:mm")};
       var selFormat = {date: _date.format("YYYY-MM-DD"), time: _date.format("hh:mm A")} //2018-03-13 06:58:00
       this.setState({
@@ -117,8 +130,9 @@ class AddBox extends Component{
       jQuery('.mks_ecc_wrap li').removeClass('active');
       jQuery('.mks_priotiry_'+editObj.priority.toLowerCase()).addClass('active');
       jQuery('.mks_ecc_'+editObj.taskType.toLowerCase()).addClass('active');
-      debugger;
+      //debugger;
       console.log(this.state);
+      
     }
     defaultAddTaskDialog (){
 
@@ -302,6 +316,19 @@ class AddBox extends Component{
                     value="googlecalender"
                     label={`<span class='mks-googlesync-text'>${field.placeholder} </span>`}
                   />
+                  <span className="mks-duration-text">with Duration of</span>
+                   <input                    
+                    type="number"
+                    name={'input_duration'}
+                    value={this.state['input_duration']}                    
+                    onChange={this.handleOnChange.bind(this) }
+                    disabled={!this.state.isGoogleSync}
+                    id={'input_duration'}
+                    className={'task_duration'}   
+                    min="5"
+                    placeholder = {''}
+                  />
+                  <span className="mks-duration-text">mins.</span>
                   </div>
                 )
               }

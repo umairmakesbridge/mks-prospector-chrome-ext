@@ -2,12 +2,11 @@
   "manifest_version": 2,
   "name": "Makesbridge Sales Assistant",
   "description": "Makesbridge™",
-  "version": "0.0.1.81",
+  "version": "0.0.1.837",
   "background": {
     "scripts": [
       "background.js"
-    ],
-    "persistent": false
+    ]
   },
   "icons":
    {
@@ -37,12 +36,13 @@
     "identity"
   ],
   "oauth2": {
-      "client_id": "508252128097-rcvu2693lfpiobo33lrnr117bhvkhjs9.apps.googleusercontent.com",
+      "client_id": "700639148510-2ld2c5a427er9a3atamrb763njm8naq2.apps.googleusercontent.com",
       "scopes": [
         "https://www.googleapis.com/auth/calendar",
-        "https://www.googleapis.com/auth/calendar.readonly"
+        "https://www.googleapis.com/auth/calendar.readonly",
+        "https://www.googleapis.com/auth/userinfo.profile"
       ]
     },
-	"key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiJFSzmwHfvfpEZyaGRFBNLOb3DMVpFvT8ul/gIl+n/W1fvnZfADWuUB72US2wLK5b54WL5ffNfbhFHZi939XF164CcmyJqxExp+dKoJObVZ8XbOhvYavCXh2I9XH0xO/jqrtNoEOUO1PUOgs0du5rqpAej3snUC737vy7hUrbUdVYLTGvXQhaqijlyZ/KtyB0LtMZqQCYC9mDjvouUxunoQwEdpsKAna0tW/fyWUSkN8Ur5RNylzGJdGJHrM545Sj41EK1HCjEz5Forg6BAbcCaVRTjz+QfQWJQ0k9tNsguN6MkkDwld1Gm8/pjqzUwvVboDMKcIXKNeWNMA61kK2wIDAQAB"
+    "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhwUcwE1zE/xW09npjvqak2Tyxa/ncO6f10JBnUUliwjt8F9jt/YlnoKH5M1VemM/gEG8nQBCL4VIpR4ktY9EnhvTd6RHRPL1KS7+CbFjOB8cda33ZdYLsauBKwCxPa5wAMoRvem0v56LbEZ2IrOdsYYiEurTwu5YpaJI1pzB97fsvFfus59fO45M4rXYBeuVRC5vL4xa1+VFKZP+rEq1rmAU1uNqU5xGP9ebvhRAltOqf/jORHtYy2PXcZqowp4iBg5vNqbyHSzArmHyWBFz/tpKf5sTW+5rzynHmSmQ88iwSzDesgslYPCJspwdoJ9q5SfZ4BLNcn+kUB+ue24SWQIDAQAB"
 
 }

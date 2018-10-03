@@ -124,13 +124,14 @@ class Tasks extends Component{
             this.refs.addboxView.setDisableFalse()
             ErrorAlert({message : jsonResponse[1]});
           }
-        });
+        })
   }
-  createTaskOnGoogleCalender(object){
+  createTaskOnGoogleCalender(object,taskUpdate){
      var self = this;
       console.log("=======is google sync======="+object.isGoogleSync + "======"+ _mks_access_token)
       if(object.isGoogleSync){
         var timezone = Moment().format("Z");
+        var endDateTime = Moment(object.startDate.format("YYYY-MM-DD")+" "+Moment(object.times, ["h:mm A"]).format("HH:mm"));
         var reqObj = {
               'summary': object.input3,
               'description': object.notes,
@@ -138,12 +139,17 @@ class Tasks extends Component{
                 'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).format("HH:mm")+":00"+timezone
               },
               'end': {
-                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).add(2, 'hours').format("HH:mm")+":00"+timezone
+                'dateTime': endDateTime.add(object.input_duration, 'minutes').format("YYYY-MM-DDTHH:mm:00")+timezone
               },
               'attendees': [
               ],
               'reminders': {
-                'useDefault': false
+                'useDefault': false,
+                'overrides': [
+                {'method': 'email', 'minutes': 2 * 60},
+                {'method': 'popup', 'minutes': 10}
+              ]
+
               }
             }
             request.post("https://www.googleapis.com/calendar/v3/calendars/primary/events")
@@ -154,8 +160,18 @@ class Tasks extends Component{
               console.log(res);
               var result = JSON.parse(res.xhr.response);
               var eventId = result.id;
-              self.createTaskLocal(object,eventId);
-            });
+              if(!taskUpdate){
+                self.createTaskLocal(object,eventId);
+              }
+              else{
+                self.updateTaskLocal(object,false,eventId);
+              }
+            }, (err)=>{
+              this.refs.addboxView.setDisableFalse()
+              if(err.status>=400){
+                  ErrorAlert({message : "Google Calender Error: "+err.response.body.error.message});
+              }
+            })
       }
       else{
         this.createTaskLocal(object);
@@ -392,6 +408,23 @@ class Tasks extends Component{
       showAddBox : true
     });
     this.refs.addboxView.editTaskForm(task);
+    if(this.eventId){
+        request.get("https://www.googleapis.com/calendar/v3/calendars/primary/events/"+this.eventId)
+         .set('Content-Type', 'application/json')
+         .set('Authorization','Bearer ' + _mks_access_token)         
+         .then((res) => {
+            console.log(res);
+             var response = res.xhr.response;
+             if(response){                 
+                 var response_json = JSON.parse(response);
+                 var startTime = Moment(response_json.start.dateTime);
+                 var endTime = Moment(response_json.end.dateTime);
+                 var minDuration = endTime.diff(startTime, 'minutes');
+                 console.log(minDuration);
+                 this.refs.addboxView.updateDuration(minDuration);
+             }
+         });
+    }
   }
   updateTasks(taskObj,isComplete){
       console.log(taskObj);
@@ -400,13 +433,29 @@ class Tasks extends Component{
           showLoading : true
         })
       }
-      this.updateTaskOnGoogleCalender(taskObj,isComplete)
+      if(!isComplete){
+        if(taskObj.isGoogleSync){
+          if(this.eventId){
+            this.updateTaskOnGoogleCalender(taskObj,isComplete)
+          }
+          else{
+            this.createTaskOnGoogleCalender(taskObj,true)
+          }
+        }
+        else{
+            this.updateTaskLocal(taskObj,isComplete)
+        }
+      }
+      else{
+        this.updateTaskLocal(taskObj,isComplete,this.eventId)
+      }
   }
   updateTaskOnGoogleCalender(object,isComplete){
       var self = this;
       console.log("=======is google sync======="+object.isGoogleSync + "======"+ _mks_access_token)
       if(object.isGoogleSync){
         var timezone = Moment().format("Z");
+        var endDateTime = Moment(object.startDate.format("YYYY-MM-DD")+" "+Moment(object.times, ["h:mm A"]).format("HH:mm"));
         var reqObj = {
               'summary': object.input3,
               'description': object.notes,
@@ -414,12 +463,16 @@ class Tasks extends Component{
                 'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).format("HH:mm")+":00"+timezone
               },
               'end': {
-                'dateTime': object.startDate.format("YYYY-MM-DD")+"T"+Moment(object.times, ["h:mm A"]).add(2, 'hours').format("HH:mm")+":00"+timezone
+                'dateTime': endDateTime.add(object.input_duration, 'minutes').format("YYYY-MM-DDTHH:mm:00")+timezone
               },
               'attendees': [
               ],
               'reminders': {
-                'useDefault': false
+                'useDefault': false,
+                'overrides': [
+                {'method': 'email', 'minutes': 2 * 60},
+                {'method': 'popup', 'minutes': 10}
+                ]
               }
             }
             request.put("https://www.googleapis.com/calendar/v3/calendars/primary/events/"+this.eventId)
@@ -429,8 +482,12 @@ class Tasks extends Component{
            .then((res) => {
               console.log(res);
               var result = JSON.parse(res.xhr.response);
-              var eventId = result.id;
-              self.updateTaskLocal(object,isComplete);
+              self.updateTaskLocal(object,isComplete,self.eventId);
+            }, (err)=>{
+              this.refs.addboxView.setDisableFalse()
+              if(err.status>=400){
+                  ErrorAlert({message : "Google Calender Error: "+err.response.body.error.message});
+              }
             });
       }
       else{
@@ -438,7 +495,7 @@ class Tasks extends Component{
       }
 
   }
-  updateTaskLocal(taskObj,isComplete){
+  updateTaskLocal(taskObj,isComplete,eventId){
     var reqObj = {
       type: (isComplete) ? "complete" : "update",
       subNum: this.props.contact.subNum,
@@ -452,6 +509,9 @@ class Tasks extends Component{
       isMobileLogin:'Y',
       userId:this.props.users_details[0].userId
     };
+    if(eventId){
+      reqObj["googleCalendar"] = eventId;
+    }
     request.post(this.baseUrl+'/io/subscriber/subscriberTasks/?BMS_REQ_TK='+this.users_details[0].bmsToken)
        .set('Content-Type', 'application/x-www-form-urlencoded')
        .send(reqObj)
@@ -553,8 +613,8 @@ class Tasks extends Component{
                     {name : "priority", className:"mks_priotiry_high", id: "high",placeholder:"High"}
                   ]
                 },
-                {type:"checkbox", className:"",id:"syncongooglecalender", placeholder:"Create/Update task on google calender"},
-                {type:"textarea", className:"",id:"notes", placeholder:"Add notes about your task here"}
+                {type:"checkbox", className:"",id:"syncongooglecalender", placeholder:"Create/Update task on Google Calendar",sec_placeholder:"Enter Task Duration"},
+                {type:"textarea", className:"task_duration",id:"notes", placeholder:"Add notes about your task here"}
 
               ] }
               boxType={"mks_tasksFields"}
@@ -613,7 +673,7 @@ const tasks_header3 = <span style={{right : "0px","top" : "-38px"}} className={`
         {tasks_header1}
         {tasks_header2}
         {tasks_header3}
-    <div style={{"position" : "relative"}} className={`content-tasks-wrapper content-wrapper height90 height230 ${this.state.setFullHeight} ${this.state.toggleTasks}`}  >
+    <div style={{"position" : "relative"}} className={`content-tasks-wrapper content-wrapper height90 height245 ${this.state.setFullHeight} ${this.state.toggleTasks}`}  >
           <LoadingMask message={this.state.loadingMessage} showLoading={this.state.showLoading}/>
           {this.generateTasksList()}
           <div className={`LoadMore-wrapper loading_${this.state.showLoadingMsg}`}>

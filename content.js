@@ -6,8 +6,15 @@ chrome.runtime.onMessage.addListener(
       //app.init();
       console.log(firstHref);
     }else if(request.message == 'browser_loaded'){
-        console.log('Loaded');
+        console.log('Extentions ------ Loaded');
         window['chromeExtension'] = chrome.extension;
+        if(document.getElementById('_mks_static_script')){
+          var t = document.getElementById('_mks_static_script');
+          if(t){
+            _mks_access_token = request.accesstoken;
+            console.log("$$$$$$$$$$$New Token Set");
+          }
+        }
         if(document.getElementById('_mks_main_file')==null){
           var q = document.createElement('script');
           q.src = chrome.extension.getURL('jquery.min.js');

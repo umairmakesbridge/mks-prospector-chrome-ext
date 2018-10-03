@@ -17,7 +17,20 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
      });
    }
 });
+function getToken(){
+  chrome.identity.getAuthToken({interactive: true}, function(token) {
+          accesstoken = token;
+  })
+  
+   chrome.identity.onSignInChanged.addListener(function (account, signedIn) {
+                       
+        chrome.identity.getAuthToken({interactive: true,account:account.id}, function(token) {
+                accesstoken = token;
+        })
+        
+    });
 
-chrome.identity.getAuthToken({interactive: true}, function(token) {
-        accesstoken = token;
-});
+  
+  setTimeout(getToken,1000*60*10);
+}
+getToken();

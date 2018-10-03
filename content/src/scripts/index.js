@@ -47,7 +47,7 @@ class App extends Component {
       isLoggedOut      : false,
       isTaskClicked    : false,
       showStatus       : false,
-      baseUrl          : 'https://test.bridgemailsystem.com/pms',
+      baseUrl          : 'https://mks.bridgemailsystem.com/pms',
       googleAccessToken: _mks_access_token
     };
 
@@ -213,6 +213,14 @@ class App extends Component {
             console.log(res);
 
           });*/
+                 
+         /* request.put("https://www.googleapis.com/calendar/v3/calendars/primary/events/3644a684f98ea8fe223c713b77189a77")
+         .set('Content-Type', 'application/json')
+         .set('Authorization','Bearer ' + _mks_access_token)         
+         .then((res) => {
+            console.log(res);
+
+          });*/
 
   }
 
@@ -366,7 +374,7 @@ class App extends Component {
  }
 
  logOut(){
-   console.log('1. Logout is triggered');   
+   console.log('1. Logout is triggered');
    localStorage.removeItem('pmks_userpass');
    this.setState(this.baseState);
    this.refs.gmailemail.refs.searchcontacts.hideUpTaskList();
